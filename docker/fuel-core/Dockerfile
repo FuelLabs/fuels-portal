@@ -1,0 +1,23 @@
+FROM ghcr.io/fuellabs/fuel-core:v0.15.1
+
+ARG IP=0.0.0.0
+ARG PORT=4000
+ARG DB_PATH=./mnt/db/
+
+ENV IP="${IP}"
+ENV PORT="${PORT}"
+ENV DB_PATH="${DB_PATH}"
+
+WORKDIR /root/
+
+COPY chainConfig.json .
+
+CMD ./fuel-core run \
+    --ip ${IP} \
+    --port ${PORT} \
+    --db-path ${DB_PATH} \
+    --utxo-validation \
+    --min-gas-price ${MIN_GAS_PRICE} \
+    --chain ./chainConfig.json
+
+EXPOSE ${PORT}

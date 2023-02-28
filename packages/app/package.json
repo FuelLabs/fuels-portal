@@ -1,0 +1,37 @@
+{
+  "name": "staking",
+  "private": true,
+  "version": "0.0.0",
+  "main": "./src/App.tsx",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "ts:check": "pnpm xstate:typegen && tsc --noEmit",
+    "xstate:typegen": "xstate typegen 'src/**/*.ts?(x)'",
+    "test": "playwright test"
+  },
+  "dependencies": {
+    "@fuel-ui/css": "^0.12.3",
+    "@fuel-ui/react": "^0.12.3",
+    "@playwright/test": "^1.31.1",
+    "fuels": "^0.33.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-helmet": "^6.1.0",
+    "react-router-dom": "^6.8.2",
+    "wagmi": "^0.11.7",
+    "xstate": "^4.37.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.13.0",
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
+    "@types/react-helmet": "^6.1.6",
+    "@vitejs/plugin-react-swc": "^3.0.0",
+    "@xstate/cli": "^0.4.2",
+    "typescript": "^4.9.3",
+    "vite": "^4.1.0",
+    "vite-tsconfig-paths": "^4.0.5"
+  }
+}

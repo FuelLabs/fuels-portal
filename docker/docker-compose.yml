@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  fuel-core:
+    container_name: portal-fuel-core
+    platform: linux/amd64
+    build: ./fuel-core
+    environment:
+      MIN_GAS_PRICE: 1
+    ports:
+      - '4004:4000'
+    volumes:
+      - fuel-core-db:/mnt/db
+
+volumes:
+  fuel-core-db:
+    name: portal-fuel-core-db
