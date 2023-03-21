@@ -1,23 +1,21 @@
-FROM ghcr.io/fuellabs/fuel-core:v0.15.1
+FROM ghcr.io/fuellabs/fuel-core:v0.17.3
 
-ARG IP=0.0.0.0
-ARG PORT=4000
-ARG DB_PATH=./mnt/db/
+ARG FUEL_IP=0.0.0.0
+ARG FUEL_PORT=4000
 
-ENV IP="${IP}"
-ENV PORT="${PORT}"
-ENV DB_PATH="${DB_PATH}"
+# dependencies
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt update && apt install -y curl jq && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /root/
-
+# copy chain config
+WORKDIR /fuel
 COPY chainConfig.json .
 
-CMD ./fuel-core run \
-    --ip ${IP} \
-    --port ${PORT} \
-    --db-path ${DB_PATH} \
-    --utxo-validation \
-    --min-gas-price ${MIN_GAS_PRICE} \
-    --chain ./chainConfig.json
+# expose fuel node port
+ENV FUEL_IP="${FUEL_IP}"
+ENV FUEL_PORT="${FUEL_PORT}"
+EXPOSE ${FUEL_PORT}
 
-EXPOSE ${PORT}
+# copy over script and run
+COPY ./scripts/fuel_core.sh .
+CMD ["sh", "./fuel_core.sh"]
