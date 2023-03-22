@@ -9,6 +9,8 @@ import {
   Text,
 } from '@fuel-ui/react';
 
+import { Pages } from '~/types';
+
 export function Header() {
   return (
     <Flex as="header" css={{ ...styles.root, justifyContent: 'space-between' }}>
@@ -30,7 +32,7 @@ export function Header() {
         </Flex>
       </Flex>
       <Flex css={styles.menu}>
-        <Link href="/bridge">Bridge</Link>
+        <Link href={Pages.bridge}>Bridge</Link>
       </Flex>
       <Flex gap={15} css={{ ...styles.desktop }}>
         <Box />

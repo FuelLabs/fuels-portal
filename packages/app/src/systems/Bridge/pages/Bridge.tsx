@@ -2,11 +2,11 @@ import { Text } from '@fuel-ui/react';
 
 import { Layout } from '~/systems/Core';
 
-export function Home() {
-  console.log('home');
+export const Bridge = () => {
+  console.log('asdfasdfasdfds');
   return (
     <Layout>
-      <Text>Hi</Text>
+      <Text>Bridge</Text>
     </Layout>
   );
-}
+};
