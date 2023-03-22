@@ -1,24 +1,49 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, Button, Flex, FuelLogo, Link } from '@fuel-ui/react';
+import {
+  Box,
+  Button,
+  Flex,
+  FuelLogo,
+  IconButton,
+  Link,
+  Text,
+} from '@fuel-ui/react';
 
 export function Header() {
   return (
-    <Flex as="header" css={styles.root}>
-      <Box css={{ flex: 1 }}>
-        <Link href="/" className="logo">
-          <FuelLogo size={40} />
-        </Link>
-      </Box>
-      <Box css={styles.desktop}>
-        <Flex css={styles.menu}>
-          <Link href="/docs/install">One</Link>
-          <Link href="/docs/install">Two</Link>
+    <Flex as="header" css={{ ...styles.root, justifyContent: 'space-between' }}>
+      <Flex>
+        <Flex>
+          <Link href="/" className="logo">
+            <FuelLogo size={35} />
+          </Link>
         </Flex>
+        <Flex css={{ paddingLeft: '9px' }}>
+          <Text fontSize="5xl" color="whiteA12">
+            FUEL
+          </Text>
+        </Flex>
+        <Flex align="center" css={{ paddingLeft: '6px' }}>
+          <Text color="whiteA12" css={{ fontSize: '$2xl' }}>
+            Portal
+          </Text>
+        </Flex>
+      </Flex>
+      <Flex css={styles.menu}>
+        <Link href="/bridge">Bridge</Link>
+      </Flex>
+      <Flex gap={15} css={{ ...styles.desktop }}>
         <Box />
         <Box css={{ ml: '$8' }}>
           <Button>Connect your Wallet</Button>
         </Box>
-      </Box>
+        <IconButton
+          aria-label="Settings"
+          icon="Gear"
+          variant="link"
+          size="lg"
+        />
+      </Flex>
     </Flex>
   );
 }
