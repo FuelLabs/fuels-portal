@@ -39,4 +39,4 @@ jobs:
           retention-days: 30
 
       - name: Stop Test Node
-        run: pnpm node:dev stop --test --debug
+        run: pnpm node:stop
