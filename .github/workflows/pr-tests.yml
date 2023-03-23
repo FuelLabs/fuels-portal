@@ -14,6 +14,9 @@ jobs:
     name: E2E Tests
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Setup Node
         uses: ./.github/actions/setup-node
 
