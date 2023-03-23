@@ -1,10 +1,4 @@
-import {
-  Route,
-  HashRouter,
-  Routes,
-  Navigate,
-  BrowserRouter,
-} from 'react-router-dom';
+import { Route, Routes, Navigate, BrowserRouter } from 'react-router-dom';
 
 import { bridgeRoutes } from './systems/Bridge/routes';
 import { homeRoutes } from './systems/Home/routes';
