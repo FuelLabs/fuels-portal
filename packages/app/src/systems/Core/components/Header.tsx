@@ -17,7 +17,14 @@ export function Header() {
   const location = useLocation();
 
   return (
-    <Flex as="header" css={{ ...styles.root, justifyContent: 'space-between' }}>
+    <Flex
+      as="header"
+      css={{
+        ...styles.root,
+        justifyContent: 'space-between',
+        paddingLeft: '54px',
+      }}
+    >
       <Flex>
         <Flex>
           <Link href="/" className="logo">
@@ -78,12 +85,11 @@ const styles = {
     zIndex: '$10',
     position: 'sticky',
     top: 0,
-    background: '#090a0a',
+    background: '#0000000',
     gap: '$2',
     py: '$4',
     px: '$4',
     alignItems: 'center',
-    borderBottom: '1px solid $gray2',
     gridColumn: '1 / 4',
 
     '.logo': {
