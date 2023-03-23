@@ -14,9 +14,12 @@ jobs:
     name: E2E Tests
     runs-on: ubuntu-latest
     steps:
+      - name: Setup Node
+        uses: ./.github/actions/setup-node
+
       # E2E tests running with Playwright
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps chromium
+        run: pnpm exec playwright install --with-deps chromium
 
       - name: Run E2E Tests
         run: xvfb-run --auto-servernum -- pnpm test:e2e
