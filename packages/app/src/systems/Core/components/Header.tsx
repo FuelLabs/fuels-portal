@@ -17,27 +17,20 @@ export function Header() {
   const location = useLocation();
 
   return (
-    <Flex
-      as="header"
-      css={{
-        ...styles.root,
-        justifyContent: 'space-between',
-        paddingLeft: '54px',
-      }}
-    >
+    <Flex as="header" css={styles.root}>
       <Flex>
         <Flex>
           <Link href="/" className="logo">
             <FuelLogo size={35} />
           </Link>
         </Flex>
-        <Flex css={{ paddingLeft: '9px' }}>
+        <Flex css={styles.fuelText}>
           <Text fontSize="5xl" color="whiteA12">
             FUEL
           </Text>
         </Flex>
-        <Flex align="center" css={{ paddingLeft: '6px' }}>
-          <Text color="whiteA12" css={{ fontSize: '$2xl' }}>
+        <Flex align="center" css={styles.portalText}>
+          <Text color="whiteA12" fontSize="2xl">
             Portal
           </Text>
         </Flex>
@@ -64,9 +57,9 @@ export function Header() {
           Bridge
         </ButtonLink>
       </Flex>
-      <Flex gap={15} css={{ ...styles.desktop }}>
+      <Flex gap={15} css={styles.desktop}>
         <Box />
-        <Box css={{ ml: '$8' }}>
+        <Box css={styles.connectButton}>
           <Button>Connect your Wallet</Button>
         </Box>
         <IconButton
@@ -82,6 +75,8 @@ export function Header() {
 
 const styles = {
   root: cssObj({
+    justifyContent: 'space-between',
+    paddingLeft: '54px',
     zIndex: '$10',
     position: 'sticky',
     top: 0,
@@ -107,6 +102,12 @@ const styles = {
       px: '$8',
     },
   }),
+  fuelText: cssObj({
+    paddingLeft: '9px',
+  }),
+  portalText: cssObj({
+    paddingLeft: '6px',
+  }),
   desktop: cssObj({
     display: 'none',
 
@@ -114,6 +115,9 @@ const styles = {
       display: 'flex',
       alignItems: 'center',
     },
+  }),
+  connectButton: cssObj({
+    ml: '$8',
   }),
   menu: cssObj({
     gap: '$6',
