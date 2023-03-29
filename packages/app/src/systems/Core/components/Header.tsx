@@ -97,7 +97,6 @@ const styles = {
     },
 
     '@xl': {
-      position: 'relative',
       py: '$4',
       px: '$8',
     },
@@ -109,8 +108,6 @@ const styles = {
     paddingLeft: '6px',
   }),
   desktop: cssObj({
-    display: 'none',
-
     '@xl': {
       display: 'flex',
       alignItems: 'center',
