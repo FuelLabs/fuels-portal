@@ -5,6 +5,7 @@ import { getDefaultProvider } from 'ethers';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
 const client = createClient({
+  autoConnect: true,
   provider: getDefaultProvider(),
 });
 

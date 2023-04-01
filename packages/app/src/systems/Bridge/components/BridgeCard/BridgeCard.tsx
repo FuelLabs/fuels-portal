@@ -49,7 +49,9 @@ export const BridgeCard = () => {
             network="Fuel"
             networkImageUrl="public/fuel-logo.svg"
             heading="To"
-            address={wallet.wallet?.address.toAddress()}
+            address={
+              !!wallet.data ? wallet.data?.address.toAddress() : undefined
+            }
             isLoading={connectFuel.isLoading}
             onConnect={() => connectFuel.mutate()}
           />

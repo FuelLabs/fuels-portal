@@ -13,7 +13,6 @@ export const useIsConnected = () => {
     },
     {
       enabled: !!fuel,
-      initialData: false,
     }
   );
 };

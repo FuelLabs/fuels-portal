@@ -1,6 +1,8 @@
 import { Card, Flex, Image, Button, Text, Stack } from '@fuel-ui/react';
 import { Bech32Address } from 'fuels';
 
+import { formatAddress } from '../../../../systems/Core/utils';
+
 interface NetworkCardProps {
   network: string;
   networkImageUrl: string;
@@ -35,7 +37,7 @@ export const NetworkCard = ({
                 </Button>
               ) : (
                 <Button onPress={onConnect} isLoading={isLoading}>
-                  {address}
+                  {formatAddress(address)}
                 </Button>
               )}
             </Flex>
