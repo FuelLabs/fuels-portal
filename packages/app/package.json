@@ -15,19 +15,19 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
-    "@fuel-ui/css": "^0.12.3",
-    "@fuel-ui/react": "^0.12.3",
+    "@fuel-ui/css": "^0.12.4",
+    "@fuel-ui/react": "^0.12.4",
     "@fuel-wallet/sdk": "^0.7.1",
-    "@playwright/test": "^1.31.1",
+    "@playwright/test": "^1.32.1",
     "@tanstack/react-query": "^4.28.0",
-    "ethers": "^5",
+    "ethers": "^5.7.2",
     "fuels": "^0.33.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
-    "react-router-dom": "^6.8.2",
+    "react-router-dom": "^6.10.0",
     "wagmi": "^0.11.7",
-    "xstate": "^4.37.0"
+    "xstate": "^4.37.1"
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",
@@ -52,16 +52,16 @@
     "@storybook/testing-react": "^1.3.0",
     "@storybook/theming": "^6.5.16",
     "@types/chrome": "^0.0.227",
-    "@types/node": "^18.13.0",
-    "@types/react": "^18.0.27",
-    "@types/react-dom": "^18.0.10",
+    "@types/node": "^18.15.11",
+    "@types/react": "^18.0.31",
+    "@types/react-dom": "^18.0.11",
     "@types/react-helmet": "^6.1.6",
     "@vitejs/plugin-react": "^3.1.0",
-    "@vitejs/plugin-react-swc": "^3.0.0",
+    "@vitejs/plugin-react-swc": "^3.2.0",
     "@xstate/cli": "^0.4.2",
     "babel-loader": "^8.3.0",
-    "typescript": "^4.9.3",
-    "vite": "^4.1.0",
-    "vite-tsconfig-paths": "^4.0.5"
+    "typescript": "^4.9.5",
+    "vite": "^4.2.1",
+    "vite-tsconfig-paths": "^4.0.7"
   }
 }
