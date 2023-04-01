@@ -13,8 +13,6 @@ import { useWallet } from '../../../../systems/Core/hooks/useWallet';
 
 import { NetworkCard } from './NetworkCard';
 
-const buttonText = 'Connect wallets';
-
 export const BridgeCard = () => {
   const account = useAccount();
   const connect = useConnect({
@@ -23,6 +21,24 @@ export const BridgeCard = () => {
 
   const wallet = useWallet();
   const connectFuel = useConnectFuel();
+
+  const getButtonText = (
+    isFromAccountConnected: boolean,
+    isToAccountConnected: boolean
+  ) => {
+    if (!isFromAccountConnected && !isToAccountConnected) {
+      return 'Connect wallets';
+    }
+    if (!isFromAccountConnected) {
+      return 'Connect wallet 1';
+    }
+    if (!isToAccountConnected) {
+      return 'Connect wallet 2';
+    }
+    return 'Deposit';
+  };
+
+  const buttonText = getButtonText(account.isConnected, !!wallet.data);
 
   return (
     <Card css={{ background: '$whiteA12' }}>
