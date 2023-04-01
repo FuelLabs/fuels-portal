@@ -8,8 +8,8 @@ import {
 } from '@fuel-ui/react';
 import { useAccount, useConnect } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
-import { useConnectFuel } from '~/systems/Core';
-import { useWallet } from '~/systems/Core';
+import { useConnectFuel } from '../../../../systems/Core/hooks/useConnectFuel';
+import { useWallet } from '../../../../systems/Core/hooks/useWallet';
 
 import { NetworkCard } from './NetworkCard';
 

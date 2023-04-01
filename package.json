@@ -22,6 +22,8 @@
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
+    "build:storybook": "pnpm --filter=staking build:storybook",
+    "storybook": "pnpm --filter=staking storybook",
     "lint": "run-s lint:check prettier:check",
     "lint:check": "eslint . --ext .ts,.tsx,.js,.jsx",
     "lint:fix": "pnpm lint:check --fix",
