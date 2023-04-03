@@ -12,8 +12,8 @@
     "test": "playwright test"
   },
   "dependencies": {
-    "@fuel-ui/css": "^0.12.3",
-    "@fuel-ui/react": "^0.12.3",
+    "@fuel-ui/css": "^0.13.0",
+    "@fuel-ui/react": "^0.13.0",
     "@playwright/test": "^1.31.1",
     "fuels": "^0.33.0",
     "react": "^18.2.0",

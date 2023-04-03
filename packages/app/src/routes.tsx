@@ -1,11 +1,17 @@
-import { Route, HashRouter, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate, BrowserRouter } from 'react-router-dom';
 
-import { Home } from './systems/Home';
+import { bridgeRoutes } from './systems/Bridge/routes';
+import { homeRoutes } from './systems/Home/routes';
+import { Pages } from './types';
 
 export const routes = (
-  <HashRouter>
+  <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route>
+        <Route path="*" element={<Navigate to={Pages.home} />} />
+        {homeRoutes}
+        {bridgeRoutes}
+      </Route>
     </Routes>
-  </HashRouter>
+  </BrowserRouter>
 );
