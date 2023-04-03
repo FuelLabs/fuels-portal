@@ -11,3 +11,4 @@ pnpm-lock.yaml
 **/storybook/**/*
 **/__generated__/
 .changeset/**.md
+scripts/brigde/fuel-v2-contracts

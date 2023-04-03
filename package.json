@@ -35,9 +35,9 @@
     "ts:check": "turbo run ts:check"
   },
   "dependencies": {
-    "@fuel-ui/config": "^0.12.3",
-    "@fuel-ui/css": "^0.12.3",
-    "@fuel-ui/react": "^0.12.3"
+    "@fuel-ui/config": "^0.13.0",
+    "@fuel-ui/css": "^0.13.0",
+    "@fuel-ui/react": "^0.13.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",

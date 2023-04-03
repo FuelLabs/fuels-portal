@@ -14,12 +14,20 @@ jobs:
     name: E2E Tests
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: ./.github/actions/setup-node
+
       # E2E tests running with Playwright
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps chromium
+        run: |
+          cd packages/app
+          pnpm exec playwright install --with-deps chromium
 
       - name: Run E2E Tests
-        run: xvfb-run --auto-servernum -- pnpm test:e2e
+        run: xvfb-run --auto-servernum -- pnpm test
         env:
           NODE_ENV: test
 
@@ -31,4 +39,4 @@ jobs:
           retention-days: 30
 
       - name: Stop Test Node
-        run: pnpm node:dev stop --test --debug
+        run: pnpm node:stop
