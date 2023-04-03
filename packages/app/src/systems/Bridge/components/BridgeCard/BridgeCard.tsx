@@ -75,7 +75,9 @@ export const BridgeCard = () => {
             Asset
           </Heading>
           <InputAmount />
-          <Button>{buttonText}</Button>
+          <Button onPress={() => {}} isDisabled={buttonText !== 'Deposit'}>
+            {buttonText}
+          </Button>
         </Stack>
       </Card.Body>
     </Card>
