@@ -8,7 +8,10 @@ export const useIsConnected = () => {
   return useQuery(
     ['connected'],
     async () => {
-      const isFuelConnected = await fuel!.isConnected();
+      if (!fuel) {
+        throw new Error('Fuel instance not detected');
+      }
+      const isFuelConnected = await fuel.isConnected();
       return isFuelConnected;
     },
     {

@@ -1,3 +1,4 @@
+import { Provider } from '@ethersproject/providers';
 import {
   Button,
   ButtonGroup,
@@ -6,10 +7,13 @@ import {
   InputAmount,
   Stack,
 } from '@fuel-ui/react';
+import { useState } from 'react';
 import { useAccount, useConnect } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
+import { useNonFuelProvider } from '../../../..//systems/Core/hooks/useNonFuelProvider';
 import { useConnectFuel } from '../../../../systems/Core/hooks/useConnectFuel';
 import { useWallet } from '../../../../systems/Core/hooks/useWallet';
+import { useBridgeDeposit } from '../../hooks/useBridgeDeposit';
 
 import { NetworkCard } from './NetworkCard';
 
@@ -18,9 +22,18 @@ export const BridgeCard = () => {
   const connect = useConnect({
     connector: new InjectedConnector(),
   });
+  const nonFuelProvider = useNonFuelProvider();
 
   const wallet = useWallet();
   const connectFuel = useConnectFuel();
+
+  const [depositAmount, setDepositAmount] = useState('');
+
+  const bridgeDeposit = useBridgeDeposit(
+    depositAmount,
+    nonFuelProvider.data,
+    wallet.data
+  );
 
   const getButtonText = (
     isFromAccountConnected: boolean,
@@ -74,8 +87,11 @@ export const BridgeCard = () => {
           <Heading as="h5" fontColor="blackA12">
             Asset
           </Heading>
-          <InputAmount />
-          <Button onPress={() => {}} isDisabled={buttonText !== 'Deposit'}>
+          <InputAmount onChange={(e) => setDepositAmount(e.toString())} />
+          <Button
+            onPress={() => bridgeDeposit.mutate()}
+            isDisabled={buttonText !== 'Deposit'}
+          >
             {buttonText}
           </Button>
         </Stack>
