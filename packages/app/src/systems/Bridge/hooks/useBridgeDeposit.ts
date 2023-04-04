@@ -14,10 +14,7 @@ export const useBridgeDeposit = (
     const response: {
       FuelMessagePortal: string;
     } = await fetch('http://localhost:8080/deployments.local.json', {
-      headers: [
-        ['Access-Control-Allow-Origin', '*'],
-        ['Access-Control-Allow-Credentials', 'true'],
-      ],
+      headers: [['Access-Control-Allow-Origin', 'http://localhost:8080']],
     }).then((res) => res.json());
 
     if (!fromWallet) {
