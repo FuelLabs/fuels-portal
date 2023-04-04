@@ -1,12 +1,14 @@
 import { ThemeProvider } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
 import { WagmiConfig, createClient } from 'wagmi';
-import { getDefaultProvider } from 'ethers';
+import { ethers } from 'ethers';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
 const client = createClient({
   autoConnect: true,
-  provider: getDefaultProvider(),
+  provider: new ethers.providers.JsonRpcProvider(
+    process.env.VITE_NON_FUEL_PROVIDER!
+  ),
 });
 
 type ProvidersProps = {

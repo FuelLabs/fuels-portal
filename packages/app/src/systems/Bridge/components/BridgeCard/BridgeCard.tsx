@@ -7,6 +7,7 @@ import {
   InputAmount,
   Stack,
 } from '@fuel-ui/react';
+import { ethers } from 'ethers';
 import { useState } from 'react';
 import { useAccount, useConnect } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
@@ -28,7 +29,6 @@ export const BridgeCard = () => {
   const connectFuel = useConnectFuel();
 
   const [depositAmount, setDepositAmount] = useState('');
-
   const bridgeDeposit = useBridgeDeposit(
     depositAmount,
     nonFuelProvider.data,

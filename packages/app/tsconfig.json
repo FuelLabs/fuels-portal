@@ -12,6 +12,6 @@
     },
     "types": ["@fuel-wallet/sdk", "chrome"]
   },
-  "include": ["./src"],
+  "include": ["./src", "load.envs.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -1,9 +1,11 @@
 import { useMutation } from '@tanstack/react-query';
 import type { Provider } from '@ethersproject/providers';
+import type { Wallet } from 'ethers';
 import type { FuelWalletLocked } from '@fuel-wallet/sdk';
 import { bn } from 'fuels';
 
 import { FuelMessagePortal__factory } from '../../../types/fuel-v2-contracts/factories/FuelMessagePortal__factory';
+import { ethers } from 'ethers';
 
 export const useBridgeDeposit = (
   depositAmount: string,
@@ -11,12 +13,6 @@ export const useBridgeDeposit = (
   toWallet?: false | FuelWalletLocked
 ) => {
   const mutation = useMutation(async () => {
-    const response: {
-      FuelMessagePortal: string;
-    } = await fetch('http://localhost:8080/deployments.local.json', {
-      headers: [['Access-Control-Allow-Origin', 'http://localhost:8080']],
-    }).then((res) => res.json());
-
     if (!fromWallet) {
       throw new Error('From Wallet not connected!');
     }
@@ -25,8 +21,10 @@ export const useBridgeDeposit = (
       throw new Error('To Wallet not connected!');
     }
 
+    console.log('from: ', fromWallet);
+
     const fuelPortal = FuelMessagePortal__factory.connect(
-      response.FuelMessagePortal,
+      process.env.VITE_FUEL_MESSAGE_PORTAL!,
       fromWallet
     );
 
