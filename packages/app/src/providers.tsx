@@ -7,7 +7,7 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 const client = createClient({
   autoConnect: true,
   provider: new ethers.providers.JsonRpcProvider(
-    process.env.VITE_NON_FUEL_PROVIDER!
+    process.env.VITE_NON_FUEL_PROVIDER_URL!
   ),
 });
 

@@ -18,12 +18,17 @@ import { useBridgeDeposit } from '../../hooks/useBridgeDeposit';
 
 import { NetworkCard } from './NetworkCard';
 
+const l1ChainDecimals = 18;
+
 export const BridgeCard = () => {
   const account = useAccount();
   const connect = useConnect({
     connector: new InjectedConnector(),
   });
-  const nonFuelProvider = useNonFuelProvider();
+  //   const nonFuelProvider = useNonFuelProvider();
+  const nonFuelProvider = new ethers.providers.JsonRpcProvider(
+    process.env.VITE_NON_FUEL_PROVIDER_URL!
+  ).getSigner(account.address);
 
   const wallet = useWallet();
   const connectFuel = useConnectFuel();
@@ -31,7 +36,7 @@ export const BridgeCard = () => {
   const [depositAmount, setDepositAmount] = useState('');
   const bridgeDeposit = useBridgeDeposit(
     depositAmount,
-    nonFuelProvider.data,
+    nonFuelProvider,
     wallet.data
   );
 
@@ -87,7 +92,10 @@ export const BridgeCard = () => {
           <Heading as="h5" fontColor="blackA12">
             Asset
           </Heading>
-          <InputAmount onChange={(e) => setDepositAmount(e.toString())} />
+          <InputAmount
+            units={l1ChainDecimals}
+            onChange={(e) => setDepositAmount(e.toString())}
+          />
           <Button
             onPress={() => bridgeDeposit.mutate()}
             isDisabled={buttonText !== 'Deposit'}
