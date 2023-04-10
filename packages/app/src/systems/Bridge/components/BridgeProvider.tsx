@@ -1,4 +1,4 @@
-import { createContext, ReactNode } from 'react';
+import { createContext, ReactNode, useContext } from 'react';
 import { useInterpret } from '@xstate/react';
 import {
   bridgeMachine,
@@ -17,9 +17,15 @@ type BridgeProviderProps = {
   children: ReactNode;
 };
 
+export const useBridgeContext = () => {
+  const service = useContext(bridgeContext);
+  return service;
+};
+
 export const BridgeProvider = ({ children }: BridgeProviderProps) => {
   const fromWallet = useNonFuelSigner();
   const toWallet = useWallet();
+  console.log('here: ', toWallet.data);
   const bridgeService = useInterpret(bridgeMachine, {
     context: {
       fromWallet,
@@ -27,6 +33,7 @@ export const BridgeProvider = ({ children }: BridgeProviderProps) => {
     } as BridgeContext,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any);
+
   return (
     <bridgeContext.Provider value={bridgeService}>
       {children}

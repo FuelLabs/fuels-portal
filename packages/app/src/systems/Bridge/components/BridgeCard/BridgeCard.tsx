@@ -15,6 +15,7 @@ import { useNonFuelProvider } from '../../../..//systems/Core/hooks/useNonFuelPr
 import { useConnectFuel } from '../../../../systems/Core/hooks/useConnectFuel';
 import { useWallet } from '../../../../systems/Core/hooks/useWallet';
 import { useBridgeDeposit } from '../../hooks/useBridgeDeposit';
+import { useBridgeContext } from '../BridgeProvider';
 
 import { NetworkCard } from './NetworkCard';
 
@@ -32,13 +33,14 @@ export const BridgeCard = () => {
 
   const wallet = useWallet();
   const connectFuel = useConnectFuel();
+  const bridgeService = useBridgeContext();
 
   const [depositAmount, setDepositAmount] = useState('');
-  const bridgeDeposit = useBridgeDeposit(
-    depositAmount,
-    nonFuelProvider,
-    wallet.data
-  );
+  // const bridgeDeposit = useBridgeDeposit(
+  //   depositAmount,
+  //   nonFuelProvider,
+  //   wallet.data
+  // );
 
   const getButtonText = (
     isFromAccountConnected: boolean,
@@ -97,7 +99,7 @@ export const BridgeCard = () => {
             onChange={(e) => setDepositAmount(e.toString())}
           />
           <Button
-            onPress={() => bridgeDeposit.mutate()}
+            onPress={() => bridgeService.send('DEPOSIT')}
             isDisabled={buttonText !== 'Deposit'}
           >
             {buttonText}
