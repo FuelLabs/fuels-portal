@@ -1,4 +1,4 @@
-import { Box, Button } from '@fuel-ui/react';
+import { Box, Button, Flex } from '@fuel-ui/react';
 import { useState } from 'react';
 
 import { FuelInstallPopup } from './FuelInstallPopup';
@@ -13,18 +13,18 @@ export default {
 
 export const Usage = () => {
   return (
-    <Box css={{ width: '640px' }}>
+    <Flex align="center" justify="center" css={{ width: '640px' }}>
       <FuelInstallPopup open={true} />
-    </Box>
+    </Flex>
   );
 };
 
 export const Controlled = () => {
   const [open, setOpen] = useState(false);
   return (
-    <Box>
+    <Flex align="center" justify="center">
       <FuelInstallPopup open={open} />
       <Button onPress={() => setOpen(!open)}>Toggle Popup</Button>
-    </Box>
+    </Flex>
   );
 };

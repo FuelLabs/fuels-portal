@@ -1,26 +1,41 @@
-import { Button, Card } from '@fuel-ui/react';
+import { cssObj } from '@fuel-ui/css';
+import { Button, Dialog } from '@fuel-ui/react';
 
 type FuelInstallPopupProps = {
-  open: boolean;
+  open?: boolean;
 };
 
 export const FuelInstallPopup = ({ open }: FuelInstallPopupProps) => {
   return (
     <>
       {open && (
-        <Card align="center" css={{ background: 'White' }}>
-          <Card.Header>Install Fuel Wallet</Card.Header>
-          <Card.Body>
-            <a
-              href="https://wallet.fuel.network/docs/install/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Button variant="outlined">Install Fuel Wallet</Button>
-            </a>
-          </Card.Body>
-        </Card>
+        <Dialog isOpen={open}>
+          <Dialog.Content css={styles.content}>
+            <Dialog.Heading css={styles.heading}>
+              Install Fuel Wallet
+            </Dialog.Heading>
+            <Dialog.Description>
+              <a
+                href="https://wallet.fuel.network/docs/install/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Button variant="outlined">Install Fuel Wallet</Button>
+              </a>
+            </Dialog.Description>
+          </Dialog.Content>
+        </Dialog>
       )}
     </>
   );
+};
+
+const styles = {
+  content: cssObj({
+    background: 'White',
+    alignItems: 'center',
+  }),
+  heading: cssObj({
+    color: 'Black',
+  }),
 };
