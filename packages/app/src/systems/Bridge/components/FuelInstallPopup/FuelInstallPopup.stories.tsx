@@ -13,7 +13,7 @@ export default {
 
 export const Usage = () => {
   return (
-    <Flex align="center" justify="center" css={{ width: '640px' }}>
+    <Flex align="center" justify="center">
       <FuelInstallPopup open={true} />
     </Flex>
   );
