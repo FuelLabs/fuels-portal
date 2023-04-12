@@ -1,4 +1,4 @@
-import { Box, Button, Flex } from '@fuel-ui/react';
+import { Button, Flex } from '@fuel-ui/react';
 import { useState } from 'react';
 
 import { FuelInstallPopup } from './FuelInstallPopup';
