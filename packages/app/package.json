@@ -21,6 +21,7 @@
     "@playwright/test": "^1.31.1",
     "@storybook/manager-api": "^7.0.3",
     "@storybook/theming": "^7.0.3",
+    "@tanstack/react-query": "^4.29.1",
     "fuels": "^0.33.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
