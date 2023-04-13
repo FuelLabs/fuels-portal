@@ -28,14 +28,20 @@ export const NetworkCard = ({
       <Card.Body>
         <Stack>
           <Text>{heading}</Text>
-          <Flex gap="$2">
-            <Image width="20" height="20" src={networkImageUrl} />
-            <Text color="blackA12">{network}</Text>
-          </Flex>
-          <Flex>
-            <Button onPress={onConnect} isLoading={isLoading}>
-              {buttonText}
-            </Button>
+          <Flex justify="space-between">
+            <Flex gap="$2">
+              <Image width="20" height="20" src={networkImageUrl} />
+              <Text color="blackA12">{network}</Text>
+            </Flex>
+            <Flex>
+              <Button
+                onPress={onConnect}
+                isLoading={isLoading}
+                css={styles.button}
+              >
+                {buttonText}
+              </Button>
+            </Flex>
           </Flex>
         </Stack>
       </Card.Body>
@@ -46,5 +52,9 @@ export const NetworkCard = ({
 const styles = {
   root: cssObj({
     background: '$whiteA12',
+    minWidth: '$2xl',
+  }),
+  button: cssObj({
+    borderRadius: '$xl',
   }),
 };
