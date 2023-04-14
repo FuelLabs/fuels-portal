@@ -3,26 +3,21 @@ import { useQuery } from '@tanstack/react-query';
 import { useFuel } from './useFuel';
 import { useIsFuelConnected } from './useIsFuelConnected';
 
-export const useFuelWallet = () => {
+export const useAccounts = () => {
   const fuel = useFuel();
   const isFuelConnected = useIsFuelConnected();
 
   return useQuery(
-    ['fuelWallet'],
+    ['fuelAccounts'],
     async () => {
-      if (!isFuelConnected.data || isFuelConnected.isError) {
-        return false;
-      }
       if (!fuel) {
         throw new Error('Fuel instance not detected');
       }
-
-      const currentAccount = await fuel.currentAccount();
-      const currentWallet = (await fuel.getWallet(currentAccount))!;
-      return currentWallet;
+      const accounts = await fuel.accounts();
+      return accounts;
     },
     {
-      enabled: !!fuel && !isFuelConnected.isLoading,
+      enabled: !!fuel && !isFuelConnected.isLoading && !!isFuelConnected.data,
     }
   );
 };
