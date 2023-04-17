@@ -1,5 +1,4 @@
-import { Button, Flex } from '@fuel-ui/react';
-import { useState } from 'react';
+import { Flex } from '@fuel-ui/react';
 
 import { NetworkConnectCard } from './NetworkConnectCard';
 
