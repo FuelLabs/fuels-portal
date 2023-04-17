@@ -89,6 +89,9 @@ importers:
       '@tanstack/react-query':
         specifier: ^4.29.1
         version: 4.29.1(react-dom@18.2.0)(react@18.2.0)
+      '@xstate/react':
+        specifier: ^3.2.1
+        version: 3.2.1(@types/react@18.0.27)(react@18.2.0)(xstate@4.37.0)
       fuels:
         specifier: ^0.33.0
         version: 0.33.0
