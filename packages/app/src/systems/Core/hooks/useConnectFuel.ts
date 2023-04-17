@@ -8,7 +8,8 @@ export const useConnectFuel = () => {
     if (!fuel) {
       throw Error('Fuel instance not detected');
     }
-    await fuel.connect();
+    const isConnected = await fuel.connect();
+    return isConnected;
   });
 
   return mutation;

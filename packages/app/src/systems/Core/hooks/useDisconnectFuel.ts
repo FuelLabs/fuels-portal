@@ -8,7 +8,8 @@ export const useDisconnectFuel = () => {
     if (!fuel) {
       throw Error('Fuel instance not detected');
     }
-    await fuel.disconnect();
+    const isConnected = await fuel.disconnect();
+    return isConnected;
   });
 
   return mutation;

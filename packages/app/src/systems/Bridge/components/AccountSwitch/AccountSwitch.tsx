@@ -9,6 +9,7 @@ type FuelAccountSwitchProps = {
   onSelect: (val: string) => void;
   onConnect: () => void;
   onDisconnect: () => void;
+  isLoading?: boolean;
 };
 
 export const AccountSwitch = ({
@@ -17,6 +18,7 @@ export const AccountSwitch = ({
   onSelect,
   onConnect,
   onDisconnect,
+  isLoading,
 }: FuelAccountSwitchProps) => {
   const accountsList = accounts.map((account) => {
     return (
@@ -33,7 +35,7 @@ export const AccountSwitch = ({
           <Dialog.Content css={styles.content}>
             <Dialog.Close />
             <Dialog.Heading>
-              <Stack>{accountsList}</Stack>
+              <Stack>{isLoading ? 'loading' : accountsList}</Stack>
             </Dialog.Heading>
             <Dialog.Description>
               <Stack>

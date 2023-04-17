@@ -9,14 +9,15 @@ type FuelAccountSwitchProps = {
 };
 
 export const FuelAccountSwitch = ({ open }: FuelAccountSwitchProps) => {
-  const accounts = useAccounts();
   const connectFuel = useConnectFuel();
   const disconnectFuel = useDisconnectFuel();
+  const accounts = useAccounts();
 
   return (
     <AccountSwitch
       open={open}
       accounts={accounts.data || []}
+      isLoading={accounts.isLoading}
       onSelect={() => {}}
       onConnect={() => connectFuel.mutate()}
       onDisconnect={() => disconnectFuel.mutate()}

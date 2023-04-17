@@ -7,17 +7,29 @@ export const useAccounts = () => {
   const fuel = useFuel();
   const isFuelConnected = useIsFuelConnected();
 
+  console.log(`isFuelConnected.data`, isFuelConnected.data);
+
   return useQuery(
     ['fuelAccounts'],
     async () => {
+      console.log('querying');
       if (!fuel) {
         throw new Error('Fuel instance not detected');
       }
+
+      // if (isFuelConnected.isLoading || !isFuelConnected.data) {
+      //   return [];
+      // }
+
       const accounts = await fuel.accounts();
       return accounts;
     },
     {
-      enabled: !!fuel && !isFuelConnected.isLoading && !!isFuelConnected.data,
+      enabled:
+        !!fuel &&
+        !isFuelConnected.isLoading &&
+        !!isFuelConnected.data &&
+        !isFuelConnected.isError,
     }
   );
 };
