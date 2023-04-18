@@ -26,7 +26,7 @@ export const NetworkConnectCard = ({
     <Card css={styles.root}>
       <Card.Body css={styles.body}>
         <Flex justify="space-between">
-          <Stack>
+          <Stack gap="$1">
             <Text fontSize="sm">{heading}</Text>
             <Flex gap="$2" align="center">
               <Image width="20" height="20" src={networkImageUrl} />
