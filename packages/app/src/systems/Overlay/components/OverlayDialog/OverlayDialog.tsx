@@ -12,6 +12,7 @@ export function OverlayDialog() {
   return (
     <Dialog isOpen={overlay.isDialogOpen}>
       <Dialog.Content css={styles.content}>
+        {/* example of how to use overlay \/. Should be removed after we add the first popup */}
         {/* {overlay.is('accounts.list') && <Accounts />} */}
       </Dialog.Content>
     </Dialog>
