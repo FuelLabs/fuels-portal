@@ -66,6 +66,9 @@ const styles = {
     background: '$whiteA12',
     minWidth: '350px',
     minHeight: '60px',
+    boxShadow: '$none',
+    borderColor: '$gray12',
+    borderRadius: '$md',
   }),
   buttonRoot: cssObj({
     borderRadius: '$md',
