@@ -24,7 +24,7 @@ export const NetworkConnectCard = ({
 }: NetworkConnectCardProps) => {
   return (
     <Card css={styles.root}>
-      <Card.Body>
+      <Card.Body css={styles.body}>
         <Flex justify="space-between">
           <Stack>
             <Text>{heading}</Text>
@@ -69,6 +69,9 @@ const styles = {
     boxShadow: '$none',
     borderColor: '$gray12',
     borderRadius: '$md',
+  }),
+  body: cssObj({
+    padding: '10px',
   }),
   buttonRoot: cssObj({
     borderRadius: '$md',
