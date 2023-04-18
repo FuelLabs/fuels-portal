@@ -25,37 +25,37 @@ export const NetworkConnectCard = ({
   return (
     <Card css={styles.root}>
       <Card.Body>
-        <Stack>
-          <Text>{heading}</Text>
-          <Flex justify="space-between">
-            <Flex gap="$2">
+        <Flex justify="space-between">
+          <Stack>
+            <Text>{heading}</Text>
+            <Flex gap="$2" align="center">
               <Image width="20" height="20" src={networkImageUrl} />
               <Text color="blackA12">{networkName}</Text>
             </Flex>
-            <Flex>
-              {!currentAccount ? (
-                <Button
-                  onPress={onConnect}
-                  isLoading={isConnecting}
-                  css={styles.button}
-                >
-                  Connect Wallet
-                </Button>
-              ) : (
-                <Button
-                  onPress={onConnect}
-                  isLoading={isConnecting}
-                  leftIcon={<Icon icon="Circle" color="red10" fill="red10" />}
-                  rightIcon="CaretDown"
-                  variant="outlined"
-                  css={styles.accountButton}
-                >
-                  {formatAddress(currentAccount)}
-                </Button>
-              )}
-            </Flex>
+          </Stack>
+          <Flex align="end">
+            {!currentAccount ? (
+              <Button
+                onPress={onConnect}
+                isLoading={isConnecting}
+                css={styles.button}
+              >
+                Connect Wallet
+              </Button>
+            ) : (
+              <Button
+                onPress={onConnect}
+                isLoading={isConnecting}
+                leftIcon={<Icon icon="Circle" color="red10" fill="red10" />}
+                rightIcon="CaretDown"
+                variant="outlined"
+                css={styles.accountButton}
+              >
+                {formatAddress(currentAccount)}
+              </Button>
+            )}
           </Flex>
-        </Stack>
+        </Flex>
       </Card.Body>
     </Card>
   );
