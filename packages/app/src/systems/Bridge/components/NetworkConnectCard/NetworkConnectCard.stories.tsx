@@ -1,5 +1,7 @@
 import { Flex } from '@fuel-ui/react';
 
+import imageSrc from '../../../../../public/fuel-logo.svg';
+
 import { NetworkConnectCard } from './NetworkConnectCard';
 
 export default {
@@ -15,7 +17,7 @@ export const Usage = () => {
     <Flex align="center" justify="center">
       <NetworkConnectCard
         networkName="Fuel"
-        networkImageUrl="public/fuel-logo.svg"
+        networkImageUrl={imageSrc}
         heading="To"
         isConnecting={false}
         onConnect={() => {}}
@@ -29,7 +31,7 @@ export const Loading = () => {
     <Flex align="center" justify="center">
       <NetworkConnectCard
         networkName="Fuel"
-        networkImageUrl="public/fuel-logo.svg"
+        networkImageUrl={imageSrc}
         heading="To"
         isConnecting={true}
         onConnect={() => {}}
@@ -43,7 +45,7 @@ export const ConnectedAccount = () => {
     <Flex align="center" justify="center">
       <NetworkConnectCard
         networkName="Fuel"
-        networkImageUrl="public/fuel-logo.svg"
+        networkImageUrl={imageSrc}
         heading="To"
         isConnecting={false}
         onConnect={() => {}}
