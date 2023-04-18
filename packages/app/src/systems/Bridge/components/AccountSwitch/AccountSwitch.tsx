@@ -28,9 +28,9 @@ export const AccountSwitch = ({
 }: AccountSwitchProps) => {
   const accountsList = accounts.map((account) => {
     return (
-      <Flex align="center" gap="$1">
+      <Flex align="center" gap="$1" key={account}>
         <Image src="" width="30px" height="30px" />
-        <Text onClick={() => onSelect(account)} color="blackA12" key={account}>
+        <Text onClick={() => onSelect(account)} color="blackA12">
           {formatAddress(account)}
         </Text>
         <Copyable value={account} />
