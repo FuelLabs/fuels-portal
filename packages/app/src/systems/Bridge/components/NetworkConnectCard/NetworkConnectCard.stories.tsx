@@ -1,3 +1,4 @@
+import { cssObj } from '@fuel-ui/css';
 import { Flex } from '@fuel-ui/react';
 
 import imageSrc from '../../../../../public/fuel-logo.svg';
@@ -14,7 +15,7 @@ export default {
 
 export const Usage = () => {
   return (
-    <Flex align="center" justify="center">
+    <Flex align="center" justify="center" css={styles.storybook}>
       <NetworkConnectCard
         networkName="Fuel"
         networkImageUrl={imageSrc}
@@ -28,7 +29,7 @@ export const Usage = () => {
 
 export const Loading = () => {
   return (
-    <Flex align="center" justify="center">
+    <Flex align="center" justify="center" css={styles.storybook}>
       <NetworkConnectCard
         networkName="Fuel"
         networkImageUrl={imageSrc}
@@ -42,7 +43,7 @@ export const Loading = () => {
 
 export const ConnectedAccount = () => {
   return (
-    <Flex align="center" justify="center">
+    <Flex align="center" justify="center" css={styles.storybook}>
       <NetworkConnectCard
         networkName="Fuel"
         networkImageUrl={imageSrc}
@@ -53,4 +54,10 @@ export const ConnectedAccount = () => {
       />
     </Flex>
   );
+};
+
+const styles = {
+  storybook: cssObj({
+    margin: '20px',
+  }),
 };
