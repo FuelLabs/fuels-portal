@@ -5,7 +5,9 @@ import { Layout } from '~/systems/Core';
 export const Bridge = () => {
   return (
     <Layout>
-      <Text>Bridge</Text>
+      <Layout.Content>
+        <Text>Bridge</Text>
+      </Layout.Content>
     </Layout>
   );
 };
