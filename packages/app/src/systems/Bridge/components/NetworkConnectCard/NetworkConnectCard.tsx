@@ -34,15 +34,11 @@ export const NetworkConnectCard = ({
   return (
     <Card css={styles.root}>
       <Card.Body css={styles.body}>
-        <Stack gap="$1" css={{ width: '100%' }}>
+        <Stack gap="$1" css={styles.stack}>
           <Box>
             <Text fontSize="sm">{label}</Text>
           </Box>
-          <Flex
-            align="center"
-            wrap="wrap"
-            css={{ alignContent: 'space-between' }}
-          >
+          <Flex align="center" wrap="wrap" justify="space-between">
             <Flex gap="$2" align="center">
               <Image width="20" height="20" src={networkImageUrl} />
               <Text color="blackA12">{networkName}</Text>
@@ -84,6 +80,9 @@ const styles = {
     boxShadow: '$none',
     borderColor: '$gray12',
     borderRadius: '$md',
+  }),
+  stack: cssObj({
+    width: '100%',
   }),
   body: cssObj({
     padding: '10px',
