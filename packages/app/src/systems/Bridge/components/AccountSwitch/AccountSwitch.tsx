@@ -26,6 +26,7 @@ export const AccountSwitch = ({
 }: AccountSwitchProps) => {
   return (
     <>
+      <Dialog.Close />
       <Dialog.Heading css={styles.heading}>
         <Stack>
           {accounts.map((account) => {
@@ -43,7 +44,7 @@ export const AccountSwitch = ({
                 />
                 <Text
                   onClick={() => onSelect && onSelect(account)}
-                  color="blackA12"
+                  color="gray12"
                   css={onSelect && styles.pointer}
                 >
                   {shortAddress(account)}
@@ -73,9 +74,6 @@ export const AccountSwitch = ({
 };
 
 const styles = {
-  content: cssObj({
-    background: '$white',
-  }),
   stack: cssObj({
     marginBottom: '$5',
   }),
@@ -84,10 +82,11 @@ const styles = {
   }),
   button: cssObj({
     borderRadius: '$md',
-    backgroundColor: '$gray12',
+    backgroundColor: '$gray6',
+    color: '$gray12',
   }),
   hover: cssObj({
-    ':hover': { backgroundColor: '$gray12' },
+    ':hover': { backgroundColor: '$gray6' },
   }),
   pointer: cssObj({
     cursor: 'pointer',

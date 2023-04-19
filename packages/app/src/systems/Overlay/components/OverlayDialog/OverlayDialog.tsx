@@ -4,17 +4,25 @@ import { Dialog } from '@fuel-ui/react';
 import { AccountSwitch } from '~/systems/Bridge/components/AccountSwitch';
 import { useOverlay } from '~/systems/Overlay';
 
-const OVERLAY_HEIGHT = 600;
-const OVERLAY_WIDTH = 600;
+const OVERLAY_HEIGHT = 100;
+const OVERLAY_WIDTH = 400;
 
 export function OverlayDialog() {
   const overlay = useOverlay();
 
-  console.log('overlay', overlay.is('accounts.switch'));
   return (
     <Dialog isOpen={overlay.isDialogOpen}>
       <Dialog.Content css={styles.content}>
-        {overlay.is('accounts.switch') && <AccountSwitch accounts={['']} />}
+        {overlay.is('accounts.switch') && (
+          <AccountSwitch
+            accounts={[
+              'fuel17kx8dy6gvugrppnkvsezyyh2qxusq57mvk2hueaa9smer220knuslpsnuf',
+            ]}
+            onSelect={() => {}}
+            onConnect={() => {}}
+            onDisconnect={() => {}}
+          />
+        )}
       </Dialog.Content>
     </Dialog>
   );
@@ -23,7 +31,7 @@ export function OverlayDialog() {
 const styles = {
   content: cssObj({
     width: OVERLAY_WIDTH,
-    height: OVERLAY_HEIGHT,
+    minHeight: OVERLAY_HEIGHT,
     maxWidth: OVERLAY_WIDTH,
     maxHeight: 'none',
     background: '$bodyColor',
@@ -33,7 +41,7 @@ const styles = {
     },
     '.fuel_dialog--description': {
       flex: 1,
-      overflowY: 'auto',
+      overflowY: 'visible',
       height: '100%',
     },
     '.fuel_dialog--heading': cssObj({
