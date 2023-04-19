@@ -16,11 +16,6 @@ export default {
   },
 } as Meta;
 
-const accounts = [
-  'fuel17kx8dy6gvugrppnkvsezyyh2qxusq57mvk2hueaa9smer220knuslpsnuf',
-  'fuel18tgq97czurjpvmrmxn8hejre84fjff5auvdjc4d3m9x9yn2r6rhqwcxl96',
-];
-
 export const Template: StoryFn<typeof AccountSwitch> = () => {
   const { handlers } = useAccountSwitch();
   return (

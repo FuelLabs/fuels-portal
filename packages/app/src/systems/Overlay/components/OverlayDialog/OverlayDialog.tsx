@@ -13,6 +13,7 @@ export function OverlayDialog() {
   return (
     <Dialog isOpen={overlay.isDialogOpen}>
       <Dialog.Content css={styles.content}>
+        {/** TODO: remove the AccountSwitch component and replace with corresponding smart components once completed */}
         {overlay.is('accounts.switch') && (
           <AccountSwitch
             accounts={[
