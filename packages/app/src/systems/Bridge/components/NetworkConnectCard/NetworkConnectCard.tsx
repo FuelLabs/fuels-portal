@@ -17,7 +17,7 @@ type NetworkConnectCardProps = {
   networkName: string;
   networkImageUrl: string;
   label: string;
-  isConnecting: boolean;
+  isConnecting?: boolean;
   currentAccount?: `0x${string}` | Bech32Address;
   accounts?: `0x${string}`[] | Bech32Address[];
   onConnect: () => void;
