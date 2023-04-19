@@ -12,20 +12,14 @@ export default {
 };
 
 const accounts = [
-  '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
-  '0xe802CeF9a62531b925FDDDeA9Bb19466c8393379',
+  'fuel17kx8dy6gvugrppnkvsezyyh2qxusq57mvk2hueaa9smer220knuslpsnuf',
+  'fuel18tgq97czurjpvmrmxn8hejre84fjff5auvdjc4d3m9x9yn2r6rhqwcxl96',
 ];
 
 export const Usage = () => {
   return (
     <Flex align="center" justify="center">
-      <AccountSwitch
-        open={true}
-        accounts={accounts}
-        onSelect={() => {}}
-        onConnect={() => {}}
-        onDisconnect={() => {}}
-      />
+      <AccountSwitch open={true} accounts={accounts} onSelect={() => {}} />
     </Flex>
   );
 };

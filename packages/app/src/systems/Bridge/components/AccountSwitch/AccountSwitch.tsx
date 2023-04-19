@@ -5,18 +5,18 @@ import {
   Stack,
   Text,
   Flex,
-  Image,
   Copyable,
+  Avatar,
 } from '@fuel-ui/react';
 
-import { formatAddress } from '~/systems/Core/utils';
+import { shortAddress } from '~/systems/Core/utils';
 
 type AccountSwitchProps = {
   open: boolean;
   accounts: string[];
-  onSelect: (val: string) => void;
-  onConnect: () => void;
-  onDisconnect: () => void;
+  onSelect?: (val: string) => void;
+  onConnect?: () => void;
+  onDisconnect?: () => void;
 };
 
 export const AccountSwitch = ({
@@ -26,18 +26,6 @@ export const AccountSwitch = ({
   onConnect,
   onDisconnect,
 }: AccountSwitchProps) => {
-  const accountsList = accounts.map((account) => {
-    return (
-      <Flex align="center" gap="$1" key={account}>
-        <Image src="" width="30px" height="30px" />
-        <Text onClick={() => onSelect(account)} color="blackA12">
-          {formatAddress(account)}
-        </Text>
-        <Copyable value={account} />
-      </Flex>
-    );
-  });
-
   return (
     <>
       {open && (
@@ -45,16 +33,45 @@ export const AccountSwitch = ({
           <Dialog.Content css={styles.content}>
             <Dialog.Close />
             <Dialog.Heading css={styles.heading}>
-              <Stack>{accountsList}</Stack>
+              <Stack>
+                {accounts.map((account) => {
+                  return (
+                    <Flex
+                      align="center"
+                      gap="$1"
+                      key={account}
+                      css={onSelect && styles.hover}
+                    >
+                      <Avatar.Generated
+                        size={'xsm'}
+                        background="fuel"
+                        hash={account}
+                      />
+                      <Text
+                        onClick={() => onSelect && onSelect(account)}
+                        color="blackA12"
+                        css={onSelect && styles.pointer}
+                      >
+                        {shortAddress(account)}
+                      </Text>
+                      <Copyable value={account} />
+                    </Flex>
+                  );
+                })}
+              </Stack>
             </Dialog.Heading>
             <Dialog.Description>
               <Stack css={styles.stack}>
-                <Button onPress={onConnect} css={styles.button}>
-                  Connect Account
-                </Button>
-                <Button onPress={onDisconnect} css={styles.button}>
-                  Disconnect Wallet
-                </Button>
+                {onConnect && (
+                  <Button onPress={onConnect} css={styles.button}>
+                    Connect Account
+                  </Button>
+                )}
+                {onDisconnect && (
+                  <Button onPress={onDisconnect} css={styles.button}>
+                    Disconnect Wallet
+                  </Button>
+                )}
               </Stack>
             </Dialog.Description>
           </Dialog.Content>
@@ -66,10 +83,10 @@ export const AccountSwitch = ({
 
 const styles = {
   content: cssObj({
-    background: 'White',
+    background: '$white',
   }),
   stack: cssObj({
-    marginBottom: '20px',
+    marginBottom: '$5',
   }),
   heading: cssObj({
     borderColor: '$gray12',
@@ -77,5 +94,11 @@ const styles = {
   button: cssObj({
     borderRadius: '$md',
     backgroundColor: '$gray12',
+  }),
+  hover: cssObj({
+    ':hover': { backgroundColor: '$gray12' },
+  }),
+  pointer: cssObj({
+    cursor: 'pointer',
   }),
 };
