@@ -34,7 +34,7 @@ export const NetworkConnectCard = ({
   return (
     <Card css={styles.root}>
       <Card.Body css={styles.body}>
-        <Stack gap="$1" css={styles.stack}>
+        <Stack gap="$1">
           <Box>
             <Text fontSize="sm">{label}</Text>
           </Box>
@@ -48,7 +48,7 @@ export const NetworkConnectCard = ({
                 <Button
                   onPress={onConnect}
                   isLoading={isConnecting}
-                  css={styles.buttonRoot}
+                  css={styles.connectButton}
                 >
                   Connect wallet
                 </Button>
@@ -59,7 +59,7 @@ export const NetworkConnectCard = ({
                   leftIcon={<Icon icon="Circle" color="red10" fill="red10" />}
                   rightIcon="CaretDown"
                   variant="outlined"
-                  css={{ ...styles.buttonRoot, ...styles.accountButton }}
+                  css={{ ...styles.connectButton, ...styles.accountButton }}
                 >
                   {formatAddress(currentAccount)}
                 </Button>
@@ -81,13 +81,10 @@ const styles = {
     borderColor: '$gray12',
     borderRadius: '$md',
   }),
-  stack: cssObj({
-    width: '100%',
-  }),
   body: cssObj({
     padding: '10px',
   }),
-  buttonRoot: cssObj({
+  connectButton: cssObj({
     borderRadius: '$md',
     height: '22px',
     width: '140px',
