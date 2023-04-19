@@ -6,8 +6,6 @@ import { Helmet } from 'react-helmet';
 
 import { coreStyles } from '../styles';
 
-import { Header } from './Header';
-
 import { META_DESC, META_OGIMG } from '~/constants';
 import { OverlayDialog } from '~/systems/Overlay';
 
