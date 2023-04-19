@@ -19,7 +19,7 @@ export const Usage = () => {
       <NetworkConnectCard
         networkName="Fuel"
         networkImageUrl={imageSrc}
-        heading="To"
+        label="To"
         isConnecting={false}
         onConnect={() => {}}
       />
@@ -33,7 +33,7 @@ export const Loading = () => {
       <NetworkConnectCard
         networkName="Fuel"
         networkImageUrl={imageSrc}
-        heading="To"
+        label="To"
         isConnecting={true}
         onConnect={() => {}}
       />
@@ -47,7 +47,7 @@ export const ConnectedAccount = () => {
       <NetworkConnectCard
         networkName="Fuel"
         networkImageUrl={imageSrc}
-        heading="To"
+        label="To"
         isConnecting={false}
         onConnect={() => {}}
         currentAccount="fuel14kz7u7jpd8txfe2vtgh5hxjx4wk7s03kq8hcl2k7slwe3yqh5sas974464"

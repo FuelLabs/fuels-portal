@@ -1,5 +1,14 @@
 import { cssObj } from '@fuel-ui/css';
-import { Card, Stack, Text, Flex, Image, Button, Icon } from '@fuel-ui/react';
+import {
+  Card,
+  Stack,
+  Text,
+  Flex,
+  Image,
+  Button,
+  Icon,
+  Box,
+} from '@fuel-ui/react';
 import type { Bech32Address } from 'fuels';
 
 import { formatAddress } from '~/systems/Core/utils';
@@ -7,7 +16,7 @@ import { formatAddress } from '~/systems/Core/utils';
 type NetworkConnectCardProps = {
   networkName: string;
   networkImageUrl: string;
-  heading: string;
+  label: string;
   isConnecting: boolean;
   currentAccount?: `0x${string}` | Bech32Address;
   accounts?: `0x${string}`[] | Bech32Address[];
@@ -17,7 +26,7 @@ type NetworkConnectCardProps = {
 export const NetworkConnectCard = ({
   networkName,
   networkImageUrl,
-  heading,
+  label,
   isConnecting,
   currentAccount,
   onConnect,
@@ -25,37 +34,43 @@ export const NetworkConnectCard = ({
   return (
     <Card css={styles.root}>
       <Card.Body css={styles.body}>
-        <Flex justify="space-between">
-          <Stack gap="$1">
-            <Text fontSize="sm">{heading}</Text>
+        <Stack gap="$1" css={{ width: '100%' }}>
+          <Box>
+            <Text fontSize="sm">{label}</Text>
+          </Box>
+          <Flex
+            align="center"
+            wrap="wrap"
+            css={{ alignContent: 'space-between' }}
+          >
             <Flex gap="$2" align="center">
               <Image width="20" height="20" src={networkImageUrl} />
               <Text color="blackA12">{networkName}</Text>
             </Flex>
-          </Stack>
-          <Flex align="end">
-            {!currentAccount ? (
-              <Button
-                onPress={onConnect}
-                isLoading={isConnecting}
-                css={styles.buttonRoot}
-              >
-                Connect wallet
-              </Button>
-            ) : (
-              <Button
-                onPress={onConnect}
-                isLoading={isConnecting}
-                leftIcon={<Icon icon="Circle" color="red10" fill="red10" />}
-                rightIcon="CaretDown"
-                variant="outlined"
-                css={{ ...styles.buttonRoot, ...styles.accountButton }}
-              >
-                {formatAddress(currentAccount)}
-              </Button>
-            )}
+            <Flex>
+              {!currentAccount ? (
+                <Button
+                  onPress={onConnect}
+                  isLoading={isConnecting}
+                  css={styles.buttonRoot}
+                >
+                  Connect wallet
+                </Button>
+              ) : (
+                <Button
+                  onPress={onConnect}
+                  isLoading={isConnecting}
+                  leftIcon={<Icon icon="Circle" color="red10" fill="red10" />}
+                  rightIcon="CaretDown"
+                  variant="outlined"
+                  css={{ ...styles.buttonRoot, ...styles.accountButton }}
+                >
+                  {formatAddress(currentAccount)}
+                </Button>
+              )}
+            </Flex>
           </Flex>
-        </Flex>
+        </Stack>
       </Card.Body>
     </Card>
   );
