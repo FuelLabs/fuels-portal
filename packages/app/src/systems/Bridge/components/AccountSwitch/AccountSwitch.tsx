@@ -71,7 +71,6 @@ export const AccountSwitch = ({
 
 const styles = {
   stack: cssObj({
-    // marginBottom: '$5',
     width: '100%',
   }),
   description: cssObj({
