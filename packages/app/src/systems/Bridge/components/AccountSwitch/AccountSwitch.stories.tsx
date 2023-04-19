@@ -19,7 +19,7 @@ const accounts = [
 export const Usage = () => {
   return (
     <Flex align="center" justify="center">
-      <AccountSwitch open={true} accounts={accounts} onSelect={() => {}} />
+      <AccountSwitch accounts={accounts} onSelect={() => {}} />
     </Flex>
   );
 };
@@ -29,7 +29,6 @@ export const Controlled = () => {
   return (
     <Flex align="center" justify="center">
       <AccountSwitch
-        open={open}
         accounts={accounts}
         onSelect={() => {}}
         onConnect={() => {}}

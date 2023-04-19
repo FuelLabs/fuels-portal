@@ -12,7 +12,6 @@ import {
 import { shortAddress } from '~/systems/Core/utils';
 
 type AccountSwitchProps = {
-  open: boolean;
   accounts: string[];
   onSelect?: (val: string) => void;
   onConnect?: () => void;
@@ -20,7 +19,6 @@ type AccountSwitchProps = {
 };
 
 export const AccountSwitch = ({
-  open,
   accounts,
   onSelect,
   onConnect,
@@ -28,55 +26,48 @@ export const AccountSwitch = ({
 }: AccountSwitchProps) => {
   return (
     <>
-      {open && (
-        <Dialog isOpen={open}>
-          <Dialog.Content css={styles.content}>
-            <Dialog.Close />
-            <Dialog.Heading css={styles.heading}>
-              <Stack>
-                {accounts.map((account) => {
-                  return (
-                    <Flex
-                      align="center"
-                      gap="$1"
-                      key={account}
-                      css={onSelect && styles.hover}
-                    >
-                      <Avatar.Generated
-                        size={'xsm'}
-                        background="fuel"
-                        hash={account}
-                      />
-                      <Text
-                        onClick={() => onSelect && onSelect(account)}
-                        color="blackA12"
-                        css={onSelect && styles.pointer}
-                      >
-                        {shortAddress(account)}
-                      </Text>
-                      <Copyable value={account} />
-                    </Flex>
-                  );
-                })}
-              </Stack>
-            </Dialog.Heading>
-            <Dialog.Description>
-              <Stack css={styles.stack}>
-                {onConnect && (
-                  <Button onPress={onConnect} css={styles.button}>
-                    Connect Account
-                  </Button>
-                )}
-                {onDisconnect && (
-                  <Button onPress={onDisconnect} css={styles.button}>
-                    Disconnect Wallet
-                  </Button>
-                )}
-              </Stack>
-            </Dialog.Description>
-          </Dialog.Content>
-        </Dialog>
-      )}
+      <Dialog.Heading css={styles.heading}>
+        <Stack>
+          {accounts.map((account) => {
+            return (
+              <Flex
+                align="center"
+                gap="$1"
+                key={account}
+                css={onSelect && styles.hover}
+              >
+                <Avatar.Generated
+                  size={'xsm'}
+                  background="fuel"
+                  hash={account}
+                />
+                <Text
+                  onClick={() => onSelect && onSelect(account)}
+                  color="blackA12"
+                  css={onSelect && styles.pointer}
+                >
+                  {shortAddress(account)}
+                </Text>
+                <Copyable value={account} />
+              </Flex>
+            );
+          })}
+        </Stack>
+      </Dialog.Heading>
+      <Dialog.Description>
+        <Stack css={styles.stack}>
+          {onConnect && (
+            <Button onPress={onConnect} css={styles.button}>
+              Connect Account
+            </Button>
+          )}
+          {onDisconnect && (
+            <Button onPress={onDisconnect} css={styles.button}>
+              Disconnect Wallet
+            </Button>
+          )}
+        </Stack>
+      </Dialog.Description>
     </>
   );
 };
