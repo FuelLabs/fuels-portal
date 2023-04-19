@@ -18,6 +18,8 @@ export function OverlayDialog() {
           <AccountSwitch
             accounts={[
               'fuel17kx8dy6gvugrppnkvsezyyh2qxusq57mvk2hueaa9smer220knuslpsnuf',
+              'fuel17kx8dy6gvugrppnkvsezyyh2qxusq57mvk2hueaa9smer220knuslpsnuf',
+              'fuel17kx8dy6gvugrppnkvsezyyh2qxusq57mvk2hueaa9smer220knuslpsnuf',
             ]}
             onSelect={() => {}}
             onConnect={() => {}}
@@ -42,7 +44,7 @@ const styles = {
     },
     '.fuel_dialog--description': {
       flex: 1,
-      overflowY: 'visible',
+      overflowY: 'auto',
       height: '100%',
     },
     '.fuel_dialog--heading': cssObj({

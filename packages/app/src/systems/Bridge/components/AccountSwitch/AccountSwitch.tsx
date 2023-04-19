@@ -7,6 +7,7 @@ import {
   Flex,
   Copyable,
   Avatar,
+  List,
 } from '@fuel-ui/react';
 
 import { shortAddress } from '~/systems/Core/utils';
@@ -27,35 +28,30 @@ export const AccountSwitch = ({
   return (
     <>
       <Dialog.Close />
-      <Dialog.Heading css={styles.heading}>
-        <Stack>
+      <Dialog.Description css={styles.description}>
+        <List>
           {accounts.map((account) => {
             return (
-              <Flex
-                align="center"
-                gap="$1"
+              <List.Item
                 key={account}
-                css={onSelect && styles.hover}
+                onClick={() => onSelect && onSelect(account)}
+                css={onSelect && styles.select}
               >
-                <Avatar.Generated
-                  size={'xsm'}
-                  background="fuel"
-                  hash={account}
-                />
-                <Text
-                  onClick={() => onSelect && onSelect(account)}
-                  color="gray12"
-                  css={onSelect && styles.pointer}
-                >
-                  {shortAddress(account)}
-                </Text>
-                <Copyable value={account} />
-              </Flex>
+                <Flex align="center" gap="$1">
+                  <Avatar.Generated
+                    size={'xsm'}
+                    background="fuel"
+                    hash={account}
+                  />
+                  <Text color="gray12">{shortAddress(account)}</Text>
+                  <Copyable value={account} />
+                </Flex>
+              </List.Item>
             );
           })}
-        </Stack>
-      </Dialog.Heading>
-      <Dialog.Description>
+        </List>
+      </Dialog.Description>
+      <Dialog.Footer css={styles.footer}>
         <Stack css={styles.stack}>
           {onConnect && (
             <Button onPress={onConnect} css={styles.button}>
@@ -68,27 +64,34 @@ export const AccountSwitch = ({
             </Button>
           )}
         </Stack>
-      </Dialog.Description>
+      </Dialog.Footer>
     </>
   );
 };
 
 const styles = {
   stack: cssObj({
-    marginBottom: '$5',
+    // marginBottom: '$5',
+    width: '100%',
   }),
-  heading: cssObj({
-    borderColor: '$gray12',
+  description: cssObj({
+    paddingLeft: '$8',
+    paddingRight: '$8',
+    paddingTop: '$8',
   }),
   button: cssObj({
     borderRadius: '$md',
     backgroundColor: '$gray6',
     color: '$gray12',
   }),
-  hover: cssObj({
+  select: cssObj({
     ':hover': { backgroundColor: '$gray6' },
-  }),
-  pointer: cssObj({
     cursor: 'pointer',
+  }),
+  footer: cssObj({
+    paddingLeft: '$8',
+    paddingRight: '$8',
+    paddingBottom: '$8',
+    justifyContent: 'center',
   }),
 };
