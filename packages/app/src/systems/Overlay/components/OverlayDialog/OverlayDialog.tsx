@@ -1,6 +1,7 @@
 import { cssObj } from '@fuel-ui/css';
 import { Dialog } from '@fuel-ui/react';
 
+import { AccountSwitch } from '~/systems/Bridge/components/AccountSwitch';
 import { useOverlay } from '~/systems/Overlay';
 
 const OVERLAY_HEIGHT = 600;
@@ -9,11 +10,11 @@ const OVERLAY_WIDTH = 600;
 export function OverlayDialog() {
   const overlay = useOverlay();
 
+  console.log('overlay', overlay.is('accounts.switch'));
   return (
     <Dialog isOpen={overlay.isDialogOpen}>
       <Dialog.Content css={styles.content}>
-        {/* example of how to use overlay \/. Should be removed after we add the first popup */}
-        {/* {overlay.is('accounts.list') && <Accounts />} */}
+        {overlay.is('accounts.switch') && <AccountSwitch accounts={['']} />}
       </Dialog.Content>
     </Dialog>
   );

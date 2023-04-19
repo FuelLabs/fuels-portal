@@ -3,9 +3,10 @@ import { Box } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
 import { Helmet } from 'react-helmet';
 
-import { Header } from './Header';
+// import { Header } from './Header';
 
 import { META_DESC, META_OGIMG } from '~/constants';
+import { OverlayDialog } from '~/systems/Overlay';
 
 type LayoutProps = {
   title?: string;
@@ -24,7 +25,8 @@ export function Layout({ title, children }: LayoutProps) {
         <meta property="og:image" content={META_OGIMG} />
       </Helmet>
       <Box css={styles.root}>
-        <Header />
+        <OverlayDialog />
+        {/* <Header /> */}
         {children}
       </Box>
     </>

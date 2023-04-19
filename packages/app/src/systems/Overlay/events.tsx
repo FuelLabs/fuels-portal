@@ -19,5 +19,13 @@ export function overlayEvents(store: Store) {
         },
       });
     },
+    openAccountSwitch() {
+      store.send(Services.overlay, {
+        type: 'OPEN',
+        input: {
+          modal: 'accounts.switch',
+        },
+      });
+    },
   };
 }

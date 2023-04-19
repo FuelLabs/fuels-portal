@@ -1,7 +1,11 @@
 import { Flex, Button } from '@fuel-ui/react';
 import { useState } from 'react';
 
+import { useAccountSwitch } from '../../hooks/useAccountSwitch';
+
 import { AccountSwitch } from './AccountSwitch';
+
+import { Layout } from '~/systems/Core';
 
 export default {
   component: AccountSwitch,
@@ -17,10 +21,15 @@ const accounts = [
 ];
 
 export const Usage = () => {
+  const { handlers } = useAccountSwitch();
   return (
-    <Flex align="center" justify="center">
-      <AccountSwitch accounts={accounts} onSelect={() => {}} />
-    </Flex>
+    <Layout>
+      <Flex align="center" justify="center">
+        <Button onPress={handlers.openAccountSwitch}>
+          Open Account Switch
+        </Button>
+      </Flex>
+    </Layout>
   );
 };
 
