@@ -1,12 +1,10 @@
 import { cssObj } from '@fuel-ui/css';
 import {
-  Box,
   Button,
   Flex,
   FuelLogo,
   IconButton,
   ButtonLink,
-  Text,
   Link,
 } from '@fuel-ui/react';
 import { useLocation } from 'react-router-dom';
@@ -16,58 +14,58 @@ import { Pages } from '~/types';
 export function Header() {
   const location = useLocation();
 
+  const getClassName = (url: string) => {
+    return location.pathname === url ? 'header--navItemActive' : undefined;
+  };
+
   return (
     <Flex as="header" css={styles.root}>
-      <Flex>
-        <Flex>
-          <Link href="/" className="logo">
-            <FuelLogo size={35} />
-          </Link>
-        </Flex>
-        <Flex css={styles.fuelText}>
-          <Text fontSize="5xl" color="whiteA12">
-            FUEL
-          </Text>
-        </Flex>
-        <Flex align="center" css={styles.portalText}>
-          <Text color="whiteA12" fontSize="2xl">
-            Portal
-          </Text>
-        </Flex>
-      </Flex>
-      <Flex css={styles.menu}>
+      <Flex gap="$4" css={styles.menu}>
+        <Link href="/" className="logo">
+          <FuelLogo size={24} />
+        </Link>
         <ButtonLink
-          href={Pages.home}
-          className={
-            location.pathname === Pages.home
-              ? 'header--navItemActive'
-              : undefined
-          }
+          href={Pages.developers}
+          className={getClassName(Pages.developers)}
         >
-          Home
+          Developers
         </ButtonLink>
         <ButtonLink
-          href={Pages.bridge}
-          className={
-            location.pathname === Pages.bridge
-              ? 'header--navItemActive'
-              : undefined
-          }
+          href={Pages.community}
+          className={getClassName(Pages.community)}
         >
-          Bridge
+          Community
+        </ButtonLink>
+        <ButtonLink href={Pages.labs} className={getClassName(Pages.labs)}>
+          Labs
         </ButtonLink>
       </Flex>
       <Flex gap={15} css={styles.desktop}>
-        <Box />
-        <Box css={styles.connectButton}>
-          <Button>Connect your Wallet</Button>
-        </Box>
-        <IconButton
-          aria-label="Settings"
-          icon="Gear"
-          variant="link"
-          size="lg"
-        />
+        <Flex gap="$4" css={styles.menu}>
+          <ButtonLink
+            href={Pages.bridge}
+            className={getClassName(Pages.bridge)}
+          >
+            Bridge
+          </ButtonLink>
+          <ButtonLink
+            href={Pages.explorer}
+            className={getClassName(Pages.explorer)}
+          >
+            Explorer
+          </ButtonLink>
+          <ButtonLink href={Pages.ecosystem} className={Pages.ecosystem}>
+            Ecosystem
+          </ButtonLink>
+        </Flex>
+        <Flex gap="$1" css={styles.connectButton}>
+          <IconButton
+            icon="Moon"
+            aria-label="Theme-Switch"
+            css={{ width: '28px', height: 'inherit' }}
+          />
+          <Button css={{ height: 'inherit' }}>Connect your Wallet</Button>
+        </Flex>
       </Flex>
     </Flex>
   );
@@ -75,6 +73,7 @@ export function Header() {
 
 const styles = {
   root: cssObj({
+    borderBottom: '1px solid $gray3',
     justifyContent: 'space-between',
     paddingLeft: '54px',
     zIndex: '$10',
@@ -85,8 +84,6 @@ const styles = {
     py: '$4',
     px: '$4',
     alignItems: 'center',
-    gridColumn: '1 / 4',
-
     '.logo': {
       display: 'inline-flex',
       color: '$gray9',
@@ -108,17 +105,16 @@ const styles = {
     paddingLeft: '6px',
   }),
   desktop: cssObj({
+    alignItems: 'center',
     '@xl': {
       display: 'flex',
       alignItems: 'center',
     },
   }),
   connectButton: cssObj({
-    ml: '$8',
+    height: '28px',
   }),
   menu: cssObj({
-    gap: '$6',
-
     a: {
       color: '$gray10',
       transition: 'all 0.3s',
