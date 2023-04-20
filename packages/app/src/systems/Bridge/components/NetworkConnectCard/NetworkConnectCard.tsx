@@ -9,7 +9,6 @@ import {
   Icon,
   Box,
 } from '@fuel-ui/react';
-import type { Bech32Address } from 'fuels';
 
 import { formatAddress } from '~/systems/Core/utils';
 
@@ -18,8 +17,7 @@ type NetworkConnectCardProps = {
   networkImageUrl: string;
   label: string;
   isConnecting?: boolean;
-  currentAccount?: `0x${string}` | Bech32Address;
-  accounts?: `0x${string}`[] | Bech32Address[];
+  currentAccount?: string;
   onConnect: () => void;
 };
 
