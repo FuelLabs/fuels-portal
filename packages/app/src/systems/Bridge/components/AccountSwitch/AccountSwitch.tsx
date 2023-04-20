@@ -37,7 +37,7 @@ export const AccountSwitch = ({
                 onClick={() => onSelect && onSelect(account)}
                 css={
                   onSelect
-                    ? { ...styles.select, ...styles.listItem }
+                    ? { ...styles.listItem, ...styles.select }
                     : styles.listItem
                 }
               >
@@ -81,9 +81,6 @@ const styles = {
     pl: '$1',
     pt: '$1',
     pb: '$1',
-    '& ~ & ': {
-      borderTop: '1px dashed $gray3',
-    },
   }),
   description: cssObj({
     paddingLeft: '$8',
