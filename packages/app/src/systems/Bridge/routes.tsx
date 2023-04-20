@@ -1,7 +1,9 @@
 import { Route } from 'react-router-dom';
 
-import { Home } from '../Home';
+import { BridgeHome } from './pages';
 
 import { Pages } from '~/types';
 
-export const bridgeRoutes = <Route path={Pages.bridge} element={<Home />} />;
+export const bridgeRoutes = (
+  <Route path={Pages.bridge} element={<BridgeHome />} />
+);

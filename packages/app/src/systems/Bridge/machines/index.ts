@@ -1,1 +1,1 @@
-export * from './bridgeMachine';
+export * from './bridgeEthToFuelMachine';

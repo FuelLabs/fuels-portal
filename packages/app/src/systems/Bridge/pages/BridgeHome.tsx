@@ -4,7 +4,7 @@ import { Bridge } from './Bridge';
 
 import { Layout } from '~/systems/Core';
 
-export const Home = () => {
+export const BridgeHome = () => {
   return (
     <Layout>
       <Layout.Content>
