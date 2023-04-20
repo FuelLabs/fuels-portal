@@ -78,9 +78,10 @@ const styles = {
     width: '100%',
   }),
   listItem: cssObj({
-    paddingBottom: '$1',
+    pl: '$1',
+    pt: '$1',
+    pb: '$1',
     '& ~ & ': {
-      pt: '$2',
       borderTop: '1px dashed $gray3',
     },
   }),
@@ -95,8 +96,9 @@ const styles = {
     color: '$gray12',
   }),
   select: cssObj({
-    '&:hover': { backgroundColor: '$gray6' },
+    '&:hover': { backgroundColor: '$gray1' },
     cursor: 'pointer',
+    borderRadius: '$md',
   }),
   footer: cssObj({
     paddingLeft: '$8',
