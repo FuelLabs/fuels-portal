@@ -83,9 +83,8 @@ const styles = {
     pb: '$1',
   }),
   description: cssObj({
-    paddingLeft: '$8',
-    paddingRight: '$8',
-    paddingTop: '$8',
+    px: '$8',
+    pt: '$8',
   }),
   button: cssObj({
     borderRadius: '$md',
@@ -98,9 +97,8 @@ const styles = {
     borderRadius: '$md',
   }),
   footer: cssObj({
-    paddingLeft: '$8',
-    paddingRight: '$8',
-    paddingBottom: '$8',
+    px: '$8',
+    pb: '$8',
     justifyContent: 'center',
   }),
 };
