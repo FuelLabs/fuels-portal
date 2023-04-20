@@ -35,9 +35,13 @@ export const AccountSwitch = ({
               <List.Item
                 key={account}
                 onClick={() => onSelect && onSelect(account)}
-                css={onSelect && styles.select}
+                css={
+                  onSelect
+                    ? { ...styles.select, ...styles.listItem }
+                    : styles.listItem
+                }
               >
-                <Flex align="center" gap="$1">
+                <Flex align="center" gap="$3">
                   <Avatar.Generated
                     size={'xsm'}
                     background="fuel"
@@ -73,6 +77,13 @@ const styles = {
   stack: cssObj({
     width: '100%',
   }),
+  listItem: cssObj({
+    paddingBottom: '$1',
+    '& ~ & ': {
+      pt: '$2',
+      borderTop: '1px dashed $gray3',
+    },
+  }),
   description: cssObj({
     paddingLeft: '$8',
     paddingRight: '$8',
@@ -84,7 +95,7 @@ const styles = {
     color: '$gray12',
   }),
   select: cssObj({
-    ':hover': { backgroundColor: '$gray6' },
+    '&:hover': { backgroundColor: '$gray6' },
     cursor: 'pointer',
   }),
   footer: cssObj({
