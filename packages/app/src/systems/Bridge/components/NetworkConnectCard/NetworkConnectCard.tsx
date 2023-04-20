@@ -10,7 +10,7 @@ import {
   Box,
 } from '@fuel-ui/react';
 
-import { formatAddress } from '~/systems/Core/utils';
+import { shortAddress } from '~/systems/Core/utils';
 
 type NetworkConnectCardProps = {
   networkName: string;
@@ -59,7 +59,7 @@ export const NetworkConnectCard = ({
                   variant="outlined"
                   css={{ ...styles.connectButton, ...styles.accountButton }}
                 >
-                  {formatAddress(currentAccount)}
+                  {shortAddress(currentAccount)}
                 </Button>
               )}
             </Flex>

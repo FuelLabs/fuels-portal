@@ -34,6 +34,7 @@
     "test:e2e": "playwright test --config=packages/app/playwright.config.ts",
     "ts:check": "turbo run ts:check",
     "prepare": "husky install",
+    "storybook": "pnpm --filter=@fuels-portal/bridge storybook",
     "xstate:typegen": "pnpm -r xstate:typegen"
   },
   "dependencies": {

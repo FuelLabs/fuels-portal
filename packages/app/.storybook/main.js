@@ -5,6 +5,7 @@ module.exports = {
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
     '@storybook/addon-mdx-gfm',
+    'storybook-addon-react-router-v6',
   ],
   framework: {
     name: '@storybook/react-vite',

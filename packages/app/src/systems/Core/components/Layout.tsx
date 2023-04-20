@@ -6,8 +6,6 @@ import { Helmet } from 'react-helmet';
 
 import { coreStyles } from '../styles';
 
-import { Header } from './Header';
-
 import { META_DESC, META_OGIMG } from '~/constants';
 import { OverlayDialog } from '~/systems/Overlay';
 
@@ -51,8 +49,8 @@ export const Layout: LayoutComponent = ({ title, children }: LayoutProps) => {
         <meta property="og:image" content={META_OGIMG} />
       </Helmet>
       <Box as="main" css={styles.root}>
-        <Header />
         <OverlayDialog />
+        {/* <Header /> */}
         {children}
       </Box>
     </>
