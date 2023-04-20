@@ -40,7 +40,7 @@ export function Header() {
           Labs
         </ButtonLink>
       </Flex>
-      <Flex gap={15} css={styles.desktop}>
+      <Flex gap="$4" css={styles.desktop}>
         <Flex gap="$4" css={styles.menu}>
           <ButtonLink
             href={Pages.bridge}
@@ -62,6 +62,7 @@ export function Header() {
           <IconButton
             icon="Moon"
             aria-label="Theme-Switch"
+            iconSize={14}
             css={{ ...styles.connectButton, ...styles.iconButton }}
           />
           <Button css={styles.connectButton}>Connect your Wallet</Button>
@@ -119,6 +120,10 @@ const styles = {
   }),
   connectButton: cssObj({
     height: 'inherit',
+    background: '$gray2',
+    color: '$gray11',
+    borderRadius: '$md',
+    fontSize: '$xs',
   }),
   menu: cssObj({
     a: {
