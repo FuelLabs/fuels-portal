@@ -1,13 +1,14 @@
-import { Text } from '@fuel-ui/react';
+import { Card } from '@fuel-ui/react';
 
-import { Layout } from '~/systems/Core';
+import { BridgeEthToFuel } from './BridgeEthToFuel';
 
 export const Bridge = () => {
   return (
-    <Layout>
-      <Layout.Content>
-        <Text>Bridge</Text>
-      </Layout.Content>
-    </Layout>
+    <Card>
+      <Card.Body>
+        {/* // TODO: here should put tabs (Deposit to Fuel) / (Withdraw from Fuel) */}
+        <BridgeEthToFuel />
+      </Card.Body>
+    </Card>
   );
 };
