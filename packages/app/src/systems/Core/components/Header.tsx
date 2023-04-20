@@ -58,13 +58,13 @@ export function Header() {
             Ecosystem
           </ButtonLink>
         </Flex>
-        <Flex gap="$1" css={styles.connectButton}>
+        <Flex gap="$1" css={styles.buttonContainer}>
           <IconButton
             icon="Moon"
             aria-label="Theme-Switch"
-            css={{ width: '28px', height: 'inherit' }}
+            css={{ ...styles.connectButton, ...styles.iconButton }}
           />
-          <Button css={{ height: 'inherit' }}>Connect your Wallet</Button>
+          <Button css={styles.connectButton}>Connect your Wallet</Button>
         </Flex>
       </Flex>
     </Flex>
@@ -111,8 +111,14 @@ const styles = {
       alignItems: 'center',
     },
   }),
-  connectButton: cssObj({
+  buttonContainer: cssObj({
     height: '28px',
+  }),
+  iconButton: cssObj({
+    width: '28px',
+  }),
+  connectButton: cssObj({
+    height: 'inherit',
   }),
   menu: cssObj({
     a: {
