@@ -39,7 +39,7 @@ export const NetworkConnectCard = ({
           <Flex align="center" wrap="wrap" justify="space-between">
             <Flex gap="$2" align="center">
               <Image width="20" height="20" src={networkImageUrl} />
-              <Text color="blackA12">{networkName}</Text>
+              <Text>{networkName}</Text>
             </Flex>
             <Flex>
               {!currentAccount ? (
@@ -72,11 +72,8 @@ export const NetworkConnectCard = ({
 
 const styles = {
   root: cssObj({
-    background: '$whiteA12',
     minWidth: '350px',
     minHeight: '60px',
-    boxShadow: '$none',
-    borderColor: '$gray12',
     borderRadius: '$md',
   }),
   body: cssObj({

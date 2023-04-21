@@ -1,7 +1,7 @@
-import { ThemeProvider } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
 
 import { StoreProvider } from './store';
+import { FuelUiProvider } from './systems/Settings/providers/FuelUiProvider';
 
 type ProvidersProps = {
   children: ReactNode;
@@ -10,7 +10,7 @@ type ProvidersProps = {
 export function Providers({ children }: ProvidersProps) {
   return (
     <StoreProvider>
-      <ThemeProvider>{children}</ThemeProvider>
+      <FuelUiProvider>{children}</FuelUiProvider>
     </StoreProvider>
   );
 }

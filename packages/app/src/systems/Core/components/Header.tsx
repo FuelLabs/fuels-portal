@@ -9,10 +9,12 @@ import {
 } from '@fuel-ui/react';
 import { useLocation } from 'react-router-dom';
 
+import { useTheme } from '~/systems/Settings';
 import { Pages } from '~/types';
 
 export function Header() {
   const location = useLocation();
+  const { handlers } = useTheme();
 
   const getClassName = (url: string) => {
     return location.pathname === url ? 'header--navItemActive' : undefined;
@@ -64,6 +66,7 @@ export function Header() {
             aria-label="Theme-Switch"
             iconSize={14}
             css={{ ...styles.connectButton, ...styles.iconButton }}
+            onPress={handlers.toggleTheme}
           />
           <Button css={styles.connectButton}>Connect your Wallet</Button>
         </Flex>
@@ -131,16 +134,12 @@ const styles = {
       transition: 'all 0.3s',
     },
 
-    'a:visited': {
-      color: '$gray10',
-    },
-
     'a.active, a:hover': {
-      color: '$whiteA12',
+      color: '$accent8',
     },
 
     'a.header--navItemActive': {
-      color: '$whiteA12',
+      color: '$accent8',
     },
   }),
 };
