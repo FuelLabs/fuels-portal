@@ -28,7 +28,7 @@ export const themeMachine = createMachine(
           },
         },
       },
-      toogling: {
+      toggling: {
         entry: {
           type: 'assignToggleTheme',
           target: 'idle',
