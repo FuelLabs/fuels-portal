@@ -1,12 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import {
-  Button,
-  Flex,
-  FuelLogo,
-  IconButton,
-  ButtonLink,
-  Link,
-} from '@fuel-ui/react';
+import { Flex, FuelLogo, IconButton, ButtonLink, Link } from '@fuel-ui/react';
 import { useLocation } from 'react-router-dom';
 
 import { useTheme } from '~/systems/Settings';
