@@ -6,7 +6,8 @@ import { useAccountConnectionEth } from '../hooks';
 import { buttonListItem } from '~/systems/Core';
 
 export function AccountConnectToEthDialog() {
-  const { connectors, handlers, isConnected } = useAccountConnectionEth();
+  const { connectors, handlers, isConnected, pendingConnector, isLoading } =
+    useAccountConnectionEth();
   const { connect, closeDialog } = handlers;
 
   useEffect(() => {
@@ -39,6 +40,7 @@ export function AccountConnectToEthDialog() {
                 variant="outlined"
                 color="gray"
                 css={buttonListItem}
+                isLoading={isLoading && !!pendingConnector?.id}
               >
                 {connector.name}
               </Button>

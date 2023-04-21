@@ -20,7 +20,7 @@ export function useAccountConnectionEth() {
     isConnected,
     connectors,
     error,
-    isConnecting: isLoading && !!pendingConnector?.id,
+    isLoading,
     pendingConnector,
   };
 }
