@@ -28,12 +28,6 @@ export const themeMachine = createMachine(
           },
         },
       },
-      toogling: {
-        entry: {
-          type: 'assignToggleTheme',
-          target: 'idle',
-        },
-      },
     },
   },
   {
