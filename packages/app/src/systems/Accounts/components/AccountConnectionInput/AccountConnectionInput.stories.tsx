@@ -3,11 +3,11 @@ import { Flex } from '@fuel-ui/react';
 
 import imageSrc from '../../../../../public/fuel-logo.svg';
 
-import { NetworkConnectCard } from './NetworkConnectCard';
+import { AccountConnectionInput } from './AccountConnectionInput';
 
 export default {
-  component: NetworkConnectCard,
-  title: 'NetworkConnectCard',
+  component: AccountConnectionInput,
+  title: 'AccountConnectionInput',
   parameters: {
     layout: 'fullscreen',
   },
@@ -16,7 +16,7 @@ export default {
 export const Usage = () => {
   return (
     <Flex align="center" justify="center" css={styles.storybook}>
-      <NetworkConnectCard
+      <AccountConnectionInput
         networkName="Fuel"
         networkImageUrl={imageSrc}
         label="To"
@@ -30,7 +30,7 @@ export const Usage = () => {
 export const Loading = () => {
   return (
     <Flex align="center" justify="center" css={styles.storybook}>
-      <NetworkConnectCard
+      <AccountConnectionInput
         networkName="Fuel"
         networkImageUrl={imageSrc}
         label="To"
@@ -44,7 +44,7 @@ export const Loading = () => {
 export const ConnectedAccount = () => {
   return (
     <Flex align="center" justify="center" css={styles.storybook}>
-      <NetworkConnectCard
+      <AccountConnectionInput
         networkName="Fuel"
         networkImageUrl={imageSrc}
         label="To"

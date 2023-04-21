@@ -1,7 +1,7 @@
 import { cssObj } from '@fuel-ui/css';
 import { Dialog } from '@fuel-ui/react';
 
-import { AccountSwitch } from '~/systems/Bridge/components/AccountSwitch';
+import { AccountConnectToEthDialog } from '~/systems/Accounts/pages/AccountConnectToEthDialog';
 import { useOverlay } from '~/systems/Overlay';
 
 const OVERLAY_HEIGHT = 100;
@@ -13,19 +13,7 @@ export function OverlayDialog() {
   return (
     <Dialog isOpen={overlay.isDialogOpen}>
       <Dialog.Content css={styles.content}>
-        {/** TODO: remove the AccountSwitch component and replace with corresponding smart components once completed */}
-        {overlay.is('accounts.switch') && (
-          <AccountSwitch
-            accounts={[
-              'fuel17kx8dy6gvugrppnkvsezyyh2qxusq57mvk2hueaa9smer220knuslpsnuf',
-              'fuel17kx8dy6gvugrppnkvsezyyh2qxusq57mvk2hueaa9smer220knuslpsnuf',
-              'fuel17kx8dy6gvugrppnkvsezyyh2qxusq57mvk2hueaa9smer220knuslpsnuf',
-            ]}
-            onSelect={() => {}}
-            onConnect={() => {}}
-            onDisconnect={() => {}}
-          />
-        )}
+        {overlay.is('accounts.connect.eth') && <AccountConnectToEthDialog />}
       </Dialog.Content>
     </Dialog>
   );

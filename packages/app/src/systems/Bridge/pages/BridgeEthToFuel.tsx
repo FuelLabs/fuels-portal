@@ -1,22 +1,19 @@
 import { Card, Stack } from '@fuel-ui/react';
 
-import ethLogoSrc from '../../../../public/eth-logo.svg';
 import fuelLogoSrc from '../../../../public/fuel-logo.svg';
-import { NetworkConnectCard } from '../components';
+
+import {
+  AccountConnectionEth,
+  AccountConnectionInput,
+} from '~/systems/Accounts';
 
 export const BridgeEthToFuel = () => {
   return (
     <Card>
       <Card.Body>
         <Stack gap="$4">
-          <NetworkConnectCard
-            networkName={'Ethereum'}
-            networkImageUrl={ethLogoSrc}
-            label={'From'}
-            isConnecting={false}
-            onConnect={() => {}}
-          />
-          <NetworkConnectCard
+          <AccountConnectionEth />
+          <AccountConnectionInput
             networkName="Fuel"
             networkImageUrl={fuelLogoSrc}
             label="To"

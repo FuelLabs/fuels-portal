@@ -28,6 +28,15 @@ export const scrollable = (
     },
   });
 
+export const buttonListItem = cssObj({
+  justifyContent: 'normal',
+  borderRadius: '$md',
+  fontWeight: '$medium',
+  fontSize: '$sm',
+  px: '$3',
+});
+
 export const coreStyles = {
   scrollable,
+  buttonListItem,
 };

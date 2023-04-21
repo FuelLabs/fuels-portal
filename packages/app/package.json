@@ -21,6 +21,7 @@
     "@storybook/manager-api": "^7.0.3",
     "@storybook/theming": "^7.0.3",
     "@xstate/react": "^3.1.1",
+    "ethers": "^5",
     "fuels": "^0.33.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

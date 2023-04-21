@@ -19,11 +19,11 @@ export function overlayEvents(store: Store) {
         },
       });
     },
-    openAccountSwitch() {
+    openAccountConnectionEth() {
       store.send(Services.overlay, {
         type: 'OPEN',
         input: {
-          modal: 'accounts.switch',
+          modal: 'accounts.connect.eth',
         },
       });
     },

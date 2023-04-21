@@ -68,7 +68,6 @@ export function Header() {
             css={{ ...styles.connectButton, ...styles.iconButton }}
             onPress={handlers.toggleTheme}
           />
-          <Button css={styles.connectButton}>Connect your Wallet</Button>
         </Flex>
       </Flex>
     </Flex>

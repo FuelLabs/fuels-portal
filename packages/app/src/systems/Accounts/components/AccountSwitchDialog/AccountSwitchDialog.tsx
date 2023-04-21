@@ -8,26 +8,39 @@ import {
   Copyable,
   Avatar,
   List,
+  IconButton,
+  Icon,
 } from '@fuel-ui/react';
 
 import { shortAddress } from '~/systems/Core/utils';
 
-type AccountSwitchProps = {
+type AccountSwitchDialogProps = {
   accounts: string[];
   onSelect?: (val: string) => void;
   onConnect?: () => void;
   onDisconnect?: () => void;
+  onClose?: () => void;
 };
 
-export const AccountSwitch = ({
+export const AccountSwitchDialog = ({
   accounts,
   onSelect,
   onConnect,
   onDisconnect,
-}: AccountSwitchProps) => {
+  onClose,
+}: AccountSwitchDialogProps) => {
   return (
     <>
-      <Dialog.Close />
+      <Dialog.Heading>
+        Ethereum Accounts
+        <IconButton
+          data-action="closed"
+          variant="link"
+          icon={<Icon icon="X" color="gray8" />}
+          aria-label="Close unlock window"
+          onPress={onClose}
+        />
+      </Dialog.Heading>
       <Dialog.Description css={styles.description}>
         <List>
           {accounts.map((account) => {
