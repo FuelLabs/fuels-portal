@@ -7,4 +7,5 @@ export enum Pages {
   'labs' = '/labs',
   'explorer' = '/explorer',
   'ecosystem' = '/ecosystem',
+  'transactions' = '/bridge/transactions',
 }
