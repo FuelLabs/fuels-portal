@@ -6,5 +6,6 @@
   "github": {
     "silent": true
   },
-  "trailingSlash": true
+  "trailingSlash": true,
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
 }

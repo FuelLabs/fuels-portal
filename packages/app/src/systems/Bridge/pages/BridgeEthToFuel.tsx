@@ -1,4 +1,4 @@
-import { Card, Stack } from '@fuel-ui/react';
+import { Stack } from '@fuel-ui/react';
 
 import fuelLogoSrc from '../../../../public/fuel-logo.svg';
 
@@ -9,19 +9,15 @@ import {
 
 export const BridgeEthToFuel = () => {
   return (
-    <Card>
-      <Card.Body>
-        <Stack gap="$4">
-          <AccountConnectionEth />
-          <AccountConnectionInput
-            networkName="Fuel"
-            networkImageUrl={fuelLogoSrc}
-            label="To"
-            isConnecting={false}
-            onConnect={() => {}}
-          />
-        </Stack>
-      </Card.Body>
-    </Card>
+    <Stack gap="$4">
+      <AccountConnectionEth />
+      <AccountConnectionInput
+        networkName="Fuel"
+        networkImageUrl={fuelLogoSrc}
+        label="To"
+        isConnecting={false}
+        onConnect={() => {}}
+      />
+    </Stack>
   );
 };
