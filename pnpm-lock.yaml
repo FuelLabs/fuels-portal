@@ -111,7 +111,7 @@ importers:
         specifier: ^7.0.3
         version: 7.0.3(react-dom@18.2.0)(react@18.2.0)
       '@xstate/react':
-        specifier: ^3.1.1
+        specifier: ^3.2.1
         version: 3.2.1(@types/react@18.0.27)(react@18.2.0)(xstate@4.37.0)
       ethers:
         specifier: ^5

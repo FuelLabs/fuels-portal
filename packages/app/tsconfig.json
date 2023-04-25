@@ -10,7 +10,7 @@
       "~public/*": ["./public/*"],
       "~/*": ["./src/*"]
     },
-    "types": ["@fuel-wallet/sdk"]
+    "types": ["@fuel-wallet/sdk", "jest"]
   },
   "include": ["./src"],
   "references": [{ "path": "./tsconfig.node.json" }]

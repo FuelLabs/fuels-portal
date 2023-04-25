@@ -2,6 +2,7 @@ import { cssObj } from '@fuel-ui/css';
 import { Dialog } from '@fuel-ui/react';
 
 import { AccountConnectToEthDialog } from '~/systems/Accounts/pages/AccountConnectToEthDialog';
+import { FuelInstallPopup } from '~/systems/Bridge';
 import { useOverlay } from '~/systems/Overlay';
 
 const OVERLAY_HEIGHT = 100;
@@ -14,6 +15,7 @@ export function OverlayDialog() {
     <Dialog isOpen={overlay.isDialogOpen}>
       <Dialog.Content css={styles.content}>
         {overlay.is('accounts.connect.eth') && <AccountConnectToEthDialog />}
+        {overlay.is('accounts.install.fuel') && <FuelInstallPopup />}
       </Dialog.Content>
     </Dialog>
   );

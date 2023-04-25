@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
 import { StoreProvider } from './store';
+import { AccountProviderFuel } from './systems/Accounts';
 import { WagmiProvider } from './systems/Settings';
 import { FuelUiProvider } from './systems/Settings/providers/FuelUiProvider';
 
@@ -12,7 +13,9 @@ export function Providers({ children }: ProvidersProps) {
   return (
     <StoreProvider>
       <WagmiProvider>
-        <FuelUiProvider>{children}</FuelUiProvider>
+        <AccountProviderFuel>
+          <FuelUiProvider>{children}</FuelUiProvider>
+        </AccountProviderFuel>
       </WagmiProvider>
     </StoreProvider>
   );
