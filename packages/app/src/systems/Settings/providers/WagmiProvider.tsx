@@ -26,7 +26,6 @@ const client = createClient({
     }),
   ],
   provider,
-  // provider: getDefaultProvider(),
   webSocketProvider,
 });
 
