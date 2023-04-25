@@ -2,6 +2,8 @@
 export enum Pages {
   'home' = '/',
   'bridge' = '/bridge',
+  'deposit' = '/bridge/deposit',
+  'withdraw' = '/bridge/withdraw',
   'developers' = '/developers',
   'community' = '/community',
   'labs' = '/labs',
