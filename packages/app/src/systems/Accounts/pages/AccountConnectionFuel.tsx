@@ -3,7 +3,7 @@ import { AccountConnectionInput } from '../components';
 import { useAccountConnectionFuel } from '../hooks';
 
 export const AccountConnectionFuel = () => {
-  const { isLoading, isConnected, handlers } = useAccountConnectionFuel();
+  const { isLoading, handlers, fuel } = useAccountConnectionFuel();
 
   return (
     <AccountConnectionInput
@@ -11,7 +11,7 @@ export const AccountConnectionFuel = () => {
       networkImageUrl={fuelLogoSrc}
       label="To"
       isConnecting={isLoading}
-      onConnect={isConnected ? handlers.connect : handlers.openFuelInstall}
+      onConnect={fuel ? handlers.connect : handlers.openFuelInstall}
     />
   );
 };

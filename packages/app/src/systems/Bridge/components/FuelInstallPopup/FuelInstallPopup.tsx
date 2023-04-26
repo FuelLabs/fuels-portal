@@ -1,39 +1,40 @@
 import { cssObj } from '@fuel-ui/css';
-import { Button, Dialog } from '@fuel-ui/react';
+import { Button, Dialog, IconButton, Icon } from '@fuel-ui/react';
 
-type FuelInstallPopupProps = {
-  open?: boolean;
-};
+import { useAccountConnectionFuel } from '~/systems/Accounts';
 
-export const FuelInstallPopup = ({ open }: FuelInstallPopupProps) => {
+export const FuelInstallPopup = () => {
+  const { handlers } = useAccountConnectionFuel();
+
   return (
     <>
-      {open && (
-        <Dialog isOpen={open}>
-          <Dialog.Content css={styles.content}>
-            <Dialog.Heading css={styles.heading}>
-              Install Fuel Wallet
-            </Dialog.Heading>
-            <Dialog.Description>
-              <a
-                href="https://wallet.fuel.network/docs/install/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Button variant="outlined">Install Fuel Wallet</Button>
-              </a>
-            </Dialog.Description>
-          </Dialog.Content>
-        </Dialog>
-      )}
+      <Dialog.Heading css={styles.heading}>
+        Install Fuel Wallet
+        <IconButton
+          data-action="closed"
+          variant="link"
+          icon={<Icon icon="X" color="gray8" />}
+          aria-label="Close unlock window"
+          onPress={handlers.closeDialog}
+        />
+      </Dialog.Heading>
+      <Dialog.Description css={styles.description}>
+        <a
+          href="https://wallet.fuel.network/docs/install/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <Button variant="outlined">Install Fuel Wallet</Button>
+        </a>
+      </Dialog.Description>
     </>
   );
 };
 
 const styles = {
-  content: cssObj({
-    background: 'White',
-    alignItems: 'center',
+  description: cssObj({
+    display: 'flex',
+    justifyContent: 'center',
   }),
   heading: cssObj({
     color: 'Black',
