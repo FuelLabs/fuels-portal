@@ -8,27 +8,30 @@ import {
   Button,
   Icon,
   Box,
+  IconButton,
 } from '@fuel-ui/react';
 
 import { shortAddress } from '~/systems/Core/utils';
 
-type NetworkConnectCardProps = {
+type AccountConnectionInputProps = {
   networkName: string;
   networkImageUrl: string;
   label: string;
   isConnecting?: boolean;
   currentAccount?: string;
   onConnect: () => void;
+  onDisconnect?: () => void;
 };
 
-export const NetworkConnectCard = ({
+export const AccountConnectionInput = ({
   networkName,
   networkImageUrl,
   label,
   isConnecting,
   currentAccount,
   onConnect,
-}: NetworkConnectCardProps) => {
+  onDisconnect,
+}: AccountConnectionInputProps) => {
   return (
     <Card css={styles.root}>
       <Card.Body css={styles.body}>
@@ -52,12 +55,20 @@ export const NetworkConnectCard = ({
                 </Button>
               ) : (
                 <Button
-                  onPress={onConnect}
                   isLoading={isConnecting}
                   leftIcon={<Icon icon="Circle" color="red10" fill="red10" />}
-                  rightIcon="CaretDown"
+                  rightIcon={
+                    <IconButton
+                      icon="X"
+                      variant="link"
+                      color="gray"
+                      onPress={onDisconnect}
+                      aria-label="Disconnect account"
+                    />
+                  }
                   variant="outlined"
-                  css={{ ...styles.connectButton, ...styles.accountButton }}
+                  color="gray"
+                  css={styles.connectButton}
                 >
                   {shortAddress(currentAccount)}
                 </Button>
@@ -84,9 +95,5 @@ const styles = {
     height: '22px',
     width: '140px',
     fontSize: '$xs',
-  }),
-  accountButton: cssObj({
-    color: '$blackA12',
-    borderColor: '$gray11',
   }),
 };
