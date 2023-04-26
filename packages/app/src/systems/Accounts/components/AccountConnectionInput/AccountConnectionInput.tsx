@@ -64,6 +64,7 @@ export const AccountConnectionInput = ({
                       color="gray"
                       onPress={onDisconnect}
                       aria-label="Disconnect account"
+                      tooltip="Disconnect wallet"
                     />
                   }
                   variant="outlined"
