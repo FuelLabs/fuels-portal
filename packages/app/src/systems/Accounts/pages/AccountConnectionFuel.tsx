@@ -6,8 +6,6 @@ export const AccountConnectionFuel = () => {
   const { isLoading, handlers, fuel, currentAccount } =
     useAccountConnectionFuel();
 
-  console.log('Current acount', currentAccount);
-
   return (
     <AccountConnectionInput
       networkName="Fuel"
@@ -15,6 +13,7 @@ export const AccountConnectionFuel = () => {
       label="To"
       isConnecting={isLoading}
       onConnect={fuel ? handlers.connect : handlers.openFuelInstall}
+      onDisconnect={handlers.disconnect}
       currentAccount={currentAccount}
     />
   );

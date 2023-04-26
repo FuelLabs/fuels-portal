@@ -1,8 +1,8 @@
 import { cssObj } from '@fuel-ui/css';
 import { Dialog } from '@fuel-ui/react';
 
+import { FuelInstallPopup } from '~/systems/Accounts';
 import { AccountConnectToEthDialog } from '~/systems/Accounts/pages/AccountConnectToEthDialog';
-import { FuelInstallPopup } from '~/systems/Bridge';
 import { useOverlay } from '~/systems/Overlay';
 
 const OVERLAY_HEIGHT = 100;

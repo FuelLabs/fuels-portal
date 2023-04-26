@@ -9,11 +9,12 @@ export type AccountMachineContext = {
 
 type AccountMachineEvents =
   | { type: 'WALLET_DETECTED'; value: Fuel }
-  | { type: 'CONNECT' };
+  | { type: 'CONNECT' }
+  | { type: 'DISCONNECT' };
 
 type AccountMachineServices = {
   fetchAccount: {
-    data: string;
+    data: string | undefined;
   };
   fetchIsConnected: {
     data: boolean;
@@ -56,6 +57,9 @@ export const accountMachine = createMachine(
               CONNECT: {
                 target: 'connecting',
               },
+              DISCONNECT: {
+                target: 'disconnecting',
+              },
             },
           },
           fetchingConnection: {
@@ -81,6 +85,17 @@ export const accountMachine = createMachine(
             tags: ['isLoading'],
             invoke: {
               src: (ctx) => ctx.fuel!.connect(),
+              onDone: [
+                {
+                  target: 'fetchingAccount',
+                },
+              ],
+            },
+          },
+          disconnecting: {
+            tags: ['isLoading'],
+            invoke: {
+              src: (ctx) => ctx.fuel!.disconnect(),
               onDone: [
                 {
                   target: 'fetchingAccount',
@@ -114,7 +129,14 @@ export const accountMachine = createMachine(
       }),
     },
     services: {
-      fetchAccount: (ctx) => ctx.fuel!.currentAccount(),
+      fetchAccount: async (ctx) => {
+        try {
+          const currentAccount = await ctx.fuel!.currentAccount();
+          return currentAccount;
+        } catch (error: unknown) {
+          return undefined;
+        }
+      },
       fetchIsConnected: (ctx) => ctx.fuel!.isConnected(),
     },
   }

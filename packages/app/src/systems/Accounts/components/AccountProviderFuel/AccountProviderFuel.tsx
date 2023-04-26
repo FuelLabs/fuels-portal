@@ -10,6 +10,7 @@ import type {
 } from '../../machines';
 
 const accountServiceContext = createContext<AccountMachineService>(
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   null as AccountMachineService
 );

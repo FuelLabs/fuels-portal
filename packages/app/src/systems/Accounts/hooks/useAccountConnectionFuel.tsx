@@ -15,7 +15,7 @@ export const useAccountConnectionFuel = () => {
   return {
     handlers: {
       connect: () => service.send('CONNECT'),
-      disconnect: () => {},
+      disconnect: () => service.send('DISCONNECT'),
       openFuelInstall: store.openFuelInstall,
       closeDialog: store.closeOverlay,
     },
