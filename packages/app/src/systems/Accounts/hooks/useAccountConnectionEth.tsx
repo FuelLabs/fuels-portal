@@ -6,8 +6,6 @@ import {
   useEnsName,
 } from 'wagmi';
 
-import { store } from '~/store';
-
 export function useAccountConnectionEth() {
   const { address, isConnected } = useAccount();
   const { data: ensName } = useEnsName({ address });
@@ -21,7 +19,6 @@ export function useAccountConnectionEth() {
     handlers: {
       connect,
       disconnect,
-      closeDialog: store.closeOverlay,
     },
     address,
     ens: {
