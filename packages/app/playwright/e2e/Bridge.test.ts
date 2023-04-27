@@ -3,7 +3,7 @@ import test, { chromium } from '@playwright/test';
 
 import { hasText, visit } from '../commons';
 
-test.describe('Home', () => {
+test.describe('Bridge', () => {
   let browser: Browser;
   let page: Page;
 
@@ -12,8 +12,8 @@ test.describe('Home', () => {
     page = await browser.newPage();
   });
 
-  test('Should render Hi', async () => {
-    await visit(page, '/');
-    await hasText(page, /Hi/i);
+  test('Should render Fuel Native Bridge', async () => {
+    await visit(page, '/bridge');
+    await hasText(page, /Fuel Native Bridge/i);
   });
 });
