@@ -15,7 +15,7 @@ type BridgeStepsProps = {
 
 export const BridgeSteps = ({ steps }: BridgeStepsProps) => {
   return (
-    <Stack css={styles.stack}>
+    <Stack gap={0} css={styles.stack}>
       {steps.map((step, index) => {
         return (
           <Flex
@@ -40,9 +40,11 @@ export const BridgeSteps = ({ steps }: BridgeStepsProps) => {
                   </Text>
                 </Box>
               </Flex>
-              <Text color="blackA12">{step.name}</Text>
+              <Text fontSize="xs" color="blackA12" css={styles.name}>
+                {step.name}
+              </Text>
             </Flex>
-            {step.status}
+            <Text fontSize="xs">{step.status}</Text>
           </Flex>
         );
       })}
@@ -55,17 +57,19 @@ const styles = {
     width: '344px',
     backgroundColor: '$whiteA12',
     borderRadius: '$md',
-    px: '$4',
-    py: '$2',
+    border: '1px solid $gray11',
   }),
   item: cssObj({
+    px: '$3',
+    py: '$2',
+
     '& ~ &': {
       borderTop: '1px solid $gray11',
-      paddingTop: '$2',
     },
   }),
+  name: cssObj({ lineHeight: '1.5rem' }),
   number: cssObj({
-    marginLeft: '-13px',
+    marginLeft: '-14px',
     marginTop: '4px',
   }),
 };
