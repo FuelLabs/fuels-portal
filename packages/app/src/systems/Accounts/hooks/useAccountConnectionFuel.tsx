@@ -1,8 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import type { FuelAccountMachineState } from '../machines';
 
 import { useFuel } from './useFuel';
+import { useIsConnected } from './useIsConnected';
 
 import { Services, store } from '~/store';
 
@@ -12,17 +13,27 @@ const selectors = {
 
 export const useAccountConnectionFuel = () => {
   const fuel = useFuel();
+  const isConnected = useIsConnected();
+
   useEffect(() => {
     if (fuel) {
       store.walletDetected(fuel);
     }
   }, [fuel]);
+
+  const { context } = store.getStateFrom('fuelAccount');
+  const currentAccount = context.currentAccount;
+
+  useEffect(() => {
+    if (!isConnected && currentAccount) {
+      store.disconnect();
+    }
+  }, [isConnected]);
+
   const isLoading = store.useSelector(
     Services.fuelAccount,
     selectors.isLoading
   );
-  const { context } = store.getStateFrom('fuelAccount');
-  const currentAccount = context.currentAccount;
 
   return {
     handlers: {
