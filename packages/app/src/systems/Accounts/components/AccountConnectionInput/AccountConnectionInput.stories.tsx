@@ -50,7 +50,29 @@ export const ConnectedAccount = () => {
         label="To"
         isConnecting={false}
         onConnect={() => {}}
-        currentAccount="fuel14kz7u7jpd8txfe2vtgh5hxjx4wk7s03kq8hcl2k7slwe3yqh5sas974464"
+        account={{
+          address:
+            'fuel14kz7u7jpd8txfe2vtgh5hxjx4wk7s03kq8hcl2k7slwe3yqh5sas974464',
+        }}
+      />
+    </Flex>
+  );
+};
+
+export const ConnectedENSAccount = () => {
+  return (
+    <Flex align="center" justify="center" css={styles.storybook}>
+      <AccountConnectionInput
+        networkName="Fuel"
+        networkImageUrl={imageSrc}
+        label="To"
+        isConnecting={false}
+        onConnect={() => {}}
+        account={{
+          address:
+            'fuel14kz7u7jpd8txfe2vtgh5hxjx4wk7s03kq8hcl2k7slwe3yqh5sas974464',
+          alias: 'luizasfight.eth',
+        }}
       />
     </Flex>
   );
