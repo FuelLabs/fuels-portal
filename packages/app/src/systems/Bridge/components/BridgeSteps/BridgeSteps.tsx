@@ -1,12 +1,13 @@
 import { cssObj } from '@fuel-ui/css';
 import { Flex, Icon, Stack, Box, Text } from '@fuel-ui/react';
+import type { ReactNode } from 'react';
 
 type Step = {
-  name: string;
-  status: string;
-  isLoading: boolean;
-  isDone: boolean;
-  isSelected: boolean;
+  name: ReactNode;
+  status: ReactNode;
+  isLoading?: boolean;
+  isDone?: boolean;
+  isSelected?: boolean;
 };
 
 type BridgeStepsProps = {
@@ -19,22 +20,23 @@ export const BridgeSteps = ({ steps }: BridgeStepsProps) => {
       {steps.map((step, index) => {
         return (
           <Flex
-            key={index}
+            key={`${index}_${step.name?.toString()}`}
             align="center"
             justify="space-between"
             css={styles.item}
           >
             <Flex gap="$2">
               <Flex>
-                <Icon
-                  icon="Circle"
-                  size={20}
-                  color={step.isSelected ? 'accent9' : undefined}
-                />
-                <Box css={styles.number}>
+                <Box
+                  css={{
+                    ...styles.circle,
+                    borderColor: step.isSelected ? '$accent9' : undefined,
+                  }}
+                >
                   <Text
                     fontSize="xs"
                     color={step.isSelected ? 'blackA12' : undefined}
+                    css={styles.number}
                   >
                     {index + 1}
                   </Text>
@@ -44,7 +46,7 @@ export const BridgeSteps = ({ steps }: BridgeStepsProps) => {
                 {step.name}
               </Text>
             </Flex>
-            <Text fontSize="xs">{step.status}</Text>
+            {step.status}
           </Flex>
         );
       })}
@@ -68,8 +70,12 @@ const styles = {
     },
   }),
   name: cssObj({ lineHeight: '1.5rem' }),
-  number: cssObj({
-    marginLeft: '-14px',
-    marginTop: '4px',
+  number: cssObj({}),
+  circle: cssObj({
+    minWidth: 20,
+    height: 20,
+    border: '1px solid',
+    borderColor: '$gray11',
+    borderRadius: '$full',
   }),
 };
