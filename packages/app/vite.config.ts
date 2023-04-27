@@ -8,4 +8,7 @@ export default defineConfig({
     port: 3004,
   },
   plugins: [react(), tsconfigPaths()],
+  define: {
+    'process.env': {},
+  },
 });

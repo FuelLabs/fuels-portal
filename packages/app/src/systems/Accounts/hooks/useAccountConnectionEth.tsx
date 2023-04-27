@@ -1,9 +1,17 @@
-import { useAccount, useConnect, useDisconnect } from 'wagmi';
+import {
+  useAccount,
+  useConnect,
+  useDisconnect,
+  useEnsAvatar,
+  useEnsName,
+} from 'wagmi';
 
 import { store } from '~/store';
 
 export function useAccountConnectionEth() {
   const { address, isConnected } = useAccount();
+  const { data: ensName } = useEnsName({ address });
+  const { data: ensAvatar } = useEnsAvatar({ address });
 
   const { connect, connectors, error, pendingConnector, isLoading } =
     useConnect();
@@ -13,10 +21,13 @@ export function useAccountConnectionEth() {
     handlers: {
       connect,
       disconnect,
-      openAccountConnectionEth: store.openAccountConnectionEth,
       closeDialog: store.closeOverlay,
     },
     address,
+    ens: {
+      name: ensName || undefined,
+      avatar: ensAvatar || undefined,
+    },
     isConnected,
     connectors,
     error,
