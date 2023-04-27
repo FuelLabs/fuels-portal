@@ -1,25 +1,37 @@
-import { useSelector } from '@xstate/react';
+import { useEffect } from 'react';
 
-import { useAccountFuelService } from '../components';
-import type { AccountMachineState } from '../machines';
+import type { FuelAccountMachineState } from '../machines';
 
-import { store } from '~/store';
+import { useFuel } from './useFuel';
+
+import { Services, store } from '~/store';
+
+const selectors = {
+  isLoading: (state: FuelAccountMachineState) => state.hasTag('isLoading'),
+};
 
 export const useAccountConnectionFuel = () => {
-  const service = useAccountFuelService();
-  const isLoading = useSelector(service, (state: AccountMachineState) => {
-    return state.hasTag('isLoading');
-  });
-  const currentAccount = service.getSnapshot().context.currentAccount;
+  const fuel = useFuel();
+  useEffect(() => {
+    if (fuel) {
+      store.walletDetected(fuel);
+    }
+  }, [fuel]);
+  const isLoading = store.useSelector(
+    Services.fuelAccount,
+    selectors.isLoading
+  );
+  const { context } = store.getStateFrom('fuelAccount');
+  const currentAccount = context.currentAccount;
 
   return {
     handlers: {
-      connect: () => service.send('CONNECT'),
-      disconnect: () => service.send('DISCONNECT'),
+      connect: store.connect,
+      disconnect: store.disconnect,
       openFuelInstall: store.openFuelInstall,
       closeDialog: store.closeOverlay,
     },
-    fuel: service.getSnapshot().context.fuel,
+    fuel: context.fuel,
     currentAccount,
     isConnected: !!currentAccount,
     isLoading,
