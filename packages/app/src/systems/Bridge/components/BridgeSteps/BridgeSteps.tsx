@@ -25,23 +25,20 @@ export const BridgeSteps = ({ steps }: BridgeStepsProps) => {
             justify="space-between"
             css={styles.item}
           >
-            <Flex gap="$2">
-              <Flex>
-                <Box
-                  css={{
-                    ...styles.circle,
-                    borderColor: step.isSelected ? '$accent9' : undefined,
-                  }}
+            <Flex gap="$2" align="center">
+              <Box
+                css={{
+                  ...styles.circle,
+                  borderColor: step.isSelected ? '$accent9' : undefined,
+                }}
+              >
+                <Text
+                  color={step.isSelected ? 'blackA12' : undefined}
+                  css={styles.number}
                 >
-                  <Text
-                    fontSize="xs"
-                    color={step.isSelected ? 'blackA12' : undefined}
-                    css={styles.number}
-                  >
-                    {index + 1}
-                  </Text>
-                </Box>
-              </Flex>
+                  {index + 1}
+                </Text>
+              </Box>
               <Text fontSize="xs" color="blackA12" css={styles.name}>
                 {step.name}
               </Text>
@@ -63,15 +60,22 @@ const styles = {
   }),
   item: cssObj({
     px: '$3',
-    py: '$2',
+    py: '$1',
 
     '& ~ &': {
       borderTop: '1px solid $gray11',
     },
   }),
   name: cssObj({ lineHeight: '1.5rem' }),
-  number: cssObj({}),
+  number: cssObj({
+    display: 'flex',
+    justifyContent: 'center',
+    fontSize: '8px',
+  }),
   circle: cssObj({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     minWidth: 20,
     height: 20,
     border: '1px solid',
