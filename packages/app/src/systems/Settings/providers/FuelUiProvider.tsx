@@ -7,7 +7,7 @@ export function FuelUiProvider({ children }: PropsWithChildren) {
   const { theme } = useTheme();
 
   return (
-    <ThemeProvider key={theme} theme={theme || 'light'}>
+    <ThemeProvider key={theme} theme={theme}>
       {children}
     </ThemeProvider>
   );
