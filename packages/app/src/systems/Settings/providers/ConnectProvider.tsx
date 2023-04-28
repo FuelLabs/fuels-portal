@@ -1,7 +1,7 @@
 import { ConnectKitProvider } from 'connectkit';
 import type { ReactNode } from 'react';
 import type { ChainProviderFn } from 'wagmi';
-import { WagmiConfig, createClient, mainnet, configureChains } from 'wagmi';
+import { WagmiConfig, createClient, configureChains } from 'wagmi';
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
@@ -12,7 +12,7 @@ import { publicProvider } from 'wagmi/providers/public';
 
 import { useTheme } from '../hooks';
 
-import { VITE_ALCHEMY_ID, VITE_WALLETCONNECT_ID } from '~/config';
+import { ETH_CHAIN, VITE_ALCHEMY_ID, VITE_WALLETCONNECT_ID } from '~/config';
 
 const app = {
   name: 'Fuel Bridge',
@@ -20,7 +20,7 @@ const app = {
   url: 'https://fuels-portal.vercel.app',
   icons: ['https://fuels-portal.vercel.app/fuel-logo.svg'],
 };
-const chainsToConnect = [mainnet];
+const chainsToConnect = [ETH_CHAIN];
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const providers: ChainProviderFn<any, any, any>[] = [
   alchemyProvider({ apiKey: VITE_ALCHEMY_ID }),
