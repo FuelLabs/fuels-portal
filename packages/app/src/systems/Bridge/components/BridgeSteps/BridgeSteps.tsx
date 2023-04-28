@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Flex, Icon, Stack, Box, Text } from '@fuel-ui/react';
+import { Flex, Stack, Box, Text } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
 
 type Step = {
