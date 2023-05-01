@@ -15,8 +15,8 @@
     "xstate:typegen": "xstate typegen 'src/**/*.ts?(x)'"
   },
   "dependencies": {
-    "@fuel-ui/css": "^0.13.0",
-    "@fuel-ui/react": "^0.13.0",
+    "@fuel-ui/css": "^0.14.2",
+    "@fuel-ui/react": "^0.14.2",
     "@fuels-portal/store": "workspace:*",
     "@storybook/manager-api": "^7.0.3",
     "@storybook/theming": "^7.0.3",
