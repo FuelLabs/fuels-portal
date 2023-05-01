@@ -49,6 +49,44 @@ export const Usage = () => {
   );
 };
 
+export const Mixed = () => {
+  const steps = [
+    {
+      name: 'Submit to bridge',
+      status: <Text fontSize="xs">Action</Text>,
+      isLoading: false,
+      isDone: true,
+      isSelected: true,
+    },
+    {
+      name: 'Settlement',
+      status: <Text fontSize="xs">Wait ~15 min</Text>,
+      isLoading: true,
+      isDone: false,
+      isSelected: true,
+    },
+    {
+      name: 'Confirm transaction',
+      status: <Text fontSize="xs">Action</Text>,
+      isLoading: false,
+      isDone: false,
+      isSelected: false,
+    },
+    {
+      name: 'Receive funds',
+      status: <Text fontSize="xs">Automatic</Text>,
+      isLoading: false,
+      isDone: false,
+      isSelected: false,
+    },
+  ];
+  return (
+    <Flex align="center" justify="center" css={styles.storybook}>
+      <BridgeSteps steps={steps} />
+    </Flex>
+  );
+};
+
 const styles = {
   storybook: cssObj({
     margin: '20px',
