@@ -6,6 +6,7 @@ module.exports = {
     '@storybook/addon-interactions',
     '@storybook/addon-mdx-gfm',
     'storybook-addon-react-router-v6',
+    'storybook-dark-mode',
   ],
   framework: {
     name: '@storybook/react-vite',
