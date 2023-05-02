@@ -18,7 +18,7 @@ const fuelDev = {
   testnet: true,
 };
 const fuelBeta3 = {
-  id: 1001,
+  id: 1002,
   network: 'fuel_beta3',
   name: 'Fuel Beta3',
   testnet: true,

@@ -1,6 +1,7 @@
 import { cssObj } from '@fuel-ui/css';
 import { Dialog } from '@fuel-ui/react';
 
+import { BridgeTxDialog } from '~/systems/Bridge';
 import { useOverlay } from '~/systems/Overlay';
 
 const OVERLAY_HEIGHT = 100;
@@ -12,8 +13,7 @@ export function OverlayDialog() {
   return (
     <Dialog isOpen={overlay.isDialogOpen}>
       <Dialog.Content css={styles.content}>
-        {/* TODO: replace this example with real Dialog needed />} */}
-        {/* {overlay.is('accounts.connect.eth') && <AccountConnectToEthDialog />} */}
+        {overlay.is('bridge.tx') && <BridgeTxDialog />}
       </Dialog.Content>
     </Dialog>
   );

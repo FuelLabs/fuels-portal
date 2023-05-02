@@ -4,12 +4,14 @@ import {
   useDisconnect,
   useEnsAvatar,
   useEnsName,
+  useSigner,
 } from 'wagmi';
 
 export function useAccountConnectionEth() {
   const { address, isConnected } = useAccount();
   const { data: ensName } = useEnsName({ address });
   const { data: ensAvatar } = useEnsAvatar({ address });
+  const { data: signer } = useSigner();
 
   const { connect, connectors, error, pendingConnector, isLoading } =
     useConnect();
@@ -30,5 +32,6 @@ export function useAccountConnectionEth() {
     error,
     isLoading,
     pendingConnector,
+    signer,
   };
 }

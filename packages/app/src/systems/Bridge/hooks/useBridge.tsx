@@ -1,3 +1,4 @@
+import { bn } from 'fuels';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -45,7 +46,7 @@ const selectors = {
 };
 
 export function useBridge() {
-  const { address: ethAddress } = useAccountConnectionEth();
+  const { address: ethAddress, signer: ethSigner } = useAccountConnectionEth();
   const fromNetwork = store.useSelector(Services.bridge, selectors.fromNetwork);
   const toNetwork = store.useSelector(Services.bridge, selectors.toNetwork);
   const status = store.useSelector(
@@ -61,6 +62,13 @@ export function useBridge() {
   const queryParams = new URLSearchParams(location.search);
   const fromInput = queryParams.get('from');
   const toInput = queryParams.get('to');
+
+  useEffect(() => {
+    store.openBridgeTx({
+      ethTxId:
+        '0xd3cf87b96663bb9e078a1456b43fc79f499733588c3fa6148326adeb7336be18',
+    });
+  }, []);
 
   useEffect(() => {
     if (!fromInput || !toInput) {
@@ -95,10 +103,22 @@ export function useBridge() {
     });
   }
 
+  function startBridging() {
+    // TODO: will need to get real value from InputAmount when implements from fuel-ui
+    // Parse 18 units of ETH
+    const amount = bn.parseUnits('0.1', 18);
+
+    store.startBridging({
+      amount,
+      ethSigner,
+    });
+  }
+
   return {
     handlers: {
       goToDeposit,
       goToWithdraw,
+      startBridging,
     },
     fromNetwork,
     toNetwork,

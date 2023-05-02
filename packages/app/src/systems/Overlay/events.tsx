@@ -19,5 +19,16 @@ export function overlayEvents(store: Store) {
         },
       });
     },
+    openBridgeTx({ ethTxId }: { ethTxId: string }) {
+      store.send(Services.overlay, {
+        type: 'OPEN',
+        input: {
+          modal: 'bridge.tx',
+          params: {
+            ethTxId,
+          },
+        },
+      });
+    },
   };
 }
