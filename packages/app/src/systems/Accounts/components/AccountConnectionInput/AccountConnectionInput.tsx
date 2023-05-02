@@ -110,7 +110,7 @@ const styles = {
   circle: cssObj({
     minWidth: 10,
     height: 10,
-    backgroundColor: '$red10',
+    backgroundColor: '$intentsError10',
     borderRadius: '$full',
   }),
   disconnectButton: cssObj({
