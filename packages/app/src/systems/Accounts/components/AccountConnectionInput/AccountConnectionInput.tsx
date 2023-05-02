@@ -1,14 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import {
-  Card,
-  Stack,
-  Text,
-  Flex,
-  Image,
-  Button,
-  Box,
-  IconButton,
-} from '@fuel-ui/react';
+import { Card, Text, Image, Button, Box, IconButton } from '@fuel-ui/react';
 
 import { shortAddress } from '~/systems/Core/utils';
 
@@ -38,15 +29,15 @@ export const AccountConnectionInput = ({
   return (
     <Card css={styles.root}>
       <Card.Body css={styles.body}>
-        <Stack gap="$1">
+        <Box.Stack gap="$1">
           <Box>
             <Text fontSize="sm">{label}</Text>
           </Box>
-          <Flex align="center" wrap="wrap" justify="space-between">
-            <Flex gap="$2" align="center">
+          <Box.Flex align="center" wrap="wrap" justify="space-between">
+            <Box.Flex gap="$2" align="center">
               <Image width="20" height="20" src={networkImageUrl} />
               <Text>{networkName}</Text>
-            </Flex>
+            </Box.Flex>
             {!account?.address ? (
               <Button
                 onPress={onConnect}
@@ -81,8 +72,8 @@ export const AccountConnectionInput = ({
                 </Text>
               </Button>
             )}
-          </Flex>
-        </Stack>
+          </Box.Flex>
+        </Box.Stack>
       </Card.Body>
     </Card>
   );

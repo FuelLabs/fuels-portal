@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Flex, FuelLogo, IconButton, ButtonLink, Link } from '@fuel-ui/react';
+import { Box, FuelLogo, IconButton, ButtonLink, Link } from '@fuel-ui/react';
 import { useLocation } from 'react-router-dom';
 
 import { useTheme } from '~/systems/Settings';
@@ -14,8 +14,8 @@ export function Header() {
   };
 
   return (
-    <Flex as="header" css={styles.root}>
-      <Flex gap="$4" css={styles.menu}>
+    <Box.Flex as="header" css={styles.root}>
+      <Box.Flex gap="$4" css={styles.menu}>
         <Link href="/" className="logo">
           <FuelLogo size={24} />
         </Link>
@@ -34,9 +34,9 @@ export function Header() {
         <ButtonLink href={Pages.labs} className={getClassName(Pages.labs)}>
           Labs
         </ButtonLink>
-      </Flex>
-      <Flex gap="$4" css={styles.desktop}>
-        <Flex gap="$4" css={styles.menu}>
+      </Box.Flex>
+      <Box.Flex gap="$4" css={styles.desktop}>
+        <Box.Flex gap="$4" css={styles.menu}>
           <ButtonLink
             href={Pages.bridge}
             className={getClassName(Pages.bridge)}
@@ -52,8 +52,8 @@ export function Header() {
           <ButtonLink href={Pages.ecosystem} className={Pages.ecosystem}>
             Ecosystem
           </ButtonLink>
-        </Flex>
-        <Flex gap="$1" css={styles.buttonContainer}>
+        </Box.Flex>
+        <Box.Flex gap="$1" css={styles.buttonContainer}>
           <IconButton
             icon="Moon"
             aria-label="Theme-Switch"
@@ -61,9 +61,9 @@ export function Header() {
             css={{ ...styles.connectButton, ...styles.iconButton }}
             onPress={handlers.toggleTheme}
           />
-        </Flex>
-      </Flex>
-    </Flex>
+        </Box.Flex>
+      </Box.Flex>
+    </Box.Flex>
   );
 }
 

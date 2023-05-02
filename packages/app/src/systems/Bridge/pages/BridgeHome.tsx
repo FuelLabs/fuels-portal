@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Text, Flex, ButtonLink } from '@fuel-ui/react';
+import { Text, Box, ButtonLink } from '@fuel-ui/react';
 import { useLocation } from 'react-router-dom';
 
 import { Bridge } from './Bridge';
@@ -20,12 +20,12 @@ export const BridgeHome = () => {
         <Text fontSize="2xl" css={styles.heading}>
           Fuel Native Bridge
         </Text>
-        <Flex gap="$2" css={styles.buttonLinks}>
+        <Box.Flex gap="$2" css={styles.buttonLinks}>
           <ButtonLink className={getClassName(Pages.bridge)}>Bridge</ButtonLink>
           <ButtonLink className={getClassName(Pages.transactions)}>
             Transactions
           </ButtonLink>
-        </Flex>
+        </Box.Flex>
         <Bridge />
       </Layout.Content>
     </Layout>
