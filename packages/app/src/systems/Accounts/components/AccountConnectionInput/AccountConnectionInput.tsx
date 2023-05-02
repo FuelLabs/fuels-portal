@@ -54,7 +54,7 @@ export const AccountConnectionInput = ({
                   <IconButton
                     icon="X"
                     variant="link"
-                    color="gray"
+                    intent="base"
                     onPress={onDisconnect}
                     aria-label="Disconnect account"
                     iconSize={12}
@@ -62,7 +62,7 @@ export const AccountConnectionInput = ({
                   />
                 }
                 variant="outlined"
-                color="gray"
+                intent="base"
                 size="xs"
                 css={{ ...styles.connectButton, ...styles.connectedButton }}
               >
@@ -101,7 +101,7 @@ const styles = {
   circle: cssObj({
     minWidth: 10,
     height: 10,
-    backgroundColor: '$intentsError10',
+    backgroundColor: '$intentsError9',
     borderRadius: '$full',
   }),
   disconnectButton: cssObj({

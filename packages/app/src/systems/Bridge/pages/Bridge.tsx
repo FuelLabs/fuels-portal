@@ -64,7 +64,7 @@ const styles = {
     '& > :after': { content: 'none' },
 
     'button.bridge--navItemActive': {
-      backgroundColor: '$whiteA12',
+      backgroundColor: '$intentsBase12',
     },
   }),
   tabTrigger: cssObj({
