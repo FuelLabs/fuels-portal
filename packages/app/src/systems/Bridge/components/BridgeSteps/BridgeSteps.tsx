@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Flex, Stack, Box, Text } from '@fuel-ui/react';
+import { Flex, Stack, Box, Text, Icon } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
 
 type Step = {
@@ -31,14 +31,20 @@ export const BridgeSteps = ({ steps }: BridgeStepsProps) => {
                   ...styles.circle,
                   borderColor: step.isSelected ? '$accent9' : undefined,
                 }}
+                className={step.isDone ? 'circleDone' : undefined}
               >
-                <Text
-                  color={step.isSelected ? 'blackA12' : undefined}
-                  css={styles.number}
-                >
-                  {index + 1}
-                </Text>
+                {step.isDone ? (
+                  <Icon icon="Check" color="blackA12" size={10} />
+                ) : (
+                  <Text
+                    color={step.isSelected ? 'blackA12' : undefined}
+                    css={styles.number}
+                  >
+                    {index + 1}
+                  </Text>
+                )}
               </Box>
+
               <Text fontSize="xs" color="blackA12" css={styles.name}>
                 {step.name}
               </Text>
@@ -64,6 +70,11 @@ const styles = {
 
     '& ~ &': {
       borderTop: '1px solid $gray11',
+    },
+
+    '.circleDone': {
+      backgroundColor: '$accent9',
+      border: '1px solid $accent9',
     },
   }),
   name: cssObj({ lineHeight: '1.5rem' }),

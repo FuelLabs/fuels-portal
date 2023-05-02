@@ -53,14 +53,23 @@ export const Mixed = () => {
   const steps = [
     {
       name: 'Submit to bridge',
-      status: <Text fontSize="xs">Action</Text>,
+      status: <Text fontSize="xs">Done!</Text>,
       isLoading: false,
       isDone: true,
-      isSelected: true,
+      isSelected: false,
     },
     {
       name: 'Settlement',
-      status: <Text fontSize="xs">Wait ~15 min</Text>,
+      status: (
+        <Text
+          fontSize="xs"
+          leftIcon="SpinnerGap"
+          iconSize={10}
+          css={{ gap: '$1' }}
+        >
+          ~5 minutes left
+        </Text>
+      ),
       isLoading: true,
       isDone: false,
       isSelected: true,
