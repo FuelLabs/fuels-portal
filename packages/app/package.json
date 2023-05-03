@@ -15,6 +15,9 @@
     "xstate:typegen": "xstate typegen 'src/**/*.ts?(x)'"
   },
   "dependencies": {
+    "@ethersproject/abi": "^5.7.0",
+    "@ethersproject/bytes": "^5.7.0",
+    "@ethersproject/providers": "^5.7.2",
     "@fuel-ui/css": "^0.13.0",
     "@fuel-ui/react": "^0.13.0",
     "@fuels-portal/store": "workspace:*",

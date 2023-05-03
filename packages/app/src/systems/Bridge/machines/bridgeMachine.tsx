@@ -6,11 +6,18 @@ import { BridgeService } from '../services';
 import type { FromToNetworks } from '../utils';
 import { isEthChain, isFuelChain } from '../utils';
 
+import { store } from '~/store';
 import { FetchMachine } from '~/systems/Core';
 
 type MachineContext = {
   ethAddress?: string;
 } & Partial<FromToNetworks>;
+
+type MachineServices = {
+  bridge: {
+    data: string;
+  };
+};
 
 export enum BridgeStatus {
   waitingNetworkFrom = 'Select a network to bridge from',
@@ -39,6 +46,7 @@ export const bridgeMachine = createMachine(
     tsTypes: {} as import('./bridgeMachine.typegen').Typegen0,
     schema: {
       context: {} as MachineContext,
+      services: {} as MachineServices,
       events: {} as BridgeMachineEvents,
     },
     predictableActionArguments: true,
@@ -75,6 +83,7 @@ export const bridgeMachine = createMachine(
               target: 'failed',
             },
             {
+              actions: ['openBridgeTxDialog'],
               target: 'idle',
             },
           ],
@@ -90,11 +99,16 @@ export const bridgeMachine = createMachine(
         fromNetwork: ev.input.fromNetwork,
         toNetwork: ev.input.toNetwork,
       })),
+      openBridgeTxDialog: (_, ev) => {
+        store.openBridgeTx({
+          ethTxId: ev.data,
+        });
+      },
     },
     services: {
       bridge: FetchMachine.create<
         BridgeInputs['bridge'] & FromToNetworks,
-        string
+        MachineServices['bridge']['data']
       >({
         showError: true,
         maxAttempts: 1,
@@ -114,10 +128,12 @@ export const bridgeMachine = createMachine(
           }
 
           if (isEthChain(fromNetwork) && isFuelChain(toNetwork)) {
-            return BridgeService.bridgeEthToFuel({
+            const ethTxHash = await BridgeService.bridgeEthToFuel({
               amount,
               ethSigner,
             });
+
+            return ethTxHash;
           }
 
           throw new Error('Bridge between this networks is not supported');

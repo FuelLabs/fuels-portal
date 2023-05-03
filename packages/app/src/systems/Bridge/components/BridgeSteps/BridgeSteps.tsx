@@ -5,19 +5,18 @@ import type { ReactNode } from 'react';
 type Step = {
   name: ReactNode;
   status: ReactNode;
-  isLoading?: boolean;
   isDone?: boolean;
   isSelected?: boolean;
 };
 
 type BridgeStepsProps = {
-  steps: Step[];
+  steps?: Step[];
 };
 
 export const BridgeSteps = ({ steps }: BridgeStepsProps) => {
   return (
     <Stack gap={0} css={styles.stack}>
-      {steps.map((step, index) => {
+      {steps?.map((step, index) => {
         return (
           <Flex
             key={`${index}_${step.name?.toString()}`}

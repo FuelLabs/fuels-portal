@@ -38,8 +38,6 @@ export class BridgeService {
       value: input.amount.toHex(),
     });
 
-    const result = await tx.wait();
-
-    return result.transactionHash;
+    return tx.hash;
   }
 }

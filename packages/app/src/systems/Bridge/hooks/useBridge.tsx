@@ -64,13 +64,6 @@ export function useBridge() {
   const toInput = queryParams.get('to');
 
   useEffect(() => {
-    store.openBridgeTx({
-      ethTxId:
-        '0xd3cf87b96663bb9e078a1456b43fc79f499733588c3fa6148326adeb7336be18',
-    });
-  }, []);
-
-  useEffect(() => {
     if (!fromInput || !toInput) {
       goToDeposit();
     } else {

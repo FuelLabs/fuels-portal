@@ -1,12 +1,13 @@
 import { Button, Dialog, Icon, IconButton } from '@fuel-ui/react';
 
+import { BridgeSteps } from '../components';
 import { useBridgeTx } from '../hooks';
 
 import { useOverlay } from '~/systems/Overlay';
 
 export function BridgeTxDialog() {
   const { metadata } = useOverlay<{ ethTxId: string }>();
-  const { handlers } = useBridgeTx({
+  const { steps, handlers } = useBridgeTx({
     ethTxId: metadata.ethTxId,
   });
 
@@ -22,7 +23,9 @@ export function BridgeTxDialog() {
           onPress={handlers.close}
         />
       </Dialog.Heading>
-      <Dialog.Description>Test</Dialog.Description>
+      <Dialog.Description>
+        <BridgeSteps steps={steps} />
+      </Dialog.Description>
       <Dialog.Footer>
         <Button>Test Button</Button>
       </Dialog.Footer>
