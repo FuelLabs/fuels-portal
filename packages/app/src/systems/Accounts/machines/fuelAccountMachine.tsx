@@ -10,7 +10,8 @@ export type AccountMachineContext = {
 type AccountMachineEvents =
   | { type: 'WALLET_DETECTED'; value: Fuel }
   | { type: 'CONNECT' }
-  | { type: 'DISCONNECT' };
+  | { type: 'DISCONNECT' }
+  | { type: 'CONNECTION_REMOVED' };
 
 type AccountMachineServices = {
   fetchAccount: {
@@ -59,6 +60,9 @@ export const fuelAccountMachine = createMachine(
               },
               DISCONNECT: {
                 target: 'disconnecting',
+              },
+              CONNECTION_REMOVED: {
+                target: 'fetchingAccount',
               },
             },
           },
@@ -136,7 +140,7 @@ export const fuelAccountMachine = createMachine(
           const currentAccount = await ctx.fuel!.currentAccount();
           return currentAccount;
         } catch (error: unknown) {
-          return ctx.currentAccount || undefined;
+          return undefined;
         }
       },
       fetchIsConnected: (ctx) => ctx.fuel!.isConnected(),

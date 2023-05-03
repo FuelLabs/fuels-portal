@@ -14,5 +14,8 @@ export const fuelAccountEvents = (store: Store) => {
     disconnect() {
       store.send(Services.fuelAccount, { type: 'DISCONNECT' });
     },
+    connectionRemoved() {
+      store.send(Services.fuelAccount, { type: 'CONNECTION_REMOVED' });
+    },
   };
 };

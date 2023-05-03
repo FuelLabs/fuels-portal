@@ -14,7 +14,7 @@ export const AccountConnectionFuel = () => {
       isConnecting={isLoading}
       onConnect={fuel ? handlers.connect : handlers.openFuelInstall}
       onDisconnect={handlers.disconnect}
-      currentAccount={currentAccount}
+      account={{ address: currentAccount }}
     />
   );
 };

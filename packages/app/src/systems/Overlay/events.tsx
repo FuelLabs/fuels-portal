@@ -19,14 +19,6 @@ export function overlayEvents(store: Store) {
         },
       });
     },
-    openAccountConnectionEth() {
-      store.send(Services.overlay, {
-        type: 'OPEN',
-        input: {
-          modal: 'accounts.connect.eth',
-        },
-      });
-    },
     openFuelInstall() {
       store.send(Services.overlay, {
         type: 'OPEN',

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import type { FuelAccountMachineState } from '../machines';
 
@@ -26,7 +26,7 @@ export const useAccountConnectionFuel = () => {
 
   useEffect(() => {
     if (!isConnected && currentAccount) {
-      store.disconnect();
+      store.connectionRemoved();
     }
   }, [isConnected]);
 
