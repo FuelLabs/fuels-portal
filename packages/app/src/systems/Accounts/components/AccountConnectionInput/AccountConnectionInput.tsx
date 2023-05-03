@@ -6,7 +6,6 @@ import {
   Flex,
   Image,
   Button,
-  Icon,
   Box,
   IconButton,
 } from '@fuel-ui/react';
@@ -18,7 +17,11 @@ type AccountConnectionInputProps = {
   networkImageUrl: string;
   label: string;
   isConnecting?: boolean;
-  currentAccount?: string;
+  account?: {
+    address?: string;
+    alias?: string;
+    avatar?: string;
+  };
   onConnect: () => void;
   onDisconnect?: () => void;
 };
@@ -28,7 +31,7 @@ export const AccountConnectionInput = ({
   networkImageUrl,
   label,
   isConnecting,
-  currentAccount,
+  account,
   onConnect,
   onDisconnect,
 }: AccountConnectionInputProps) => {
@@ -44,37 +47,40 @@ export const AccountConnectionInput = ({
               <Image width="20" height="20" src={networkImageUrl} />
               <Text>{networkName}</Text>
             </Flex>
-            <Flex>
-              {!currentAccount ? (
-                <Button
-                  onPress={onConnect}
-                  isLoading={isConnecting}
-                  css={styles.connectButton}
-                >
-                  Connect wallet
-                </Button>
-              ) : (
-                <Button
-                  isLoading={isConnecting}
-                  leftIcon={<Icon icon="Circle" color="red10" fill="red10" />}
-                  rightIcon={
-                    <IconButton
-                      icon="X"
-                      variant="link"
-                      color="gray"
-                      onPress={onDisconnect}
-                      aria-label="Disconnect account"
-                      tooltip="Disconnect wallet"
-                    />
-                  }
-                  variant="outlined"
-                  color="gray"
-                  css={styles.connectButton}
-                >
-                  {shortAddress(currentAccount)}
-                </Button>
-              )}
-            </Flex>
+            {!account?.address ? (
+              <Button
+                onPress={onConnect}
+                isLoading={isConnecting}
+                css={styles.connectButton}
+              >
+                Connect wallet
+              </Button>
+            ) : (
+              <Button
+                isLoading={isConnecting}
+                leftIcon={<Box css={styles.circle}>&nbsp;</Box>}
+                rightIcon={
+                  <IconButton
+                    icon="X"
+                    variant="link"
+                    color="gray"
+                    onPress={onDisconnect}
+                    aria-label="Disconnect account"
+                    iconSize={12}
+                    css={styles.disconnectButton}
+                  />
+                }
+                variant="outlined"
+                color="gray"
+                size="xs"
+                css={{ ...styles.connectButton, ...styles.connectedButton }}
+              >
+                <Text fontSize="xs">
+                  {shortAddress(account.alias, 16) ||
+                    shortAddress(account.address)}
+                </Text>
+              </Button>
+            )}
           </Flex>
         </Stack>
       </Card.Body>
@@ -96,5 +102,18 @@ const styles = {
     height: '22px',
     width: '140px',
     fontSize: '$xs',
+  }),
+  connectedButton: cssObj({
+    justifyContent: 'space-between',
+    gap: 0,
+  }),
+  circle: cssObj({
+    minWidth: 10,
+    height: 10,
+    backgroundColor: '$red10',
+    borderRadius: '$full',
+  }),
+  disconnectButton: cssObj({
+    p: '$0',
   }),
 };

@@ -3,7 +3,7 @@ import type { ThemeMachineState } from '../machines/themeMachine';
 import { Services, store } from '~/store';
 
 const selectors = {
-  theme: (state: ThemeMachineState) => state.context?.theme,
+  theme: (state: ThemeMachineState) => state.context?.theme || 'light',
 };
 
 export function useTheme() {
