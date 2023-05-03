@@ -50,7 +50,6 @@ export class LocalStorage {
   // Private methods
   // ---------------------------------------------------------------------------
   private createKey(key: string) {
-    console.log('key: ', `${this.prefix}${key}`);
     return `${this.prefix}${key}`;
   }
 

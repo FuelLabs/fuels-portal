@@ -10,17 +10,19 @@ import { useEffect } from 'react';
 import { useTheme } from '../hooks';
 
 export function FuelUiProvider({ children }: PropsWithChildren) {
-  // const { theme } = useTheme();
-  // const { setTheme, themes, current } = useFuelTheme();
+  const { theme } = useTheme();
+  const { setTheme, current } = useFuelTheme();
 
-  // console.log('here: ', themes);
-  // console.log('current: ', current);
+  useEffect(() => {
+    console.log('theme', theme);
+    console.log('current: ', current);
+    console.log('should switch to dark: ', theme === 'dark');
+    setTheme(theme === 'dark' ? darkTheme : lightTheme);
+  }, [theme]);
 
-  // useEffect(() => {
-  //   console.log('theme', theme);
-  //   console.log('temp: ', current === 'dark');
-  //   setTheme(current === 'dark' ? lightTheme : darkTheme);
-  // }, [theme]);
+  useEffect(() => {
+    console.log('current changed to: ', current);
+  }, [current]);
 
-  return <ThemeProvider>{children}</ThemeProvider>;
+  return <ThemeProvider initialTheme={theme}>{children}</ThemeProvider>;
 }

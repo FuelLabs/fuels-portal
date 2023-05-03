@@ -1,16 +1,17 @@
-import { darkTheme, lightTheme, useFuelTheme } from '@fuel-ui/react';
-import type { Mode } from 'connectkit/build/types';
+import type { ThemeMachineState } from '../machines/themeMachine';
+
+import { Services, store } from '~/store';
+
+const selectors = {
+  theme: (state: ThemeMachineState) => state.context?.theme || 'light',
+};
 
 export function useTheme() {
-  const { setTheme, current } = useFuelTheme();
-  function toggleTheme() {
-    setTheme(current === 'dark' ? lightTheme : darkTheme);
-  }
-
+  const theme = store.useSelector(Services.theme, selectors.theme);
   return {
     handlers: {
-      toggleTheme,
+      toggleTheme: store.toggleTheme,
     },
-    theme: current as Mode,
+    theme,
   };
 }
