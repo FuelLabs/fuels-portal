@@ -1,3 +1,4 @@
+import { FuelConfig } from '@fuels-portal/hooks';
 import type { ReactNode } from 'react';
 
 import { StoreProvider } from './store';
@@ -10,9 +11,11 @@ type ProvidersProps = {
 export function Providers({ children }: ProvidersProps) {
   return (
     <StoreProvider>
-      <ConnectProvider>
-        <FuelUiProvider>{children}</FuelUiProvider>
-      </ConnectProvider>
+      <FuelConfig>
+        <ConnectProvider>
+          <FuelUiProvider>{children}</FuelUiProvider>
+        </ConnectProvider>
+      </FuelConfig>
     </StoreProvider>
   );
 }

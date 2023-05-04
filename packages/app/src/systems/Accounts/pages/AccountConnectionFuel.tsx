@@ -3,8 +3,7 @@ import { AccountConnectionInput } from '../components';
 import { useAccountConnectionFuel } from '../hooks';
 
 export const AccountConnectionFuel = () => {
-  const { isLoading, handlers, fuel, currentAccount } =
-    useAccountConnectionFuel();
+  const { isLoading, handlers, fuel, address } = useAccountConnectionFuel();
 
   return (
     <AccountConnectionInput
@@ -14,7 +13,7 @@ export const AccountConnectionFuel = () => {
       isConnecting={isLoading}
       onConnect={fuel ? handlers.connect : handlers.openFuelInstall}
       onDisconnect={handlers.disconnect}
-      account={{ address: currentAccount }}
+      account={{ address }}
     />
   );
 };
