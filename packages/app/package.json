@@ -19,6 +19,7 @@
     "@fuel-ui/react": "^0.13.0",
     "@fuel-wallet/sdk": "^0.7.2",
     "@fuels-portal/store": "workspace:*",
+    "@fuels-portal/hooks": "workspace:*",
     "@storybook/manager-api": "^7.0.3",
     "@storybook/theming": "^7.0.3",
     "@xstate/react": "^3.2.1",

@@ -1,9 +1,7 @@
+import { useFuel, useIsConnected } from '@fuels-portal/hooks';
 import { useEffect } from 'react';
 
 import type { FuelAccountMachineState } from '../machines';
-
-import { useFuel } from './useFuel';
-import { useIsConnected } from './useIsConnected';
 
 import { Services, store } from '~/store';
 
