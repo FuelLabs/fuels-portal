@@ -1,38 +1,56 @@
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
+
+import { fuelQueryClient } from '../components';
 
 import { useFuel } from './useFuel';
 
+const accountQueryKey = 'account';
+
 export const useAccount = () => {
-  const [address, setAddress] = useState<string>();
   const fuel = useFuel();
 
   useEffect(() => {
-    async function getCurrentAccount() {
-      try {
-        const currentFuelAccount = await fuel?.currentAccount();
-        setAddress(currentFuelAccount);
-      } catch (error: unknown) {
-        setAddress(undefined);
-      }
+    async function fetchAccountQuery() {
+      await fuelQueryClient.invalidateQueries([accountQueryKey]);
     }
 
-    if (fuel) {
-      getCurrentAccount();
-    }
-
-    fuel?.on(fuel?.events.currentAccount, getCurrentAccount);
-    fuel?.on(fuel?.events.connection, getCurrentAccount);
-    fuel?.on(fuel?.events.accounts, getCurrentAccount);
+    fuel?.on(fuel?.events.currentAccount, fetchAccountQuery);
+    fuel?.on(fuel?.events.connection, fetchAccountQuery);
+    fuel?.on(fuel?.events.accounts, fetchAccountQuery);
 
     return () => {
-      fuel?.off(fuel?.events.currentAccount, getCurrentAccount);
-      fuel?.off(fuel?.events.connection, getCurrentAccount);
-      fuel?.off(fuel?.events.accounts, getCurrentAccount);
+      fuel?.off(fuel?.events.currentAccount, fetchAccountQuery);
+      fuel?.off(fuel?.events.connection, fetchAccountQuery);
+      fuel?.off(fuel?.events.accounts, fetchAccountQuery);
     };
   }, [fuel]);
 
+  const { isLoading, isError, isSuccess, data, error } = useQuery(
+    [accountQueryKey],
+    async () => {
+      if (!fuel) {
+        return null;
+      }
+      try {
+        const currentFuelAccount = await fuel.currentAccount();
+        return currentFuelAccount;
+      } catch (error: unknown) {
+        return null;
+      }
+    },
+    {
+      enabled: !!fuel,
+    }
+  );
+
   return {
-    address,
-    isConnected: !!address,
+    address: data,
+    isConnected: !!data,
+    isLoading,
+    isError,
+    isSuccess,
+    data,
+    error,
   };
 };

@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { ReactNode } from 'react';
 
-const queryClient = new QueryClient({
+export const fuelQueryClient = new QueryClient({
   defaultOptions: {
     queries: {
       // onError: handleError,
@@ -17,12 +17,14 @@ const queryClient = new QueryClient({
   },
 });
 
-type FuelConfigProps = {
+type FuelProviderProps = {
   children?: ReactNode;
 };
 
-export const FuelConfig = ({ children }: FuelConfigProps) => {
+export const FuelProvider = ({ children }: FuelProviderProps) => {
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={fuelQueryClient}>
+      {children}
+    </QueryClientProvider>
   );
 };

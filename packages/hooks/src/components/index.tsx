@@ -1,1 +1,1 @@
-export * from './FuelConfig';
+export * from './FuelProvider';
