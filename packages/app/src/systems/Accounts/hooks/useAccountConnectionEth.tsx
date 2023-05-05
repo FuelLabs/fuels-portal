@@ -1,6 +1,6 @@
+import { useModal } from 'connectkit';
 import {
   useAccount,
-  useConnect,
   useDisconnect,
   useEnsAvatar,
   useEnsName,
@@ -12,14 +12,12 @@ export function useAccountConnectionEth() {
   const { data: ensName } = useEnsName({ address });
   const { data: ensAvatar } = useEnsAvatar({ address });
   const { data: signer } = useSigner();
-
-  const { connect, connectors, error, pendingConnector, isLoading } =
-    useConnect();
+  const { open: isConnecting, setOpen } = useModal();
   const { disconnect } = useDisconnect();
 
   return {
     handlers: {
-      connect,
+      connect: () => setOpen(true),
       disconnect,
     },
     address,
@@ -28,10 +26,7 @@ export function useAccountConnectionEth() {
       avatar: ensAvatar || undefined,
     },
     isConnected,
-    connectors,
-    error,
-    isLoading,
-    pendingConnector,
+    isConnecting,
     signer,
   };
 }

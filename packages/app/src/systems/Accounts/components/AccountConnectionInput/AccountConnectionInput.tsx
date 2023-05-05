@@ -13,9 +13,9 @@ import {
 import { shortAddress } from '~/systems/Core/utils';
 
 type AccountConnectionInputProps = {
-  networkName: string;
+  networkName?: string;
   networkImageUrl: string;
-  label: string;
+  label?: string;
   isConnecting?: boolean;
   account?: {
     address?: string;

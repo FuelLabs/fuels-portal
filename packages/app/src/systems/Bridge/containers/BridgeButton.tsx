@@ -1,11 +1,9 @@
 import { Button } from '@fuel-ui/react';
 
-import { useBridge } from '../hooks';
+import { useBridgeButton } from '../hooks';
 
 export const BridgeButton = () => {
-  // TODO: this button should start bridging, but also fire actions like: connect ETH account / connect Fuel account
-  const { status, handlers } = useBridge();
-  return (
-    <Button onPress={handlers.startBridging}>{status || 'Nothing'}</Button>
-  );
+  const { buttonText, handlers } = useBridgeButton();
+
+  return <Button onPress={handlers.buttonAction}>{buttonText}</Button>;
 };
