@@ -7,10 +7,9 @@ module.exports = {
     '@storybook/addon-mdx-gfm',
     'storybook-addon-react-router-v6',
   ],
-  framework: {
-    name: '@storybook/react-vite',
-    options: {},
-  },
+  staticDirs: ['../public'],
+  framework: { name: '@storybook/react-vite' },
+  core: { builder: '@storybook/builder-vite' },
   features: {
     storyStoreV7: true,
   },
