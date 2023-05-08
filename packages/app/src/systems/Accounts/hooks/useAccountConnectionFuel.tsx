@@ -3,13 +3,15 @@ import {
   useConnect,
   useAccount,
   useDisconnect,
+  useIsConnected,
 } from '@fuels-portal/sdk-react';
 
 import { store } from '~/store';
 
 export const useAccountConnectionFuel = () => {
   const fuel = useFuel();
-  const { address, isConnected } = useAccount();
+  const { data: address } = useAccount();
+  const { data: isConnected } = useIsConnected();
   const { connect, error, isLoading } = useConnect();
   const { disconnect } = useDisconnect();
 

@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { ACCOUNT_QUERY_KEY, useFuelReactContext } from '../components';
+import { ACCOUNT_KEY, useFuelReactContext } from '../components';
 
 export const useAccount = () => {
   const { fuel } = useFuelReactContext();
 
-  const { isLoading, isError, isSuccess, data, error } = useQuery(
-    [ACCOUNT_QUERY_KEY],
+  const { data, ...queryProps } = useQuery(
+    [ACCOUNT_KEY],
     async () => {
       if (!fuel) {
         return null;
@@ -24,12 +24,7 @@ export const useAccount = () => {
   );
 
   return {
-    address: data,
-    isConnected: !!data,
-    isLoading,
-    isError,
-    isSuccess,
-    data,
-    error,
+    data: data || undefined,
+    ...queryProps,
   };
 };
