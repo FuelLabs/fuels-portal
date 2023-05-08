@@ -1,5 +1,5 @@
 {
-  "name": "@fuels-portal/hooks",
+  "name": "@fuels-portal/sdk-react",
   "private": true,
   "version": "0.0.1",
   "license": "Apache-2.0",

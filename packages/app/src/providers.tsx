@@ -1,4 +1,4 @@
-import { FuelProvider } from '@fuels-portal/hooks';
+import { FuelProvider } from '@fuels-portal/sdk-react';
 import type { ReactNode } from 'react';
 
 import { StoreProvider } from './store';

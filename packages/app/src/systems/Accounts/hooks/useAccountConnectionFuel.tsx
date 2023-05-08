@@ -3,7 +3,7 @@ import {
   useConnect,
   useAccount,
   useDisconnect,
-} from '@fuels-portal/hooks';
+} from '@fuels-portal/sdk-react';
 
 import { store } from '~/store';
 
