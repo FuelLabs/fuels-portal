@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc && vite build",
     "build:preview": "run-s build ts:check build:storybook",
-    "build:storybook": "pnpm storybook build",
+    "build:storybook": "pnpm ts:check && storybook build",
     "dev": "vite",
     "preview": "vite preview",
     "test": "playwright test",
