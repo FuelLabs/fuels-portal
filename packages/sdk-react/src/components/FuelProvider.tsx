@@ -27,6 +27,7 @@ type FuelProviderProps = {
 
 export const ACCOUNT_KEY = 'account';
 export const IS_CONNECTED_KEY = 'isConnected';
+export const PROVIDER_KEY = 'provider';
 
 type FuelReactContextType = {
   fuel: Fuel | undefined;
@@ -43,25 +44,34 @@ export const useFuelReactContext = () => {
 export const FuelProvider = ({ children }: FuelProviderProps) => {
   const fuel = useFuel();
 
-  function onAccountChange() {
+  function onCurrentAccountChange() {
     fuelQueryClient.invalidateQueries([ACCOUNT_KEY]);
   }
 
   function onConnectionChange() {
+    fuelQueryClient.invalidateQueries([ACCOUNT_KEY]);
     fuelQueryClient.invalidateQueries([IS_CONNECTED_KEY]);
   }
 
+  function onNetworkChange() {
+    fuelQueryClient.invalidateQueries([PROVIDER_KEY]);
+  }
+
+  function onAccountsChange() {
+    fuelQueryClient.invalidateQueries([ACCOUNT_KEY]);
+  }
+
   useEffect(() => {
-    fuel?.on(fuel.events.currentAccount, onAccountChange);
-    fuel?.on(fuel.events.connection, onAccountChange);
+    fuel?.on(fuel.events.currentAccount, onCurrentAccountChange);
     fuel?.on(fuel.events.connection, onConnectionChange);
-    fuel?.on(fuel.events.accounts, onAccountChange);
+    fuel?.on(fuel.events.accounts, onAccountsChange);
+    fuel?.on(fuel.events.network, onNetworkChange);
 
     return () => {
-      fuel?.off(fuel?.events.currentAccount, onAccountChange);
-      fuel?.off(fuel?.events.connection, onAccountChange);
+      fuel?.off(fuel?.events.currentAccount, onCurrentAccountChange);
       fuel?.off(fuel.events.connection, onConnectionChange);
-      fuel?.off(fuel?.events.accounts, onAccountChange);
+      fuel?.off(fuel?.events.accounts, onAccountsChange);
+      fuel?.off(fuel.events.network, onNetworkChange);
     };
   }, [fuel]);
 
