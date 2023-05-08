@@ -18,9 +18,4 @@ module.exports = {
   docs: {
     autodocs: true,
   },
-  async viteFinal(config) {
-    return mergeConfig(config, {
-      plugins: [tsconfigpath()],
-    });
-  },
 };
