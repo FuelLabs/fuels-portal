@@ -3,8 +3,8 @@ import { Stack } from '@fuel-ui/react';
 import fuelLogoSrc from '../../../../public/fuel-logo.svg';
 
 import {
-  AccountConnectionInput,
   AccountConnectionEth,
+  AccountConnectionInput,
 } from '~/systems/Accounts';
 
 export const BridgeEthToFuel = () => {
