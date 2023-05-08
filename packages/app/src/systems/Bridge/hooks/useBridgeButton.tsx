@@ -5,9 +5,16 @@ import { BridgeStatus } from '../machines';
 import { useBridge } from './useBridge';
 
 export function useBridgeButton() {
-  const { handlers, fromNetwork, toNetwork, status } = useBridge();
+  const {
+    handlers,
+    fromNetwork,
+    toNetwork,
+    status,
+    isLoadingConnectFrom,
+    isLoadingConnectTo,
+  } = useBridge();
 
-  const buttonText = useMemo(() => {
+  const text = useMemo(() => {
     if (status === BridgeStatus.waitingConnectFrom) {
       return status.replace('From', fromNetwork?.name || '');
     }
@@ -23,7 +30,7 @@ export function useBridgeButton() {
     return status;
   }, [status, fromNetwork, toNetwork]);
 
-  const buttonAction = useMemo(() => {
+  const action = useMemo(() => {
     if (status === BridgeStatus.waitingConnectFrom) {
       return handlers.connectFrom;
     }
@@ -39,10 +46,27 @@ export function useBridgeButton() {
     return undefined;
   }, [status, handlers.startBridging]);
 
+  const isLoading = useMemo(() => {
+    if (status === BridgeStatus.waitingConnectFrom) {
+      return isLoadingConnectFrom;
+    }
+
+    if (status === BridgeStatus.waitingConnectTo) {
+      return isLoadingConnectTo;
+    }
+
+    if (status === BridgeStatus.ready) {
+      // TODO: return bridge loading
+    }
+
+    return undefined;
+  }, [isLoadingConnectFrom, isLoadingConnectTo]);
+
   return {
-    buttonText,
+    text,
+    isLoading,
     handlers: {
-      buttonAction,
+      action,
     },
   };
 }

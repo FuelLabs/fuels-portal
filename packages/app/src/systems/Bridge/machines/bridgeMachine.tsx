@@ -1,12 +1,10 @@
 import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
 
-import type { BridgeInputs } from '../services';
+import type { BridgeInputs, PossibleBridgeInputs } from '../services';
 import { BridgeService } from '../services';
 import type { FromToNetworks } from '../utils';
-import { isEthChain, isFuelChain } from '../utils';
 
-import { store } from '~/store';
 import { FetchMachine } from '~/systems/Core';
 
 type MachineContext = {
@@ -37,7 +35,7 @@ export type BridgeMachineEvents =
     }
   | {
       type: 'START_BRIDGING';
-      input: BridgeInputs['bridge'];
+      input: PossibleBridgeInputs;
     };
 
 export const bridgeMachine = createMachine(
@@ -83,7 +81,6 @@ export const bridgeMachine = createMachine(
               target: 'failed',
             },
             {
-              actions: ['openBridgeTxDialog'],
               target: 'idle',
             },
           ],
@@ -99,17 +96,9 @@ export const bridgeMachine = createMachine(
         fromNetwork: ev.input.fromNetwork,
         toNetwork: ev.input.toNetwork,
       })),
-      openBridgeTxDialog: (_, ev) => {
-        store.openBridgeTx({
-          ethTxId: ev.data,
-        });
-      },
     },
     services: {
-      bridge: FetchMachine.create<
-        BridgeInputs['bridge'] & FromToNetworks,
-        MachineServices['bridge']['data']
-      >({
+      bridge: FetchMachine.create<BridgeInputs['bridge'], void>({
         showError: true,
         maxAttempts: 1,
         async fetch({ input }) {
@@ -117,26 +106,7 @@ export const bridgeMachine = createMachine(
             throw new Error('No input to bridge');
           }
 
-          const { fromNetwork, toNetwork, amount, ethSigner } = input;
-
-          if (!fromNetwork || !toNetwork) {
-            throw new Error('"Network From" and "Network To" are required');
-          }
-
-          if (!amount || amount.isZero()) {
-            throw new Error('Need to inform asset amount to be transfered');
-          }
-
-          if (isEthChain(fromNetwork) && isFuelChain(toNetwork)) {
-            const ethTxHash = await BridgeService.bridgeEthToFuel({
-              amount,
-              ethSigner,
-            });
-
-            return ethTxHash;
-          }
-
-          throw new Error('Bridge between this networks is not supported');
+          await BridgeService.bridge(input);
         },
       }),
     },

@@ -1,7 +1,7 @@
 import { cssObj } from '@fuel-ui/css';
 import { Dialog } from '@fuel-ui/react';
 
-import { BridgeTxDialog } from '~/systems/Bridge';
+import { TxEthToFuelDialog } from '~/systems/Chains';
 import { useOverlay } from '~/systems/Overlay';
 
 const OVERLAY_HEIGHT = 100;
@@ -13,7 +13,7 @@ export function OverlayDialog() {
   return (
     <Dialog isOpen={overlay.isDialogOpen}>
       <Dialog.Content css={styles.content}>
-        {overlay.is('bridge.tx') && <BridgeTxDialog />}
+        {overlay.is('tx.fromEth.toFuel') && <TxEthToFuelDialog />}
       </Dialog.Content>
     </Dialog>
   );

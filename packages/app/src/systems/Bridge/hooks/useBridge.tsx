@@ -9,7 +9,7 @@ import { getChainFromUrlParam, isEthChain, isFuelChain } from '../utils';
 
 import { ETH_CHAIN, FUEL_CHAIN } from '~/config';
 import { Services, store } from '~/store';
-import { useAccountConnectionEth } from '~/systems/Accounts';
+import { useEthAccountConnection } from '~/systems/Chains';
 import { Pages } from '~/types';
 
 const selectors = {
@@ -48,7 +48,8 @@ export function useBridge() {
     address: ethAddress,
     signer: ethSigner,
     handlers: ethHandlers,
-  } = useAccountConnectionEth();
+    isConnecting: ethIsConnecting,
+  } = useEthAccountConnection();
   const fromNetwork = store.useSelector(Services.bridge, selectors.fromNetwork);
   const toNetwork = store.useSelector(Services.bridge, selectors.toNetwork);
   const status = store.useSelector(
@@ -119,6 +120,18 @@ export function useBridge() {
     }
   }
 
+  function isLoadingConnectNetwork(network?: SupportedChain) {
+    if (isEthChain(network)) {
+      return ethIsConnecting;
+    }
+
+    if (isFuelChain(network)) {
+      // TODO: return is connecting fuel
+    }
+
+    return false;
+  }
+
   return {
     handlers: {
       goToDeposit,
@@ -129,6 +142,8 @@ export function useBridge() {
     },
     fromNetwork,
     toNetwork,
+    isLoadingConnectFrom: isLoadingConnectNetwork(fromNetwork),
+    isLoadingConnectTo: isLoadingConnectNetwork(toNetwork),
     isDeposit,
     isWithdraw,
     status,

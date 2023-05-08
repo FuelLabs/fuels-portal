@@ -1,14 +1,14 @@
 import { Button, Dialog, Icon, IconButton } from '@fuel-ui/react';
 
-import { BridgeSteps } from '../components';
-import { useBridgeTx } from '../hooks';
+import { BridgeSteps } from '../../../Bridge/components';
+import { useTxEthToFuel } from '../hooks';
 
 import { useOverlay } from '~/systems/Overlay';
 
-export function BridgeTxDialog() {
-  const { metadata } = useOverlay<{ ethTxId: string }>();
-  const { steps, handlers } = useBridgeTx({
-    ethTxId: metadata.ethTxId,
+export function TxEthToFuelDialog() {
+  const { metadata } = useOverlay<{ txId: string }>();
+  const { steps, handlers } = useTxEthToFuel({
+    id: metadata.txId,
   });
 
   return (

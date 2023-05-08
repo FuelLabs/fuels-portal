@@ -8,7 +8,7 @@ import { bn, Provider as FuelProvider, Wallet } from 'fuels';
 import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
 
-import { FuelMessagePortal__factory } from '../services/fuel-v2-contracts/factories/FuelMessagePortal__factory';
+import { FuelMessagePortal__factory } from '../fuel-v2-contracts/factories/FuelMessagePortal__factory';
 
 import { FetchMachine } from '~/systems/Core';
 
@@ -29,6 +29,12 @@ type MachineServices = {
   };
 };
 
+export enum TxEthToFuelStatus {
+  waitingSettlement = 'Waiting Settlement',
+  waitingReceiveFuel = 'Waiting Receive on Fuel',
+  done = 'Done',
+}
+
 export type TxEthToFuelMachineEvents = {
   type: 'START_ANALYZE_TX';
   input: { ethTx: TransactionResponse; ethProvider: EthProvider };
@@ -36,7 +42,6 @@ export type TxEthToFuelMachineEvents = {
 
 export const txEthToFuelMachine = createMachine(
   {
-    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
     tsTypes: {} as import('./txEthToFuelMachine.typegen').Typegen0,
     schema: {
       context: {} as MachineContext,
@@ -97,7 +102,7 @@ export const txEthToFuelMachine = createMachine(
             {
               actions: ['assignFuelMessage'],
               cond: 'hasFuelMessage',
-              target: 'bridged',
+              target: 'done',
             },
           ],
         },
@@ -107,7 +112,7 @@ export const txEthToFuelMachine = createMachine(
           },
         },
       },
-      bridged: {
+      done: {
         type: 'final',
       },
       failed: {},

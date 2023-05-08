@@ -1,17 +1,17 @@
 import type { BN, WalletUnlocked } from 'fuels';
 import { Provider, Wallet } from 'fuels';
 
-import { FuelMessagePortal__factory } from './fuel-v2-contracts/factories/FuelMessagePortal__factory';
+import { FuelMessagePortal__factory } from '../fuel-v2-contracts/factories/FuelMessagePortal__factory';
 
-export type BridgeInputs = {
-  bridge: {
+export type TxEthToFuelInputs = {
+  create: {
     amount: BN;
     ethSigner: any;
   };
 };
 
-export class BridgeService {
-  static async bridgeEthToFuel(input: BridgeInputs['bridge']) {
+export class TxEthToFuelService {
+  static async create(input: TxEthToFuelInputs['create']) {
     if (!input.ethSigner) {
       throw new Error('Need to connect ETH Wallet');
     }

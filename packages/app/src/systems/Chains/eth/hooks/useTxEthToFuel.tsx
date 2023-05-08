@@ -1,5 +1,5 @@
 import { useInterpret, useSelector } from '@xstate/react';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useSigner, useTransaction } from 'wagmi';
 
 import type { TxEthToFuelMachineState } from '../machines';
@@ -8,11 +8,41 @@ import { txEthToFuelMachine } from '../machines';
 import { store } from '~/store';
 
 const selectors = {
-  stepsTxEthToFuel: (state: TxEthToFuelMachineState) => {
+  status:
+    ({
+      ethAddress,
+      fuelAddress,
+    }: {
+      ethAddress?: string;
+      fuelAddress?: string;
+    }) =>
+    (state: TxEthToFuelMachineState) => {
+      const { ethTx, ethTxReceipt, ethTxNonce, fuelMessage } = state.context;
+
+      if (!ethTxReceipt) {
+      }
+
+      if (!fromNetwork) return BridgeStatus.waitingNetworkFrom;
+      if (!toNetwork) return BridgeStatus.waitingNetworkTo;
+      if (
+        (isEthChain(fromNetwork) && !ethAddress) ||
+        (isFuelChain(fromNetwork) && !fuelAddress)
+      )
+        return BridgeStatus.waitingConnectFrom;
+      if (
+        (isEthChain(toNetwork) && !ethAddress) ||
+        (isFuelChain(toNetwork) && !fuelAddress)
+      )
+        return BridgeStatus.waitingConnectTo;
+
+      return BridgeStatus.waitingAsset;
+    },
+  steps: (state: TxEthToFuelMachineState) => {
     const { ethTx, ethTxReceipt, ethTxNonce, fuelMessage } = state.context;
 
     if (!ethTx) return undefined;
 
+    // TODO: refact this and craete status for TxEthToFuel.. just like useBrigde
     const steps = [
       {
         name: 'Submit to bridge',
@@ -46,29 +76,21 @@ const selectors = {
   },
 };
 
-export function useBridgeTx({ ethTxId }: { ethTxId: string }) {
+export function useTxEthToFuel({ id }: { id: string }) {
   const {
     data: ethTx,
     isError,
     isLoading,
   } = useTransaction({
-    hash: ethTxId.startsWith('0x') ? (ethTxId as `0x${string}`) : undefined,
+    hash: id.startsWith('0x') ? (id as `0x${string}`) : undefined,
   });
   const { data: ethSigner } = useSigner();
-  const txEthToFuelService = useInterpret(txEthToFuelMachine);
-  const stepsTxEthToFuel = useSelector(
-    txEthToFuelService,
-    selectors.stepsTxEthToFuel
-  );
-  const steps = useMemo(() => {
-    if (stepsTxEthToFuel?.length) return stepsTxEthToFuel;
-
-    return undefined;
-  }, [stepsTxEthToFuel]);
+  const service = useInterpret(txEthToFuelMachine);
+  const steps = useSelector(service, selectors.steps);
 
   useEffect(() => {
     if (ethTx && ethSigner) {
-      txEthToFuelService.send('START_ANALYZE_TX', {
+      service.send('START_ANALYZE_TX', {
         input: {
           ethTx,
           ethProvider: ethSigner.provider,

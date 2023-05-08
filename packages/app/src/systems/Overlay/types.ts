@@ -1,4 +1,4 @@
 export enum Overlays {
   'tokens.list' = 'tokens.list',
-  'bridge.tx' = 'bridge.tx',
+  'tx.fromEth.toFuel' = 'tx.fromEth.toFuel',
 }

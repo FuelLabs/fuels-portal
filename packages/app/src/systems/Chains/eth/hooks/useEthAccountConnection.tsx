@@ -7,7 +7,7 @@ import {
   useSigner,
 } from 'wagmi';
 
-export function useAccountConnectionEth() {
+export function useEthAccountConnection() {
   const { address, isConnected } = useAccount();
   const { data: ensName } = useEnsName({ address });
   const { data: ensAvatar } = useEnsAvatar({ address });
