@@ -10,9 +10,11 @@ export function useAccountConnectionEth() {
   const { address, isConnected } = useAccount();
   const { data: ensName } = useEnsName({ address });
   const { data: ensAvatar } = useEnsAvatar({ address });
+
   const { connect, connectors, error, pendingConnector, isLoading } =
     useConnect();
   const { disconnect } = useDisconnect();
+
   return {
     handlers: {
       connect,

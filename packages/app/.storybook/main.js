@@ -1,6 +1,3 @@
-import tsconfigpath from 'vite-tsconfig-paths';
-import { mergeConfig } from 'vite';
-
 module.exports = {
   stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: [
@@ -17,10 +14,5 @@ module.exports = {
   },
   docs: {
     autodocs: true,
-  },
-  async viteFinal(config) {
-    return mergeConfig(config, {
-      plugins: [tsconfigpath()],
-    });
   },
 };
