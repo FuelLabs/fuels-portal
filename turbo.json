@@ -17,8 +17,7 @@
       "outputs": ["dist/**"]
     },
     "build:preview": {
-      "cache": false,
-      "dependsOn": ["^build"],
+      "dependsOn": ["ts:check"],
       "outputs": ["dist/**"]
     },
     "dev": {
