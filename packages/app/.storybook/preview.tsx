@@ -1,7 +1,7 @@
 import { ThemeProvider } from '@fuel-ui/react';
 import { withRouter } from 'storybook-addon-react-router-v6';
 
-//import { StoreProvider } from '../src/store';
+import { StoreProvider } from '../src/store';
 
 export const parameters = {
   actions: {
@@ -23,8 +23,10 @@ export const parameters = {
 export const decorators = [
   withRouter,
   (Story) => (
-    <ThemeProvider>
-      <Story />
-    </ThemeProvider>
+    <StoreProvider>
+      <ThemeProvider>
+        <Story />
+      </ThemeProvider>
+    </StoreProvider>
   ),
 ];
