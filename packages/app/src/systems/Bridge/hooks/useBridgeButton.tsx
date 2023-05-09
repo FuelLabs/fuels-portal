@@ -10,6 +10,7 @@ export function useBridgeButton() {
     fromNetwork,
     toNetwork,
     status,
+    isLoading,
     isLoadingConnectFrom,
     isLoadingConnectTo,
   } = useBridge();
@@ -37,8 +38,7 @@ export function useBridgeButton() {
     if (status === BridgeStatus.ready) {
       return {
         text: status,
-        // TODO: add real bridge isLoading
-        isLoading: false,
+        isLoading,
         action: handlers.startBridging,
       };
     }

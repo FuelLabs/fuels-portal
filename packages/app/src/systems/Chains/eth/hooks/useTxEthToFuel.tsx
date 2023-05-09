@@ -27,7 +27,6 @@ const selectors = {
       status === TxEthToFuelStatus.waitingReceiveFuel;
     const isDone = status === TxEthToFuelStatus.done;
 
-    // TODO: refact this and craete status for TxEthToFuel.. just like useBrigde
     const steps = [
       {
         name: 'Submit to bridge',

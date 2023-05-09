@@ -58,6 +58,7 @@ export function useBridge() {
   } = useEthAccountConnection();
   const fromNetwork = store.useSelector(Services.bridge, selectors.fromNetwork);
   const toNetwork = store.useSelector(Services.bridge, selectors.toNetwork);
+  const isLoading = store.useSelector(Services.bridge, selectors.isLoading);
   const status = store.useSelector(
     Services.bridge,
     selectors.status({ ethAddress })
@@ -148,6 +149,7 @@ export function useBridge() {
     },
     fromNetwork,
     toNetwork,
+    isLoading,
     isLoadingConnectFrom: isLoadingConnectNetwork(fromNetwork),
     isLoadingConnectTo: isLoadingConnectNetwork(toNetwork),
     isDeposit,
