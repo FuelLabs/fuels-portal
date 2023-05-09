@@ -58,7 +58,7 @@ export function Header() {
             icon="Moon"
             aria-label="Theme-Switch"
             iconSize={14}
-            css={{ ...styles.connectButton, ...styles.iconButton }}
+            css={styles.themeButton}
             onPress={handlers.toggleTheme}
           />
         </Box.Flex>
@@ -69,9 +69,9 @@ export function Header() {
 
 const styles = {
   root: cssObj({
-    borderBottom: '1px solid $gray3',
+    borderBottom: '1px solid $intentsBase5',
     justifyContent: 'space-between',
-    paddingLeft: '54px',
+    pl: '$14',
     zIndex: '$10',
     position: 'sticky',
     top: 0,
@@ -82,7 +82,7 @@ const styles = {
     alignItems: 'center',
     '.logo': {
       display: 'inline-flex',
-      color: '$gray9',
+      color: '$intentsBase8',
     },
 
     '@md': {
@@ -94,12 +94,6 @@ const styles = {
       px: '$8',
     },
   }),
-  fuelText: cssObj({
-    paddingLeft: '9px',
-  }),
-  portalText: cssObj({
-    paddingLeft: '6px',
-  }),
   desktop: cssObj({
     alignItems: 'center',
     '@xl': {
@@ -110,28 +104,26 @@ const styles = {
   buttonContainer: cssObj({
     height: '28px',
   }),
-  iconButton: cssObj({
-    width: '28px',
-  }),
-  connectButton: cssObj({
-    height: 'inherit',
-    background: '$gray2',
-    color: '$gray11',
+  themeButton: cssObj({
+    height: '$7',
+    background: '$intentsBase5',
+    color: '$intentsBase10',
     borderRadius: '$md',
     fontSize: '$xs',
+    width: '$6',
   }),
   menu: cssObj({
     a: {
-      color: '$gray10',
+      color: '$intentsBase10',
       transition: 'all 0.3s',
     },
 
     'a.active, a:hover': {
-      color: '$accent8',
+      color: '$intentsPrimary10',
     },
 
     'a.header--navItemActive': {
-      color: '$accent8',
+      color: '$intentsPrimary10',
     },
   }),
 };

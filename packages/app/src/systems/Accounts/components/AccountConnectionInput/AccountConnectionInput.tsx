@@ -29,9 +29,9 @@ export const AccountConnectionInput = ({
   return (
     <Card css={styles.root}>
       <Card.Body css={styles.body}>
-        <Box.Stack gap="$1">
+        <Box.Stack>
           <Box>
-            <Text fontSize="sm">{label}</Text>
+            <Text css={styles.label}>{label}</Text>
           </Box>
           <Box.Flex align="center" wrap="wrap" justify="space-between">
             <Box.Flex gap="$2" align="center">
@@ -81,12 +81,14 @@ export const AccountConnectionInput = ({
 
 const styles = {
   root: cssObj({
-    minWidth: '350px',
-    minHeight: '60px',
+    minHeight: '$15',
     borderRadius: '$md',
   }),
   body: cssObj({
     padding: '10px',
+  }),
+  label: cssObj({
+    fontSize: '$sm',
   }),
   connectButton: cssObj({
     borderRadius: '$md',
