@@ -5,14 +5,14 @@ importers:
   .:
     dependencies:
       '@fuel-ui/config':
-        specifier: ^0.14.2
-        version: 0.14.2(typescript@4.9.5)
+        specifier: dev
+        version: 0.14.3-dev-f617ddc(typescript@4.9.5)
       '@fuel-ui/css':
-        specifier: ^0.14.2
-        version: 0.14.2
+        specifier: dev
+        version: 0.14.2-dev-a3263d9
       '@fuel-ui/react':
-        specifier: ^0.14.2
-        version: 0.14.2(@babel/core@7.21.4)(@jest/types@29.4.2)(@types/node@18.13.0)(@types/react@18.0.27)(csstype@3.1.2)(esbuild@0.17.16)(ts-node@10.9.1)(typescript@4.9.5)
+        specifier: dev
+        version: 0.14.2-dev-a3263d9(@babel/core@7.21.4)(@jest/types@29.4.2)(@types/node@18.13.0)(@types/react@18.0.27)(csstype@3.1.2)(esbuild@0.17.16)(ts-node@10.9.1)(typescript@4.9.5)
     devDependencies:
       '@babel/core':
         specifier: ^7.20.12
@@ -96,11 +96,11 @@ importers:
   packages/app:
     dependencies:
       '@fuel-ui/css':
-        specifier: ^0.14.2
-        version: 0.14.2
+        specifier: dev
+        version: 0.14.2-dev-a3263d9
       '@fuel-ui/react':
-        specifier: ^0.14.2
-        version: 0.14.2(@babel/core@7.21.4)(@jest/types@29.4.2)(@types/node@18.13.0)(@types/react@18.0.27)(csstype@3.1.2)(esbuild@0.17.16)(ts-node@10.9.1)(typescript@4.9.5)
+        specifier: dev
+        version: 0.14.2-dev-a3263d9(@babel/core@7.21.4)(@jest/types@29.4.2)(@types/node@18.13.0)(@types/react@18.0.27)(csstype@3.1.2)(esbuild@0.17.16)(ts-node@10.9.1)(typescript@4.9.5)
       '@fuels-portal/store':
         specifier: workspace:*
         version: link:../store
@@ -2948,8 +2948,8 @@ packages:
     resolution: {integrity: sha512-9LM57V+PIVI167/FnCg1WPTEfpubv2lSRTjL1ZQ8g046Q96XOvrYS7itGYrhI0qnuENUyIiN002rfDUkZXRnHg==}
     dev: false
 
-  /@fuel-ui/config@0.14.2(typescript@4.9.5):
-    resolution: {integrity: sha512-BGsOJOsQ2jUQooW5CENjqWIdG/sneYX59us5V+5swUQlu9qgChyu6hXbG7rOOxbjSs9VrRCAzLgLQqqWhzzd+Q==}
+  /@fuel-ui/config@0.14.3-dev-f617ddc(typescript@4.9.5):
+    resolution: {integrity: sha512-4T0919/4Q3eiU6ukeKWUXkJuHtbmcVUPoqpMNkmEhntL2IddRnSDUeJ+qCkaALTHaAtoJVGH0LOWkUoaMlnpyA==}
     dependencies:
       '@typescript-eslint/eslint-plugin': 5.59.5(@typescript-eslint/parser@5.59.5)(eslint@8.33.0)(typescript@4.9.5)
       '@typescript-eslint/parser': 5.59.5(eslint@8.33.0)(typescript@4.9.5)
@@ -2975,18 +2975,18 @@ packages:
       - typescript
     dev: false
 
-  /@fuel-ui/css@0.14.2:
-    resolution: {integrity: sha512-gofOTKcbl0AYXp+qFu1L3qlWccz+qikEpZ3/N8bjOBAbp/IlQ7G5YPd13cRN9ERbAEc80SAlQRjdZ2wOpnt8pQ==}
+  /@fuel-ui/css@0.14.2-dev-a3263d9:
+    resolution: {integrity: sha512-5Wwv2bBvNGIYXwbBYqSH68s0vfhaVaRBroNs45FHdf+MlrbNg2pullZhndYcewPv1Km8DFaYk9plAtZV/VhRPg==}
     dependencies:
-      '@fuel-ui/design-tokens': 0.14.2
+      '@fuel-ui/design-tokens': 0.14.2-dev-a3263d9
       '@radix-ui/colors': 0.1.8
       classnames: 2.3.2
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@fuel-ui/design-tokens@0.14.2:
-    resolution: {integrity: sha512-H1L7STXbrwGBxiJMozEz4RYJghGRv/MHl4ano+r1nYGHbzjjH3mSJCyGGiLfTUB5+pb6lDpvhiyzimnAZFZa7g==}
+  /@fuel-ui/design-tokens@0.14.2-dev-a3263d9:
+    resolution: {integrity: sha512-TLsNqGLdVVJdg6Ljg+Zd84Y5WnJYxKPWvX7COPTmt/2MsdDj6Nb2ozTNxWmz7ByjBXaTg3SXXNCXVXhBXuRQbw==}
     dependencies:
       '@radix-ui/colors': 0.1.8
       chroma-js: 2.4.2
@@ -2994,12 +2994,12 @@ packages:
       lodash: 4.17.21
     dev: false
 
-  /@fuel-ui/react@0.14.2(@babel/core@7.21.4)(@jest/types@29.4.2)(@types/node@18.13.0)(@types/react@18.0.27)(csstype@3.1.2)(esbuild@0.17.16)(ts-node@10.9.1)(typescript@4.9.5):
-    resolution: {integrity: sha512-/rXXNtGB95VodSWXe/k82X4I80ULNpYDSq2liShXvkskDlx44EDXkYT55HaRjZslA1gBj1EASpg031gTtpw2Yg==}
+  /@fuel-ui/react@0.14.2-dev-a3263d9(@babel/core@7.21.4)(@jest/types@29.4.2)(@types/node@18.13.0)(@types/react@18.0.27)(csstype@3.1.2)(esbuild@0.17.16)(ts-node@10.9.1)(typescript@4.9.5):
+    resolution: {integrity: sha512-8Qs1c/z/7SlJbDxxGw2W6548xpthVS8LxtQzYsbdysrspibs+yc/SVpRuEenWqW9DGPSJPQx4f61Qa85DZpNOg==}
     dependencies:
       '@fuel-ts/math': 0.40.0
-      '@fuel-ui/css': 0.14.2
-      '@fuel-ui/test-utils': 0.14.2(@babel/core@7.21.4)(@jest/types@29.4.2)(@types/node@18.13.0)(esbuild@0.17.16)(react@18.2.0)(ts-node@10.9.1)(typescript@4.9.5)
+      '@fuel-ui/css': 0.14.2-dev-a3263d9
+      '@fuel-ui/test-utils': 0.14.2-dev-a3263d9(@babel/core@7.21.4)(@jest/types@29.4.2)(@types/node@18.13.0)(esbuild@0.17.16)(react@18.2.0)(ts-node@10.9.1)(typescript@4.9.5)
       '@radix-ui/react-accordion': 1.1.1(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-alert-dialog': 1.0.3(@types/react@18.0.27)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-aspect-ratio': 1.0.2(react-dom@18.2.0)(react@18.2.0)
@@ -3090,8 +3090,8 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@fuel-ui/test-utils@0.14.2(@babel/core@7.21.4)(@jest/types@29.4.2)(@types/node@18.13.0)(esbuild@0.17.16)(react@18.2.0)(ts-node@10.9.1)(typescript@4.9.5):
-    resolution: {integrity: sha512-LJD8zNvUAnRvwZMTapHbv25kI0sU3lLYLcgBWS+HvoSVQTaNc39E08WJaMGwVSQRAu6Osm0zv+QWPPugZT7JlA==}
+  /@fuel-ui/test-utils@0.14.2-dev-a3263d9(@babel/core@7.21.4)(@jest/types@29.4.2)(@types/node@18.13.0)(esbuild@0.17.16)(react@18.2.0)(ts-node@10.9.1)(typescript@4.9.5):
+    resolution: {integrity: sha512-qBAaHJNATM5BBU3+1BwQkHY5vNTUHiI0i7DdBuP4sCU+YPMvu6q4+vbAioqbU0r/VRueTIEqO+E3dVVEjveXgw==}
     peerDependencies:
       react: '*'
     peerDependenciesMeta:
@@ -7204,7 +7204,7 @@ packages:
       globby: 11.1.0
       jscodeshift: 0.14.0(@babel/preset-env@7.21.4)
       lodash: 4.17.21
-      prettier: 2.8.4
+      prettier: 2.8.8
       recast: 0.23.1
     transitivePeerDependencies:
       - supports-color
@@ -8797,26 +8797,6 @@ packages:
       - typescript
     dev: false
 
-  /@typescript-eslint/utils@5.58.0(eslint@8.40.0)(typescript@4.9.5):
-    resolution: {integrity: sha512-gAmLOTFXMXOC+zP1fsqm3VceKSBQJNzV385Ok3+yzlavNHZoedajjS4UyS21gabJYcobuigQPs/z71A9MdJFqQ==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    peerDependencies:
-      eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
-    dependencies:
-      '@eslint-community/eslint-utils': 4.4.0(eslint@8.40.0)
-      '@types/json-schema': 7.0.11
-      '@types/semver': 7.3.13
-      '@typescript-eslint/scope-manager': 5.58.0
-      '@typescript-eslint/types': 5.58.0
-      '@typescript-eslint/typescript-estree': 5.58.0(typescript@4.9.5)
-      eslint: 8.40.0
-      eslint-scope: 5.1.1
-      semver: 7.4.0
-    transitivePeerDependencies:
-      - supports-color
-      - typescript
-    dev: false
-
   /@typescript-eslint/utils@5.59.5(eslint@8.33.0)(typescript@4.9.5):
     resolution: {integrity: sha512-sCEHOiw+RbyTii9c3/qN74hYDPNORb8yWCoPLmB7BIflhplJ65u2PBpdRla12e3SSTJ2erRkPjz7ngLHhUegxA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -8830,6 +8810,26 @@ packages:
       '@typescript-eslint/types': 5.59.5
       '@typescript-eslint/typescript-estree': 5.59.5(typescript@4.9.5)
       eslint: 8.33.0
+      eslint-scope: 5.1.1
+      semver: 7.4.0
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+    dev: false
+
+  /@typescript-eslint/utils@5.59.5(eslint@8.40.0)(typescript@4.9.5):
+    resolution: {integrity: sha512-sCEHOiw+RbyTii9c3/qN74hYDPNORb8yWCoPLmB7BIflhplJ65u2PBpdRla12e3SSTJ2erRkPjz7ngLHhUegxA==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
+    dependencies:
+      '@eslint-community/eslint-utils': 4.4.0(eslint@8.33.0)
+      '@types/json-schema': 7.0.11
+      '@types/semver': 7.3.13
+      '@typescript-eslint/scope-manager': 5.59.5
+      '@typescript-eslint/types': 5.59.5
+      '@typescript-eslint/typescript-estree': 5.59.5(typescript@4.9.5)
+      eslint: 8.40.0
       eslint-scope: 5.1.1
       semver: 7.4.0
     transitivePeerDependencies:
@@ -12433,7 +12433,7 @@ packages:
     peerDependencies:
       eslint: ^7.5.0 || ^8.0.0
     dependencies:
-      '@typescript-eslint/utils': 5.58.0(eslint@8.40.0)(typescript@4.9.5)
+      '@typescript-eslint/utils': 5.59.5(eslint@8.40.0)(typescript@4.9.5)
       eslint: 8.40.0
     transitivePeerDependencies:
       - supports-color
