@@ -32,10 +32,10 @@ export const FuelInstallPopup = ({ open }: FuelInstallPopupProps) => {
 
 const styles = {
   content: cssObj({
-    background: '$intentsBase12',
+    background: '$intentsBase1',
     alignItems: 'center',
   }),
   heading: cssObj({
-    color: '$intentsBase1',
+    color: '$intentsBase12',
   }),
 };

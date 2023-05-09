@@ -1,3 +1,4 @@
+import { cssObj } from '@fuel-ui/css';
 import { Button, Box } from '@fuel-ui/react';
 import { useState } from 'react';
 
@@ -13,7 +14,7 @@ export default {
 
 export const Usage = () => {
   return (
-    <Box.Flex align="center" justify="center">
+    <Box.Flex css={styles.storybook}>
       <FuelInstallPopup open={true} />
     </Box.Flex>
   );
@@ -22,9 +23,16 @@ export const Usage = () => {
 export const Controlled = () => {
   const [open, setOpen] = useState(false);
   return (
-    <Box.Flex align="center" justify="center">
+    <Box.Flex css={styles.storybook}>
       <FuelInstallPopup open={open} />
       <Button onPress={() => setOpen(!open)}>Toggle Popup</Button>
     </Box.Flex>
   );
+};
+
+const styles = {
+  storybook: cssObj({
+    alignItems: 'center',
+    justifyContent: 'center',
+  }),
 };
