@@ -11,15 +11,9 @@ export const useDisconnect = () => {
     },
   });
 
-  // TODO: wrap in useCallback if we add more functionality/args
-  // to the mutationFn
-  const disconnect = mutate;
-
-  // TODO: implement a connectAsync
-
   return {
     handlers: {
-      disconnect,
+      disconnect: mutate,
     },
     data,
     ...mutateProps,
