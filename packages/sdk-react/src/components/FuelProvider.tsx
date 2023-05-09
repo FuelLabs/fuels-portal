@@ -8,7 +8,6 @@ import { useFuel } from '../hooks';
 export const fuelQueryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // onError: handleError,
       // These two are annoying during development
       retry: false,
       refetchOnWindowFocus: false,

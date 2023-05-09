@@ -5,20 +5,7 @@ import { useFuel } from './useFuel';
 export const useDisconnect = () => {
   const fuel = useFuel();
 
-  const {
-    data,
-    error,
-    isError,
-    isIdle,
-    isLoading,
-    isPaused,
-    isSuccess,
-    failureCount,
-    failureReason,
-    mutate,
-    reset,
-    status,
-  } = useMutation({
+  const { data, mutate, ...mutateProps } = useMutation({
     mutationFn: async () => {
       return fuel?.disconnect();
     },
@@ -31,17 +18,10 @@ export const useDisconnect = () => {
   // TODO: implement a connectAsync
 
   return {
-    disconnect,
+    handlers: {
+      disconnect,
+    },
     data,
-    error,
-    isError,
-    isIdle,
-    isLoading,
-    isPaused,
-    isSuccess,
-    failureCount,
-    failureReason,
-    reset,
-    status,
+    ...mutateProps,
   };
 };
