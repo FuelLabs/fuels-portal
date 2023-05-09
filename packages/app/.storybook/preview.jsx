@@ -49,7 +49,7 @@ function ThemeWrapper(props) {
   const { setTheme } = useFuelTheme();
 
   useEffect(() => {
-    setTheme(isDark ? darkTheme : lightTheme);
+    setTheme(isDark ? 'dark' : 'light');
   }, [isDark]);
 
   return <ThemeProvider>{props.children}</ThemeProvider>;

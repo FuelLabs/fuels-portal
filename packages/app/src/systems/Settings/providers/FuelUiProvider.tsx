@@ -1,9 +1,4 @@
-import {
-  ThemeProvider,
-  useFuelTheme,
-  darkTheme,
-  lightTheme,
-} from '@fuel-ui/react';
+import { ThemeProvider, useFuelTheme } from '@fuel-ui/react';
 import type { PropsWithChildren } from 'react';
 import { useEffect } from 'react';
 
@@ -11,18 +6,12 @@ import { useTheme } from '../hooks';
 
 export function FuelUiProvider({ children }: PropsWithChildren) {
   const { theme } = useTheme();
-  const { setTheme, current } = useFuelTheme();
+  const { setTheme } = useFuelTheme();
 
+  // TODO fix: theme toggle (could still be an issue in fuel-ui)
   useEffect(() => {
-    console.log('theme', theme);
-    console.log('current: ', current);
-    console.log('should switch to dark: ', theme === 'dark');
-    setTheme(theme === 'dark' ? darkTheme : lightTheme);
+    setTheme(theme === 'dark' ? 'dark' : 'light');
   }, [theme]);
-
-  useEffect(() => {
-    console.log('current changed to: ', current);
-  }, [current]);
 
   return <ThemeProvider initialTheme={theme}>{children}</ThemeProvider>;
 }
