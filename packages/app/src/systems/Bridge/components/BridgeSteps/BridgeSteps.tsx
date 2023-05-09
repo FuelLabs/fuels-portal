@@ -16,11 +16,11 @@ type BridgeStepsProps = {
 
 export const BridgeSteps = ({ steps }: BridgeStepsProps) => {
   return (
-    <Box.Stack gap={0} css={styles.stack}>
+    <Box.Stack css={styles.stack}>
       {steps.map((step, index) => {
         return (
           <Box.Flex key={`${index}_${step.name?.toString()}`} css={styles.item}>
-            <Box.Flex gap="$2" align="center">
+            <Box.Flex css={styles.action}>
               <Box
                 css={{
                   ...styles.circle,
@@ -29,7 +29,7 @@ export const BridgeSteps = ({ steps }: BridgeStepsProps) => {
                 className={step.isDone ? 'circleDone' : undefined}
               >
                 {step.isDone ? (
-                  <Icon icon="Check" color="intentsBase12" size={10} />
+                  <Icon icon="Check" size={10} css={styles.icon} />
                 ) : (
                   <Text
                     color={step.isSelected ? 'intentsBase12' : undefined}
@@ -52,6 +52,7 @@ export const BridgeSteps = ({ steps }: BridgeStepsProps) => {
 
 const styles = {
   stack: cssObj({
+    gap: '$0',
     width: '344px',
     backgroundColor: '$intentsBase0',
     borderRadius: '$md',
@@ -72,9 +73,16 @@ const styles = {
       border: '1px solid $intentsPrimary9',
     },
   }),
+  action: cssObj({
+    gap: '$2',
+    alignItems: 'center',
+  }),
   name: cssObj({
     lineHeight: '1.5rem',
     fontSize: '$xs',
+    color: '$intentsBase12',
+  }),
+  icon: cssObj({
     color: '$intentsBase12',
   }),
   number: cssObj({
