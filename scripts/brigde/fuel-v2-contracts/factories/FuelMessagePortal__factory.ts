@@ -315,7 +315,7 @@ const _abi = [
     outputs: [],
     stateMutability: 'payable',
     type: 'function',
-  }, 
+  },
   {
     inputs: [],
     name: 'fuelBaseAssetDecimals',

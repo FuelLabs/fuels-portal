@@ -1,4 +1,4 @@
-import { Button, Dialog, Icon, IconButton } from '@fuel-ui/react';
+import { Dialog, Icon, IconButton } from '@fuel-ui/react';
 
 import { BridgeSteps } from '../../../Bridge/components';
 import { useTxEthToFuel } from '../hooks';
@@ -26,9 +26,6 @@ export function TxEthToFuelDialog() {
       <Dialog.Description>
         <BridgeSteps steps={steps} />
       </Dialog.Description>
-      <Dialog.Footer>
-        <Button>Test Button</Button>
-      </Dialog.Footer>
     </>
   );
 }

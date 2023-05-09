@@ -3,44 +3,29 @@ import { useEffect } from 'react';
 import { useSigner, useTransaction } from 'wagmi';
 
 import type { TxEthToFuelMachineState } from '../machines';
-import { txEthToFuelMachine } from '../machines';
+import { TxEthToFuelStatus, txEthToFuelMachine } from '../machines';
 
 import { store } from '~/store';
 
 const selectors = {
-  status:
-    ({
-      ethAddress,
-      fuelAddress,
-    }: {
-      ethAddress?: string;
-      fuelAddress?: string;
-    }) =>
-    (state: TxEthToFuelMachineState) => {
-      const { ethTx, ethTxReceipt, ethTxNonce, fuelMessage } = state.context;
+  status: (state: TxEthToFuelMachineState) => {
+    const { ethTxReceipt, fuelMessage } = state.context;
 
-      if (!ethTxReceipt) {
-      }
+    if (!ethTxReceipt) return TxEthToFuelStatus.waitingSettlement;
+    if (!fuelMessage) return TxEthToFuelStatus.waitingReceiveFuel;
 
-      if (!fromNetwork) return BridgeStatus.waitingNetworkFrom;
-      if (!toNetwork) return BridgeStatus.waitingNetworkTo;
-      if (
-        (isEthChain(fromNetwork) && !ethAddress) ||
-        (isFuelChain(fromNetwork) && !fuelAddress)
-      )
-        return BridgeStatus.waitingConnectFrom;
-      if (
-        (isEthChain(toNetwork) && !ethAddress) ||
-        (isFuelChain(toNetwork) && !fuelAddress)
-      )
-        return BridgeStatus.waitingConnectTo;
-
-      return BridgeStatus.waitingAsset;
-    },
+    return TxEthToFuelStatus.done;
+  },
   steps: (state: TxEthToFuelMachineState) => {
-    const { ethTx, ethTxReceipt, ethTxNonce, fuelMessage } = state.context;
+    const status = selectors.status(state);
+    const { ethTx } = state.context;
 
     if (!ethTx) return undefined;
+
+    const isWaitingSettlement = status === TxEthToFuelStatus.waitingSettlement;
+    const isWaitingReceiveFuel =
+      status === TxEthToFuelStatus.waitingReceiveFuel;
+    const isDone = status === TxEthToFuelStatus.done;
 
     // TODO: refact this and craete status for TxEthToFuel.. just like useBrigde
     const steps = [
@@ -51,24 +36,24 @@ const selectors = {
       },
       {
         name: 'Settlement',
-        status: ethTxReceipt ? 'Done!' : '~XX minutes left',
-        isLoading: !ethTxReceipt,
-        isDone: Boolean(ethTxReceipt),
-        isSelected: !ethTxReceipt,
+        status: !isWaitingSettlement ? 'Done!' : '~XX minutes left',
+        isLoading: isWaitingSettlement,
+        isDone: !isWaitingSettlement,
+        isSelected: isWaitingSettlement,
       },
       {
         name: 'Confirm transaction',
-        status: ethTxNonce ? 'Done!' : 'Automatic',
-        isLoading: Boolean(ethTxReceipt && !ethTxNonce),
-        isDone: Boolean(ethTxNonce),
-        isSelected: Boolean(ethTxReceipt && !ethTxNonce),
+        status: isDone ? 'Done!' : 'Automatic',
+        isLoading: isWaitingReceiveFuel,
+        isDone,
+        isSelected: isWaitingReceiveFuel,
       },
       {
         name: 'Receive funds',
-        status: fuelMessage ? 'Done!' : 'Automatic',
-        isLoading: Boolean(ethTxReceipt && ethTxNonce && !fuelMessage),
-        isDone: Boolean(fuelMessage),
-        isSelected: Boolean(ethTxReceipt && ethTxNonce && !fuelMessage),
+        status: isDone ? 'Done!' : 'Automatic',
+        isLoading: false,
+        isDone,
+        isSelected: false,
       },
     ];
 

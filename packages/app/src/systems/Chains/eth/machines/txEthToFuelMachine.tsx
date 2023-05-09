@@ -1,28 +1,26 @@
 import type {
   Provider as EthProvider,
-  TransactionReceipt,
-  TransactionResponse,
+  TransactionResponse as EthTransactionResponse,
 } from '@ethersproject/providers';
-import type { BN, Message, WalletUnlocked } from 'fuels';
-import { bn, Provider as FuelProvider, Wallet } from 'fuels';
+import type { BN, Message } from 'fuels';
 import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
 
-import { FuelMessagePortal__factory } from '../fuel-v2-contracts/factories/FuelMessagePortal__factory';
+import type { TxEthToFuelInputs } from '../services';
+import { TxEthToFuelService } from '../services';
 
 import { FetchMachine } from '~/systems/Core';
 
 type MachineContext = {
-  ethTx?: TransactionResponse;
-  ethTxReceipt?: TransactionReceipt;
+  ethTx?: EthTransactionResponse;
   ethTxNonce?: BN;
   ethProvider?: EthProvider;
   fuelMessage?: Message;
 };
 
 type MachineServices = {
-  getEthReceipts: {
-    data: { txReceipt: TransactionReceipt; txNonce: BN };
+  getDepositNonce: {
+    data: BN;
   };
   getFuelMessage: {
     data: Message | undefined;
@@ -37,11 +35,12 @@ export enum TxEthToFuelStatus {
 
 export type TxEthToFuelMachineEvents = {
   type: 'START_ANALYZE_TX';
-  input: { ethTx: TransactionResponse; ethProvider: EthProvider };
+  input: { ethTx: EthTransactionResponse; ethProvider: EthProvider };
 };
 
 export const txEthToFuelMachine = createMachine(
   {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
     tsTypes: {} as import('./txEthToFuelMachine.typegen').Typegen0,
     schema: {
       context: {} as MachineContext,
@@ -62,7 +61,7 @@ export const txEthToFuelMachine = createMachine(
       },
       checkingSettlement: {
         invoke: {
-          src: 'getEthReceipts',
+          src: 'getDepositNonce',
           data: {
             input: (ctx: MachineContext) => ({
               ethTx: ctx.ethTx,
@@ -123,14 +122,11 @@ export const txEthToFuelMachine = createMachine(
       assignEthTx: assign({
         ethTx: (_, ev) => ev.input.ethTx,
       }),
-      assignEthTxReceipt: assign({
-        ethTxReceipt: (_, ev) => ev.data.txReceipt,
-      }),
       assignEthProvider: assign({
         ethProvider: (_, ev) => ev.input.ethProvider,
       }),
       assignEthTxNonce: assign({
-        ethTxNonce: (_, ev) => ev.data.txNonce,
+        ethTxNonce: (_, ev) => ev.data,
       }),
       assignFuelMessage: assign({
         fuelMessage: (_, ev) => ev.data,
@@ -138,67 +134,34 @@ export const txEthToFuelMachine = createMachine(
     },
     guards: {
       hasFuelMessage: (ctx, ev) => !!ctx.fuelMessage || !!ev?.data,
-      hasEthTxNonce: (ctx, ev) => !!ctx.ethTxNonce || !!ev?.data?.txNonce,
+      hasEthTxNonce: (ctx, ev) => !!ctx.ethTxNonce || !!ev?.data,
     },
     services: {
-      getEthReceipts: FetchMachine.create<
-        { ethTx: TransactionResponse; ethProvider: EthProvider },
-        MachineServices['getEthReceipts']['data']
+      getDepositNonce: FetchMachine.create<
+        TxEthToFuelInputs['getDepositNonce'],
+        MachineServices['getDepositNonce']['data']
       >({
         showError: true,
-        maxAttempts: 1,
         async fetch({ input }) {
-          if (!input?.ethTx) {
-            throw new Error('No eth TX');
+          if (!input) {
+            throw new Error('No input to getNonce');
           }
 
-          const { ethTx, ethProvider } = input;
-
-          const receipt = await ethTx.wait();
-
-          const fuelPortal = FuelMessagePortal__factory.connect(
-            '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9',
-            // response.FuelMessagePortal,
-            ethProvider
-          );
-          const event = fuelPortal.interface.parseLog(receipt.logs[0]);
-          const depositMessageNonce = bn(event.args.nonce.toHexString());
-
-          return { txReceipt: receipt, txNonce: depositMessageNonce };
+          return TxEthToFuelService.getDepositNonce(input);
         },
       }),
       getFuelMessage: FetchMachine.create<
-        { ethTxNonce: BN },
+        TxEthToFuelInputs['getFuelMessage'],
         MachineServices['getFuelMessage']['data']
       >({
         showError: true,
         maxAttempts: 1,
         async fetch({ input }) {
-          if (!input?.ethTxNonce) {
-            throw new Error('No nonce informed');
+          if (!input) {
+            throw new Error('No input to get fuel message');
           }
 
-          const { ethTxNonce } = input;
-
-          const fuelProvider = new FuelProvider(
-            'http://localhost:4000/graphql'
-          );
-          const fuelWallet: WalletUnlocked = Wallet.fromPrivateKey(
-            '0x6303bacbe42085ab84211bba63f4946649bcfb81c30510cad46e6e4efbccbd72',
-            fuelProvider
-          );
-          const messages = await fuelProvider.getMessages(fuelWallet.address, {
-            first: 1000,
-          });
-          const message = messages.find((message) => {
-            return message.nonce.toHex() === ethTxNonce.toHex();
-          });
-
-          if (message) {
-            return message;
-          }
-
-          return undefined;
+          return TxEthToFuelService.getFuelMessage(input);
         },
       }),
     },

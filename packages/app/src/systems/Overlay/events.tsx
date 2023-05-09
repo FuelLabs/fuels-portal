@@ -11,14 +11,6 @@ export function overlayEvents(store: Store) {
     closeOverlay() {
       store.send(Services.overlay, { type: 'CLOSE' });
     },
-    openTokenList() {
-      store.send(Services.overlay, {
-        type: 'OPEN',
-        input: {
-          modal: 'tokens.list',
-        },
-      });
-    },
     openTxEthToFuel({ txId }: { txId: string }) {
       store.send(Services.overlay, {
         type: 'OPEN',

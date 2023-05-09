@@ -4,12 +4,17 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import type { BridgeMachineState } from '../machines';
 import { BridgeStatus } from '../machines';
-import type { SupportedChain } from '../utils';
-import { getChainFromUrlParam, isEthChain, isFuelChain } from '../utils';
+import { getChainFromUrlParam } from '../utils';
 
-import { ETH_CHAIN, FUEL_CHAIN } from '~/config';
 import { Services, store } from '~/store';
-import { useEthAccountConnection } from '~/systems/Chains';
+import type { SupportedChain } from '~/systems/Chains';
+import {
+  useEthAccountConnection,
+  isEthChain,
+  isFuelChain,
+  ETH_CHAIN,
+  FUEL_CHAIN,
+} from '~/systems/Chains';
 import { Pages } from '~/types';
 
 const selectors = {
@@ -41,6 +46,7 @@ const selectors = {
 
       return BridgeStatus.waitingAsset;
     },
+  isLoading: (state: BridgeMachineState) => state.matches('bridging'),
 };
 
 export function useBridge() {

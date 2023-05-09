@@ -14,57 +14,53 @@ export function useBridgeButton() {
     isLoadingConnectTo,
   } = useBridge();
 
-  const text = useMemo(() => {
+  // TODO: add isDisabled for choose asset/amount situation
+  const button = useMemo(() => {
     if (status === BridgeStatus.waitingConnectFrom) {
-      return status.replace('From', fromNetwork?.name || '');
+      return {
+        text: status.replace('From', fromNetwork?.name || ''),
+        isLoading: isLoadingConnectFrom,
+        action: handlers.connectFrom,
+      };
     }
 
     if (status === BridgeStatus.waitingConnectTo) {
-      return status.replace('To', toNetwork?.name || '');
+      return {
+        text: status.replace('To', toNetwork?.name || ''),
+        isLoading: isLoadingConnectTo,
+        // TODO: remove this once have fuel wallet integrated
+        action: handlers.startBridging,
+        // action: handlers.connectTo,
+      };
     }
 
     if (status === BridgeStatus.ready) {
-      return 'Bridge Asset';
+      return {
+        text: status,
+        // TODO: add real bridge isLoading
+        isLoading: false,
+        action: handlers.startBridging,
+      };
     }
 
-    return status;
-  }, [status, fromNetwork, toNetwork]);
+    return {
+      text: status,
+    };
+  }, [
+    status,
+    fromNetwork,
+    toNetwork,
+    handlers.startBridging,
+    handlers.connectFrom,
+    handlers.connectTo,
+    isLoadingConnectFrom,
+    isLoadingConnectTo,
+  ]);
 
-  const action = useMemo(() => {
-    if (status === BridgeStatus.waitingConnectFrom) {
-      return handlers.connectFrom;
-    }
-
-    if (status === BridgeStatus.waitingConnectTo) {
-      return handlers.connectTo;
-    }
-
-    if (status === BridgeStatus.ready) {
-      return handlers.startBridging;
-    }
-
-    return undefined;
-  }, [status, handlers.startBridging]);
-
-  const isLoading = useMemo(() => {
-    if (status === BridgeStatus.waitingConnectFrom) {
-      return isLoadingConnectFrom;
-    }
-
-    if (status === BridgeStatus.waitingConnectTo) {
-      return isLoadingConnectTo;
-    }
-
-    if (status === BridgeStatus.ready) {
-      // TODO: return bridge loading
-    }
-
-    return undefined;
-  }, [isLoadingConnectFrom, isLoadingConnectTo]);
+  const { action, ...bridgeButton } = button;
 
   return {
-    text,
-    isLoading,
+    ...bridgeButton,
     handlers: {
       action,
     },

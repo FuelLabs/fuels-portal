@@ -12,7 +12,8 @@ import { publicProvider } from 'wagmi/providers/public';
 
 import { useTheme } from '../hooks';
 
-import { ETH_CHAIN, VITE_ALCHEMY_ID, VITE_WALLETCONNECT_ID } from '~/config';
+import { VITE_ALCHEMY_ID, VITE_WALLETCONNECT_ID } from '~/config';
+import { ETH_CHAIN } from '~/systems/Chains';
 
 const app = {
   name: 'Fuel Bridge',

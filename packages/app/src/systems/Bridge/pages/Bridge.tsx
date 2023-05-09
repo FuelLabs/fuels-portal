@@ -4,15 +4,18 @@ import { Card, Stack, Text } from '@fuel-ui/react';
 import fuelLogoSrc from '../../../../public/fuel-logo.svg';
 import { BridgeButton, BridgeTabs } from '../containers';
 import { useBridge } from '../hooks';
-import { isFuelChain } from '../utils';
 
 import { AccountConnectionInput } from '~/systems/Accounts';
-import { EthAccountConnection } from '~/systems/Chains';
+import {
+  EthAccountConnection,
+  isEthChain,
+  isFuelChain,
+} from '~/systems/Chains';
 
 export const Bridge = () => {
   const { fromNetwork, toNetwork } = useBridge();
 
-  if (!fromNetwork) return null;
+  if (!fromNetwork || !toNetwork) return null;
 
   return (
     <Card>
@@ -21,36 +24,31 @@ export const Bridge = () => {
       </Card.Header>
       <Card.Body>
         <Stack gap="$6">
-          {!!fromNetwork && !!toNetwork && (
+          {Boolean(fromNetwork && toNetwork) && (
             <Stack gap="$3">
               <Text fontSize="xs" css={styles.sectionHeader}>
                 Network
               </Text>
-              <>
-                {isFuelChain(fromNetwork) ? (
-                  <>
-                    <AccountConnectionInput
-                      networkName={fromNetwork.name}
-                      networkImageUrl={fuelLogoSrc}
-                      label="From"
-                      isConnecting={false}
-                      onConnect={() => {}}
-                    />
-                    <EthAccountConnection label="To" />
-                  </>
-                ) : (
-                  <>
-                    <EthAccountConnection label="From" />
-                    <AccountConnectionInput
-                      networkName={toNetwork.name}
-                      networkImageUrl={fuelLogoSrc}
-                      label="To"
-                      isConnecting={false}
-                      onConnect={() => {}}
-                    />
-                  </>
-                )}
-              </>
+              {isEthChain(fromNetwork) && <EthAccountConnection label="From" />}
+              {isFuelChain(fromNetwork) && (
+                <AccountConnectionInput
+                  networkName={fromNetwork.name}
+                  networkImageUrl={fuelLogoSrc}
+                  label="From"
+                  isConnecting={false}
+                  onConnect={() => {}}
+                />
+              )}
+              {isEthChain(toNetwork) && <EthAccountConnection label="To" />}
+              {isFuelChain(toNetwork) && (
+                <AccountConnectionInput
+                  networkName={toNetwork.name}
+                  networkImageUrl={fuelLogoSrc}
+                  label="To"
+                  isConnecting={false}
+                  onConnect={() => {}}
+                />
+              )}
             </Stack>
           )}
           <BridgeButton />

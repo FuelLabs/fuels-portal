@@ -3,8 +3,8 @@ import { assign, createMachine } from 'xstate';
 
 import type { BridgeInputs, PossibleBridgeInputs } from '../services';
 import { BridgeService } from '../services';
-import type { FromToNetworks } from '../utils';
 
+import type { FromToNetworks } from '~/systems/Chains';
 import { FetchMachine } from '~/systems/Core';
 
 type MachineContext = {

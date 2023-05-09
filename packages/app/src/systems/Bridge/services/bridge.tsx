@@ -1,9 +1,6 @@
-import type { FromToNetworks } from '../utils';
-import { isEthChain, isFuelChain } from '../utils';
-
 import { store } from '~/store';
-import type { TxEthToFuelInputs } from '~/systems/Chains';
-import { TxEthToFuelService } from '~/systems/Chains';
+import type { FromToNetworks, TxEthToFuelInputs } from '~/systems/Chains';
+import { isEthChain, isFuelChain, TxEthToFuelService } from '~/systems/Chains';
 
 export type PossibleBridgeInputs = Partial<TxEthToFuelInputs['create']>;
 export type BridgeInputs = {

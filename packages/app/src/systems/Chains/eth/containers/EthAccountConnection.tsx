@@ -1,7 +1,7 @@
 import ethLogoSrc from '../../../../../public/eth-logo.svg';
+import { ETH_CHAIN } from '../../config';
 import { useEthAccountConnection } from '../hooks';
 
-import { ETH_CHAIN } from '~/config';
 import { AccountConnectionInput } from '~/systems/Accounts';
 
 export const EthAccountConnection = ({ label }: { label?: string }) => {

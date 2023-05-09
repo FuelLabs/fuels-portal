@@ -4,6 +4,7 @@ interface ImportMetaEnv {
   readonly VITE_FUEL_PROVIDER_URL: string;
   readonly VITE_ALCHEMY_ID: string;
   readonly VITE_WALLETCONNECT_ID: string;
+  readonly VITE_ETH_FUEL_MESSAGE_PORTAL: string;
 }
 
 interface ImportMeta {
