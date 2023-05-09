@@ -10,20 +10,20 @@ import { store } from '~/store';
 
 export const useAccountConnectionFuel = () => {
   const fuel = useFuel();
-  const { data: address } = useAccount();
-  const { data: isConnected } = useIsConnected();
-  const { handlers: connectHandlers, error, isLoading } = useConnect();
-  const { handlers: disconnectHandlers } = useDisconnect();
+  const { account } = useAccount();
+  const { isConnected } = useIsConnected();
+  const { connect, error, isLoading } = useConnect();
+  const { disconnect } = useDisconnect();
 
   return {
     handlers: {
-      connect: connectHandlers.connect,
-      disconnect: disconnectHandlers.disconnect,
+      connect,
+      disconnect,
       openFuelInstall: store.openFuelInstall,
       closeDialog: store.closeOverlay,
     },
     hasInstalledFuel: Boolean(fuel),
-    address,
+    account,
     isConnected,
     error,
     isLoading,

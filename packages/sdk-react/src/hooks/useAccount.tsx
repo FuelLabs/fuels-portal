@@ -24,7 +24,7 @@ export const useAccount = () => {
   );
 
   return {
-    data: data || undefined,
+    account: data || undefined,
     ...queryProps,
   };
 };

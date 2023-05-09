@@ -5,17 +5,14 @@ import { useFuel } from './useFuel';
 export const useDisconnect = () => {
   const fuel = useFuel();
 
-  const { data, mutate, ...mutateProps } = useMutation({
+  const { mutate, ...mutateProps } = useMutation({
     mutationFn: async () => {
       return fuel?.disconnect();
     },
   });
 
   return {
-    handlers: {
-      disconnect: mutate,
-    },
-    data,
+    disconnect: mutate,
     ...mutateProps,
   };
 };

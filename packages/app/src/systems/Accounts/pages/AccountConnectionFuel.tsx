@@ -3,9 +3,9 @@ import { AccountConnectionInput } from '../components';
 import { useAccountConnectionFuel } from '../hooks';
 
 export const AccountConnectionFuel = () => {
-  const { isLoading, handlers, hasInstalledFuel, address } =
+  const { isLoading, handlers, hasInstalledFuel, account } =
     useAccountConnectionFuel();
-  const nonNullAddress = !address ? undefined : address!;
+  const nonNullAddress = !account ? undefined : account!;
 
   return (
     <AccountConnectionInput

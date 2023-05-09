@@ -11,7 +11,7 @@ export const useIsConnected = () => {
   });
 
   return {
-    data: data || undefined,
+    isConnected: data || undefined,
     ...queryProps,
   };
 };

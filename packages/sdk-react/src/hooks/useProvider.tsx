@@ -11,7 +11,7 @@ export const useProvider = () => {
   });
 
   return {
-    data: data || undefined,
+    provider: data || undefined,
     ...queryProps,
   };
 };
