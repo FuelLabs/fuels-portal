@@ -4,7 +4,6 @@ import {
   lightTheme,
   useFuelTheme,
 } from '@fuel-ui/react';
-import { withRouter } from 'storybook-addon-react-router-v6';
 import { useDarkMode } from 'storybook-dark-mode';
 import { themes } from '@storybook/theming';
 
@@ -58,8 +57,10 @@ function ThemeWrapper(props) {
 
 export const decorators = [
   (Story) => (
-    <ThemeWrapper>
-      <Story />
-    </ThemeWrapper>
+    <StoreProvider>
+      <ThemeWrapper>
+        <Story />
+      </ThemeWrapper>
+    </StoreProvider>
   ),
 ];
