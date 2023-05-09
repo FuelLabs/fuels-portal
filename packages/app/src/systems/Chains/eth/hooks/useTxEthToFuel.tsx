@@ -9,9 +9,9 @@ import { store } from '~/store';
 
 const selectors = {
   status: (state: TxEthToFuelMachineState) => {
-    const { ethTxReceipt, fuelMessage } = state.context;
+    const { ethTxNonce, fuelMessage } = state.context;
 
-    if (!ethTxReceipt) return TxEthToFuelStatus.waitingSettlement;
+    if (!ethTxNonce) return TxEthToFuelStatus.waitingSettlement;
     if (!fuelMessage) return TxEthToFuelStatus.waitingReceiveFuel;
 
     return TxEthToFuelStatus.done;

@@ -112,7 +112,7 @@ export function useBridge() {
 
     store.startBridging({
       amount,
-      ethSigner,
+      ethSigner: ethSigner || undefined,
     });
   }
 

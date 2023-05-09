@@ -1,8 +1,8 @@
+import type { FromToNetworks } from '../Chains';
 import type { Store } from '../Store';
 import { Services } from '../Store';
 
 import type { PossibleBridgeInputs } from './services';
-import type { FromToNetworks } from './utils';
 
 export function bridgeEvents(store: Store) {
   return {
