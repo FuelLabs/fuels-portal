@@ -3159,9 +3159,9 @@ packages:
       dexie-observable: 4.0.1-beta.13(dexie@3.2.3)
       events: 3.3.0
       fuels: 0.33.0
-      json-rpc-2.0: 1.6.0
+      json-rpc-2.0: 1.5.1
       uuid: 9.0.0
-      xstate: 4.37.2
+      xstate: 4.37.0
     transitivePeerDependencies:
       - dexie
     dev: false
@@ -15095,8 +15095,8 @@ packages:
   /json-parse-even-better-errors@2.3.1:
     resolution: {integrity: sha512-xyFwyhro/JEof6Ghe2iz2NcXoj2sloNsWr/XsERDK/oiPCfaNhl5ONfp+jQdAZRQQ0IJWNzH9zIZF7li91kh2w==}
 
-  /json-rpc-2.0@1.6.0:
-    resolution: {integrity: sha512-+pKxaoIqnA5VjXmZiAI1+CkFG7mHLg+dhtliOe/mp1P5Gdn8P5kE/Xxp2CUBwnGL7pfw6gC8zWTWekhSnKzHFA==}
+  /json-rpc-2.0@1.5.1:
+    resolution: {integrity: sha512-ZY/vYl/uUgKN3tNrZMq7w+CGLcoUT+8AzDO/HJZVa+K4XcwgfgES1QDa5y7ieAeh4NgRo3hLexMxgdaiEiK9aA==}
     dev: false
 
   /json-rpc-engine@6.1.0:
