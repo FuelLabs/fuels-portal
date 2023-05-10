@@ -19,5 +19,13 @@ export function overlayEvents(store: Store) {
         },
       });
     },
+    openFuelInstall() {
+      store.send(Services.overlay, {
+        type: 'OPEN',
+        input: {
+          modal: 'accounts.install.fuel',
+        },
+      });
+    },
   };
 }
