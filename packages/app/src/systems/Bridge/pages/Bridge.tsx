@@ -17,7 +17,7 @@ export const Bridge = () => {
   return (
     <Tabs defaultValue="deposit">
       <Card>
-        <Card.Header justify="center" css={styles.header}>
+        <Card.Body>
           <Tabs.List aria-label="Manage deposits" css={styles.tabList}>
             <Tabs.Trigger
               value="deposit"
@@ -34,8 +34,6 @@ export const Bridge = () => {
               Withdraw from Fuel
             </Tabs.Trigger>
           </Tabs.List>
-        </Card.Header>
-        <Card.Body>
           <Tabs.Content value="deposit">
             <BridgeEthToFuel />
           </Tabs.Content>
@@ -47,18 +45,11 @@ export const Bridge = () => {
 };
 
 const styles = {
-  header: cssObj({
-    px: '$8',
-    pt: '$8',
-    pb: '$4',
-  }),
   tabList: cssObj({
     borderBottom: 'none',
     padding: '$1',
     backgroundColor: '$gray4',
     borderRadius: '$md',
-    width: '344px',
-    height: '40px',
     alignItems: 'center',
 
     '& > :after': { content: 'none' },
@@ -68,15 +59,18 @@ const styles = {
     },
   }),
   tabTrigger: cssObj({
-    height: '36px',
     borderRadius: '$md',
-    color: '$blackA12',
-    fontSize: '$xs',
-    flexGrow: '1',
+    color: '$intentsBase11',
+    fontSize: '$sm',
+    flex: '1 0',
+    margin: '0 !important',
     '&[data-state="active"]': {
-      backgroundColor: '$whiteA12',
-      color: '$blackA12',
+      color: '$intentsBase12',
+      backgroundColor: '$intentsBase1',
       borderBottomColor: 'transparent',
+    },
+    '&:hover': {
+      color: '$intentsBase12',
     },
   }),
 };

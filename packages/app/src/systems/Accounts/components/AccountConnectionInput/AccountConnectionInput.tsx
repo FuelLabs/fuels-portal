@@ -28,8 +28,8 @@ export const AccountConnectionInput = ({
 }: AccountConnectionInputProps) => {
   return (
     <Card css={styles.root}>
-      <Card.Body css={styles.body}>
-        <Box.Stack>
+      <Card.Body>
+        <Box.Stack gap="$1">
           <Box>
             <Text css={styles.label}>{label}</Text>
           </Box>
@@ -81,11 +81,10 @@ export const AccountConnectionInput = ({
 
 const styles = {
   root: cssObj({
+    py: '$2',
+    px: '$3',
     minHeight: '$15',
     borderRadius: '$md',
-  }),
-  body: cssObj({
-    padding: '10px',
   }),
   label: cssObj({
     fontSize: '$sm',
