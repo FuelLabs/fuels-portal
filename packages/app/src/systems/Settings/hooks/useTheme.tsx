@@ -11,6 +11,6 @@ export function useTheme() {
     handlers: {
       toggle,
     },
-    theme: current,
+    theme: current as 'light' | 'dark',
   };
 }

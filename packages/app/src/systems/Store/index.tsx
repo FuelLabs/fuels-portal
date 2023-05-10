@@ -1,7 +1,6 @@
 import { createStore } from '@fuels-portal/store';
 
-import { overlayMachine } from '../Overlay';
-import { overlayEvents } from '../Overlay/events';
+import { overlayEvents, overlayMachine } from '../Overlay';
 
 import type { StoreMachines } from './types';
 import { Services } from './types';
@@ -10,7 +9,6 @@ export * from './types';
 
 export const store$ = createStore<StoreMachines>({
   id: 'fuelStore',
-  persistedStates: [Services.theme],
 });
 
 export const store = store$
