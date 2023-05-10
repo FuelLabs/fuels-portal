@@ -8,6 +8,7 @@ import { useBridge } from '../hooks';
 import { AccountConnectionInput } from '~/systems/Accounts';
 import {
   EthAccountConnection,
+  FuelAccountConnection,
   isEthChain,
   isFuelChain,
 } from '~/systems/Chains';
@@ -31,24 +32,10 @@ export const Bridge = () => {
               </Text>
               {isEthChain(fromNetwork) && <EthAccountConnection label="From" />}
               {isFuelChain(fromNetwork) && (
-                <AccountConnectionInput
-                  networkName={fromNetwork.name}
-                  networkImageUrl={fuelLogoSrc}
-                  label="From"
-                  isConnecting={false}
-                  onConnect={() => {}}
-                />
+                <FuelAccountConnection label="From" />
               )}
               {isEthChain(toNetwork) && <EthAccountConnection label="To" />}
-              {isFuelChain(toNetwork) && (
-                <AccountConnectionInput
-                  networkName={toNetwork.name}
-                  networkImageUrl={fuelLogoSrc}
-                  label="To"
-                  isConnecting={false}
-                  onConnect={() => {}}
-                />
-              )}
+              {isFuelChain(toNetwork) && <FuelAccountConnection label="To" />}
             </Stack>
           )}
           <BridgeButton />

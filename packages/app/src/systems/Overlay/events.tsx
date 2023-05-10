@@ -26,7 +26,7 @@ export function overlayEvents(store: Store) {
       store.send(Services.overlay, {
         type: 'OPEN',
         input: {
-          modal: 'accounts.install.fuel',
+          modal: 'fuel.install',
         },
       });
     },

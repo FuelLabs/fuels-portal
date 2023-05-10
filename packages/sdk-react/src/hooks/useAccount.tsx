@@ -1,19 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { ACCOUNT_KEY, useFuelReactContext } from '../components';
+import { ACCOUNT_KEY, useFuel } from '../components';
 
 export const useAccount = () => {
-  const { fuel } = useFuelReactContext();
+  const { fuel } = useFuel();
 
   const { data, ...queryProps } = useQuery(
     [ACCOUNT_KEY],
     async () => {
-      if (!fuel) {
-        return null;
-      }
       try {
-        const currentFuelAccount = await fuel.currentAccount();
-        return currentFuelAccount;
+        const currentFuelAccount = await fuel?.currentAccount();
+        return currentFuelAccount || null;
       } catch (error: unknown) {
         return null;
       }

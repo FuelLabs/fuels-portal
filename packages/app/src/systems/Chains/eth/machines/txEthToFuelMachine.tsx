@@ -74,7 +74,7 @@ export const txEthToFuelMachine = createMachine(
               target: 'checkingSettlement',
             },
             {
-              actions: ['assignEthTxReceipt', 'assignEthTxNonce'],
+              actions: ['assignEthTxNonce'],
               cond: 'hasEthTxNonce',
               target: 'checkingFuelTx',
             },

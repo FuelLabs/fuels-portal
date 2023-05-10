@@ -8,11 +8,11 @@ import {
 
 import { store } from '~/store';
 
-export const useAccountConnectionFuel = () => {
+export const useFuelAccountConnection = () => {
   const fuel = useFuel();
   const { account } = useAccount();
   const { isConnected } = useIsConnected();
-  const { connect, error, isLoading } = useConnect();
+  const { connect, error, isLoading: isConnecting } = useConnect();
   const { disconnect } = useDisconnect();
 
   return {
@@ -26,6 +26,6 @@ export const useAccountConnectionFuel = () => {
     account,
     isConnected,
     error,
-    isLoading,
+    isConnecting,
   };
 };

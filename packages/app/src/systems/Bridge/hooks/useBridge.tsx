@@ -9,6 +9,7 @@ import { getChainFromUrlParam } from '../utils';
 import { Services, store } from '~/store';
 import type { SupportedChain } from '~/systems/Chains';
 import {
+  useFuelAccountConnection,
   useEthAccountConnection,
   isEthChain,
   isFuelChain,
@@ -56,12 +57,17 @@ export function useBridge() {
     handlers: ethHandlers,
     isConnecting: ethIsConnecting,
   } = useEthAccountConnection();
+  const {
+    account: fuelAddress,
+    handlers: fuelHandlers,
+    isConnecting: fuelIsConnecting,
+  } = useFuelAccountConnection();
   const fromNetwork = store.useSelector(Services.bridge, selectors.fromNetwork);
   const toNetwork = store.useSelector(Services.bridge, selectors.toNetwork);
   const isLoading = store.useSelector(Services.bridge, selectors.isLoading);
   const status = store.useSelector(
     Services.bridge,
-    selectors.status({ ethAddress })
+    selectors.status({ ethAddress, fuelAddress })
   );
 
   const isDeposit = isFuelChain(toNetwork);
@@ -123,7 +129,7 @@ export function useBridge() {
     }
 
     if (isFuelChain(network)) {
-      // TODO: connect fruel
+      fuelHandlers.connect();
     }
   }
 
@@ -133,7 +139,7 @@ export function useBridge() {
     }
 
     if (isFuelChain(network)) {
-      // TODO: return is connecting fuel
+      return fuelIsConnecting;
     }
 
     return false;

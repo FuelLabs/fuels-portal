@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export function useFuel() {
+export function useWindowFuel() {
   const [fuel, setFuel] = useState<Window['fuel']>();
 
   useEffect(() => {

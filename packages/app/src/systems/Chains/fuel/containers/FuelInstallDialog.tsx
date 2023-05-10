@@ -1,10 +1,10 @@
 import { cssObj } from '@fuel-ui/css';
 import { Button, Dialog, IconButton, Icon } from '@fuel-ui/react';
 
-import { useAccountConnectionFuel } from '~/systems/Accounts';
+import { useFuelAccountConnection } from '../hooks';
 
-export const FuelInstallPopup = () => {
-  const { handlers } = useAccountConnectionFuel();
+export const FuelInstallDialog = () => {
+  const { handlers } = useFuelAccountConnection();
 
   return (
     <>

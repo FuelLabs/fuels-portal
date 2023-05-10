@@ -29,13 +29,17 @@ export function useBridgeButton() {
       return {
         text: status.replace('To', toNetwork?.name || ''),
         isLoading: isLoadingConnectTo,
-        // TODO: remove this once have fuel wallet integrated
-        action: handlers.startBridging,
-        // action: handlers.connectTo,
+        action: handlers.connectTo,
       };
     }
 
-    if (status === BridgeStatus.ready) {
+    // TODO: remove when InputAmount is insert
+    if (
+      status === BridgeStatus.ready ||
+      status === BridgeStatus.waitingAsset ||
+      status === BridgeStatus.waitingAssetAmount
+    ) {
+      // if (status === BridgeStatus.ready) {
       return {
         text: status,
         isLoading,
