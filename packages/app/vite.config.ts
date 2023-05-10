@@ -11,4 +11,8 @@ export default defineConfig({
   define: {
     'process.env': {},
   },
+  build: {
+    target: ['es2020'],
+    outDir: process.env.BUILD_PATH || 'dist',
+  },
 });
