@@ -59,7 +59,7 @@ export function Header() {
             aria-label="Theme-Switch"
             iconSize={14}
             css={styles.themeButton}
-            onPress={handlers.toggleTheme}
+            onPress={handlers.toggle}
           />
         </Box.Flex>
       </Box.Flex>
