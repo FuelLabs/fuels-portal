@@ -23,11 +23,11 @@ const selectors = {
   toNetwork: (state: BridgeMachineState) => state.context?.toNetwork,
   status:
     ({
-      ethAddress,
-      fuelAddress,
+      ethAccount,
+      fuelAccount,
     }: {
-      ethAddress?: string;
-      fuelAddress?: string;
+      ethAccount?: string;
+      fuelAccount?: string;
     }) =>
     (state: BridgeMachineState) => {
       const { fromNetwork, toNetwork } = state.context;
@@ -35,13 +35,13 @@ const selectors = {
       if (!fromNetwork) return BridgeStatus.waitingNetworkFrom;
       if (!toNetwork) return BridgeStatus.waitingNetworkTo;
       if (
-        (isEthChain(fromNetwork) && !ethAddress) ||
-        (isFuelChain(fromNetwork) && !fuelAddress)
+        (isEthChain(fromNetwork) && !ethAccount) ||
+        (isFuelChain(fromNetwork) && !fuelAccount)
       )
         return BridgeStatus.waitingConnectFrom;
       if (
-        (isEthChain(toNetwork) && !ethAddress) ||
-        (isFuelChain(toNetwork) && !fuelAddress)
+        (isEthChain(toNetwork) && !ethAccount) ||
+        (isFuelChain(toNetwork) && !fuelAccount)
       )
         return BridgeStatus.waitingConnectTo;
 
@@ -58,7 +58,8 @@ export function useBridge() {
     isConnecting: ethIsConnecting,
   } = useEthAccountConnection();
   const {
-    account: fuelAddress,
+    account: fuelAccount,
+    address: fuelAddress,
     handlers: fuelHandlers,
     isConnecting: fuelIsConnecting,
   } = useFuelAccountConnection();
@@ -67,7 +68,7 @@ export function useBridge() {
   const isLoading = store.useSelector(Services.bridge, selectors.isLoading);
   const status = store.useSelector(
     Services.bridge,
-    selectors.status({ ethAddress, fuelAddress })
+    selectors.status({ ethAccount: ethAddress, fuelAccount })
   );
 
   const isDeposit = isFuelChain(toNetwork);
@@ -119,7 +120,8 @@ export function useBridge() {
 
     store.startBridging({
       amount,
-      ethSigner: ethSigner || undefined,
+      ethSigner,
+      fuelAddress,
     });
   }
 

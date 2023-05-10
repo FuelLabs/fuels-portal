@@ -1,9 +1,12 @@
 import { useInterpret, useSelector } from '@xstate/react';
 import { useEffect } from 'react';
-import { useSigner, useTransaction } from 'wagmi';
+import { useTransaction } from 'wagmi';
 
+import { useFuelAccountConnection } from '../../fuel';
 import type { TxEthToFuelMachineState } from '../machines';
 import { TxEthToFuelStatus, txEthToFuelMachine } from '../machines';
+
+import { useEthAccountConnection } from './useEthAccountConnection';
 
 import { store } from '~/store';
 
@@ -61,27 +64,27 @@ const selectors = {
 };
 
 export function useTxEthToFuel({ id }: { id: string }) {
-  const {
-    data: ethTx,
-    isError,
-    isLoading,
-  } = useTransaction({
+  const { provider: ethProvider } = useEthAccountConnection();
+  const { provider: fuelProvider, address: fuelAddress } =
+    useFuelAccountConnection();
+  const { data: ethTx } = useTransaction({
     hash: id.startsWith('0x') ? (id as `0x${string}`) : undefined,
   });
-  const { data: ethSigner } = useSigner();
   const service = useInterpret(txEthToFuelMachine);
   const steps = useSelector(service, selectors.steps);
 
   useEffect(() => {
-    if (ethTx && ethSigner) {
+    if (ethTx && ethProvider && fuelProvider && fuelAddress) {
       service.send('START_ANALYZE_TX', {
         input: {
           ethTx,
-          ethProvider: ethSigner.provider,
+          ethProvider,
+          fuelProvider,
+          fuelAddress,
         },
       });
     }
-  }, [ethTx, ethSigner]);
+  }, [ethTx, ethProvider, fuelProvider, fuelAddress]);
 
   return {
     handlers: {

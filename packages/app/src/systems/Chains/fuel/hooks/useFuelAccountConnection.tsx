@@ -4,7 +4,9 @@ import {
   useAccount,
   useDisconnect,
   useIsConnected,
+  useProvider,
 } from '@fuels-portal/sdk-react';
+import { Address } from 'fuels';
 
 import { store } from '~/store';
 
@@ -14,6 +16,7 @@ export const useFuelAccountConnection = () => {
   const { isConnected } = useIsConnected();
   const { connect, error, isLoading: isConnecting } = useConnect();
   const { disconnect } = useDisconnect();
+  const { provider } = useProvider();
 
   return {
     handlers: {
@@ -24,8 +27,10 @@ export const useFuelAccountConnection = () => {
     },
     hasInstalledFuel: Boolean(fuel),
     account,
+    address: account ? Address.fromString(account) : undefined,
     isConnected,
     error,
     isConnecting,
+    provider,
   };
 };

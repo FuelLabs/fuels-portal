@@ -7,9 +7,7 @@ import { BridgeService } from '../services';
 import type { FromToNetworks } from '~/systems/Chains';
 import { FetchMachine } from '~/systems/Core';
 
-type MachineContext = {
-  ethAddress?: string;
-} & Partial<FromToNetworks>;
+type MachineContext = Partial<FromToNetworks>;
 
 type MachineServices = {
   bridge: {
@@ -73,6 +71,7 @@ export const bridgeMachine = createMachine(
               toNetwork: ctx.toNetwork,
               amount: ev.input.amount,
               ethSigner: ev.input.ethSigner,
+              fuelAddress: ev.input.fuelAddress,
             }),
           },
           onDone: [

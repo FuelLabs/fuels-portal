@@ -2,7 +2,12 @@ import type {
   Provider as EthProvider,
   TransactionResponse as EthTransactionResponse,
 } from '@ethersproject/providers';
-import type { BN, Message } from 'fuels';
+import type {
+  BN,
+  Message,
+  Address as FuelAddress,
+  Provider as FuelProvider,
+} from 'fuels';
 import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
 
@@ -15,6 +20,8 @@ type MachineContext = {
   ethTx?: EthTransactionResponse;
   ethTxNonce?: BN;
   ethProvider?: EthProvider;
+  fuelAddress?: FuelAddress;
+  fuelProvider?: FuelProvider;
   fuelMessage?: Message;
 };
 
@@ -33,9 +40,11 @@ export enum TxEthToFuelStatus {
   done = 'Done',
 }
 
+type AnalyzeInputs = TxEthToFuelInputs['getDepositNonce'] &
+  TxEthToFuelInputs['getFuelMessage'];
 export type TxEthToFuelMachineEvents = {
   type: 'START_ANALYZE_TX';
-  input: { ethTx: EthTransactionResponse; ethProvider: EthProvider };
+  input: Omit<AnalyzeInputs, 'ethTxNonce'>;
 };
 
 export const txEthToFuelMachine = createMachine(
@@ -54,7 +63,7 @@ export const txEthToFuelMachine = createMachine(
       idle: {
         on: {
           START_ANALYZE_TX: {
-            actions: ['assignEthTx', 'assignEthProvider'],
+            actions: ['assignAnalyzeTxInput'],
             target: 'checkingSettlement',
           },
         },
@@ -119,12 +128,12 @@ export const txEthToFuelMachine = createMachine(
   },
   {
     actions: {
-      assignEthTx: assign({
-        ethTx: (_, ev) => ev.input.ethTx,
-      }),
-      assignEthProvider: assign({
-        ethProvider: (_, ev) => ev.input.ethProvider,
-      }),
+      assignAnalyzeTxInput: assign((_, ev) => ({
+        ethTx: ev.input.ethTx,
+        ethProvider: ev.input.ethProvider,
+        fuelAddress: ev.input.fuelAddress,
+        fuelProvider: ev.input.fuelProvider,
+      })),
       assignEthTxNonce: assign({
         ethTxNonce: (_, ev) => ev.data,
       }),

@@ -12,6 +12,7 @@ export function useEthAccountConnection() {
   const { data: ensName } = useEnsName({ address });
   const { data: ensAvatar } = useEnsAvatar({ address });
   const { data: signer } = useSigner();
+
   const { open: isConnecting, setOpen } = useModal();
   const { disconnect } = useDisconnect();
 
@@ -27,6 +28,7 @@ export function useEthAccountConnection() {
     },
     isConnected,
     isConnecting,
-    signer,
+    signer: signer || undefined,
+    provider: signer?.provider || undefined,
   };
 }

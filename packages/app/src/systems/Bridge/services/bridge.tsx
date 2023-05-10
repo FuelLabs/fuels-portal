@@ -9,7 +9,7 @@ export type BridgeInputs = {
 
 export class BridgeService {
   static async bridge(input: BridgeInputs['bridge']) {
-    const { fromNetwork, toNetwork, amount, ethSigner } = input;
+    const { fromNetwork, toNetwork, amount, ethSigner, fuelAddress } = input;
 
     if (!fromNetwork || !toNetwork) {
       throw new Error('"Network From" and "Network To" are required');
@@ -23,6 +23,7 @@ export class BridgeService {
       const txId = await TxEthToFuelService.create({
         amount,
         ethSigner,
+        fuelAddress,
       });
 
       store.openTxEthToFuel({

@@ -3,8 +3,12 @@ import type {
   TransactionResponse as EthTransactionResponse,
 } from '@ethersproject/providers';
 import type { Signer as EthSigner } from 'ethers';
-import type { BN, WalletUnlocked } from 'fuels';
-import { bn, Provider as FuelProvider, Wallet } from 'fuels';
+import type {
+  Address as FuelAddress,
+  BN,
+  Provider as FuelProvider,
+} from 'fuels';
+import { bn } from 'fuels';
 
 import { FuelMessagePortal__factory } from '../fuel-v2-contracts/factories/FuelMessagePortal__factory';
 
@@ -14,6 +18,7 @@ export type TxEthToFuelInputs = {
   create: {
     amount: BN;
     ethSigner?: EthSigner;
+    fuelAddress?: FuelAddress;
   };
   getDepositNonce: {
     ethTx?: EthTransactionResponse;
@@ -21,11 +26,14 @@ export type TxEthToFuelInputs = {
   };
   getFuelMessage: {
     ethTxNonce?: BN;
+    fuelProvider?: FuelProvider;
+    fuelAddress?: FuelAddress;
   };
 };
 
 export class TxEthToFuelService {
   static connectToFuelMessagePortal(signerOrProvider: EthSigner | EthProvider) {
+    console.log(`VITE_ETH_FUEL_MESSAGE_PORTAL`, VITE_ETH_FUEL_MESSAGE_PORTAL);
     return FuelMessagePortal__factory.connect(
       VITE_ETH_FUEL_MESSAGE_PORTAL,
       signerOrProvider
@@ -33,25 +41,22 @@ export class TxEthToFuelService {
   }
 
   static async create(input: TxEthToFuelInputs['create']) {
-    if (!input.ethSigner) {
+    if (!input?.ethSigner) {
       throw new Error('Need to connect ETH Wallet');
     }
-    if (!input.amount) {
+    if (!input?.amount) {
       throw new Error('Need amount to send');
     }
+    if (!input?.fuelAddress) {
+      throw new Error('Need fuel address to send');
+    }
 
-    const fuelPortal = TxEthToFuelService.connectToFuelMessagePortal(
-      input.ethSigner
-    );
+    const { ethSigner, fuelAddress, amount } = input;
 
-    // TODO: receive fuelAddress from inputs
-    const fuelProvider = new FuelProvider('http://localhost:4000/graphql');
-    const fuelWallet: WalletUnlocked = Wallet.fromPrivateKey(
-      '0x6303bacbe42085ab84211bba63f4946649bcfb81c30510cad46e6e4efbccbd72',
-      fuelProvider
-    );
-    const tx = await fuelPortal.depositETH(fuelWallet.address.toHexString(), {
-      value: input.amount.toHex(),
+    const fuelPortal = TxEthToFuelService.connectToFuelMessagePortal(ethSigner);
+
+    const tx = await fuelPortal.depositETH(fuelAddress.toB256(), {
+      value: amount.toHex(),
     });
 
     return tx.hash;
@@ -80,20 +85,21 @@ export class TxEthToFuelService {
     if (!input?.ethTxNonce) {
       throw new Error('No nonce informed');
     }
-    const { ethTxNonce } = input;
+    if (!input?.fuelProvider) {
+      throw new Error('No provider for Fuel informed');
+    }
+    if (!input?.fuelAddress) {
+      throw new Error('No address for Fuel informed');
+    }
+    const { ethTxNonce, fuelProvider, fuelAddress } = input;
 
-    const fuelProvider = new FuelProvider('http://localhost:4000/graphql');
-    const fuelWallet: WalletUnlocked = Wallet.fromPrivateKey(
-      '0x6303bacbe42085ab84211bba63f4946649bcfb81c30510cad46e6e4efbccbd72',
-      fuelProvider
-    );
     // TODO: what happens when has more than 1000 messages ? should we do pagination or something?
-    const messages = await fuelProvider.getMessages(fuelWallet.address, {
+    const messages = await fuelProvider.getMessages(fuelAddress, {
       first: 1000,
     });
-    const message = messages.find((message) => {
-      return message.nonce.toHex() === ethTxNonce.toHex();
-    });
+    const message = messages.find(
+      (message) => message.nonce.toHex() === ethTxNonce.toHex()
+    );
 
     if (message) {
       return message;
