@@ -1,14 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import {
-  Card,
-  Stack,
-  Text,
-  Flex,
-  Image,
-  Button,
-  Box,
-  IconButton,
-} from '@fuel-ui/react';
+import { Card, Text, Image, Button, Box, IconButton } from '@fuel-ui/react';
 
 import { shortAddress } from '~/systems/Core/utils';
 
@@ -37,16 +28,16 @@ export const AccountConnectionInput = ({
 }: AccountConnectionInputProps) => {
   return (
     <Card css={styles.root}>
-      <Card.Body css={styles.body}>
-        <Stack gap="$1">
+      <Card.Body>
+        <Box.Stack gap="$1">
           <Box>
-            <Text fontSize="sm">{label}</Text>
+            <Text css={styles.label}>{label}</Text>
           </Box>
-          <Flex align="center" wrap="wrap" justify="space-between">
-            <Flex gap="$2" align="center">
+          <Box.Flex align="center" wrap="wrap" justify="space-between">
+            <Box.Flex gap="$2" align="center">
               <Image width="20" height="20" src={networkImageUrl} />
               <Text>{networkName}</Text>
-            </Flex>
+            </Box.Flex>
             {!account?.address ? (
               <Button
                 onPress={onConnect}
@@ -63,7 +54,7 @@ export const AccountConnectionInput = ({
                   <IconButton
                     icon="X"
                     variant="link"
-                    color="gray"
+                    intent="base"
                     onPress={onDisconnect}
                     aria-label="Disconnect account"
                     iconSize={12}
@@ -71,7 +62,7 @@ export const AccountConnectionInput = ({
                   />
                 }
                 variant="outlined"
-                color="gray"
+                intent="base"
                 size="xs"
                 css={{ ...styles.connectButton, ...styles.connectedButton }}
               >
@@ -81,8 +72,8 @@ export const AccountConnectionInput = ({
                 </Text>
               </Button>
             )}
-          </Flex>
-        </Stack>
+          </Box.Flex>
+        </Box.Stack>
       </Card.Body>
     </Card>
   );
@@ -90,12 +81,13 @@ export const AccountConnectionInput = ({
 
 const styles = {
   root: cssObj({
-    minWidth: '350px',
-    minHeight: '60px',
+    py: '$2',
+    px: '$3',
+    minHeight: '$15',
     borderRadius: '$md',
   }),
-  body: cssObj({
-    padding: '10px',
+  label: cssObj({
+    fontSize: '$sm',
   }),
   connectButton: cssObj({
     borderRadius: '$md',
@@ -110,7 +102,7 @@ const styles = {
   circle: cssObj({
     minWidth: 10,
     height: 10,
-    backgroundColor: '$red10',
+    backgroundColor: '$intentsError9',
     borderRadius: '$full',
   }),
   disconnectButton: cssObj({

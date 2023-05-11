@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Flex, FuelLogo, IconButton, ButtonLink, Link } from '@fuel-ui/react';
+import { Box, FuelLogo, IconButton, ButtonLink, Link } from '@fuel-ui/react';
 import { useLocation } from 'react-router-dom';
 
 import { useTheme } from '~/systems/Settings';
@@ -14,8 +14,8 @@ export function Header() {
   };
 
   return (
-    <Flex as="header" css={styles.root}>
-      <Flex gap="$4" css={styles.menu}>
+    <Box.Flex as="header" css={styles.root}>
+      <Box.Flex gap="$4" css={styles.menu}>
         <Link href="/" className="logo">
           <FuelLogo size={24} />
         </Link>
@@ -34,9 +34,9 @@ export function Header() {
         <ButtonLink href={Pages.labs} className={getClassName(Pages.labs)}>
           Labs
         </ButtonLink>
-      </Flex>
-      <Flex gap="$4" css={styles.desktop}>
-        <Flex gap="$4" css={styles.menu}>
+      </Box.Flex>
+      <Box.Flex gap="$4" css={styles.desktop}>
+        <Box.Flex gap="$4" css={styles.menu}>
           <ButtonLink
             href={Pages.bridge}
             className={getClassName(Pages.bridge)}
@@ -52,26 +52,26 @@ export function Header() {
           <ButtonLink href={Pages.ecosystem} className={Pages.ecosystem}>
             Ecosystem
           </ButtonLink>
-        </Flex>
-        <Flex gap="$1" css={styles.buttonContainer}>
+        </Box.Flex>
+        <Box.Flex gap="$1" css={styles.buttonContainer}>
           <IconButton
             icon="Moon"
             aria-label="Theme-Switch"
             iconSize={14}
-            css={{ ...styles.connectButton, ...styles.iconButton }}
-            onPress={handlers.toggleTheme}
+            css={styles.themeButton}
+            onPress={handlers.toggle}
           />
-        </Flex>
-      </Flex>
-    </Flex>
+        </Box.Flex>
+      </Box.Flex>
+    </Box.Flex>
   );
 }
 
 const styles = {
   root: cssObj({
-    borderBottom: '1px solid $gray3',
+    borderBottom: '1px solid $intentsBase5',
     justifyContent: 'space-between',
-    paddingLeft: '54px',
+    pl: '$14',
     zIndex: '$10',
     position: 'sticky',
     top: 0,
@@ -82,7 +82,7 @@ const styles = {
     alignItems: 'center',
     '.logo': {
       display: 'inline-flex',
-      color: '$gray9',
+      color: '$intentsBase8',
     },
 
     '@md': {
@@ -94,12 +94,6 @@ const styles = {
       px: '$8',
     },
   }),
-  fuelText: cssObj({
-    paddingLeft: '9px',
-  }),
-  portalText: cssObj({
-    paddingLeft: '6px',
-  }),
   desktop: cssObj({
     alignItems: 'center',
     '@xl': {
@@ -110,28 +104,26 @@ const styles = {
   buttonContainer: cssObj({
     height: '28px',
   }),
-  iconButton: cssObj({
-    width: '28px',
-  }),
-  connectButton: cssObj({
-    height: 'inherit',
-    background: '$gray2',
-    color: '$gray11',
+  themeButton: cssObj({
+    height: '$7',
+    background: '$intentsBase5',
+    color: '$intentsBase10',
     borderRadius: '$md',
     fontSize: '$xs',
+    width: '$6',
   }),
   menu: cssObj({
     a: {
-      color: '$gray10',
+      color: '$intentsBase10',
       transition: 'all 0.3s',
     },
 
     'a.active, a:hover': {
-      color: '$accent8',
+      color: '$intentsPrimary10',
     },
 
     'a.header--navItemActive': {
-      color: '$accent8',
+      color: '$intentsPrimary10',
     },
   }),
 };

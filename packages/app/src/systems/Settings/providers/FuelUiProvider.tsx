@@ -6,9 +6,5 @@ import { useTheme } from '../hooks';
 export function FuelUiProvider({ children }: PropsWithChildren) {
   const { theme } = useTheme();
 
-  return (
-    <ThemeProvider key={theme} theme={theme}>
-      {children}
-    </ThemeProvider>
-  );
+  return <ThemeProvider initialTheme={theme}>{children}</ThemeProvider>;
 }

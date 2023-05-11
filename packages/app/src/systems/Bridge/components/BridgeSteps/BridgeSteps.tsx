@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Flex, Stack, Box, Text, Icon } from '@fuel-ui/react';
+import { Box, Text, Icon } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
 
 type Step = {
@@ -15,28 +15,23 @@ type BridgeStepsProps = {
 
 export const BridgeSteps = ({ steps }: BridgeStepsProps) => {
   return (
-    <Stack gap={0} css={styles.stack}>
+    <Box.Stack css={styles.stack}>
       {steps?.map((step, index) => {
         return (
-          <Flex
-            key={`${index}_${step.name?.toString()}`}
-            align="center"
-            justify="space-between"
-            css={styles.item}
-          >
-            <Flex gap="$2" align="center">
+          <Box.Flex key={`${index}_${step.name?.toString()}`} css={styles.item}>
+            <Box.Flex css={styles.action}>
               <Box
                 css={{
                   ...styles.circle,
-                  borderColor: step.isSelected ? '$accent9' : undefined,
+                  borderColor: step.isSelected ? '$intentsPrimary9' : undefined,
                 }}
                 className={step.isDone ? 'circleDone' : undefined}
               >
                 {step.isDone ? (
-                  <Icon icon="Check" color="blackA12" size={10} />
+                  <Icon icon="Check" size={10} css={styles.icon} />
                 ) : (
                   <Text
-                    color={step.isSelected ? 'blackA12' : undefined}
+                    color={step.isSelected ? 'intentsBase12' : undefined}
                     css={styles.number}
                   >
                     {index + 1}
@@ -44,39 +39,51 @@ export const BridgeSteps = ({ steps }: BridgeStepsProps) => {
                 )}
               </Box>
 
-              <Text fontSize="xs" color="blackA12" css={styles.name}>
-                {step.name}
-              </Text>
-            </Flex>
+              <Text css={styles.name}>{step.name}</Text>
+            </Box.Flex>
             {step.status}
-          </Flex>
+          </Box.Flex>
         );
       })}
-    </Stack>
+    </Box.Stack>
   );
 };
 
 const styles = {
   stack: cssObj({
+    gap: '$0',
     width: '344px',
-    backgroundColor: '$whiteA12',
+    backgroundColor: '$intentsBase0',
     borderRadius: '$md',
-    border: '1px solid $gray11',
+    border: '1px solid $intentsBase5',
   }),
   item: cssObj({
+    alignItems: 'center',
+    justifyContent: 'space-between',
     px: '$3',
     py: '$1',
 
     '& ~ &': {
-      borderTop: '1px solid $gray11',
+      borderTop: '1px solid $intentsBase5',
     },
 
     '.circleDone': {
-      backgroundColor: '$accent9',
-      border: '1px solid $accent9',
+      backgroundColor: '$intentsPrimary9',
+      border: '1px solid $intentsPrimary9',
     },
   }),
-  name: cssObj({ lineHeight: '1.5rem' }),
+  action: cssObj({
+    gap: '$2',
+    alignItems: 'center',
+  }),
+  name: cssObj({
+    lineHeight: '1.5rem',
+    fontSize: '$xs',
+    color: '$intentsBase12',
+  }),
+  icon: cssObj({
+    color: '$intentsBase12',
+  }),
   number: cssObj({
     display: 'flex',
     justifyContent: 'center',
@@ -88,8 +95,7 @@ const styles = {
     alignItems: 'center',
     minWidth: '$4',
     height: '$4',
-    border: '1px solid',
-    borderColor: '$gray11',
+    border: '1px solid $intentsBase5',
     borderRadius: '$full',
   }),
 };

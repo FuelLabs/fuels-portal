@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Flex, Text } from '@fuel-ui/react';
+import { Box, Text } from '@fuel-ui/react';
 
 import { BridgeSteps } from './BridgeSteps';
 
@@ -15,37 +15,37 @@ export const Usage = () => {
   const steps = [
     {
       name: 'Submit to bridge',
-      status: <Text fontSize="xs">Action</Text>,
+      status: <Text css={styles.statusText}>Action</Text>,
       isLoading: false,
       isDone: false,
       isSelected: true,
     },
     {
       name: 'Settlement',
-      status: <Text fontSize="xs">Wait ~15 min</Text>,
+      status: <Text css={styles.statusText}>Wait ~15 min</Text>,
       isLoading: false,
       isDone: false,
       isSelected: false,
     },
     {
       name: 'Confirm transaction',
-      status: <Text fontSize="xs">Action</Text>,
+      status: <Text css={styles.statusText}>Action</Text>,
       isLoading: false,
       isDone: false,
       isSelected: false,
     },
     {
       name: 'Receive funds',
-      status: <Text fontSize="xs">Automatic</Text>,
+      status: <Text css={styles.statusText}>Automatic</Text>,
       isLoading: false,
       isDone: false,
       isSelected: false,
     },
   ];
   return (
-    <Flex align="center" justify="center" css={styles.storybook}>
+    <Box.Flex align="center" justify="center" css={styles.storybook}>
       <BridgeSteps steps={steps} />
-    </Flex>
+    </Box.Flex>
   );
 };
 
@@ -53,7 +53,7 @@ export const Mixed = () => {
   const steps = [
     {
       name: 'Submit to bridge',
-      status: <Text fontSize="xs">Done!</Text>,
+      status: <Text css={styles.statusText}>Done!</Text>,
       isLoading: false,
       isDone: true,
       isSelected: false,
@@ -62,10 +62,9 @@ export const Mixed = () => {
       name: 'Settlement',
       status: (
         <Text
-          fontSize="xs"
           leftIcon="SpinnerGap"
           iconSize={10}
-          css={{ gap: '$1' }}
+          css={{ gap: '$1', ...styles.statusText }}
         >
           ~5 minutes left
         </Text>
@@ -76,28 +75,32 @@ export const Mixed = () => {
     },
     {
       name: 'Confirm transaction',
-      status: <Text fontSize="xs">Action</Text>,
+      status: <Text css={styles.statusText}>Action</Text>,
       isLoading: false,
       isDone: false,
       isSelected: false,
     },
     {
       name: 'Receive funds',
-      status: <Text fontSize="xs">Automatic</Text>,
+      status: <Text css={styles.statusText}>Automatic</Text>,
       isLoading: false,
       isDone: false,
       isSelected: false,
     },
   ];
   return (
-    <Flex align="center" justify="center" css={styles.storybook}>
+    <Box.Flex align="center" justify="center" css={styles.storybook}>
       <BridgeSteps steps={steps} />
-    </Flex>
+    </Box.Flex>
   );
 };
 
 const styles = {
   storybook: cssObj({
     margin: '20px',
+  }),
+  statusText: cssObj({
+    color: '$intentsBase8',
+    fontSize: '$xs',
   }),
 };

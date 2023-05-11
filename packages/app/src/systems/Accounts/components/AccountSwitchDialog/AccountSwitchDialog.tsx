@@ -2,14 +2,13 @@ import { cssObj } from '@fuel-ui/css';
 import {
   Button,
   Dialog,
-  Stack,
   Text,
-  Flex,
   Copyable,
   Avatar,
   List,
   IconButton,
   Icon,
+  Box,
 } from '@fuel-ui/react';
 
 import { shortAddress } from '~/systems/Core/utils';
@@ -54,22 +53,18 @@ export const AccountSwitchDialog = ({
                     : styles.listItem
                 }
               >
-                <Flex align="center" gap="$3">
-                  <Avatar.Generated
-                    size={'xsm'}
-                    background="fuel"
-                    hash={account}
-                  />
+                <Box.Flex align="center" gap="$3">
+                  <Avatar.Generated size={'xsm'} hash={account} />
                   <Text color="gray12">{shortAddress(account)}</Text>
                   <Copyable value={account} />
-                </Flex>
+                </Box.Flex>
               </List.Item>
             );
           })}
         </List>
       </Dialog.Description>
       <Dialog.Footer css={styles.footer}>
-        <Stack css={styles.stack}>
+        <Box.Stack css={styles.stack}>
           {onConnect && (
             <Button onPress={onConnect} css={styles.button}>
               Connect Account
@@ -80,7 +75,7 @@ export const AccountSwitchDialog = ({
               Disconnect Wallet
             </Button>
           )}
-        </Stack>
+        </Box.Stack>
       </Dialog.Footer>
     </>
   );

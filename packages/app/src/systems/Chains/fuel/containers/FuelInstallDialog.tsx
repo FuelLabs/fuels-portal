@@ -33,10 +33,11 @@ export const FuelInstallDialog = () => {
 
 const styles = {
   description: cssObj({
+    background: '$intentsBase1',
     display: 'flex',
     justifyContent: 'center',
   }),
   heading: cssObj({
-    color: 'Black',
+    color: '$intentsBase12',
   }),
 };
