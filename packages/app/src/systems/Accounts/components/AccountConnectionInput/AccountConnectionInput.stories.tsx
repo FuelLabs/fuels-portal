@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Flex } from '@fuel-ui/react';
+import { Box } from '@fuel-ui/react';
 
 import imageSrc from '../../../../../public/fuel-logo.svg';
 
@@ -15,7 +15,7 @@ export default {
 
 export const Usage = () => {
   return (
-    <Flex align="center" justify="center" css={styles.storybook}>
+    <Box.Flex align="center" justify="center" css={styles.storybook}>
       <AccountConnectionInput
         networkName="Fuel"
         networkImageUrl={imageSrc}
@@ -23,13 +23,13 @@ export const Usage = () => {
         isConnecting={false}
         onConnect={() => {}}
       />
-    </Flex>
+    </Box.Flex>
   );
 };
 
 export const Loading = () => {
   return (
-    <Flex align="center" justify="center" css={styles.storybook}>
+    <Box.Flex align="center" justify="center" css={styles.storybook}>
       <AccountConnectionInput
         networkName="Fuel"
         networkImageUrl={imageSrc}
@@ -37,13 +37,13 @@ export const Loading = () => {
         isConnecting={true}
         onConnect={() => {}}
       />
-    </Flex>
+    </Box.Flex>
   );
 };
 
 export const ConnectedAccount = () => {
   return (
-    <Flex align="center" justify="center" css={styles.storybook}>
+    <Box.Flex align="center" justify="center" css={styles.storybook}>
       <AccountConnectionInput
         networkName="Fuel"
         networkImageUrl={imageSrc}
@@ -55,13 +55,13 @@ export const ConnectedAccount = () => {
             'fuel14kz7u7jpd8txfe2vtgh5hxjx4wk7s03kq8hcl2k7slwe3yqh5sas974464',
         }}
       />
-    </Flex>
+    </Box.Flex>
   );
 };
 
 export const ConnectedENSAccount = () => {
   return (
-    <Flex align="center" justify="center" css={styles.storybook}>
+    <Box.Flex align="center" justify="center" css={styles.storybook}>
       <AccountConnectionInput
         networkName="Fuel"
         networkImageUrl={imageSrc}
@@ -74,7 +74,7 @@ export const ConnectedENSAccount = () => {
           alias: 'luizasfight.eth',
         }}
       />
-    </Flex>
+    </Box.Flex>
   );
 };
 

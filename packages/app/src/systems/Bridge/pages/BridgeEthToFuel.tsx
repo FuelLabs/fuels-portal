@@ -1,4 +1,4 @@
-import { Stack } from '@fuel-ui/react';
+import { Box } from '@fuel-ui/react';
 
 import {
   AccountConnectionEth,
@@ -7,9 +7,9 @@ import {
 
 export const BridgeEthToFuel = () => {
   return (
-    <Stack gap="$4">
+    <Box.Stack gap="$4">
       <AccountConnectionEth />
       <AccountConnectionFuel />
-    </Stack>
+    </Box.Stack>
   );
 };
