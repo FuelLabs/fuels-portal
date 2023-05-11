@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
-import { useFuel } from 'src/components';
+
+import { useFuel } from '../components';
 
 export const useDisconnect = () => {
   const { fuel } = useFuel();

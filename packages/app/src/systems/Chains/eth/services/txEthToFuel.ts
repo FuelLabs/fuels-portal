@@ -33,7 +33,6 @@ export type TxEthToFuelInputs = {
 
 export class TxEthToFuelService {
   static connectToFuelMessagePortal(signerOrProvider: EthSigner | EthProvider) {
-    console.log(`VITE_ETH_FUEL_MESSAGE_PORTAL`, VITE_ETH_FUEL_MESSAGE_PORTAL);
     return FuelMessagePortal__factory.connect(
       VITE_ETH_FUEL_MESSAGE_PORTAL,
       signerOrProvider
