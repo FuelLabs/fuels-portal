@@ -32,25 +32,29 @@ const styles = {
   tabList: cssObj({
     borderBottom: 'none',
     padding: '$1',
-    backgroundColor: '$gray4',
+    backgroundColor: '$intentsBase4',
     borderRadius: '$md',
-    width: '344px',
-    height: '40px',
     alignItems: 'center',
 
     '& > :after': { content: 'none' },
+
+    'button.bridge--navItemActive': {
+      backgroundColor: '$intentsBase12',
+    },
   }),
   tabTrigger: cssObj({
-    height: '36px',
     borderRadius: '$md',
-    color: '$blackA12',
-    fontSize: '$xs',
-    flexGrow: '1',
-    cursor: 'pointer',
+    color: '$intentsBase11',
+    fontSize: '$sm',
+    flex: '1 0',
+    margin: '0 !important',
     '&[data-state="active"]': {
-      backgroundColor: '$whiteA12',
-      color: '$blackA12',
+      color: '$intentsBase12',
+      backgroundColor: '$intentsBase1',
       borderBottomColor: 'transparent',
+    },
+    '&:hover': {
+      color: '$intentsBase12',
     },
   }),
 };
