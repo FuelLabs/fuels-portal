@@ -1,6 +1,6 @@
-import fuelLogoSrc from '../../../../../public/fuel-logo.svg';
 import { FUEL_CHAIN } from '../../config';
 import { useFuelAccountConnection } from '../hooks';
+import { fuelLogoSrc } from '../utils';
 
 import { AccountConnectionInput } from '~/systems/Accounts';
 

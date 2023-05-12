@@ -1,3 +1,4 @@
+import type { BN } from 'fuels';
 import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
 
@@ -7,7 +8,9 @@ import { BridgeService } from '../services';
 import type { FromToNetworks } from '~/systems/Chains';
 import { FetchMachine } from '~/systems/Core';
 
-type MachineContext = Partial<FromToNetworks>;
+type MachineContext = {
+  assetAmount?: BN;
+} & Partial<FromToNetworks>;
 
 type MachineServices = {
   bridge: {
@@ -20,9 +23,9 @@ export enum BridgeStatus {
   waitingNetworkTo = 'Select a network to bridge to',
   waitingConnectFrom = 'Connect From Wallet',
   waitingConnectTo = 'Connect To Wallet',
-  waitingAsset = 'Pick asset to bridge',
-  waitingAssetAmount = 'Type token amount to bridge',
-  ready = 'Start transfer',
+  waitingAsset = 'Pick asset',
+  waitingAssetAmount = 'Type amount to transfer',
+  ready = 'Bridge asset',
   waitingApproval = 'Waiting wallet approval',
 }
 
@@ -30,6 +33,10 @@ export type BridgeMachineEvents =
   | {
       type: 'CHANGE_NETWORKS';
       input: FromToNetworks;
+    }
+  | {
+      type: 'CHANGE_ASSET_AMOUNT';
+      input: { assetAmount?: BN };
     }
   | {
       type: 'START_BRIDGING';
@@ -54,6 +61,9 @@ export const bridgeMachine = createMachine(
           CHANGE_NETWORKS: {
             actions: ['assignNetworks'],
           },
+          CHANGE_ASSET_AMOUNT: {
+            actions: ['assignAssetAmount'],
+          },
           START_BRIDGING: {
             target: 'bridging',
           },
@@ -69,7 +79,7 @@ export const bridgeMachine = createMachine(
             ) => ({
               fromNetwork: ctx.fromNetwork,
               toNetwork: ctx.toNetwork,
-              amount: ev.input.amount,
+              assetAmount: ctx.assetAmount,
               ethSigner: ev.input.ethSigner,
               fuelAddress: ev.input.fuelAddress,
             }),
@@ -95,6 +105,9 @@ export const bridgeMachine = createMachine(
         fromNetwork: ev.input.fromNetwork,
         toNetwork: ev.input.toNetwork,
       })),
+      assignAssetAmount: assign({
+        assetAmount: (_, ev) => ev.input.assetAmount,
+      }),
     },
     services: {
       bridge: FetchMachine.create<BridgeInputs['bridge'], void>({

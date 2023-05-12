@@ -1,6 +1,7 @@
 import { useModal } from 'connectkit';
 import {
   useAccount,
+  useBalance,
   useDisconnect,
   useEnsAvatar,
   useEnsName,
@@ -12,6 +13,7 @@ export function useEthAccountConnection() {
   const { data: ensName } = useEnsName({ address });
   const { data: ensAvatar } = useEnsAvatar({ address });
   const { data: signer } = useSigner();
+  const { data: balance } = useBalance({ address });
 
   const { open: isConnecting, setOpen } = useModal();
   const { disconnect } = useDisconnect();
@@ -30,5 +32,6 @@ export function useEthAccountConnection() {
     isConnecting,
     signer: signer || undefined,
     provider: signer?.provider || undefined,
+    balance,
   };
 }

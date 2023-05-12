@@ -1,5 +1,5 @@
-import { bn } from 'fuels';
-import { useEffect } from 'react';
+import { bn, DECIMAL_UNITS } from 'fuels';
+import { useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import type { BridgeMachineState } from '../machines';
@@ -45,9 +45,14 @@ const selectors = {
       )
         return BridgeStatus.waitingConnectTo;
 
-      return BridgeStatus.waitingAsset;
+      if (!state.context?.assetAmount) {
+        return BridgeStatus.waitingAssetAmount;
+      }
+
+      return BridgeStatus.ready;
     },
   isLoading: (state: BridgeMachineState) => state.matches('bridging'),
+  assetAmount: (state: BridgeMachineState) => state.context?.assetAmount,
 };
 
 export function useBridge() {
@@ -56,6 +61,7 @@ export function useBridge() {
     signer: ethSigner,
     handlers: ethHandlers,
     isConnecting: ethIsConnecting,
+    balance: ethBalance,
   } = useEthAccountConnection();
   const {
     account: fuelAccount,
@@ -66,13 +72,32 @@ export function useBridge() {
   const fromNetwork = store.useSelector(Services.bridge, selectors.fromNetwork);
   const toNetwork = store.useSelector(Services.bridge, selectors.toNetwork);
   const isLoading = store.useSelector(Services.bridge, selectors.isLoading);
+  const assetAmount = store.useSelector(Services.bridge, selectors.assetAmount);
   const status = store.useSelector(
     Services.bridge,
     selectors.status({ ethAccount: ethAddress, fuelAccount })
   );
-
   const isDeposit = isFuelChain(toNetwork);
   const isWithdraw = isFuelChain(fromNetwork);
+  const assetBalance = useMemo(() => {
+    if (isEthChain(fromNetwork)) {
+      if (ethBalance) {
+        const [intPart, decimalPart] = ethBalance?.formatted?.split('.') || [];
+        const formattedUnits = `${intPart}.${decimalPart.slice(
+          0,
+          DECIMAL_UNITS
+        )}`;
+        return ethBalance ? bn.parseUnits(formattedUnits) : undefined;
+      }
+    }
+
+    if (isFuelChain(fromNetwork)) {
+      // TODO: put correct fuel balance (when doing FUEL -> ETH bridge)
+      // return fuelAccount?.balance;
+    }
+
+    return undefined;
+  }, [ethBalance, fromNetwork]);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -114,12 +139,7 @@ export function useBridge() {
   }
 
   function startBridging() {
-    // TODO: will need to get real value from InputAmount when implements from fuel-ui
-    // Parse 18 units of ETH
-    const amount = bn.parseUnits('0.1', 18);
-
     store.startBridging({
-      amount,
       ethSigner,
       fuelAddress,
     });
@@ -154,6 +174,7 @@ export function useBridge() {
       startBridging,
       connectFrom: () => connectNetwork(fromNetwork),
       connectTo: () => connectNetwork(toNetwork),
+      changeAssetAmount: store.changeAssetAmount,
     },
     fromNetwork,
     toNetwork,
@@ -163,5 +184,7 @@ export function useBridge() {
     isDeposit,
     isWithdraw,
     status,
+    assetAmount,
+    assetBalance,
   };
 }

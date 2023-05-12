@@ -16,7 +16,7 @@ import { VITE_ETH_FUEL_MESSAGE_PORTAL } from '~/config';
 
 export type TxEthToFuelInputs = {
   create: {
-    amount: BN;
+    amount: string;
     ethSigner?: EthSigner;
     fuelAddress?: FuelAddress;
   };
@@ -55,7 +55,7 @@ export class TxEthToFuelService {
     const fuelPortal = TxEthToFuelService.connectToFuelMessagePortal(ethSigner);
 
     const tx = await fuelPortal.depositETH(fuelAddress.toB256(), {
-      value: amount.toHex(),
+      value: amount,
     });
 
     return tx.hash;

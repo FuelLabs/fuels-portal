@@ -1,6 +1,6 @@
-import ethLogoSrc from '../../../../../public/eth-logo.svg';
 import { ETH_CHAIN } from '../../config';
 import { useEthAccountConnection } from '../hooks';
+import { ethLogoSrc } from '../utils';
 
 import { AccountConnectionInput } from '~/systems/Accounts';
 
