@@ -61,6 +61,7 @@ export class TxEthToFuelService {
 
       return tx.hash;
     } catch (e) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if ((e as any)?.code === 'ACTION_REJECTED') {
         throw new Error('Transaction not approved by wallet owner');
       }
