@@ -33,7 +33,6 @@ export function useBridgeButton() {
     }
 
     if (status === BridgeStatus.ready) {
-      // if (status === BridgeStatus.ready) {
       return {
         text: status,
         isLoading,

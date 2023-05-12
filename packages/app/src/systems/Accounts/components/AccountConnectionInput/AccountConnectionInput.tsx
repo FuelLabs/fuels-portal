@@ -1,7 +1,10 @@
 import { cssObj } from '@fuel-ui/css';
 import { Card, Text, Image, Button, Box, IconButton } from '@fuel-ui/react';
+import { motion } from 'framer-motion';
 
-import { shortAddress } from '~/systems/Core/utils';
+import { animations, shortAddress } from '~/systems/Core/utils';
+
+const MotionCard = motion(Card);
 
 type AccountConnectionInputProps = {
   networkName?: string;
@@ -27,7 +30,7 @@ export const AccountConnectionInput = ({
   onDisconnect,
 }: AccountConnectionInputProps) => {
   return (
-    <Card css={styles.root}>
+    <MotionCard {...animations.slideInTop()} css={styles.root}>
       <Card.Body>
         <Box.Stack gap="$1">
           <Box>
@@ -75,7 +78,7 @@ export const AccountConnectionInput = ({
           </Box.Flex>
         </Box.Stack>
       </Card.Body>
-    </Card>
+    </MotionCard>
   );
 };
 

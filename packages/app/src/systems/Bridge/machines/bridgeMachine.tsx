@@ -25,8 +25,8 @@ export enum BridgeStatus {
   waitingConnectTo = 'Connect To Wallet',
   waitingAsset = 'Pick asset',
   waitingAssetAmount = 'Type amount to transfer',
+  insufficientBalance = 'Insufficient funds',
   ready = 'Bridge asset',
-  waitingApproval = 'Waiting wallet approval',
 }
 
 export type BridgeMachineEvents =
@@ -87,7 +87,7 @@ export const bridgeMachine = createMachine(
           onDone: [
             {
               cond: FetchMachine.hasError,
-              target: 'failed',
+              target: 'idle',
             },
             {
               target: 'idle',

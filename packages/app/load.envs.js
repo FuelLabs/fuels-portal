@@ -1,7 +1,6 @@
 const { config } = require('dotenv');
 const { resolve } = require('path');
 const { readFileSync } = require('fs');
-// const request = requi  re('sync-request');
 const retus = require('retus');
 
 function getVersion() {

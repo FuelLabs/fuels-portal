@@ -1,3 +1,4 @@
+import type { BN } from 'fuels';
 import { bn, DECIMAL_UNITS } from 'fuels';
 import { useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -25,9 +26,11 @@ const selectors = {
     ({
       ethAccount,
       fuelAccount,
+      assetBalance,
     }: {
       ethAccount?: string;
       fuelAccount?: string;
+      assetBalance?: BN;
     }) =>
     (state: BridgeMachineState) => {
       const { fromNetwork, toNetwork } = state.context;
@@ -47,6 +50,10 @@ const selectors = {
 
       if (!state.context?.assetAmount) {
         return BridgeStatus.waitingAssetAmount;
+      }
+
+      if (state.context.assetAmount.gt(assetBalance || bn(0))) {
+        return BridgeStatus.insufficientBalance;
       }
 
       return BridgeStatus.ready;
@@ -73,10 +80,6 @@ export function useBridge() {
   const toNetwork = store.useSelector(Services.bridge, selectors.toNetwork);
   const isLoading = store.useSelector(Services.bridge, selectors.isLoading);
   const assetAmount = store.useSelector(Services.bridge, selectors.assetAmount);
-  const status = store.useSelector(
-    Services.bridge,
-    selectors.status({ ethAccount: ethAddress, fuelAccount })
-  );
   const isDeposit = isFuelChain(toNetwork);
   const isWithdraw = isFuelChain(fromNetwork);
   const assetBalance = useMemo(() => {
@@ -98,6 +101,10 @@ export function useBridge() {
 
     return undefined;
   }, [ethBalance, fromNetwork]);
+  const status = store.useSelector(
+    Services.bridge,
+    selectors.status({ ethAccount: ethAddress, fuelAccount, assetBalance })
+  );
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -138,13 +145,6 @@ export function useBridge() {
     });
   }
 
-  function startBridging() {
-    store.startBridging({
-      ethSigner,
-      fuelAddress,
-    });
-  }
-
   function connectNetwork(network?: SupportedChain) {
     if (isEthChain(network)) {
       ethHandlers.connect();
@@ -171,7 +171,11 @@ export function useBridge() {
     handlers: {
       goToDeposit,
       goToWithdraw,
-      startBridging,
+      startBridging: () =>
+        store.startBridging({
+          ethSigner,
+          fuelAddress,
+        }),
       connectFrom: () => connectNetwork(fromNetwork),
       connectTo: () => connectNetwork(toNetwork),
       changeAssetAmount: store.changeAssetAmount,

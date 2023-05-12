@@ -54,11 +54,21 @@ export class TxEthToFuelService {
 
     const fuelPortal = TxEthToFuelService.connectToFuelMessagePortal(ethSigner);
 
-    const tx = await fuelPortal.depositETH(fuelAddress.toB256(), {
-      value: amount,
-    });
+    try {
+      const tx = await fuelPortal.depositETH(fuelAddress.toB256(), {
+        value: amount,
+      });
 
-    return tx.hash;
+      return tx.hash;
+    } catch (e) {
+      if ((e as any)?.code === 'ACTION_REJECTED') {
+        throw new Error('Transaction not approved by wallet owner');
+      }
+
+      throw e;
+    }
+
+    return undefined;
   }
 
   static async getDepositNonce(input: TxEthToFuelInputs['getDepositNonce']) {

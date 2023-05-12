@@ -1,5 +1,6 @@
 import { cssObj } from '@fuel-ui/css';
 import { Card, Box, Text, InputAmount, Alert, Link } from '@fuel-ui/react';
+import { motion } from 'framer-motion';
 
 import { BridgeButton, BridgeTabs } from '../containers';
 import { useBridge } from '../hooks';
@@ -11,6 +12,7 @@ import {
   isEthChain,
   isFuelChain,
 } from '~/systems/Chains';
+import { animations } from '~/systems/Core';
 
 export const Bridge = () => {
   const { fromNetwork, toNetwork, assetAmount, assetBalance, handlers } =
@@ -24,7 +26,7 @@ export const Bridge = () => {
         <BridgeTabs />
         <Box.Stack gap="$6">
           {Boolean(fromNetwork && toNetwork) && (
-            <Box.Stack gap="$3">
+            <Box.Stack gap="$2">
               <Text fontSize="xs" css={styles.sectionHeader}>
                 Network
               </Text>
@@ -36,30 +38,41 @@ export const Bridge = () => {
               {isFuelChain(toNetwork) && <FuelAccountConnection label="To" />}
             </Box.Stack>
           )}
-          <InputAmount
-            balance={assetBalance}
-            asset={{
-              name: 'ETH',
-              imageUrl: ethLogoSrc,
-            }}
-            assetTooltip="Fuel Bridge only supports ETH for now. Other assets will be added soon."
-            value={assetAmount}
-            onChange={(val) => handlers.changeAssetAmount({ assetAmount: val })}
-          />
+          <Box.Stack gap="$2">
+            <Text fontSize="xs" css={styles.sectionHeader}>
+              Asset
+            </Text>
+            <motion.div {...animations.slideInTop()}>
+              <InputAmount
+                balance={assetBalance}
+                asset={{
+                  name: 'ETH',
+                  imageUrl: ethLogoSrc,
+                }}
+                assetTooltip="Fuel Bridge only supports ETH for now. Other assets will be added soon."
+                value={assetAmount}
+                onChange={(val) =>
+                  handlers.changeAssetAmount({ assetAmount: val })
+                }
+              />
+            </motion.div>
+          </Box.Stack>
           <BridgeButton />
           {isFuelChain(toNetwork) && (
-            <Alert status="warning">
-              <Alert.Description>
-                <Text fontSize="sm">
-                  Any assets deposited to Fuel takes 7 days to withdraw back to
-                  Ethereum. Learn more about our architecture and security in
-                  our
-                  <Link href="https://fuel.sh/" isExternal>
-                    docs
-                  </Link>
-                </Text>
-              </Alert.Description>
-            </Alert>
+            <motion.div {...animations.slideInTop()}>
+              <Alert status="warning">
+                <Alert.Description>
+                  <Text fontSize="sm">
+                    Any assets deposited to Fuel takes 7 days to withdraw back
+                    to Ethereum. Learn more about our architecture and security
+                    in our&nbsp;
+                    <Link href="https://fuel.sh/" isExternal>
+                      docs
+                    </Link>
+                  </Text>
+                </Alert.Description>
+              </Alert>
+            </motion.div>
           )}
         </Box.Stack>
       </Card.Body>
@@ -70,5 +83,6 @@ export const Bridge = () => {
 const styles = {
   sectionHeader: cssObj({
     fontWeight: '$bold',
+    color: '$intentsBase12',
   }),
 };

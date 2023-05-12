@@ -28,6 +28,7 @@
     "@xstate/react": "^3.2.1",
     "connectkit": "^1.2.3",
     "ethers": "^5",
+    "framer-motion": "^8.5.5",
     "fuels": "^0.33.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

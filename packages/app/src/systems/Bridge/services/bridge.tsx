@@ -45,11 +45,15 @@ export class BridgeService {
         fuelAddress,
       });
 
-      store.openTxEthToFuel({
-        txId,
-      });
+      if (txId) {
+        store.openTxEthToFuel({
+          txId,
+        });
+      }
     }
 
-    throw new Error('Bridge between this networks is not supported');
+    throw new Error(
+      `Bridging from "${fromNetwork.name}" to "${toNetwork.name}" is not yet supported.`
+    );
   }
 }
