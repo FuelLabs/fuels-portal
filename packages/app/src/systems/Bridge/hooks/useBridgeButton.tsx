@@ -15,7 +15,6 @@ export function useBridgeButton() {
     isLoadingConnectTo,
   } = useBridge();
 
-  // TODO: add isDisabled for choose asset/amount situation
   const button = useMemo(() => {
     if (status === BridgeStatus.waitingConnectFrom) {
       return {
@@ -33,12 +32,7 @@ export function useBridgeButton() {
       };
     }
 
-    // TODO: remove when InputAmount is insert
-    if (
-      status === BridgeStatus.ready ||
-      status === BridgeStatus.waitingAsset ||
-      status === BridgeStatus.waitingAssetAmount
-    ) {
+    if (status === BridgeStatus.ready) {
       // if (status === BridgeStatus.ready) {
       return {
         text: status,
@@ -49,6 +43,7 @@ export function useBridgeButton() {
 
     return {
       text: status,
+      isDisabled: true,
     };
   }, [
     status,
