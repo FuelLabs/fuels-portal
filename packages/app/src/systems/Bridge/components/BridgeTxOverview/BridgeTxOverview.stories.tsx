@@ -3,7 +3,6 @@ import { Box } from '@fuel-ui/react';
 import { bn } from 'fuels';
 
 import ethImage from '../../../../../public/eth-logo.svg';
-import fuelImage from '../../../../../public/fuel-logo.svg';
 
 import { BridgeTxOverview } from './BridgeTxOverview';
 
