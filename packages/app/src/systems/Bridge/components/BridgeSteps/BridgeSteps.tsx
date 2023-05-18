@@ -1,10 +1,11 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, Text, Icon } from '@fuel-ui/react';
+import { Spinner, Box, Text, Icon } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
 
 type Step = {
   name: ReactNode;
   status: ReactNode;
+  isLoading?: boolean;
   isDone?: boolean;
   isSelected?: boolean;
 };
@@ -33,6 +34,7 @@ export const BridgeSteps = ({ steps }: BridgeStepsProps) => {
                   <Text
                     color={step.isSelected ? 'intentsBase12' : undefined}
                     css={styles.number}
+                    fontSize="xs"
                   >
                     {index + 1}
                   </Text>
@@ -41,7 +43,10 @@ export const BridgeSteps = ({ steps }: BridgeStepsProps) => {
 
               <Text css={styles.name}>{step.name}</Text>
             </Box.Flex>
-            {step.status}
+            <Box.Flex align="center" gap="$1">
+              {step.isLoading && <Spinner size={14} />}
+              <Text fontSize="sm">{step.status}</Text>
+            </Box.Flex>
           </Box.Flex>
         );
       })}
@@ -87,7 +92,7 @@ const styles = {
   number: cssObj({
     display: 'flex',
     justifyContent: 'center',
-    fontSize: '8px',
+    fontSize: '10px',
   }),
   circle: cssObj({
     display: 'flex',

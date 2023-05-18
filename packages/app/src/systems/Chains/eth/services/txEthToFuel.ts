@@ -51,7 +51,6 @@ export class TxEthToFuelService {
     }
 
     const { ethSigner, fuelAddress, amount } = input;
-
     const fuelPortal = TxEthToFuelService.connectToFuelMessagePortal(ethSigner);
 
     try {
@@ -68,8 +67,6 @@ export class TxEthToFuelService {
 
       throw e;
     }
-
-    return undefined;
   }
 
   static async getDepositNonce(input: TxEthToFuelInputs['getDepositNonce']) {

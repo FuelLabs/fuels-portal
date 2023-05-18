@@ -84,7 +84,7 @@ export function useTxEthToFuel({ id }: { id: string }) {
         },
       });
     }
-  }, [ethTx, ethProvider, fuelProvider, fuelAddress]);
+  }, [ethTx, ethProvider, fuelProvider, fuelAddress, service]);
 
   return {
     handlers: {

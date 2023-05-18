@@ -7,6 +7,7 @@ import {
   useProvider,
 } from '@fuels-portal/sdk-react';
 import { Address } from 'fuels';
+import { useMemo } from 'react';
 
 import { store } from '~/store';
 
@@ -18,6 +19,11 @@ export const useFuelAccountConnection = () => {
   const { disconnect } = useDisconnect();
   const { provider } = useProvider();
 
+  const address = useMemo(
+    () => (account ? Address.fromString(account) : undefined),
+    [account]
+  );
+
   return {
     handlers: {
       connect,
@@ -27,7 +33,7 @@ export const useFuelAccountConnection = () => {
     },
     hasInstalledFuel: Boolean(fuel),
     account,
-    address: account ? Address.fromString(account) : undefined,
+    address,
     isConnected,
     error,
     isConnecting,
