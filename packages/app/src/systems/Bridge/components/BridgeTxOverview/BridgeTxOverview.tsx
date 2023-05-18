@@ -5,7 +5,7 @@ import type { BigNumberish } from 'fuels';
 type BridgeTxOverviewProps = {
   transactionId: BigNumberish;
   age: string;
-  isDeposit: boolean;
+  isDeposit?: boolean;
   asset: {
     imageUrl?: string;
     assetSymbol?: string;
@@ -39,7 +39,12 @@ export const BridgeTxOverview = ({
             <FuelLogo size={14} />
           </Box.Flex>
         ) : (
-          <Text>(Withdrawal)</Text>
+          <Box.Flex css={styles.directionInfo}>
+            <Text css={styles.labelText}>(Withdrawal)</Text>
+            <FuelLogo size={14} />
+            <Icon icon="ArrowNarrowRight" />
+            <Image width={14} height={14} src={asset.imageUrl} />
+          </Box.Flex>
         )}
       </Box.Flex>
       <Box.Flex css={styles.txItem}>
