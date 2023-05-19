@@ -93,7 +93,7 @@ export class TxEthToFuelService {
       throw new Error('No nonce found');
     }
     if (!input?.fuelProvider) {
-      throw new Error('No provider for Fuel informed');
+      throw new Error('No provider for Fuel found');
     }
     if (!input?.fuelAddress) {
       throw new Error('No address for Fuel informed');
