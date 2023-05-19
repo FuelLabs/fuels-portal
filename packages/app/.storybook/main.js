@@ -1,4 +1,7 @@
-module.exports = {
+import path from 'path';
+import tsconfigPaths from 'vite-tsconfig-paths';
+
+const config = {
   stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: [
     '@storybook/addon-links',
@@ -15,4 +18,23 @@ module.exports = {
   docs: {
     autodocs: true,
   },
+  viteFinal: (config) => {
+    return {
+      ...config,
+      resolve: {
+        alias: [
+          {
+            find: '~',
+            replacement: path.resolve(__dirname, '../src'),
+          },
+          {
+            find: '~/public',
+            replacement: path.resolve(__dirname, '../src/public'),
+          },
+        ],
+      },
+    };
+  },
 };
+
+export default config;

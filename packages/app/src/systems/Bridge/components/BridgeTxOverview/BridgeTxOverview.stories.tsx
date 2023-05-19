@@ -2,9 +2,9 @@ import { cssObj } from '@fuel-ui/css';
 import { Box } from '@fuel-ui/react';
 import { bn } from 'fuels';
 
-import ethImage from '../../../../../public/eth-logo.svg';
-
 import { BridgeTxOverview } from './BridgeTxOverview';
+
+import ethImage from '~/public/eth-logo.svg';
 
 export default {
   component: BridgeTxOverview,
