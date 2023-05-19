@@ -90,7 +90,7 @@ export class TxEthToFuelService {
 
   static async getFuelMessage(input: TxEthToFuelInputs['getFuelMessage']) {
     if (!input?.ethTxNonce) {
-      throw new Error('No nonce informed');
+      throw new Error('No nonce found');
     }
     if (!input?.fuelProvider) {
       throw new Error('No provider for Fuel informed');
