@@ -80,6 +80,7 @@ export function useBridge() {
   const toNetwork = store.useSelector(Services.bridge, selectors.toNetwork);
   const isLoading = store.useSelector(Services.bridge, selectors.isLoading);
   const assetAmount = store.useSelector(Services.bridge, selectors.assetAmount);
+
   const isDeposit = isFuelChain(toNetwork);
   const isWithdraw = isFuelChain(fromNetwork);
   const assetBalance = useMemo(() => {
