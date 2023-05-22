@@ -1,76 +1,88 @@
 import { cssObj } from '@fuel-ui/css';
-import { Card, Tabs } from '@fuel-ui/react';
-import { useLocation } from 'react-router-dom';
+import { Card, Box, Text, InputAmount, Alert, Link } from '@fuel-ui/react';
+import { motion } from 'framer-motion';
 
-import { BridgeEthToFuel } from './BridgeEthToFuel';
+import { BridgeButton, BridgeTabs } from '../containers';
+import { useBridge } from '../hooks';
 
-import { Pages } from '~/types';
+import {
+  EthAccountConnection,
+  ethLogoSrc,
+  FuelAccountConnection,
+  isEthChain,
+  isFuelChain,
+} from '~/systems/Chains';
+import { animations } from '~/systems/Core';
 
 export const Bridge = () => {
-  // TODO I think we can pass this in as a prop in the future
-  const location = useLocation();
+  const { fromNetwork, toNetwork, assetAmount, assetBalance, handlers } =
+    useBridge();
 
-  const getClassName = (url: string) => {
-    return location.pathname === url ? 'bridge--navItemActive' : undefined;
-  };
+  if (!fromNetwork || !toNetwork) return null;
 
   return (
-    <Tabs defaultValue="deposit">
-      <Card>
-        <Card.Body>
-          <Tabs.List aria-label="Manage deposits" css={styles.tabList}>
-            <Tabs.Trigger
-              value="deposit"
-              className={getClassName(Pages.deposit)}
-              css={styles.tabTrigger}
-            >
-              Deposit to Fuel
-            </Tabs.Trigger>
-            <Tabs.Trigger
-              value="withdraw"
-              className={getClassName(Pages.withdraw)}
-              css={styles.tabTrigger}
-            >
-              Withdraw from Fuel
-            </Tabs.Trigger>
-          </Tabs.List>
-          <Tabs.Content value="deposit">
-            <BridgeEthToFuel />
-          </Tabs.Content>
-          <Tabs.Content value="withdraw"></Tabs.Content>
-        </Card.Body>
-      </Card>
-    </Tabs>
+    <Card>
+      <Card.Body>
+        <BridgeTabs />
+        <Box.Stack gap="$6">
+          {Boolean(fromNetwork && toNetwork) && (
+            <Box.Stack gap="$2">
+              <Text fontSize="xs" css={styles.sectionHeader}>
+                Network
+              </Text>
+              {isEthChain(fromNetwork) && <EthAccountConnection label="From" />}
+              {isFuelChain(fromNetwork) && (
+                <FuelAccountConnection label="From" />
+              )}
+              {isEthChain(toNetwork) && <EthAccountConnection label="To" />}
+              {isFuelChain(toNetwork) && <FuelAccountConnection label="To" />}
+            </Box.Stack>
+          )}
+          <Box.Stack gap="$2">
+            <Text fontSize="xs" css={styles.sectionHeader}>
+              Asset
+            </Text>
+            <motion.div {...animations.slideInTop()}>
+              <InputAmount
+                balance={assetBalance}
+                asset={{
+                  name: 'ETH',
+                  imageUrl: ethLogoSrc,
+                }}
+                assetTooltip="Fuel Bridge only supports ETH for now. Other assets will be added soon."
+                value={assetAmount}
+                onChange={(val) =>
+                  handlers.changeAssetAmount({ assetAmount: val })
+                }
+              />
+            </motion.div>
+          </Box.Stack>
+          <BridgeButton />
+          {isFuelChain(toNetwork) && (
+            <motion.div {...animations.slideInTop()}>
+              <Alert status="warning">
+                <Alert.Description>
+                  <Text fontSize="sm">
+                    Any assets deposited to Fuel takes 7 days to withdraw back
+                    to Ethereum. Learn more about our architecture and security
+                    in our&nbsp;
+                    <Link href="https://fuel.sh/" isExternal>
+                      docs
+                    </Link>
+                  </Text>
+                </Alert.Description>
+              </Alert>
+            </motion.div>
+          )}
+        </Box.Stack>
+      </Card.Body>
+    </Card>
   );
 };
 
 const styles = {
-  tabList: cssObj({
-    borderBottom: 'none',
-    padding: '$1',
-    backgroundColor: '$gray4',
-    borderRadius: '$md',
-    alignItems: 'center',
-
-    '& > :after': { content: 'none' },
-
-    'button.bridge--navItemActive': {
-      backgroundColor: '$intentsBase12',
-    },
-  }),
-  tabTrigger: cssObj({
-    borderRadius: '$md',
-    color: '$intentsBase11',
-    fontSize: '$sm',
-    flex: '1 0',
-    margin: '0 !important',
-    '&[data-state="active"]': {
-      color: '$intentsBase12',
-      backgroundColor: '$intentsBase1',
-      borderBottomColor: 'transparent',
-    },
-    '&:hover': {
-      color: '$intentsBase12',
-    },
+  sectionHeader: cssObj({
+    fontWeight: '$bold',
+    color: '$intentsBase12',
   }),
 };

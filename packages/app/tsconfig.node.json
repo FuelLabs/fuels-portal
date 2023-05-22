@@ -7,5 +7,5 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true
   },
-  "include": ["playwright/**/*.ts", "vite.config.ts"]
+  "include": ["load.envs.js", "playwright/**/*.ts", "vite.config.ts"]
 }

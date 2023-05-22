@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { ReactNode } from 'react';
 import { useContext, createContext, useEffect } from 'react';
 
-import { useFuel } from '../hooks';
+import { useWindowFuel } from '../hooks';
 
 export const fuelQueryClient = new QueryClient({
   defaultOptions: {
@@ -36,12 +36,12 @@ export const FuelReactContext = createContext<FuelReactContextType | null>(
   null
 );
 
-export const useFuelReactContext = () => {
+export const useFuel = () => {
   return useContext(FuelReactContext) as FuelReactContextType;
 };
 
 export const FuelProvider = ({ children }: FuelProviderProps) => {
-  const fuel = useFuel();
+  const fuel = useWindowFuel();
 
   function onCurrentAccountChange() {
     fuelQueryClient.invalidateQueries([ACCOUNT_KEY]);
@@ -67,9 +67,9 @@ export const FuelProvider = ({ children }: FuelProviderProps) => {
     fuel?.on(fuel.events.network, onNetworkChange);
 
     return () => {
-      fuel?.off(fuel?.events.currentAccount, onCurrentAccountChange);
+      fuel?.off(fuel.events.currentAccount, onCurrentAccountChange);
       fuel?.off(fuel.events.connection, onConnectionChange);
-      fuel?.off(fuel?.events.accounts, onAccountsChange);
+      fuel?.off(fuel.events.accounts, onAccountsChange);
       fuel?.off(fuel.events.network, onNetworkChange);
     };
   }, [fuel]);

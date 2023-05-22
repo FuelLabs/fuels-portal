@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, Text, Icon } from '@fuel-ui/react';
+import { Spinner, Box, Text, Icon } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
 
 type Step = {
@@ -11,13 +11,13 @@ type Step = {
 };
 
 type BridgeStepsProps = {
-  steps: Step[];
+  steps?: Step[];
 };
 
 export const BridgeSteps = ({ steps }: BridgeStepsProps) => {
   return (
     <Box.Stack css={styles.stack}>
-      {steps.map((step, index) => {
+      {steps?.map((step, index) => {
         return (
           <Box.Flex key={`${index}_${step.name?.toString()}`} css={styles.item}>
             <Box.Flex css={styles.action}>
@@ -29,11 +29,12 @@ export const BridgeSteps = ({ steps }: BridgeStepsProps) => {
                 className={step.isDone ? 'circleDone' : undefined}
               >
                 {step.isDone ? (
-                  <Icon icon="Check" size={10} css={styles.icon} />
+                  <Icon icon="Check" size={12} css={styles.icon} />
                 ) : (
                   <Text
                     color={step.isSelected ? 'intentsBase12' : undefined}
                     css={styles.number}
+                    fontSize="xs"
                   >
                     {index + 1}
                   </Text>
@@ -42,7 +43,10 @@ export const BridgeSteps = ({ steps }: BridgeStepsProps) => {
 
               <Text css={styles.name}>{step.name}</Text>
             </Box.Flex>
-            {step.status}
+            <Box.Flex align="center" gap="$1">
+              {step.isLoading && <Spinner size={14} />}
+              <Text fontSize="sm">{step.status}</Text>
+            </Box.Flex>
           </Box.Flex>
         );
       })}
@@ -83,12 +87,12 @@ const styles = {
     color: '$intentsBase12',
   }),
   icon: cssObj({
-    color: '$intentsBase12',
+    color: '$black12',
   }),
   number: cssObj({
     display: 'flex',
     justifyContent: 'center',
-    fontSize: '8px',
+    fontSize: '10px',
   }),
   circle: cssObj({
     display: 'flex',

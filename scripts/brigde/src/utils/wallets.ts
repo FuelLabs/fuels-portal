@@ -3,7 +3,7 @@ import type { WalletUnlocked } from 'fuels';
 import { Provider, Wallet } from 'fuels';
 
 export const ethProvider = new ethers.providers.JsonRpcProvider(
-  'http://localhost:9545'
+  'http://localhost:8545'
 );
 export const ethWallet = new ethers.Wallet(
   '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',

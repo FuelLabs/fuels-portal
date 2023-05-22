@@ -59,6 +59,7 @@ const styles = {
 
     'a.active, a:hover': {
       color: '$accent8',
+      textDecoration: 'none',
     },
 
     'a.header--navItemActive': {

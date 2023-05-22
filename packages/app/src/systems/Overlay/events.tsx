@@ -11,11 +11,14 @@ export function overlayEvents(store: Store) {
     closeOverlay() {
       store.send(Services.overlay, { type: 'CLOSE' });
     },
-    openTokenList() {
+    openTxEthToFuel({ txId }: { txId: string }) {
       store.send(Services.overlay, {
         type: 'OPEN',
         input: {
-          modal: 'tokens.list',
+          modal: 'tx.fromEth.toFuel',
+          params: {
+            txId,
+          },
         },
       });
     },
@@ -23,7 +26,7 @@ export function overlayEvents(store: Store) {
       store.send(Services.overlay, {
         type: 'OPEN',
         input: {
-          modal: 'accounts.install.fuel',
+          modal: 'fuel.install',
         },
       });
     },

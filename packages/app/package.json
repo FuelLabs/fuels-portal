@@ -15,8 +15,11 @@
     "xstate:typegen": "xstate typegen 'src/**/*.ts?(x)'"
   },
   "dependencies": {
-    "@fuel-ui/css": "0.15.0-dev-c6f1a1b",
-    "@fuel-ui/react": "0.15.0-dev-c6f1a1b",
+    "@ethersproject/abi": "^5.7.0",
+    "@ethersproject/bytes": "^5.7.0",
+    "@ethersproject/providers": "^5.7.2",
+    "@fuel-ui/css": "0.15.0-dev-9c7ba65",
+    "@fuel-ui/react": "0.15.0-dev-9c7ba65",
     "@fuel-wallet/sdk": "^0.7.2",
     "@fuels-portal/store": "workspace:*",
     "@fuels-portal/sdk-react": "workspace:*",
@@ -25,6 +28,7 @@
     "@xstate/react": "^3.2.1",
     "connectkit": "^1.2.3",
     "ethers": "^5",
+    "framer-motion": "^8.5.5",
     "fuels": "^0.33.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

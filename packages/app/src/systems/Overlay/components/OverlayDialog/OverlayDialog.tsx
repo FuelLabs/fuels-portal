@@ -1,7 +1,7 @@
 import { cssObj } from '@fuel-ui/css';
 import { Dialog } from '@fuel-ui/react';
 
-import { FuelInstallPopup } from '~/systems/Accounts';
+import { FuelInstallDialog, TxEthToFuelDialog } from '~/systems/Chains';
 import { useOverlay } from '~/systems/Overlay';
 
 const OVERLAY_HEIGHT = 100;
@@ -11,9 +11,13 @@ export function OverlayDialog() {
   const overlay = useOverlay();
 
   return (
-    <Dialog isOpen={overlay.isDialogOpen}>
+    <Dialog
+      isOpen={overlay.isDialogOpen}
+      onOpenChange={(isOpen) => !isOpen && overlay.close()}
+    >
       <Dialog.Content css={styles.content}>
-        {overlay.is('accounts.install.fuel') && <FuelInstallPopup />}
+        {overlay.is('tx.fromEth.toFuel') && <TxEthToFuelDialog />}
+        {overlay.is('fuel.install') && <FuelInstallDialog />}
       </Dialog.Content>
     </Dialog>
   );
