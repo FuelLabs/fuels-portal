@@ -1,8 +1,7 @@
-import { foundry, goerli } from 'wagmi/chains';
+import { ETH_CHAINS } from './eth';
+import { FUEL_CHAINS } from './fuel';
 
-import { fuelBeta3, fuelDev } from './fuel/chains';
+import { VITE_ETH_CHAIN, VITE_FUEL_CHAIN } from '~/config';
 
-import { IS_TEST } from '~/config';
-
-export const ETH_CHAIN = IS_TEST ? goerli : foundry;
-export const FUEL_CHAIN = IS_TEST ? fuelBeta3 : fuelDev;
+export const ETH_CHAIN = ETH_CHAINS[VITE_ETH_CHAIN];
+export const FUEL_CHAIN = FUEL_CHAINS[VITE_FUEL_CHAIN];

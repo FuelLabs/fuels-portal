@@ -4,6 +4,8 @@ import { BridgeStatus } from '../machines';
 
 import { useBridge } from './useBridge';
 
+import { getChainName } from '~/systems/Chains';
+
 export function useBridgeButton() {
   const {
     handlers,
@@ -18,7 +20,7 @@ export function useBridgeButton() {
   const button = useMemo(() => {
     if (status === BridgeStatus.waitingConnectFrom) {
       return {
-        text: status.replace('From', fromNetwork?.name || ''),
+        text: status.replace('From', getChainName(fromNetwork)),
         isLoading: isLoadingConnectFrom,
         action: handlers.connectFrom,
       };
@@ -26,7 +28,7 @@ export function useBridgeButton() {
 
     if (status === BridgeStatus.waitingConnectTo) {
       return {
-        text: status.replace('To', toNetwork?.name || ''),
+        text: status.replace('To', getChainName(toNetwork)),
         isLoading: isLoadingConnectTo,
         action: handlers.connectTo,
       };

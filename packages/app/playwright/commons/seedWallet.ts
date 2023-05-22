@@ -1,7 +1,7 @@
 import type { BN } from 'fuels';
 import { Address, NativeAssetId, Wallet } from 'fuels';
 
-const { GENESIS_SECRET, VITE_FUEL_PROVIDER_URL } = process.env;
+const { GENESIS_SECRET, FUEL_PROVIDER_URL } = process.env;
 
 type SeedWalletOptions = {
   gasPrice?: number;
@@ -14,7 +14,7 @@ export async function seedWallet(
 ) {
   const genesisWallet = Wallet.fromPrivateKey(
     GENESIS_SECRET,
-    VITE_FUEL_PROVIDER_URL
+    FUEL_PROVIDER_URL
   );
   const response = await genesisWallet.transfer(
     Address.fromString(address),

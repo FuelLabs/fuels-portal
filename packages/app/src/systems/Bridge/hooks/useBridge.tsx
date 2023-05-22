@@ -48,7 +48,7 @@ const selectors = {
       )
         return BridgeStatus.waitingConnectTo;
 
-      if (!state.context?.assetAmount) {
+      if (!state.context?.assetAmount || state.context.assetAmount.isZero()) {
         return BridgeStatus.waitingAssetAmount;
       }
 
