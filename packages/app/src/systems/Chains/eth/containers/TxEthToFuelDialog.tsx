@@ -54,7 +54,11 @@ export function TxEthToFuelDialog() {
       <Dialog.Footer>
         <BridgeTxOverview
           transactionId={shortAddress(metadata.txId)}
-          age={new Date(blockInfo?.timestamp * 1000).toDateString() || 'N/A'}
+          age={
+            blockInfo?.timestamp
+              ? new Date(blockInfo.timestamp * 1000).toDateString()
+              : 'N/A'
+          }
           isDeposit={true}
           asset={{
             assetSymbol: 'ETH',
