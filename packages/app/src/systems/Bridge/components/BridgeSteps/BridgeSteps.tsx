@@ -57,7 +57,7 @@ export const BridgeSteps = ({ steps }: BridgeStepsProps) => {
 const styles = {
   stack: cssObj({
     gap: '$0',
-    width: '344px',
+    minWidth: '344px',
     backgroundColor: '$intentsBase0',
     borderRadius: '$md',
     border: '1px solid $intentsBase5',

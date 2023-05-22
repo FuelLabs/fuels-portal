@@ -28,7 +28,9 @@ export function TxEthToFuelDialog() {
     <>
       <Dialog.Heading css={styles.dialogHeading}>
         <Box.Flex justify="space-between" css={styles.dialogHeadingText}>
-          <Text fontSize="sm">Transaction: {shortAddress(metadata.txId)}</Text>
+          <Text fontSize="sm" color="intentsBase8">
+            Transaction: {shortAddress(metadata.txId)}
+          </Text>
           <IconButton
             data-action="closed"
             variant="link"
@@ -95,10 +97,12 @@ const styles = {
   emailInput: cssObj({
     width: '100%',
     height: '$8',
+    fontSize: '$xs',
   }),
   emailButton: cssObj({
     height: '$8',
     fontSize: '$xs',
+    whiteSpace: 'nowrap',
   }),
   dialogDescription: cssObj({
     borderBottom: '1px solid $intentsBase8',
