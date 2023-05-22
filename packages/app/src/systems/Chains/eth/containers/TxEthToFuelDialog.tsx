@@ -60,7 +60,9 @@ export function TxEthToFuelDialog() {
             assetSymbol: 'ETH',
             imageUrl: ethLogoSrc,
             assetAmount: ethTx?.value
-              ? formatUnits(ethTx.value.toString(), ETH_UNITS)
+              ? parseFloat(
+                  formatUnits(ethTx.value.toString(), ETH_UNITS)
+                ).toFixed(3)
               : '0',
           }}
         />
