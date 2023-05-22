@@ -29,7 +29,7 @@ export const BridgeSteps = ({ steps }: BridgeStepsProps) => {
                 className={step.isDone ? 'circleDone' : undefined}
               >
                 {step.isDone ? (
-                  <Icon icon="Check" size={10} css={styles.icon} />
+                  <Icon icon="Check" size={12} css={styles.icon} />
                 ) : (
                   <Text
                     color={step.isSelected ? 'intentsBase12' : undefined}
@@ -87,7 +87,7 @@ const styles = {
     color: '$intentsBase12',
   }),
   icon: cssObj({
-    color: '$intentsBase12',
+    color: '$black12',
   }),
   number: cssObj({
     display: 'flex',

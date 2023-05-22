@@ -39,9 +39,9 @@
     "xstate:typegen": "pnpm -r xstate:typegen"
   },
   "dependencies": {
-    "@fuel-ui/config": "0.15.0-dev-9c7ba65",
-    "@fuel-ui/css": "0.15.0-dev-9c7ba65",
-    "@fuel-ui/react": "0.15.0-dev-9c7ba65"
+    "@fuel-ui/config": "0.15.0",
+    "@fuel-ui/css": "0.15.0",
+    "@fuel-ui/react": "0.15.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",

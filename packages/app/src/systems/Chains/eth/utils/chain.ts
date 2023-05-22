@@ -1,7 +1,10 @@
 import type { SupportedChain } from '../../types';
+import { ETH_CHAINS } from '../chains';
 
 export const ETH_UNITS = 18;
 
 export const isEthChain = (chain: SupportedChain | undefined | null) => {
-  return chain?.network === 'goerli' || chain?.network === 'foundry';
+  return !!Object.keys(ETH_CHAINS).find(
+    (key) => ETH_CHAINS[key].network === chain?.network
+  );
 };

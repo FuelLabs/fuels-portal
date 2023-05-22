@@ -1,6 +1,7 @@
 import { cssObj } from '@fuel-ui/css';
 import { Card, Text, Image, Button, Box, IconButton } from '@fuel-ui/react';
 import { motion } from 'framer-motion';
+import type { ReactNode } from 'react';
 
 import { animations, shortAddress } from '~/systems/Core/utils';
 
@@ -8,7 +9,7 @@ const MotionCard = motion(Card);
 
 type AccountConnectionInputProps = {
   networkName?: string;
-  networkImageUrl: string;
+  networkImage: ReactNode | string;
   label?: string;
   isConnecting?: boolean;
   account?: {
@@ -22,7 +23,7 @@ type AccountConnectionInputProps = {
 
 export const AccountConnectionInput = ({
   networkName,
-  networkImageUrl,
+  networkImage,
   label,
   isConnecting,
   account,
@@ -38,7 +39,11 @@ export const AccountConnectionInput = ({
           </Box>
           <Box.Flex align="center" wrap="wrap" justify="space-between">
             <Box.Flex gap="$2" align="center">
-              <Image width="20" height="20" src={networkImageUrl} />
+              {typeof networkImage === 'string' ? (
+                <Image width="20" height="20" src={networkImage} />
+              ) : (
+                networkImage
+              )}
               <Text>{networkName}</Text>
             </Box.Flex>
             {!account?.address ? (

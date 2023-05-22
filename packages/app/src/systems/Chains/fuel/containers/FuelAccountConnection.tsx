@@ -1,6 +1,7 @@
+import { FuelLogo } from '@fuel-ui/react';
+
 import { FUEL_CHAIN } from '../../config';
 import { useFuelAccountConnection } from '../hooks';
-import { fuelLogoSrc } from '../utils';
 
 import { AccountConnectionInput } from '~/systems/Accounts';
 
@@ -8,17 +9,16 @@ export const FuelAccountConnection = ({ label }: { label?: string }) => {
   const {
     isConnecting,
     handlers,
-    hasInstalledFuel,
     account: address,
   } = useFuelAccountConnection();
 
   return (
     <AccountConnectionInput
       networkName={FUEL_CHAIN.name}
-      networkImageUrl={fuelLogoSrc}
+      networkImage={<FuelLogo size={18} />}
       label={label}
       isConnecting={isConnecting}
-      onConnect={hasInstalledFuel ? handlers.connect : handlers.openFuelInstall}
+      onConnect={handlers.connect}
       onDisconnect={handlers.disconnect}
       account={{ address }}
     />

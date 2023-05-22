@@ -12,7 +12,7 @@ import { useMemo } from 'react';
 import { store } from '~/store';
 
 export const useFuelAccountConnection = () => {
-  const fuel = useFuel();
+  const { fuel } = useFuel();
   const { account } = useAccount();
   const { isConnected } = useIsConnected();
   const { connect, error, isLoading: isConnecting } = useConnect();
@@ -23,15 +23,24 @@ export const useFuelAccountConnection = () => {
     () => (account ? Address.fromString(account) : undefined),
     [account]
   );
+  const hasInstalledFuel = Boolean(fuel);
+
+  function handleConnect() {
+    if (hasInstalledFuel) {
+      connect();
+    } else {
+      store.openFuelInstall();
+    }
+  }
 
   return {
     handlers: {
-      connect,
+      connect: handleConnect,
       disconnect,
       openFuelInstall: store.openFuelInstall,
       closeDialog: store.closeOverlay,
     },
-    hasInstalledFuel: Boolean(fuel),
+    hasInstalledFuel,
     account,
     address,
     isConnected,

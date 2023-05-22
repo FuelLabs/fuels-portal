@@ -10,7 +10,7 @@ export const EthAccountConnection = ({ label }: { label?: string }) => {
   return (
     <AccountConnectionInput
       networkName={ETH_CHAIN.name}
-      networkImageUrl={ethLogoSrc}
+      networkImage={ethLogoSrc}
       label={label}
       onConnect={handlers.connect}
       onDisconnect={handlers.disconnect}

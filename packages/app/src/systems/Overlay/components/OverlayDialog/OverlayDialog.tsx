@@ -11,7 +11,10 @@ export function OverlayDialog() {
   const overlay = useOverlay();
 
   return (
-    <Dialog isOpen={overlay.isDialogOpen}>
+    <Dialog
+      isOpen={overlay.isDialogOpen}
+      onOpenChange={(isOpen) => !isOpen && overlay.close()}
+    >
       <Dialog.Content css={styles.content}>
         {overlay.is('tx.fromEth.toFuel') && <TxEthToFuelDialog />}
         {overlay.is('fuel.install') && <FuelInstallDialog />}

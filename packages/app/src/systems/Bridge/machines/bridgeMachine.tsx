@@ -90,6 +90,7 @@ export const bridgeMachine = createMachine(
               target: 'idle',
             },
             {
+              actions: ['clearAssetAmmount'],
               target: 'idle',
             },
           ],
@@ -107,6 +108,9 @@ export const bridgeMachine = createMachine(
       })),
       assignAssetAmount: assign({
         assetAmount: (_, ev) => ev.input.assetAmount,
+      }),
+      clearAssetAmmount: assign({
+        assetAmount: undefined,
       }),
     },
     services: {

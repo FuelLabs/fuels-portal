@@ -1,28 +1,20 @@
-import { Dialog, Icon, IconButton } from '@fuel-ui/react';
+import { Dialog } from '@fuel-ui/react';
 
-import { BridgeSteps } from '../../../Bridge/components';
 import { useTxEthToFuel } from '../hooks';
 
+import { BridgeSteps } from '~/systems/Bridge';
 import { useOverlay } from '~/systems/Overlay';
 
 export function TxEthToFuelDialog() {
   const { metadata } = useOverlay<{ txId: string }>();
-  const { steps, handlers } = useTxEthToFuel({
+  const { steps } = useTxEthToFuel({
     id: metadata.txId,
   });
 
   return (
     <>
-      <Dialog.Heading>
-        Transaction
-        <IconButton
-          data-action="closed"
-          variant="link"
-          icon={<Icon icon="X" color="gray8" />}
-          aria-label="Close unlock window"
-          onPress={handlers.close}
-        />
-      </Dialog.Heading>
+      <Dialog.Close />
+      <Dialog.Heading>Transaction</Dialog.Heading>
       <Dialog.Description>
         <BridgeSteps steps={steps} />
       </Dialog.Description>

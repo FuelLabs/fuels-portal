@@ -1,7 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box } from '@fuel-ui/react';
-
-import imageSrc from '../../../../../public/fuel-logo.svg';
+import { Box, FuelLogo } from '@fuel-ui/react';
 
 import { AccountConnectionInput } from './AccountConnectionInput';
 
@@ -18,7 +16,7 @@ export const Usage = () => {
     <Box.Flex align="center" justify="center" css={styles.storybook}>
       <AccountConnectionInput
         networkName="Fuel"
-        networkImageUrl={imageSrc}
+        networkImage={<FuelLogo size={18} />}
         label="To"
         isConnecting={false}
         onConnect={() => {}}
@@ -32,7 +30,7 @@ export const Loading = () => {
     <Box.Flex align="center" justify="center" css={styles.storybook}>
       <AccountConnectionInput
         networkName="Fuel"
-        networkImageUrl={imageSrc}
+        networkImage={<FuelLogo size={18} />}
         label="To"
         isConnecting={true}
         onConnect={() => {}}
@@ -46,7 +44,7 @@ export const ConnectedAccount = () => {
     <Box.Flex align="center" justify="center" css={styles.storybook}>
       <AccountConnectionInput
         networkName="Fuel"
-        networkImageUrl={imageSrc}
+        networkImage={<FuelLogo size={18} />}
         label="To"
         isConnecting={false}
         onConnect={() => {}}
@@ -64,7 +62,7 @@ export const ConnectedENSAccount = () => {
     <Box.Flex align="center" justify="center" css={styles.storybook}>
       <AccountConnectionInput
         networkName="Fuel"
-        networkImageUrl={imageSrc}
+        networkImage={<FuelLogo size={18} />}
         label="To"
         isConnecting={false}
         onConnect={() => {}}

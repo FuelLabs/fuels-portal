@@ -1,43 +1,31 @@
-import { cssObj } from '@fuel-ui/css';
-import { Button, Dialog, IconButton, Icon } from '@fuel-ui/react';
+import { Box, Button, Dialog, FuelLogo, Text } from '@fuel-ui/react';
 
-import { useFuelAccountConnection } from '../hooks';
-
-export const FuelInstallDialog = () => {
-  const { handlers } = useFuelAccountConnection();
-
-  return (
-    <>
-      <Dialog.Heading css={styles.heading}>
-        Install Fuel Wallet
-        <IconButton
-          data-action="closed"
-          variant="link"
-          icon={<Icon icon="X" color="gray8" />}
-          aria-label="Close unlock window"
-          onPress={handlers.closeDialog}
-        />
-      </Dialog.Heading>
-      <Dialog.Description css={styles.description}>
-        <a
-          href="https://wallet.fuel.network/docs/install/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <Button variant="outlined">Install Fuel Wallet</Button>
-        </a>
-      </Dialog.Description>
-    </>
-  );
-};
-
-const styles = {
-  description: cssObj({
-    background: '$intentsBase1',
-    display: 'flex',
-    justifyContent: 'center',
-  }),
-  heading: cssObj({
-    color: '$intentsBase12',
-  }),
-};
+export const FuelInstallDialog = () => (
+  <>
+    <Dialog.Close />
+    <Dialog.Heading>Get Wallet</Dialog.Heading>
+    <Dialog.Description>
+      <Box.Stack gap="$4">
+        <Box.Flex align="center" gap="$2">
+          <Text fontSize="lg" color="intentsBase12">
+            Start Exploring Fuel
+          </Text>
+          <FuelLogo size={24} />
+        </Box.Flex>
+        <Text>
+          Your wallet is the gateway to the Fuel Network, the magical technology
+          that helps making modular blockchains possible.
+        </Text>
+      </Box.Stack>
+    </Dialog.Description>
+    <Dialog.Footer>
+      <a
+        href="https://wallet.fuel.network/docs/install/"
+        target="_blank"
+        rel="noreferrer"
+      >
+        <Button>Install Fuel Wallet</Button>
+      </a>
+    </Dialog.Footer>
+  </>
+);
