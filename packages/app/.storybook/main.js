@@ -18,23 +18,6 @@ const config = {
   docs: {
     autodocs: true,
   },
-  viteFinal: (config) => {
-    return {
-      ...config,
-      resolve: {
-        alias: [
-          {
-            find: '~',
-            replacement: path.resolve(__dirname, '../src'),
-          },
-          {
-            find: '~/public',
-            replacement: path.resolve(__dirname, '../src/public'),
-          },
-        ],
-      },
-    };
-  },
 };
 
 export default config;
