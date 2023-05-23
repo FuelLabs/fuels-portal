@@ -41,14 +41,14 @@ export function TxEthToFuelDialog() {
   return (
     <>
       <Dialog.Heading css={styles.dialogHeading}>
-        <Box.Flex justify="space-between" css={styles.dialogHeadingText}>
+        <Box.Flex justify="space-between" css={styles.dialogHeadingContainer}>
           <Text fontSize="sm" color="intentsBase12">
             Transaction: {shortAddress(metadata.txId)}
           </Text>
           <IconButton
             data-action="closed"
             variant="link"
-            icon={<Icon icon="CircleX" color="intentsBase8" />}
+            icon={<Icon icon="CircleX" css={styles.dialogHeadingIcon} />}
             aria-label="Close unlock window"
             onPress={handlers.close}
           />
@@ -92,8 +92,11 @@ const styles = {
   dialogHeading: cssObj({
     borderBottom: '1px solid $intentsBase8',
   }),
-  dialogHeadingText: cssObj({
+  dialogHeadingContainer: cssObj({
     paddingBottom: '$4',
+  }),
+  dialogHeadingIcon: cssObj({
+    color: '$intentsBase12 !important',
   }),
   header: cssObj({
     color: '$intentsBase12',

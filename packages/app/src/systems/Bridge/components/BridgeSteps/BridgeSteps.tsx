@@ -45,7 +45,7 @@ export const BridgeSteps = ({ steps }: BridgeStepsProps) => {
             </Box.Flex>
             <Box.Flex align="center" gap="$1">
               {step.isLoading && <Spinner size={14} />}
-              <Text fontSize="sm">{step.status}</Text>
+              <Text fontSize="xs">{step.status}</Text>
             </Box.Flex>
           </Box.Flex>
         );
@@ -87,7 +87,7 @@ const styles = {
     color: '$intentsBase12',
   }),
   icon: cssObj({
-    color: '$black12',
+    color: '$intentsBase12 !important',
   }),
   number: cssObj({
     display: 'flex',
