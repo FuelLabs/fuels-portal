@@ -4,13 +4,11 @@ import { Card, Text, Box, Pagination } from '@fuel-ui/react';
 export const Transactions = () => {
   return (
     <Card>
-      <Card.Header>
-        <Box.Flex justify="space-between" align="center" css={styles.header}>
-          <Text>Age</Text>
-          <Text>Direction</Text>
-          <Text>Asset</Text>
-          <Text>Status</Text>
-        </Box.Flex>
+      <Card.Header css={styles.header}>
+        <Text>Age</Text>
+        <Text>Direction</Text>
+        <Text>Asset</Text>
+        <Text>Status</Text>
       </Card.Header>
       <Card.Footer>
         <Box.Flex justify="center" align="center" css={styles.footer}>
@@ -27,7 +25,8 @@ export const Transactions = () => {
 
 const styles = cssObj({
   header: cssObj({
-    width: '100%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   }),
   footer: cssObj({
     width: '100%',
