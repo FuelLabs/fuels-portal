@@ -1,26 +1,17 @@
 import { cssObj } from '@fuel-ui/css';
-import {
-  Box,
-  Button,
-  Dialog,
-  Icon,
-  IconButton,
-  Input,
-  Text,
-} from '@fuel-ui/react';
+import { Box, Dialog, Icon, IconButton, Text } from '@fuel-ui/react';
 import { formatUnits } from 'fuels';
 
-import { BridgeSteps } from '../../../Bridge/components';
 import { useTxEthToFuel } from '../hooks';
 import { ETH_UNITS, ethLogoSrc } from '../utils';
 
-import { BridgeTxOverview } from '~/systems/Bridge/components/BridgeTxOverview';
+import { BridgeTxOverview, BridgeSteps } from '~/systems/Bridge';
 import { shortAddress } from '~/systems/Core';
 import { useOverlay } from '~/systems/Overlay';
 
 export function TxEthToFuelDialog() {
   const { metadata } = useOverlay<{ txId: string }>();
-  const { steps, handlers, ethTx, blockInfo } = useTxEthToFuel({
+  const { steps, handlers, ethTx, age } = useTxEthToFuel({
     id: metadata.txId,
   });
 
@@ -44,23 +35,12 @@ export function TxEthToFuelDialog() {
         <Box.Stack gap="$2">
           <Text css={styles.header}>Status</Text>
           <BridgeSteps steps={steps} />
-          <Text css={styles.header}>Get notified when it settles</Text>
-          <Box.Flex css={styles.emailContainer}>
-            <Input css={styles.emailInput}>
-              <Input.Field placeholder="Your email address" type="email" />
-            </Input>
-            <Button css={styles.emailButton}>Notify me</Button>
-          </Box.Flex>
         </Box.Stack>
       </Dialog.Description>
       <Dialog.Footer>
         <BridgeTxOverview
           transactionId={shortAddress(metadata.txId)}
-          age={
-            blockInfo?.timestamp
-              ? new Date(blockInfo.timestamp * 1000).toDateString()
-              : 'N/A'
-          }
+          age={age}
           isDeposit={true}
           asset={{
             assetSymbol: 'ETH',
@@ -87,22 +67,6 @@ const styles = {
   header: cssObj({
     color: '$intentsBase12',
     fontSize: '$xs',
-  }),
-  emailContainer: cssObj({
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: '$2',
-    marginBottom: '$4',
-  }),
-  emailInput: cssObj({
-    width: '100%',
-    height: '$8',
-    fontSize: '$xs',
-  }),
-  emailButton: cssObj({
-    height: '$8',
-    fontSize: '$xs',
-    whiteSpace: 'nowrap',
   }),
   dialogDescription: cssObj({
     borderBottom: '1px solid $intentsBase8',
