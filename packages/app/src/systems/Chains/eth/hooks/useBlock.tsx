@@ -8,8 +8,9 @@ function calculateBlockAge(timestamp?: number) {
   }
   const currentDate = new Date();
   const blockDate = new Date(timestamp * 1000);
-  const dif = Math.abs(currentDate.getTime() - blockDate.getTime());
-  return `${dif} days ago`;
+  const diffInTime = currentDate.getTime() - blockDate.getTime();
+  const diffInDays = Math.round(diffInTime / (1000 * 3600 * 24));
+  return `${diffInDays} days ago`;
 }
 
 export const useBlock = () => {

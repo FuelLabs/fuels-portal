@@ -1,6 +1,6 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, Dialog, Icon, IconButton, Text } from '@fuel-ui/react';
-import { formatUnits } from 'fuels';
+import { Box, Button, Dialog, Icon, IconButton, Text } from '@fuel-ui/react';
+import { bn } from 'fuels';
 
 import { useTxEthToFuel } from '../hooks';
 import { ETH_UNITS, ethLogoSrc } from '../utils';
@@ -15,11 +15,34 @@ export function TxEthToFuelDialog() {
     id: metadata.txId,
   });
 
+  function getButtonText() {
+    if (!steps) {
+      return { shouldHideButton: true };
+    }
+    if (steps[1].isLoading) {
+      return {
+        text: 'Waiting on settlement',
+        isDiabled: true,
+      };
+    }
+    if (steps[2].isDone) {
+      return {
+        shouldHideButton: true,
+      };
+    }
+    return {
+      text: 'Confirm transaction',
+      isDisabled: false,
+    };
+  }
+
+  const buttonTextObj = getButtonText();
+
   return (
     <>
       <Dialog.Heading css={styles.dialogHeading}>
         <Box.Flex justify="space-between" css={styles.dialogHeadingText}>
-          <Text fontSize="sm" color="intentsBase8">
+          <Text fontSize="sm" color="intentsBase12">
             Transaction: {shortAddress(metadata.txId)}
           </Text>
           <IconButton
@@ -31,27 +54,35 @@ export function TxEthToFuelDialog() {
           />
         </Box.Flex>
       </Dialog.Heading>
-      <Dialog.Description css={styles.dialogDescription}>
+      <Dialog.Description>
         <Box.Stack gap="$2">
           <Text css={styles.header}>Status</Text>
           <BridgeSteps steps={steps} />
+          <Box css={styles.border} />
+          <BridgeTxOverview
+            transactionId={shortAddress(metadata.txId)}
+            age={age}
+            isDeposit={true}
+            asset={{
+              assetSymbol: 'ETH',
+              imageUrl: ethLogoSrc,
+              assetAmount: bn(ethTx?.value.toHexString()).format({
+                precision: 9,
+                units: ETH_UNITS,
+              }),
+            }}
+          />
         </Box.Stack>
       </Dialog.Description>
       <Dialog.Footer>
-        <BridgeTxOverview
-          transactionId={shortAddress(metadata.txId)}
-          age={age}
-          isDeposit={true}
-          asset={{
-            assetSymbol: 'ETH',
-            imageUrl: ethLogoSrc,
-            assetAmount: ethTx?.value
-              ? parseFloat(
-                  formatUnits(ethTx.value.toString(), ETH_UNITS)
-                ).toFixed(3)
-              : '0',
-          }}
-        />
+        {!buttonTextObj.shouldHideButton && (
+          <Button
+            isDisabled={buttonTextObj.isDiabled}
+            css={styles.actionButton}
+          >
+            {buttonTextObj.text}
+          </Button>
+        )}
       </Dialog.Footer>
     </>
   );
@@ -68,7 +99,11 @@ const styles = {
     color: '$intentsBase12',
     fontSize: '$xs',
   }),
-  dialogDescription: cssObj({
+  border: cssObj({
+    my: '$4',
     borderBottom: '1px solid $intentsBase8',
+  }),
+  actionButton: cssObj({
+    width: '100%',
   }),
 };
