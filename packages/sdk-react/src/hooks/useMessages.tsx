@@ -44,14 +44,23 @@ export const useMessages = (
         }),
       });
       const json = await response.json();
-      console.log('MESSAGES:', json);
-      return response;
+      return json;
     },
     { enabled: !!owner }
   );
 
   return {
-    messages: query.data,
+    messages:
+      query.data && query.data.data.messages
+        ? (query.data.data.messages.nodes as Array<{
+            amount: string;
+            daHeight: string;
+            data: string;
+            nonce: string;
+            recipient: string;
+            sender: string;
+          }>)
+        : undefined,
     ...query,
   };
 };
