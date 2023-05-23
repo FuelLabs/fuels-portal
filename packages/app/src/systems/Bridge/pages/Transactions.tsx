@@ -1,7 +1,16 @@
 import { cssObj } from '@fuel-ui/css';
 import { Card, Text, Box, Pagination } from '@fuel-ui/react';
+import { useAccount, useMessages } from '@fuels-portal/sdk-react';
+import { Address } from 'fuels';
+
+import { FUEL_CHAIN } from '~/systems/Chains';
 
 export const Transactions = () => {
+  const { account } = useAccount();
+  const { messages } = useMessages(account, 5, FUEL_CHAIN.providerUrl);
+
+  // TODO
+  // 1.) fetch and filter a user's txs
   return (
     <Card>
       <Card.Header css={styles.header}>
