@@ -39,11 +39,13 @@ export class BridgeService {
         units: DECIMAL_UNITS,
       });
       const amountEthUnits = bn.parseUnits(amountFormatted, ETH_UNITS);
+      console.log('in bridge');
       const txId = await TxEthToFuelService.create({
         amount: amountEthUnits.toHex(),
         ethSigner,
         fuelAddress,
       });
+      console.log('after create');
 
       if (txId) {
         store.openTxEthToFuel({

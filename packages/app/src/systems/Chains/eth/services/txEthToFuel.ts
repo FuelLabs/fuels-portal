@@ -2,14 +2,22 @@ import type {
   Provider as EthProvider,
   TransactionResponse as EthTransactionResponse,
 } from '@ethersproject/providers';
+import {
+  JsonRpcProvider,
+  JsonRpcSigner,
+  Provider,
+} from '@ethersproject/providers';
 import type { Signer as EthSigner } from 'ethers';
+import { Wallet } from 'ethers';
 import type {
   Address as FuelAddress,
   BN,
   Provider as FuelProvider,
 } from 'fuels';
 import { bn } from 'fuels';
+import type { WalletClient } from 'viem';
 
+import { ETH_CHAIN } from '../../config';
 import { FuelMessagePortal__factory } from '../fuel-v2-contracts/factories/FuelMessagePortal__factory';
 
 import { VITE_ETH_FUEL_MESSAGE_PORTAL } from '~/config';
@@ -32,10 +40,10 @@ export type TxEthToFuelInputs = {
 };
 
 export class TxEthToFuelService {
-  static connectToFuelMessagePortal(signerOrProvider: EthSigner | EthProvider) {
+  static connectToFuelMessagePortal(signerOrProvider: WalletClient) {
     return FuelMessagePortal__factory.connect(
       VITE_ETH_FUEL_MESSAGE_PORTAL,
-      signerOrProvider
+      signerOrProvider as EthSigner
     );
   }
 
