@@ -1,16 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { formatDistanceToNow } from 'date-fns';
 
 import { useEthAccountConnection } from './useEthAccountConnection';
 
-function calculateBlockAge(timestamp?: number) {
-  if (!timestamp) {
-    return 'N/A';
-  }
-  const blockDate = new Date(timestamp * 1000);
-  const diffInDays = formatDistanceToNow(blockDate, { addSuffix: true });
-  return diffInDays;
-}
+import { calculateBlockAge } from '~/systems/Core/utils/date';
 
 export const useBlock = () => {
   const { provider } = useEthAccountConnection();
