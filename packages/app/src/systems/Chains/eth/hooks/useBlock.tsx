@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { formatDistanceToNow } from 'date-fns';
 
 import { useEthAccountConnection } from './useEthAccountConnection';
 
@@ -6,11 +7,9 @@ function calculateBlockAge(timestamp?: number) {
   if (!timestamp) {
     return 'N/A';
   }
-  const currentDate = new Date();
   const blockDate = new Date(timestamp * 1000);
-  const diffInTime = currentDate.getTime() - blockDate.getTime();
-  const diffInDays = Math.round(diffInTime / (1000 * 3600 * 24));
-  return `${diffInDays} days ago`;
+  const diffInDays = formatDistanceToNow(blockDate, { addSuffix: true });
+  return diffInDays;
 }
 
 export const useBlock = () => {
