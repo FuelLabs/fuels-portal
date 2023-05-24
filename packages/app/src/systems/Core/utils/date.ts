@@ -1,6 +1,6 @@
 import { formatDistanceToNow } from 'date-fns';
 
-export const calculateBlockAge = (timestamp?: number) => {
+export const calculateDateDiff = (timestamp?: number) => {
   if (!timestamp) {
     return 'N/A';
   }

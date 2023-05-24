@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { useEthAccountConnection } from './useEthAccountConnection';
 
-import { calculateBlockAge } from '~/systems/Core/utils/date';
+import { calculateDateDiff } from '~/systems/Core/utils/date';
 
 export const useBlock = () => {
   const { provider } = useEthAccountConnection();
@@ -12,7 +12,7 @@ export const useBlock = () => {
     return block;
   });
 
-  const age = calculateBlockAge(query.data?.timestamp);
+  const age = calculateDateDiff(query.data?.timestamp);
 
   return {
     block: query.data,
