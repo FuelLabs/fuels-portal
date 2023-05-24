@@ -5,14 +5,14 @@ import {
   useDisconnect,
   useEnsAvatar,
   useEnsName,
-  useSigner,
 } from 'wagmi';
+
+import { publicClient } from '~/systems/Settings';
 
 export function useEthAccountConnection() {
   const { address, isConnected } = useAccount();
   const { data: ensName } = useEnsName({ address });
-  const { data: ensAvatar } = useEnsAvatar({ address });
-  const { data: signer } = useSigner();
+  const { data: ensAvatar } = useEnsAvatar({ name: address });
   const { data: balance } = useBalance({ address });
 
   const { open: isConnecting, setOpen } = useModal();
@@ -31,7 +31,7 @@ export function useEthAccountConnection() {
     isConnected,
     isConnecting,
     signer: signer || undefined,
-    provider: signer?.provider || undefined,
+    provider: publicClient || undefined,
     balance,
   };
 }

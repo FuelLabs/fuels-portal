@@ -66,7 +66,7 @@ export function TxEthToFuelDialog() {
             asset={{
               assetSymbol: 'ETH',
               imageUrl: ethLogoSrc,
-              assetAmount: bn(ethTx?.value.toHexString()).format({
+              assetAmount: bn(ethTx?.value.toString()).format({
                 precision: 9,
                 units: ETH_UNITS,
               }),

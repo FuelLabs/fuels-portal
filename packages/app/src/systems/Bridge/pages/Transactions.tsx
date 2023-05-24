@@ -10,13 +10,15 @@ import {
 } from '@fuel-ui/react';
 import { useAccount, useMessages } from '@fuels-portal/sdk-react';
 
-import { FUEL_CHAIN, ethLogoSrc } from '~/systems/Chains';
+import { FUEL_CHAIN, ethLogoSrc, useMessageSent } from '~/systems/Chains';
 
 export const Transactions = () => {
   const { account } = useAccount();
   const { messages } = useMessages(account, 10, FUEL_CHAIN.providerUrl);
 
-  console.log('messages', messages);
+  const { logs } = useMessageSent();
+
+  console.log('logs', logs);
 
   return (
     <Card>
