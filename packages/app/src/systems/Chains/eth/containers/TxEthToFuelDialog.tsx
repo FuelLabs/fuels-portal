@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, Button, Dialog, Icon, IconButton, Text } from '@fuel-ui/react';
+import { Box, Dialog, Icon, IconButton, Text } from '@fuel-ui/react';
 import { bn } from 'fuels';
 
 import { useTxEthToFuel } from '../hooks';
