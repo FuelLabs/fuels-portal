@@ -15,10 +15,9 @@ import { FUEL_CHAIN, ethLogoSrc } from '~/systems/Chains';
 export const Transactions = () => {
   const { account } = useAccount();
   const { messages } = useMessages(account, 10, FUEL_CHAIN.providerUrl);
-  // onst temp = messages.data.messages.nodes as Array;
 
-  // TODO
-  // 1.) fetch and filter a user's txs
+  console.log('messages', messages);
+
   return (
     <Card>
       <Card.Header css={styles.header}>
