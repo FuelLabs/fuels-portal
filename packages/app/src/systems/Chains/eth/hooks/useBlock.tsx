@@ -11,7 +11,6 @@ export const useBlock = () => {
     const block = await provider?.getBlock('latest');
     return block;
   });
-
   const age = calculateDateDiff(query.data?.timestamp);
 
   return {
