@@ -3,26 +3,26 @@ import { useQuery } from '@tanstack/react-query';
 import { useFuel } from '../components';
 import { QUERY_KEYS } from '../utils';
 
-export const useAccount = () => {
+export const useWallet = ({ address }: { address?: string }) => {
   const { fuel } = useFuel();
 
   const { data, ...queryProps } = useQuery(
-    [QUERY_KEYS.account],
+    [QUERY_KEYS.wallet],
     async () => {
       try {
-        const currentFuelAccount = await fuel?.currentAccount();
-        return currentFuelAccount || null;
+        const wallet = await fuel?.getWallet(address || '');
+        return wallet || null;
       } catch (error: unknown) {
         return null;
       }
     },
     {
-      enabled: !!fuel,
+      enabled: !!fuel && !!address,
     }
   );
 
   return {
-    account: data || undefined,
+    wallet: data || undefined,
     ...queryProps,
   };
 };
