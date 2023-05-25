@@ -16,7 +16,7 @@ export const useBalance = ({
   const { provider } = useProvider();
 
   const query = useQuery(
-    [QUERY_KEYS.balance],
+    [QUERY_KEYS.balance, address, assetId],
     async () => {
       try {
         // TODO: replace with ETH_ASSET_ID from asset-list package after this task gets done
