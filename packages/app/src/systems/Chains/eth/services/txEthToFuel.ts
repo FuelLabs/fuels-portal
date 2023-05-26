@@ -96,10 +96,6 @@ export class TxEthToFuelService {
     }
 
     const { ethTx, publicClient } = input;
-    const fuelPortal = TxEthToFuelService.connectToFuelMessagePortal(
-      undefined,
-      publicClient
-    );
 
     const receipt = await publicClient.waitForTransactionReceipt({
       hash: ethTx.hash as `0x${string}`,
