@@ -131,12 +131,18 @@ importers:
       '@storybook/theming':
         specifier: ^7.0.3
         version: 7.0.3(react-dom@18.2.0)(react@18.2.0)
+      '@tanstack/react-query':
+        specifier: ^4.29.5
+        version: 4.29.5(react-dom@18.2.0)(react@18.2.0)
       '@xstate/react':
         specifier: ^3.2.1
         version: 3.2.1(@types/react@18.0.27)(react@18.2.0)(xstate@4.37.0)
       connectkit:
         specifier: ^1.2.3
         version: 1.2.3(ethers@5.7.2)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(wagmi@0.12.13)
+      date-fns:
+        specifier: ^2.30.0
+        version: 2.30.0
       ethers:
         specifier: ^5
         version: 5.7.2
@@ -11385,6 +11391,13 @@ packages:
       abab: 2.0.6
       whatwg-mimetype: 3.0.0
       whatwg-url: 11.0.0
+
+  /date-fns@2.30.0:
+    resolution: {integrity: sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==}
+    engines: {node: '>=0.11'}
+    dependencies:
+      '@babel/runtime': 7.21.0
+    dev: false
 
   /debounce@1.2.1:
     resolution: {integrity: sha512-XRRe6Glud4rd/ZGQfiV1ruXSfbvfJedlV9Y6zOlP+2K04vBYiJEte6stfFkCP03aMnY5tsipamumUjL14fofug==}

@@ -69,7 +69,7 @@ const styles = {
   }),
   labelText: cssObj({
     fontSize: '$xs',
-    color: '$intentsBase8',
+    color: '$intentsBase11',
   }),
   infoText: cssObj({
     fontSize: '$xs',

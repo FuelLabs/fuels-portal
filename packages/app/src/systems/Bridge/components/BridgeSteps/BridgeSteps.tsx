@@ -45,7 +45,7 @@ export const BridgeSteps = ({ steps }: BridgeStepsProps) => {
             </Box.Flex>
             <Box.Flex align="center" gap="$1">
               {step.isLoading && <Spinner size={14} />}
-              <Text fontSize="sm">{step.status}</Text>
+              <Text fontSize="xs">{step.status}</Text>
             </Box.Flex>
           </Box.Flex>
         );
@@ -57,7 +57,7 @@ export const BridgeSteps = ({ steps }: BridgeStepsProps) => {
 const styles = {
   stack: cssObj({
     gap: '$0',
-    width: '344px',
+    minWidth: '344px',
     backgroundColor: '$intentsBase0',
     borderRadius: '$md',
     border: '1px solid $intentsBase5',
