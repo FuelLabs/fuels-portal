@@ -9,7 +9,7 @@ import type {
 } from 'fuels';
 import { bn } from 'fuels';
 import type { WalletClient } from 'viem';
-import { getContract } from 'viem';
+import { decodeEventLog, getContract } from 'viem';
 import type { PublicClient } from 'wagmi';
 
 import { AbiFuelMessagePortal } from './abi';
@@ -104,10 +104,13 @@ export class TxEthToFuelService {
     const receipt = await publicClient.waitForTransactionReceipt({
       hash: ethTx.hash as `0x${string}`,
     });
-    console.log('receupt', receipt);
-    const event = (await fuelPortal.read.parseLog([receipt.logs[0]])) as any;
-    const depositNonce = bn(event.args.nonce.toHexString());
-    // const depositNonce = bn(0);
+    const topics = decodeEventLog({
+      abi: AbiFuelMessagePortal,
+      data: receipt.logs[0].data,
+      topics: receipt.logs[0].topics,
+    });
+    const depositNonce = bn(topics.args.nonce);
+    console.log('nonce: ', depositNonce.toString());
     return depositNonce;
   }
 
@@ -127,6 +130,7 @@ export class TxEthToFuelService {
     const messages = await fuelProvider.getMessages(fuelAddress, {
       first: 1000,
     });
+    console.log('messages: ', messages);
     const message = messages.find(
       (message) => message.nonce.toHex() === ethTxNonce.toHex()
     );
