@@ -69,6 +69,7 @@ export function useBridge() {
     handlers: ethHandlers,
     isConnecting: ethIsConnecting,
     balance: ethBalance,
+    walletClient: ethWalletClient,
   } = useEthAccountConnection();
   const {
     account: fuelAccount,
@@ -176,6 +177,7 @@ export function useBridge() {
         store.startBridging({
           ethSigner,
           fuelAddress,
+          walletClient: ethWalletClient,
         }),
       connectFrom: () => connectNetwork(fromNetwork),
       connectTo: () => connectNetwork(toNetwork),

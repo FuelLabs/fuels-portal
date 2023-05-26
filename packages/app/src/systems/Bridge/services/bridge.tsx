@@ -1,6 +1,7 @@
 import type { Signer as EthSigner } from 'ethers';
 import { bn, DECIMAL_UNITS } from 'fuels';
 import type { Address as FuelAddress, BN } from 'fuels';
+import type { WalletClient } from 'wagmi';
 
 import { store } from '~/store';
 import type { FromToNetworks } from '~/systems/Chains';
@@ -14,6 +15,7 @@ import {
 export type PossibleBridgeInputs = {
   assetAmount?: BN;
   ethSigner?: EthSigner;
+  walletClient?: WalletClient;
   fuelAddress?: FuelAddress;
 };
 export type BridgeInputs = {
@@ -22,8 +24,14 @@ export type BridgeInputs = {
 
 export class BridgeService {
   static async bridge(input: BridgeInputs['bridge']) {
-    const { fromNetwork, toNetwork, assetAmount, ethSigner, fuelAddress } =
-      input;
+    const {
+      fromNetwork,
+      toNetwork,
+      assetAmount,
+      ethSigner,
+      fuelAddress,
+      walletClient,
+    } = input;
 
     if (!fromNetwork || !toNetwork) {
       throw new Error('"Network From" and "Network To" are required');
@@ -42,18 +50,21 @@ export class BridgeService {
       console.log('in bridge');
       const txId = await TxEthToFuelService.create({
         amount: amountEthUnits.toHex(),
-        ethSigner,
+        walletClient,
+        // ethSigner,
         fuelAddress,
       });
+
       console.log('after create');
+      debugger;
 
       if (txId) {
         store.openTxEthToFuel({
           txId,
         });
-
-        return;
       }
+
+      return;
     }
 
     throw new Error(

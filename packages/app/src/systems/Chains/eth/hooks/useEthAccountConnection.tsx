@@ -33,6 +33,7 @@ export function useEthAccountConnection() {
     isConnected,
     isConnecting,
     signer: walletClient || undefined,
+    walletClient: walletClient || undefined,
     provider: publicClient || undefined,
     balance,
   };

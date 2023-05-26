@@ -16,16 +16,20 @@ import type {
 } from 'fuels';
 import { bn } from 'fuels';
 import type { WalletClient } from 'viem';
+import { getContract } from 'viem';
 
 import { ETH_CHAIN } from '../../config';
 import { FuelMessagePortal__factory } from '../fuel-v2-contracts/factories/FuelMessagePortal__factory';
+
+import { AbiFuelMessagePortal } from './abi';
 
 import { VITE_ETH_FUEL_MESSAGE_PORTAL } from '~/config';
 
 export type TxEthToFuelInputs = {
   create: {
     amount: string;
-    ethSigner?: EthSigner;
+    walletClient?: WalletClient;
+    // ethSigner?: EthSigner;
     fuelAddress?: FuelAddress;
   };
   getDepositNonce: {
@@ -40,17 +44,27 @@ export type TxEthToFuelInputs = {
 };
 
 export class TxEthToFuelService {
-  static connectToFuelMessagePortal(signerOrProvider: WalletClient) {
-    return FuelMessagePortal__factory.connect(
-      VITE_ETH_FUEL_MESSAGE_PORTAL,
-      signerOrProvider as EthSigner
-    );
+  static connectToFuelMessagePortal(walletClient: WalletClient) {
+    const contract = getContract({
+      abi: AbiFuelMessagePortal,
+      address: VITE_ETH_FUEL_MESSAGE_PORTAL as `0x${string}`,
+      walletClient,
+    });
+
+    return contract;
+    // return FuelMessagePortal__factory.connect(
+    //   VITE_ETH_FUEL_MESSAGE_PORTAL,
+    //   signerOrProvider as EthSigner
+    // );
   }
 
   static async create(input: TxEthToFuelInputs['create']) {
-    if (!input?.ethSigner) {
+    if (!input?.walletClient) {
       throw new Error('Need to connect ETH Wallet');
     }
+    // if (!input?.ethSigner) {
+    //   throw new Error('Need to connect ETH Wallet');
+    // }
     if (!input?.amount) {
       throw new Error('Need amount to send');
     }
@@ -58,15 +72,29 @@ export class TxEthToFuelService {
       throw new Error('Need fuel address to send');
     }
 
-    const { ethSigner, fuelAddress, amount } = input;
-    const fuelPortal = TxEthToFuelService.connectToFuelMessagePortal(ethSigner);
+    const { walletClient, fuelAddress, amount } = input;
 
     try {
-      const tx = await fuelPortal.depositETH(fuelAddress.toB256(), {
-        value: amount,
-      });
+      //   const tx = await fuelPortal.depositETH(fuelAddress.toB256(), {
+      //     value: amount,
+      //   });
 
-      return tx.hash;
+      //   return tx.hash;
+
+      if (walletClient.account) {
+        const fuelPortal =
+          TxEthToFuelService.connectToFuelMessagePortal(walletClient);
+
+        const txHash = await fuelPortal.write.depositETH(
+          [fuelAddress.toB256() as `0x${string}`],
+          {
+            value: BigInt(amount),
+            account: walletClient.account,
+          }
+        );
+
+        return txHash;
+      }
     } catch (e) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if ((e as any)?.code === 'ACTION_REJECTED') {
@@ -85,15 +113,17 @@ export class TxEthToFuelService {
       throw new Error('No eth Provider');
     }
 
-    const { ethTx, ethProvider } = input;
-    const fuelPortal =
-      TxEthToFuelService.connectToFuelMessagePortal(ethProvider);
+    // const { ethTx, ethProvider } = input;
+    // const fuelPortal =
+    //   TxEthToFuelService.connectToFuelMessagePortal(ethProvider);
 
-    const receipt = await ethTx.wait();
-    const event = fuelPortal.interface.parseLog(receipt.logs[0]);
-    const depositNonce = bn(event.args.nonce.toHexString());
+    // const receipt = await ethTx.wait();
+    // const event = fuelPortal.interface.parseLog(receipt.logs[0]);
+    // const depositNonce = bn(event.args.nonce.toHexString());
 
-    return depositNonce;
+    // return depositNonce;
+
+    return bn(0);
   }
 
   static async getFuelMessage(input: TxEthToFuelInputs['getFuelMessage']) {
