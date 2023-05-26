@@ -106,7 +106,6 @@ export class TxEthToFuelService {
     });
     console.log('receupt', receipt);
     const event = (await fuelPortal.read.parseLog([receipt.logs[0]])) as any;
-    debugger;
     const depositNonce = bn(event.args.nonce.toHexString());
     // const depositNonce = bn(0);
     return depositNonce;
