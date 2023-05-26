@@ -8,6 +8,7 @@ import type {
   Address as FuelAddress,
   Provider as FuelProvider,
 } from 'fuels';
+import type { PublicClient } from 'wagmi';
 import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
 
@@ -23,6 +24,7 @@ type MachineContext = {
   fuelAddress?: FuelAddress;
   fuelProvider?: FuelProvider;
   fuelMessage?: Message;
+  publicClient?: PublicClient;
 };
 
 type MachineServices = {
@@ -75,6 +77,7 @@ export const txEthToFuelMachine = createMachine(
             input: (ctx: MachineContext) => ({
               ethTx: ctx.ethTx,
               ethProvider: ctx.ethProvider,
+              publicClient: ctx.publicClient,
             }),
           },
           onDone: [
@@ -135,6 +138,7 @@ export const txEthToFuelMachine = createMachine(
         ethProvider: ev.input.ethProvider,
         fuelAddress: ev.input.fuelAddress,
         fuelProvider: ev.input.fuelProvider,
+        publicClient: ev.input.publicClient,
       })),
       assignEthTxNonce: assign({
         ethTxNonce: (_, ev) => ev.data,

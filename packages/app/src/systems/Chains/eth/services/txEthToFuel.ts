@@ -2,13 +2,6 @@ import type {
   Provider as EthProvider,
   TransactionResponse as EthTransactionResponse,
 } from '@ethersproject/providers';
-import {
-  JsonRpcProvider,
-  JsonRpcSigner,
-  Provider,
-} from '@ethersproject/providers';
-import type { Signer as EthSigner } from 'ethers';
-import { Wallet } from 'ethers';
 import type {
   Address as FuelAddress,
   BN,
@@ -17,9 +10,7 @@ import type {
 import { bn } from 'fuels';
 import type { WalletClient } from 'viem';
 import { getContract } from 'viem';
-
-import { ETH_CHAIN } from '../../config';
-import { FuelMessagePortal__factory } from '../fuel-v2-contracts/factories/FuelMessagePortal__factory';
+import type { PublicClient } from 'wagmi';
 
 import { AbiFuelMessagePortal } from './abi';
 
@@ -29,12 +20,12 @@ export type TxEthToFuelInputs = {
   create: {
     amount: string;
     walletClient?: WalletClient;
-    // ethSigner?: EthSigner;
     fuelAddress?: FuelAddress;
   };
   getDepositNonce: {
     ethTx?: EthTransactionResponse;
     ethProvider?: EthProvider;
+    publicClient?: PublicClient;
   };
   getFuelMessage: {
     ethTxNonce?: BN;
@@ -44,27 +35,24 @@ export type TxEthToFuelInputs = {
 };
 
 export class TxEthToFuelService {
-  static connectToFuelMessagePortal(walletClient: WalletClient) {
+  static connectToFuelMessagePortal(
+    walletClient?: WalletClient,
+    publicClient?: PublicClient
+  ) {
     const contract = getContract({
       abi: AbiFuelMessagePortal,
       address: VITE_ETH_FUEL_MESSAGE_PORTAL as `0x${string}`,
       walletClient,
+      publicClient,
     });
 
     return contract;
-    // return FuelMessagePortal__factory.connect(
-    //   VITE_ETH_FUEL_MESSAGE_PORTAL,
-    //   signerOrProvider as EthSigner
-    // );
   }
 
   static async create(input: TxEthToFuelInputs['create']) {
     if (!input?.walletClient) {
       throw new Error('Need to connect ETH Wallet');
     }
-    // if (!input?.ethSigner) {
-    //   throw new Error('Need to connect ETH Wallet');
-    // }
     if (!input?.amount) {
       throw new Error('Need amount to send');
     }
@@ -75,12 +63,6 @@ export class TxEthToFuelService {
     const { walletClient, fuelAddress, amount } = input;
 
     try {
-      //   const tx = await fuelPortal.depositETH(fuelAddress.toB256(), {
-      //     value: amount,
-      //   });
-
-      //   return tx.hash;
-
       if (walletClient.account) {
         const fuelPortal =
           TxEthToFuelService.connectToFuelMessagePortal(walletClient);
@@ -109,21 +91,25 @@ export class TxEthToFuelService {
     if (!input?.ethTx) {
       throw new Error('No eth TX');
     }
-    if (!input?.ethProvider) {
+    if (!input?.publicClient) {
       throw new Error('No eth Provider');
     }
 
-    // const { ethTx, ethProvider } = input;
-    // const fuelPortal =
-    //   TxEthToFuelService.connectToFuelMessagePortal(ethProvider);
+    const { ethTx, publicClient } = input;
+    const fuelPortal = TxEthToFuelService.connectToFuelMessagePortal(
+      undefined,
+      publicClient
+    );
 
-    // const receipt = await ethTx.wait();
-    // const event = fuelPortal.interface.parseLog(receipt.logs[0]);
-    // const depositNonce = bn(event.args.nonce.toHexString());
-
-    // return depositNonce;
-
-    return bn(0);
+    const receipt = await publicClient.waitForTransactionReceipt({
+      hash: ethTx.hash as `0x${string}`,
+    });
+    console.log('receupt', receipt);
+    const event = (await fuelPortal.read.parseLog([receipt.logs[0]])) as any;
+    debugger;
+    const depositNonce = bn(event.args.nonce.toHexString());
+    // const depositNonce = bn(0);
+    return depositNonce;
   }
 
   static async getFuelMessage(input: TxEthToFuelInputs['getFuelMessage']) {

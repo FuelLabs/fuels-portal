@@ -65,7 +65,7 @@ const selectors = {
 };
 
 export function useTxEthToFuel({ id }: { id: string }) {
-  const { provider: ethProvider } = useEthAccountConnection();
+  const { provider: ethProvider, publicClient } = useEthAccountConnection();
   const { provider: fuelProvider, address: fuelAddress } =
     useFuelAccountConnection();
   const { data: ethTx } = useTransaction({
@@ -82,10 +82,11 @@ export function useTxEthToFuel({ id }: { id: string }) {
           ethProvider,
           fuelProvider,
           fuelAddress,
+          publicClient,
         },
       });
     }
-  }, [ethTx, ethProvider, fuelProvider, fuelAddress, service]);
+  }, [ethTx, ethProvider, fuelProvider, fuelAddress, service, publicClient]);
 
   return {
     handlers: {

@@ -35,6 +35,7 @@ export function useEthAccountConnection() {
     signer: walletClient || undefined,
     walletClient: walletClient || undefined,
     provider: publicClient || undefined,
+    publicClient: publicClient || undefined,
     balance,
   };
 }

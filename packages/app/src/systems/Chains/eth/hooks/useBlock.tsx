@@ -8,11 +8,11 @@ export const useBlock = () => {
   const { provider } = useEthAccountConnection();
 
   const query = useQuery(['block'], async () => {
-    const block = await provider?.getBlock('latest');
+    const block = await provider?.getBlock({ blockTag: 'latest' });
     return block;
   });
 
-  const age = calculateBlockAge(query.data?.timestamp);
+  const age = calculateBlockAge(Number(query.data?.timestamp));
 
   return {
     block: query.data,
