@@ -8,17 +8,17 @@ import {
   Icon,
   FuelLogo,
 } from '@fuel-ui/react';
-import { useAccount, useMessages } from '@fuels-portal/sdk-react';
 
-import { FUEL_CHAIN, ethLogoSrc, useMessageSent } from '~/systems/Chains';
+import { ethLogoSrc, useBlocks, useMessageSent } from '~/systems/Chains';
 
 export const Transactions = () => {
-  const { account } = useAccount();
-  const { messages } = useMessages(account, 10, FUEL_CHAIN.providerUrl);
-
   const { logs } = useMessageSent();
+  const blockHashes = logs?.map((log) => {
+    return log.blockHash!;
+  });
+  const { ages } = useBlocks(blockHashes!);
 
-  console.log('logs', logs);
+  console.log('ages', ages);
 
   return (
     <Card>
@@ -31,14 +31,15 @@ export const Transactions = () => {
       <Card.Body>
         <Box.Stack>
           <>
-            {messages &&
-              messages.map((message, index) => {
+            {logs &&
+              ages &&
+              logs.map((log, index) => {
                 return (
                   <Box.Flex
-                    key={`${index}-${message.nonce}`}
+                    key={`${index}-${log.blockNumber}`}
                     justify="space-between"
                   >
-                    <Text>5 days ago</Text>
+                    <Text>{ages[index]}</Text>
                     <Box.Flex css={styles.directionInfo}>
                       <Image width={14} height={14} src={ethLogoSrc} />
                       <Icon icon="ArrowNarrowRight" />

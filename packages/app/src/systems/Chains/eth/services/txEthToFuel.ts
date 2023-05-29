@@ -100,12 +100,13 @@ export class TxEthToFuelService {
     const receipt = await publicClient.waitForTransactionReceipt({
       hash: ethTx.hash as `0x${string}`,
     });
-    const topics = decodeEventLog({
+    const decodedEvent = decodeEventLog({
       abi: AbiFuelMessagePortal,
       data: receipt.logs[0].data,
       topics: receipt.logs[0].topics,
     });
-    const depositNonce = bn(topics.args.nonce);
+    console.log('decoded event: ', decodedEvent);
+    const depositNonce = bn(decodedEvent.args.nonce);
     return depositNonce;
   }
 
