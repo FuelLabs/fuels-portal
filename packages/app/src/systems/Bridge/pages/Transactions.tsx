@@ -79,9 +79,9 @@ export const Transactions = () => {
       <Card.Footer>
         <Box.Flex justify="center" align="center" css={styles.footer}>
           <Pagination pagesCount={1}>
-            <Pagination.Prev />
+            <Pagination.Prev>Prev</Pagination.Prev>
             <Pagination.Items />
-            <Pagination.Next />
+            <Pagination.Next>Next</Pagination.Next>
           </Pagination>
         </Box.Flex>
       </Card.Footer>
