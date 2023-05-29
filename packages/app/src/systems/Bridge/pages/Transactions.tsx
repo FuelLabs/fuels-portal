@@ -10,9 +10,16 @@ import {
 } from '@fuel-ui/react';
 import { bn } from 'fuels';
 
-import { ethLogoSrc, useBlocks, useMessageSent } from '~/systems/Chains';
+import {
+  ethLogoSrc,
+  useBlocks,
+  useEthAccountConnection,
+  useFuelAccountConnection,
+  useMessageSent,
+} from '~/systems/Chains';
 
 export const Transactions = () => {
+  const { address: fuelAddress } = useFuelAccountConnection();
   const { events, blockHashes } = useMessageSent();
   const { ages } = useBlocks(blockHashes!);
 
@@ -36,11 +43,15 @@ export const Transactions = () => {
                     justify="space-between"
                   >
                     <Text>{ages[index]}</Text>
-                    <Box.Flex css={styles.directionInfo}>
-                      <Image width={14} height={14} src={ethLogoSrc} />
-                      <Icon icon="ArrowNarrowRight" />
-                      <FuelLogo size={14} />
-                    </Box.Flex>
+                    {event.args.recipient === fuelAddress?.toHexString() ? (
+                      <Box.Flex css={styles.directionInfo}>
+                        <Image width={14} height={14} src={ethLogoSrc} />
+                        <Icon icon="ArrowNarrowRight" />
+                        <FuelLogo size={14} />
+                      </Box.Flex>
+                    ) : (
+                      <Text>TODO</Text>
+                    )}
                     <Box.Flex css={styles.txItem}>
                       <Box.Flex css={styles.directionInfo}>
                         <Image width={14} height={14} src={ethLogoSrc} />
