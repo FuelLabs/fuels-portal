@@ -13,15 +13,16 @@ import { bn } from 'fuels';
 import {
   ethLogoSrc,
   useBlocks,
-  useEthAccountConnection,
   useFuelAccountConnection,
-  useMessageSent,
+  useEthDepositLogs,
 } from '~/systems/Chains';
 
 export const Transactions = () => {
   const { address: fuelAddress } = useFuelAccountConnection();
-  const { events, blockHashes } = useMessageSent();
+  const { events, blockHashes, logs } = useEthDepositLogs();
   const { ages } = useBlocks(blockHashes!);
+
+  console.log('logs: ', logs);
 
   return (
     <Card>
@@ -50,7 +51,11 @@ export const Transactions = () => {
                         <FuelLogo size={14} />
                       </Box.Flex>
                     ) : (
-                      <Text>TODO</Text>
+                      <Box.Flex css={styles.directionInfo}>
+                        <FuelLogo size={14} />
+                        <Icon icon="ArrowNarrowRight" />
+                        <Image width={14} height={14} src={ethLogoSrc} />
+                      </Box.Flex>
                     )}
                     <Box.Flex css={styles.txItem}>
                       <Box.Flex css={styles.directionInfo}>

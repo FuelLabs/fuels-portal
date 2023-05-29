@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { decodeEventLog, parseAbi, parseAbiItem } from 'viem';
+import { decodeEventLog } from 'viem';
 
 import { useFuelAccountConnection } from '../../fuel';
 import { AbiFuelMessagePortal } from '../services/abi';
@@ -20,7 +20,7 @@ const event = {
   type: 'event',
 } as const;
 
-export const useMessageSent = () => {
+export const useEthDepositLogs = () => {
   const { provider, address: ethAddress } = useEthAccountConnection();
   const { address: fuelAddress } = useFuelAccountConnection();
 
@@ -71,6 +71,7 @@ export const useMessageSent = () => {
   return {
     events: decodedEvents,
     blockHashes,
+    logs: filteredLogs,
     ...query,
   };
 };
