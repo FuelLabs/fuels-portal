@@ -105,7 +105,6 @@ export class TxEthToFuelService {
       data: receipt.logs[0].data,
       topics: receipt.logs[0].topics,
     });
-    console.log('decoded event: ', decodedEvent);
     const depositNonce = bn(decodedEvent.args.nonce);
     return depositNonce;
   }
