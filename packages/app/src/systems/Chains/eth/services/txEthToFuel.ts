@@ -106,7 +106,6 @@ export class TxEthToFuelService {
       topics: receipt.logs[0].topics,
     });
     const depositNonce = bn(topics.args.nonce);
-    console.log('nonce: ', depositNonce.toString());
     return depositNonce;
   }
 
@@ -126,7 +125,6 @@ export class TxEthToFuelService {
     const messages = await fuelProvider.getMessages(fuelAddress, {
       first: 1000,
     });
-    console.log('messages: ', messages);
     const message = messages.find(
       (message) => message.nonce.toHex() === ethTxNonce.toHex()
     );
