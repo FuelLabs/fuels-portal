@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { parseAbi, parseAbiItem } from 'viem';
+import { decodeEventLog, parseAbi, parseAbiItem } from 'viem';
 
 import { useFuelAccountConnection } from '../../fuel';
+import { AbiFuelMessagePortal } from '../services/abi';
 
 import { useEthAccountConnection } from './useEthAccountConnection';
 
@@ -55,8 +56,21 @@ export const useMessageSent = () => {
 
   const filteredLogs = query.data?.slice(4);
 
+  const blockHashes = filteredLogs?.map((log) => {
+    return log.blockHash!;
+  });
+
+  const decodedEvents = filteredLogs?.map((log) => {
+    return decodeEventLog({
+      abi: AbiFuelMessagePortal,
+      data: log.data,
+      topics: log.topics,
+    });
+  });
+
   return {
-    logs: filteredLogs,
+    events: decodedEvents,
+    blockHashes,
     ...query,
   };
 };

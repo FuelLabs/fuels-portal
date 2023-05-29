@@ -8,17 +8,13 @@ import {
   Icon,
   FuelLogo,
 } from '@fuel-ui/react';
+import { bn } from 'fuels';
 
 import { ethLogoSrc, useBlocks, useMessageSent } from '~/systems/Chains';
 
 export const Transactions = () => {
-  const { logs } = useMessageSent();
-  const blockHashes = logs?.map((log) => {
-    return log.blockHash!;
-  });
+  const { events, blockHashes } = useMessageSent();
   const { ages } = useBlocks(blockHashes!);
-
-  console.log('ages', ages);
 
   return (
     <Card>
@@ -31,12 +27,12 @@ export const Transactions = () => {
       <Card.Body>
         <Box.Stack>
           <>
-            {logs &&
+            {events &&
               ages &&
-              logs.map((log, index) => {
+              events.map((event, index) => {
                 return (
                   <Box.Flex
-                    key={`${index}-${log.blockNumber}`}
+                    key={`${index}-${event.eventName}`}
                     justify="space-between"
                   >
                     <Text>{ages[index]}</Text>
@@ -48,7 +44,12 @@ export const Transactions = () => {
                     <Box.Flex css={styles.txItem}>
                       <Box.Flex css={styles.directionInfo}>
                         <Image width={14} height={14} src={ethLogoSrc} />
-                        <Text css={styles.infoText}>1.500</Text>
+                        <Text css={styles.infoText}>
+                          {bn(event.args.amount.toString()).format({
+                            precision: 9,
+                            units: 9,
+                          })}
+                        </Text>
                         <Text css={styles.infoText}>ETH</Text>
                       </Box.Flex>
                     </Box.Flex>
