@@ -19,10 +19,8 @@ import {
 
 export const Transactions = () => {
   const { address: fuelAddress } = useFuelAccountConnection();
-  const { events, blockHashes, logs } = useEthDepositLogs();
+  const { events, blockHashes } = useEthDepositLogs();
   const { ages } = useBlocks(blockHashes!);
-
-  console.log('logs: ', logs);
 
   return (
     <Card>
@@ -37,6 +35,7 @@ export const Transactions = () => {
           <>
             {events &&
               ages &&
+              blockHashes &&
               events.map((event, index) => {
                 return (
                   <Box.Flex
