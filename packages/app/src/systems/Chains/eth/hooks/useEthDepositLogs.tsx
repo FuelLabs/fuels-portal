@@ -8,18 +8,6 @@ import { useEthAccountConnection } from './useEthAccountConnection';
 
 import { VITE_ETH_FUEL_MESSAGE_PORTAL } from '~/config';
 
-// const event = {
-//   inputs: [
-//     { indexed: true, name: 'sender', type: 'bytes32' },
-//     { indexed: true, name: 'recipient', type: 'bytes32' },
-//     { indexed: true, name: 'nonce', type: 'uint256' },
-//     { indexed: false, name: 'amount', type: 'uint64' },
-//     { indexed: false, name: 'data', type: 'bytes' },
-//   ],
-//   name: 'SentMessage', // I've tried MessageSent
-//   type: 'event',
-// } as const;
-
 export const useEthDepositLogs = () => {
   const { provider, address: ethAddress } = useEthAccountConnection();
   const { address: fuelAddress } = useFuelAccountConnection();
@@ -29,18 +17,8 @@ export const useEthDepositLogs = () => {
   const query = useQuery(
     ['ethDepositLogs', ethAddress, fuelAddress],
     async () => {
-      // const typedFuelAddress = fuelAddress?.toHexString() as `0x${string}`;
-      // console.log('filter on address: ', VITE_ETH_FUEL_MESSAGE_PORTAL);
       const logs = await provider!.getLogs({
         address: VITE_ETH_FUEL_MESSAGE_PORTAL as `0x${string}`,
-        // event,
-        // event: parseAbiItem(
-        //   'event SentMessage(bytes32 indexed sender, bytes32 indexed recipient, uint256 indexed nonce, uint64 amount, bytes data)'
-        // ),
-        // args: {
-        //   sender: paddedEthAddress,
-        //   recipient: typedFuelAddress,
-        // },
         fromBlock: 'earliest',
       });
       return logs;
