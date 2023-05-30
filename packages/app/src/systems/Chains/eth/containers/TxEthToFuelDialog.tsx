@@ -15,29 +15,6 @@ export function TxEthToFuelDialog() {
     id: metadata.txId,
   });
 
-  function getButtonText() {
-    if (!steps) {
-      return { shouldHideButton: true };
-    }
-    if (steps[1].isLoading) {
-      return {
-        text: 'Waiting on settlement',
-        isDiabled: true,
-      };
-    }
-    if (steps[2].isDone) {
-      return {
-        shouldHideButton: true,
-      };
-    }
-    return {
-      text: 'Confirm transaction',
-      isDisabled: false,
-    };
-  }
-
-  const buttonTextObj = getButtonText();
-
   return (
     <>
       <Dialog.Heading css={styles.dialogHeading}>
@@ -74,16 +51,6 @@ export function TxEthToFuelDialog() {
           />
         </Box.Stack>
       </Dialog.Description>
-      <Dialog.Footer>
-        {!buttonTextObj.shouldHideButton && (
-          <Button
-            isDisabled={buttonTextObj.isDiabled}
-            css={styles.actionButton}
-          >
-            {buttonTextObj.text}
-          </Button>
-        )}
-      </Dialog.Footer>
     </>
   );
 }
