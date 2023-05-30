@@ -20,9 +20,10 @@ import {
 export const Transactions = () => {
   const { address: fuelAddress } = useFuelAccountConnection();
   const { events, blockHashes, logs } = useEthDepositLogs();
-  const { ages } = useBlocks(blockHashes);
+  const { blocks, ages } = useBlocks(blockHashes);
 
   console.log('logs: ', logs);
+  console.log('blocks: ', blocks);
 
   return (
     <Card>
@@ -38,6 +39,7 @@ export const Transactions = () => {
             {events &&
               ages &&
               blockHashes &&
+              blocks &&
               events.map((event, index) => {
                 return (
                   <Box.Flex
@@ -70,7 +72,12 @@ export const Transactions = () => {
                         <Text css={styles.infoText}>ETH</Text>
                       </Box.Flex>
                     </Box.Flex>
-                    <Text>Settled</Text>
+                    {/** blocks[index] is null if the transaction is still pending */}
+                    {blocks[index] ? (
+                      <Text>Settled</Text>
+                    ) : (
+                      <Text>Processing</Text>
+                    )}
                   </Box.Flex>
                 );
               })}
