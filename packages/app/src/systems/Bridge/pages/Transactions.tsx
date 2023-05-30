@@ -12,7 +12,6 @@ import {
 } from '@fuel-ui/react';
 import { bn } from 'fuels';
 
-import { AccountConnectionInput } from '~/systems/Accounts';
 import {
   ethLogoSrc,
   useBlocks,
@@ -43,7 +42,7 @@ export const Transactions = () => {
       </Card.Header>
       {isConnected ? (
         <>
-          <Card.Body css={{ minHeight: '224px' }}>
+          <Card.Body css={styles.body}>
             <Box.Stack>
               <>
                 {events &&
@@ -114,7 +113,7 @@ export const Transactions = () => {
         </>
       ) : (
         <>
-          <Card.Body css={{ minHeight: '224px' }}>
+          <Card.Body css={styles.body}>
             <Box.Stack justify="center" gap="$4">
               <ContentLoader
                 speed={2}
@@ -152,7 +151,7 @@ export const Transactions = () => {
                 <Button
                   isLoading={isConnecting}
                   onPress={handlers.connect}
-                  css={{ width: '200px' }}
+                  css={styles.connectButton}
                 >
                   Connect Fuel Wallet
                 </Button>
@@ -169,6 +168,9 @@ const styles = cssObj({
   header: cssObj({
     justifyContent: 'space-between',
     alignItems: 'center',
+  }),
+  body: cssObj({
+    minHeight: '224px',
   }),
   footer: cssObj({
     width: '100%',
@@ -194,5 +196,8 @@ const styles = cssObj({
   }),
   paginationText: cssObj({
     fontSize: `$sm`,
+  }),
+  connectButton: cssObj({
+    width: '200px',
   }),
 });
