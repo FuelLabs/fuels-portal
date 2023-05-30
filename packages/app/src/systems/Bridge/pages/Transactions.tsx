@@ -46,7 +46,7 @@ export const Transactions = () => {
                     key={`${index}-${event.eventName}`}
                     justify="space-between"
                   >
-                    <Text>{ages[index]}</Text>
+                    <Text css={styles.ageText}>{ages[index]}</Text>
                     {event.args.recipient === fuelAddress?.toHexString() ? (
                       <Box.Flex css={styles.directionInfo}>
                         <Image width={14} height={14} src={ethLogoSrc} />
@@ -109,12 +109,15 @@ const styles = cssObj({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
   }),
+  ageText: cssObj({
+    fontSize: '$xs',
+  }),
   labelText: cssObj({
     fontSize: '$xs',
     color: '$intentsBase8',
   }),
   infoText: cssObj({
-    fontSize: '$xs',
+    fontSize: '$sm',
     color: '$intentsBase12',
   }),
   directionInfo: cssObj({
