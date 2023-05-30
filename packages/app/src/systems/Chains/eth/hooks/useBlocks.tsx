@@ -4,12 +4,17 @@ import { calculateBlockAge } from '../../utils';
 
 import { useEthAccountConnection } from './useEthAccountConnection';
 
-export const useBlocks = (blockHashes: `0x${string}`[]) => {
+export const useBlocks = (
+  blockHashes: (`0x${string}` | null)[] | undefined
+) => {
   const { provider } = useEthAccountConnection();
 
   const query = useQuery(['block', blockHashes], async () => {
     const blocksPromises = blockHashes?.map(async (blockHash) => {
-      return provider.getBlock({ blockHash });
+      if (blockHash) {
+        return provider.getBlock({ blockHash });
+      }
+      return null;
     });
     if (blocksPromises) {
       const blocks = Promise.all(blocksPromises);
@@ -19,7 +24,7 @@ export const useBlocks = (blockHashes: `0x${string}`[]) => {
   });
 
   const ages = query.data?.map((block) => {
-    return calculateBlockAge(Number(block.timestamp));
+    return calculateBlockAge(block ? Number(block.timestamp) : undefined);
   });
 
   return {

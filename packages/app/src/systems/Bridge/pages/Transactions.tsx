@@ -19,8 +19,10 @@ import {
 
 export const Transactions = () => {
   const { address: fuelAddress } = useFuelAccountConnection();
-  const { events, blockHashes } = useEthDepositLogs();
-  const { ages } = useBlocks(blockHashes!);
+  const { events, blockHashes, logs } = useEthDepositLogs();
+  const { ages } = useBlocks(blockHashes);
+
+  console.log('logs: ', logs);
 
   return (
     <Card>

@@ -16,7 +16,7 @@ export const getChainName = (network?: SupportedChain) => {
 
 export const calculateBlockAge = (timestamp?: number) => {
   if (!timestamp) {
-    return 'N/A';
+    return 'pending';
   }
   const currentDate = new Date();
   const blockDate = new Date(timestamp * 1000);

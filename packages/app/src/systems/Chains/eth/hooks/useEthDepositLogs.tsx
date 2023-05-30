@@ -8,28 +8,27 @@ import { useEthAccountConnection } from './useEthAccountConnection';
 
 import { VITE_ETH_FUEL_MESSAGE_PORTAL } from '~/config';
 
-const event = {
-  inputs: [
-    { indexed: true, name: 'sender', type: 'bytes32' },
-    { indexed: true, name: 'recipient', type: 'bytes32' },
-    { indexed: true, name: 'nonce', type: 'uint256' },
-    { indexed: false, name: 'amount', type: 'uint64' },
-    { indexed: false, name: 'data', type: 'bytes' },
-  ],
-  name: 'SentMessage',
-  type: 'event',
-} as const;
+// const event = {
+//   inputs: [
+//     { indexed: true, name: 'sender', type: 'bytes32' },
+//     { indexed: true, name: 'recipient', type: 'bytes32' },
+//     { indexed: true, name: 'nonce', type: 'uint256' },
+//     { indexed: false, name: 'amount', type: 'uint64' },
+//     { indexed: false, name: 'data', type: 'bytes' },
+//   ],
+//   name: 'SentMessage', // I've tried MessageSent
+//   type: 'event',
+// } as const;
 
 export const useEthDepositLogs = () => {
   const { provider, address: ethAddress } = useEthAccountConnection();
   const { address: fuelAddress } = useFuelAccountConnection();
-
+  const paddedEthAddress = `0x000000000000000000000000${ethAddress?.slice(
+    2
+  )}` as `0x${string}`;
   const query = useQuery(
     ['ethDepositLogs', ethAddress, fuelAddress],
     async () => {
-      // const paddedEthAddress = `0x000000000000000000000000${ethAddress?.slice(
-      //   2
-      // )}` as `0x${string}`;
       // const typedFuelAddress = fuelAddress?.toHexString() as `0x${string}`;
       // console.log('filter on address: ', VITE_ETH_FUEL_MESSAGE_PORTAL);
       const logs = await provider!.getLogs({
@@ -42,9 +41,6 @@ export const useEthDepositLogs = () => {
         //   sender: paddedEthAddress,
         //   recipient: typedFuelAddress,
         // },
-        // args: {
-        //   nonce: 4n,
-        // },
         fromBlock: 'earliest',
       });
       return logs;
@@ -54,10 +50,19 @@ export const useEthDepositLogs = () => {
     }
   );
 
-  const filteredLogs = query.data?.slice(4);
+  // filter logs ourselves bc I cannot get viem to do it
+  // ignore the first four logs as they are setup
+  let filteredLogs = query.data?.slice(4);
+  // get all logs where the user is the sender or recipient
+  filteredLogs = filteredLogs?.filter((log) => {
+    return (
+      log.topics[1] === paddedEthAddress ||
+      log.topics[2] === fuelAddress?.toHexString()
+    );
+  });
 
   const blockHashes = filteredLogs?.map((log) => {
-    return log.blockHash!;
+    return log.blockHash;
   });
 
   const decodedEvents = filteredLogs?.map((log) => {
