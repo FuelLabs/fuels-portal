@@ -87,7 +87,7 @@ const styles = {
     color: '$intentsBase12',
   }),
   icon: cssObj({
-    color: '$intentsBase12 !important',
+    color: '$black12',
   }),
   number: cssObj({
     display: 'flex',
