@@ -177,7 +177,7 @@ const styles = cssObj({
     alignItems: 'center',
   }),
   body: cssObj({
-    minHeight: '224px',
+    minHeight: '$56',
   }),
   footer: cssObj({
     width: '100%',
@@ -188,7 +188,7 @@ const styles = cssObj({
   }),
   ageText: cssObj({
     fontSize: '$xs',
-    minWidth: '84px',
+    minWidth: '$21',
   }),
   labelText: cssObj({
     fontSize: '$xs',
@@ -206,6 +206,6 @@ const styles = cssObj({
     fontSize: `$sm`,
   }),
   connectButton: cssObj({
-    width: '200px',
+    width: '$50',
   }),
 });
