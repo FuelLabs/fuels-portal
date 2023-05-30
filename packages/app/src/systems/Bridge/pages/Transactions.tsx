@@ -188,6 +188,7 @@ const styles = cssObj({
   }),
   ageText: cssObj({
     fontSize: '$xs',
+    minWidth: '84px',
   }),
   labelText: cssObj({
     fontSize: '$xs',
