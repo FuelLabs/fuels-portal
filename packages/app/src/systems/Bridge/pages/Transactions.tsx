@@ -12,6 +12,7 @@ import {
 } from '@fuel-ui/react';
 import { bn } from 'fuels';
 
+import { store } from '~/store';
 import {
   ethLogoSrc,
   useBlocks,
@@ -28,9 +29,6 @@ export const Transactions = () => {
   } = useFuelAccountConnection();
   const { events, blockHashes, logs } = useEthDepositLogs();
   const { blocks, ages } = useBlocks(blockHashes);
-
-  console.log('logs: ', logs);
-  console.log('blocks: ', blocks);
 
   return (
     <Card>
@@ -55,7 +53,11 @@ export const Transactions = () => {
                         key={`${index}-${event.eventName}`}
                         justify="space-between"
                         onClick={() => {
-                          console.log('clickkkkkkk');
+                          if (blockHashes[index]) {
+                            store.openTxEthToFuel({
+                              txId: blockHashes[index]!,
+                            });
+                          }
                         }}
                       >
                         <Text css={styles.ageText}>{ages[index]}</Text>
@@ -103,11 +105,15 @@ export const Transactions = () => {
               pagesCount={logs ? logs?.length / 10 : 1}
               css={styles.footer}
             >
-              <Pagination.Prev />
-              <Text css={styles.paginationText}>Prev</Text>
+              <Box.Flex>
+                <Pagination.Prev />
+                <Text css={styles.paginationText}>Prev</Text>
+              </Box.Flex>
               <Pagination.Items />
-              <Text css={styles.paginationText}>Next</Text>
-              <Pagination.Next />
+              <Box.Flex>
+                <Text css={styles.paginationText}>Next</Text>
+                <Pagination.Next />
+              </Box.Flex>
             </Pagination>
           </Card.Footer>
         </>
