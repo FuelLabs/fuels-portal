@@ -30,6 +30,8 @@ export const Transactions = () => {
   const { events, blockHashes, logs } = useEthDepositLogs();
   const { blocks, ages } = useBlocks(blockHashes);
 
+  console.log('logs: ', logs);
+
   return (
     <Card>
       <Card.Header css={styles.header}>
@@ -53,9 +55,9 @@ export const Transactions = () => {
                         key={`${index}-${event.eventName}`}
                         justify="space-between"
                         onClick={() => {
-                          if (blockHashes[index]) {
+                          if (logs && logs[index].transactionHash) {
                             store.openTxEthToFuel({
-                              txId: blockHashes[index]!,
+                              txId: logs[index].transactionHash!,
                             });
                           }
                         }}

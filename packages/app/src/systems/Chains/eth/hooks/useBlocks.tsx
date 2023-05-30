@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { calculateBlockAge } from '../../utils';
-
 import { useEthAccountConnection } from './useEthAccountConnection';
+
+import { calculateDateDiff } from '~/systems/Core/utils/date';
 
 export const useBlocks = (
   blockHashes: (`0x${string}` | null)[] | undefined
@@ -24,7 +24,7 @@ export const useBlocks = (
   });
 
   const ages = query.data?.map((block) => {
-    return calculateBlockAge(block ? Number(block.timestamp) : undefined);
+    return calculateDateDiff(block ? Number(block.timestamp) : undefined);
   });
 
   return {
