@@ -74,7 +74,7 @@ export const useEthDepositLogs = () => {
   });
 
   return {
-    events: decodedEvents,
+    events: decodedEvents as any, // eslint-disable-line @typescript-eslint/no-explicit-any
     blockHashes,
     logs: filteredLogs,
     ...query,

@@ -1,4 +1,3 @@
-import type { Signer as EthSigner } from 'ethers';
 import { bn, DECIMAL_UNITS } from 'fuels';
 import type { Address as FuelAddress, BN } from 'fuels';
 import type { PublicClient, WalletClient } from 'wagmi';
@@ -14,7 +13,7 @@ import {
 
 export type PossibleBridgeInputs = {
   assetAmount?: BN;
-  ethSigner?: EthSigner;
+  ethSigner?: WalletClient;
   walletClient?: WalletClient;
   publicClient?: PublicClient;
   fuelAddress?: FuelAddress;

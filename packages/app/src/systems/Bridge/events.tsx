@@ -11,7 +11,7 @@ export function bridgeEvents(store: Store) {
     changeNetworks(input: FromToNetworks) {
       store.send(Services.bridge, { type: 'CHANGE_NETWORKS', input });
     },
-    startBridging(input: any) {
+    startBridging(input: PossibleBridgeInputs) {
       store.send(Services.bridge, { type: 'START_BRIDGING', input });
     },
     changeAssetAmount(input: { assetAmount?: BN }) {

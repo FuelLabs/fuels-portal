@@ -1,4 +1,4 @@
-import { cssObj, darkColors, lightColors } from '@fuel-ui/css';
+import { cssObj, lightColors } from '@fuel-ui/css';
 import {
   Card,
   Text,
@@ -30,8 +30,6 @@ export const Transactions = () => {
   const { events, blockHashes, logs } = useEthDepositLogs();
   const { blocks, ages } = useBlocks(blockHashes);
 
-  console.log('logs: ', logs);
-
   return (
     <Card>
       <Card.Header css={styles.header}>
@@ -49,7 +47,8 @@ export const Transactions = () => {
                   ages &&
                   blockHashes &&
                   blocks &&
-                  events.map((event, index) => {
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  events.map((event: any, index: number) => {
                     return (
                       <Box.Flex
                         key={`${index}-${event.eventName}`}
@@ -104,7 +103,7 @@ export const Transactions = () => {
             <Pagination
               justify="space-between"
               align="center"
-              pagesCount={logs ? logs?.length / 10 : 1}
+              pagesCount={logs ? logs.length / 10 : 1}
               css={styles.footer}
             >
               <Box.Flex>
