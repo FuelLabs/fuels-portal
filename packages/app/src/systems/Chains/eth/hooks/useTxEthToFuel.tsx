@@ -94,8 +94,6 @@ export function useTxEthToFuel({
     }
   }, [ethTx, ethProvider, fuelProvider, fuelAddress, service, publicClient]);
 
-  console.log('steps: ', steps);
-
   return {
     handlers: {
       close: store.closeOverlay,

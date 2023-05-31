@@ -73,7 +73,6 @@ export const Transactions = () => {
                           assetImageSrc: ethLogoSrc,
                           assetSymbol: 'ETH',
                         }}
-                        status={<Text>Settled</Text>}
                       />
                     );
                   })}

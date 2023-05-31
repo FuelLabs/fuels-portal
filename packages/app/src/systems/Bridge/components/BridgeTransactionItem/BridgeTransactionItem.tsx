@@ -1,9 +1,7 @@
 import { cssObj } from '@fuel-ui/css';
 import { Box, Text, Image, Icon, FuelLogo } from '@fuel-ui/react';
-import type { ReactNode } from 'react';
 import { useEffect } from 'react';
 
-import { store } from '~/store';
 import { useTxEthToFuel } from '~/systems/Chains';
 
 type BridgeTransactionItemProps = {
@@ -13,7 +11,6 @@ type BridgeTransactionItemProps = {
     assetAmount: string;
     assetSymbol: string;
   };
-  status: ReactNode;
   onClick: () => void;
   transactionHash: string;
   isWithdraw: boolean;
@@ -23,7 +20,6 @@ type BridgeTransactionItemProps = {
 export const BridgeTransactionItem = ({
   age,
   asset,
-  status,
   onClick,
   transactionHash,
   isWithdraw,
@@ -31,7 +27,6 @@ export const BridgeTransactionItem = ({
 }: BridgeTransactionItemProps) => {
   let isDone = false;
   const val = localStorage.getItem(`ethToFuelTx${transactionHash}-done`);
-  console.log('val: ', val);
   if (val) {
     isDone = true;
   }
