@@ -11,6 +11,8 @@ import {
 } from '@fuel-ui/react';
 import { bn } from 'fuels';
 
+import { BridgeTransactionItem } from '../components';
+
 import { store } from '~/store';
 import {
   ethLogoSrc,
@@ -49,9 +51,9 @@ export const Transactions = () => {
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   events.map((event: any, index: number) => {
                     return (
-                      <Box.Flex
+                      <BridgeTransactionItem
                         key={`${index}-${event.eventName}`}
-                        justify="space-between"
+                        age={ages[index]}
                         onClick={() => {
                           if (logs && logs[index].transactionHash) {
                             store.openTxEthToFuel({
@@ -59,40 +61,20 @@ export const Transactions = () => {
                             });
                           }
                         }}
-                      >
-                        <Text css={styles.ageText}>{ages[index]}</Text>
-                        {event.args.recipient === fuelAddress?.toHexString() ? (
-                          <Box.Flex css={styles.directionInfo}>
-                            <Image width={14} height={14} src={ethLogoSrc} />
-                            <Icon icon="ArrowNarrowRight" />
-                            <FuelLogo size={14} />
-                          </Box.Flex>
-                        ) : (
-                          <Box.Flex css={styles.directionInfo}>
-                            <FuelLogo size={14} />
-                            <Icon icon="ArrowNarrowRight" />
-                            <Image width={14} height={14} src={ethLogoSrc} />
-                          </Box.Flex>
-                        )}
-                        <Box.Flex css={styles.txItem}>
-                          <Box.Flex css={styles.directionInfo}>
-                            <Image width={14} height={14} src={ethLogoSrc} />
-                            <Text css={styles.infoText}>
-                              {bn(event.args.amount.toString()).format({
-                                precision: 9,
-                                units: 9,
-                              })}
-                            </Text>
-                            <Text css={styles.infoText}>ETH</Text>
-                          </Box.Flex>
-                        </Box.Flex>
-                        {/** blocks[index] is null if the transaction is still pending */}
-                        {blocks[index] ? (
-                          <Text>Settled</Text>
-                        ) : (
-                          <Text>Processing</Text>
-                        )}
-                      </Box.Flex>
+                        transactionHash={logs[index].transactionHash}
+                        isWithdraw={
+                          event.args.recipient === fuelAddress?.toHexString()
+                        }
+                        asset={{
+                          assetAmount: bn(event.args.amount.toString()).format({
+                            precision: 9,
+                            units: 9,
+                          }),
+                          assetImageSrc: ethLogoSrc,
+                          assetSymbol: 'ETH',
+                        }}
+                        status={<Text>Settled</Text>}
+                      />
                     );
                   })}
               </>
