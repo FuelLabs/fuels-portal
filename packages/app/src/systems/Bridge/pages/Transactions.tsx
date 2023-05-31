@@ -39,6 +39,7 @@ export const Transactions = () => {
                   ages &&
                   blockHashes &&
                   blocks &&
+                  logs &&
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   events.map((event: any, index: number) => {
                     return (
@@ -52,7 +53,7 @@ export const Transactions = () => {
                             });
                           }
                         }}
-                        transactionHash={logs[index].transactionHash}
+                        transactionHash={logs[index].transactionHash || ''}
                         isWithdraw={
                           event.args.recipient === fuelAddress?.toHexString()
                         }
