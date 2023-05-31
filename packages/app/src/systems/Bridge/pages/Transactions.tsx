@@ -133,32 +133,6 @@ const styles = cssObj({
   body: cssObj({
     minHeight: '$56',
   }),
-  footer: cssObj({
-    width: '100%',
-  }),
-  txItem: cssObj({
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  }),
-  ageText: cssObj({
-    fontSize: '$xs',
-    minWidth: '88px',
-  }),
-  labelText: cssObj({
-    fontSize: '$xs',
-    color: '$intentsBase8',
-  }),
-  infoText: cssObj({
-    fontSize: '$sm',
-    color: '$intentsBase12',
-  }),
-  directionInfo: cssObj({
-    gap: '$1',
-    alignItems: 'center',
-  }),
-  paginationText: cssObj({
-    fontSize: `$sm`,
-  }),
   connectButton: cssObj({
     width: '$50',
   }),
