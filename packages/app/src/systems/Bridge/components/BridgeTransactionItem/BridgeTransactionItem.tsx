@@ -1,7 +1,9 @@
 import { cssObj } from '@fuel-ui/css';
 import { Box, Text, Image, Icon, FuelLogo } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
+import { useEffect } from 'react';
 
+import { store } from '~/store';
 import { useTxEthToFuel } from '~/systems/Chains';
 
 type BridgeTransactionItemProps = {
@@ -27,9 +29,24 @@ export const BridgeTransactionItem = ({
   isWithdraw,
   key,
 }: BridgeTransactionItemProps) => {
+  let isDone = false;
+  const val = localStorage.getItem(`ethToFuelTx${transactionHash}-done`);
+  console.log('val: ', val);
+  if (val) {
+    isDone = true;
+  }
   const { steps } = useTxEthToFuel({
     id: transactionHash,
+    skipAnalyzeTx: isDone,
   });
+
+  const overrideStatus = isDone ? <Text>Done!</Text> : steps && steps[3].status;
+
+  useEffect(() => {
+    if (steps && steps[3].isDone) {
+      localStorage.setItem(`ethToFuelTx${transactionHash}-done`, 'true');
+    }
+  }, [steps]);
 
   return (
     <Box.Flex
@@ -62,7 +79,7 @@ export const BridgeTransactionItem = ({
           <Text css={styles.infoText}>{asset.assetSymbol}</Text>
         </Box.Flex>
       </Box.Flex>
-      {steps && steps[3].status}
+      {overrideStatus}
     </Box.Flex>
   );
 };

@@ -64,7 +64,13 @@ const selectors = {
   },
 };
 
-export function useTxEthToFuel({ id }: { id: string }) {
+export function useTxEthToFuel({
+  id,
+  skipAnalyzeTx,
+}: {
+  id: string;
+  skipAnalyzeTx?: boolean;
+}) {
   const { provider: ethProvider, publicClient } = useEthAccountConnection();
   const { provider: fuelProvider, address: fuelAddress } =
     useFuelAccountConnection();
@@ -75,7 +81,7 @@ export function useTxEthToFuel({ id }: { id: string }) {
   const service = useInterpret(txEthToFuelMachine);
   const steps = useSelector(service, selectors.steps);
   useEffect(() => {
-    if (ethTx && ethProvider && fuelProvider && fuelAddress) {
+    if (ethTx && ethProvider && fuelProvider && fuelAddress && !skipAnalyzeTx) {
       service.send('START_ANALYZE_TX', {
         input: {
           ethTx,
@@ -87,6 +93,8 @@ export function useTxEthToFuel({ id }: { id: string }) {
       });
     }
   }, [ethTx, ethProvider, fuelProvider, fuelAddress, service, publicClient]);
+
+  console.log('steps: ', steps);
 
   return {
     handlers: {
