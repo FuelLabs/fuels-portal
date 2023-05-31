@@ -2,6 +2,8 @@ import { cssObj } from '@fuel-ui/css';
 import { Box, Text, Image, Icon, FuelLogo } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
 
+import { useTxEthToFuel } from '~/systems/Chains';
+
 type BridgeTransactionItemProps = {
   age: string;
   asset: {
@@ -25,6 +27,10 @@ export const BridgeTransactionItem = ({
   isWithdraw,
   key,
 }: BridgeTransactionItemProps) => {
+  //   const { steps } = useTxEthToFuel({
+  //     id: transactionHash,
+  //   });
+
   return (
     <Box.Flex
       key={key}

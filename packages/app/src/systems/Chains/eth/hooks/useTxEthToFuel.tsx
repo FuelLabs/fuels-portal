@@ -71,7 +71,7 @@ export function useTxEthToFuel({ id }: { id: string }) {
   const { data: ethTx } = useTransaction({
     hash: id.startsWith('0x') ? (id as `0x${string}`) : undefined,
   });
-  const { age } = useBlock();
+  const { age } = useBlock(ethTx?.blockHash as `0x${string}`);
   const service = useInterpret(txEthToFuelMachine);
   const steps = useSelector(service, selectors.steps);
   useEffect(() => {

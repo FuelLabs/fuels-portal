@@ -4,11 +4,13 @@ import { useEthAccountConnection } from './useEthAccountConnection';
 
 import { calculateDateDiff } from '~/systems/Core/utils/date';
 
-export const useBlock = () => {
+export const useBlock = (blockHash?: `0x${string}`) => {
   const { provider } = useEthAccountConnection();
 
-  const query = useQuery(['block'], async () => {
-    const block = await provider?.getBlock({ blockTag: 'latest' });
+  const query = useQuery(['block', blockHash], async () => {
+    const block = blockHash
+      ? await provider.getBlock({ blockHash })
+      : await provider?.getBlock({ blockTag: 'latest' });
     return block;
   });
 
