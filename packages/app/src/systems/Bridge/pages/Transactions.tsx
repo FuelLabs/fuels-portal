@@ -3,7 +3,6 @@ import {
   Card,
   Text,
   Box,
-  Pagination,
   Image,
   Icon,
   FuelLogo,
@@ -99,24 +98,6 @@ export const Transactions = () => {
               </>
             </Box.Stack>
           </Card.Body>
-          <Card.Footer>
-            <Pagination
-              justify="space-between"
-              align="center"
-              pagesCount={logs ? logs.length / 10 : 1}
-              css={styles.footer}
-            >
-              <Box.Flex>
-                <Pagination.Prev />
-                <Text css={styles.paginationText}>Prev</Text>
-              </Box.Flex>
-              <Pagination.Items />
-              <Box.Flex>
-                <Text css={styles.paginationText}>Next</Text>
-                <Pagination.Next />
-              </Box.Flex>
-            </Pagination>
-          </Card.Footer>
         </>
       ) : (
         <>
