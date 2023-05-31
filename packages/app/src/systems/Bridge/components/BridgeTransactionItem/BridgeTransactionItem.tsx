@@ -27,9 +27,9 @@ export const BridgeTransactionItem = ({
   isWithdraw,
   key,
 }: BridgeTransactionItemProps) => {
-  //   const { steps } = useTxEthToFuel({
-  //     id: transactionHash,
-  //   });
+  const { steps } = useTxEthToFuel({
+    id: transactionHash,
+  });
 
   return (
     <Box.Flex
@@ -62,7 +62,7 @@ export const BridgeTransactionItem = ({
           <Text css={styles.infoText}>{asset.assetSymbol}</Text>
         </Box.Flex>
       </Box.Flex>
-      {status}
+      {steps && steps[3].status}
     </Box.Flex>
   );
 };
