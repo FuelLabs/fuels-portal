@@ -1,14 +1,5 @@
 import { cssObj, lightColors } from '@fuel-ui/css';
-import {
-  Card,
-  Text,
-  Box,
-  Image,
-  Icon,
-  FuelLogo,
-  ContentLoader,
-  Button,
-} from '@fuel-ui/react';
+import { Card, Text, Box, ContentLoader, Button } from '@fuel-ui/react';
 import { bn } from 'fuels';
 
 import { BridgeTransactionItem } from '../components';
