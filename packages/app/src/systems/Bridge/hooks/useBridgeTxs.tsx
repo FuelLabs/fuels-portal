@@ -1,8 +1,7 @@
-import { useEthDepositLogs, useBlocks } from '~/systems/Chains';
+import { useTxsEthToFuel } from '~/systems/Chains';
 
 export const useBridgeTxs = () => {
-  const { events, blockHashes, logs } = useEthDepositLogs();
-  const { blocks, ages } = useBlocks(blockHashes);
+  const ethTxData = useTxsEthToFuel();
 
-  return { events, blockHashes, logs, blocks, ages };
+  return ethTxData;
 };

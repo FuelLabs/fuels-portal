@@ -13,7 +13,7 @@ import {
 
 export const Transactions = () => {
   const { isConnected, isConnecting, handlers } = useFuelAccountConnection();
-  const { events, ages, blockHashes, blocks, logs } = useBridgeTxs();
+  const txData = useBridgeTxs();
 
   return (
     <Card>
@@ -28,27 +28,24 @@ export const Transactions = () => {
           <Card.Body css={styles.body}>
             <Box.Stack>
               <>
-                {events &&
-                  ages &&
-                  blockHashes &&
-                  blocks &&
-                  logs &&
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  events.map((event: any, index: number) => {
+                {txData &&
+                  txData.map((txDatum, index: number) => {
                     return (
                       <TxListItemEthToFuel
-                        key={`${index}-${logs[index].transactionHash}`}
-                        age={ages[index]}
+                        key={`${index}-${txDatum.log.transactionHash}`}
+                        age={txDatum.age!}
                         onClick={() => {
-                          if (logs && logs[index].transactionHash) {
+                          if (txDatum.log.transactionHash) {
                             store.openTxEthToFuel({
-                              txId: logs[index].transactionHash!,
+                              txId: txDatum.log.transactionHash!,
                             });
                           }
                         }}
-                        txHash={logs[index].transactionHash || ''}
+                        txHash={txDatum.log.transactionHash || ''}
                         asset={{
-                          assetAmount: bn(event.args.amount.toString()).format({
+                          assetAmount: bn(
+                            txDatum.event.args.amount.toString()
+                          ).format({
                             precision: 9,
                             units: 9,
                           }),
