@@ -177,7 +177,7 @@ export function useBridge() {
         store.startBridging({
           ethSigner,
           fuelAddress,
-          walletClient: ethWalletClient,
+          ethWalletClient,
         }),
       connectFrom: () => connectNetwork(fromNetwork),
       connectTo: () => connectNetwork(toNetwork),

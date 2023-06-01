@@ -82,8 +82,8 @@ export const bridgeMachine = createMachine(
               assetAmount: ctx.assetAmount,
               ethSigner: ev.input.ethSigner,
               fuelAddress: ev.input.fuelAddress,
-              walletClient: ev.input.walletClient,
-              publicClient: ev.input.publicClient,
+              ethWalletClient: ev.input.ethWalletClient,
+              ethPublicClient: ev.input.ethPublicClient,
             }),
           },
           onDone: [

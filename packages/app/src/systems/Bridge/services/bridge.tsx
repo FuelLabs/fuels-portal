@@ -14,8 +14,8 @@ import {
 export type PossibleBridgeInputs = {
   assetAmount?: BN;
   ethSigner?: WalletClient;
-  walletClient?: WalletClient;
-  publicClient?: PublicClient;
+  ethWalletClient?: WalletClient;
+  ethPublicClient?: PublicClient;
   fuelAddress?: FuelAddress;
 };
 export type BridgeInputs = {
@@ -24,8 +24,13 @@ export type BridgeInputs = {
 
 export class BridgeService {
   static async bridge(input: BridgeInputs['bridge']) {
-    const { fromNetwork, toNetwork, assetAmount, fuelAddress, walletClient } =
-      input;
+    const {
+      fromNetwork,
+      toNetwork,
+      assetAmount,
+      fuelAddress,
+      ethWalletClient,
+    } = input;
 
     if (!fromNetwork || !toNetwork) {
       throw new Error('"Network From" and "Network To" are required');
@@ -43,7 +48,7 @@ export class BridgeService {
       const amountEthUnits = bn.parseUnits(amountFormatted, ETH_UNITS);
       const txId = await TxEthToFuelService.create({
         amount: amountEthUnits.toHex(),
-        walletClient,
+        ethWalletClient,
         fuelAddress,
       });
 

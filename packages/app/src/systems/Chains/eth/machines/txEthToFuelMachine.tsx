@@ -24,7 +24,7 @@ type MachineContext = {
   fuelAddress?: FuelAddress;
   fuelProvider?: FuelProvider;
   fuelMessage?: Message;
-  publicClient?: PublicClient;
+  ethPublicClient?: PublicClient;
 };
 
 type MachineServices = {
@@ -77,7 +77,7 @@ export const txEthToFuelMachine = createMachine(
             input: (ctx: MachineContext) => ({
               ethTx: ctx.ethTx,
               ethProvider: ctx.ethProvider,
-              publicClient: ctx.publicClient,
+              ethPublicClient: ctx.ethPublicClient,
             }),
           },
           onDone: [
@@ -138,7 +138,7 @@ export const txEthToFuelMachine = createMachine(
         ethProvider: ev.input.ethProvider,
         fuelAddress: ev.input.fuelAddress,
         fuelProvider: ev.input.fuelProvider,
-        publicClient: ev.input.publicClient,
+        ethPublicClient: ev.input.ethPublicClient,
       })),
       assignEthTxNonce: assign({
         ethTxNonce: (_, ev) => ev.data,

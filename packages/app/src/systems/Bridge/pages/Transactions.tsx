@@ -2,7 +2,7 @@ import { cssObj, lightColors } from '@fuel-ui/css';
 import { Card, Text, Box, ContentLoader, Button } from '@fuel-ui/react';
 import { bn } from 'fuels';
 
-import { BridgeTransactionItem } from '../components';
+import { BridgeTxItem } from '../components';
 
 import { store } from '~/store';
 import {
@@ -10,6 +10,7 @@ import {
   useBlocks,
   useFuelAccountConnection,
   useEthDepositLogs,
+  TxListItemEthToFuel,
 } from '~/systems/Chains';
 
 export const Transactions = () => {
@@ -43,7 +44,7 @@ export const Transactions = () => {
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   events.map((event: any, index: number) => {
                     return (
-                      <BridgeTransactionItem
+                      <TxListItemEthToFuel
                         key={`${index}-${event.eventName}`}
                         age={ages[index]}
                         onClick={() => {
@@ -53,7 +54,7 @@ export const Transactions = () => {
                             });
                           }
                         }}
-                        transactionHash={logs[index].transactionHash || ''}
+                        txHash={logs[index].transactionHash || ''}
                         isWithdraw={
                           event.args.recipient === fuelAddress?.toHexString()
                         }

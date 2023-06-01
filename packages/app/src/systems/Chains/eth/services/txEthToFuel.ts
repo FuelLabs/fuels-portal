@@ -19,13 +19,13 @@ import { VITE_ETH_FUEL_MESSAGE_PORTAL } from '~/config';
 export type TxEthToFuelInputs = {
   create: {
     amount: string;
-    walletClient?: WalletClient;
+    ethWalletClient?: WalletClient;
     fuelAddress?: FuelAddress;
   };
   getDepositNonce: {
     ethTx?: EthTransactionResponse;
     ethProvider?: EthProvider;
-    publicClient?: PublicClient;
+    ethPublicClient?: PublicClient;
   };
   getFuelMessage: {
     ethTxNonce?: BN;
@@ -50,7 +50,7 @@ export class TxEthToFuelService {
   }
 
   static async create(input: TxEthToFuelInputs['create']) {
-    if (!input?.walletClient) {
+    if (!input?.ethWalletClient) {
       throw new Error('Need to connect ETH Wallet');
     }
     if (!input?.amount) {
@@ -60,18 +60,18 @@ export class TxEthToFuelService {
       throw new Error('Need fuel address to send');
     }
 
-    const { walletClient, fuelAddress, amount } = input;
+    const { ethWalletClient, fuelAddress, amount } = input;
 
     try {
-      if (walletClient.account) {
+      if (ethWalletClient.account) {
         const fuelPortal =
-          TxEthToFuelService.connectToFuelMessagePortal(walletClient);
+          TxEthToFuelService.connectToFuelMessagePortal(ethWalletClient);
 
         const txHash = await fuelPortal.write.depositETH(
           [fuelAddress.toB256() as `0x${string}`],
           {
             value: BigInt(amount),
-            account: walletClient.account,
+            account: ethWalletClient.account,
           }
         );
 
@@ -92,13 +92,13 @@ export class TxEthToFuelService {
     if (!input?.ethTx) {
       throw new Error('No eth TX');
     }
-    if (!input?.publicClient) {
+    if (!input?.ethPublicClient) {
       throw new Error('No eth Provider');
     }
 
-    const { ethTx, publicClient } = input;
+    const { ethTx, ethPublicClient } = input;
 
-    const receipt = await publicClient.waitForTransactionReceipt({
+    const receipt = await ethPublicClient.waitForTransactionReceipt({
       hash: ethTx.hash as `0x${string}`,
     });
     const decodedEvent = decodeEventLog({
