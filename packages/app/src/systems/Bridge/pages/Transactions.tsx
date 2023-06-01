@@ -12,12 +12,7 @@ import {
 } from '~/systems/Chains';
 
 export const Transactions = () => {
-  const {
-    address: fuelAddress,
-    isConnected,
-    isConnecting,
-    handlers,
-  } = useFuelAccountConnection();
+  const { isConnected, isConnecting, handlers } = useFuelAccountConnection();
   const { events, blockHashes, logs } = useEthDepositLogs();
   const { blocks, ages } = useBlocks(blockHashes);
 
