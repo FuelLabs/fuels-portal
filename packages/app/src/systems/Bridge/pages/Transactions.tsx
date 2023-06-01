@@ -2,19 +2,18 @@ import { cssObj, lightColors } from '@fuel-ui/css';
 import { Card, Text, Box, ContentLoader, Button } from '@fuel-ui/react';
 import { bn } from 'fuels';
 
+import { useBridgeTxs } from '../hooks';
+
 import { store } from '~/store';
 import {
   ethLogoSrc,
-  useBlocks,
   useFuelAccountConnection,
-  useEthDepositLogs,
   TxListItemEthToFuel,
 } from '~/systems/Chains';
 
 export const Transactions = () => {
   const { isConnected, isConnecting, handlers } = useFuelAccountConnection();
-  const { events, blockHashes, logs } = useEthDepositLogs();
-  const { blocks, ages } = useBlocks(blockHashes);
+  const { events, ages, blockHashes, blocks, logs } = useBridgeTxs();
 
   return (
     <Card>
