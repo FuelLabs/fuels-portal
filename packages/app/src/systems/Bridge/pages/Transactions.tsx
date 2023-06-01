@@ -29,7 +29,7 @@ export const Transactions = () => {
             <Box.Stack>
               <>
                 {txData &&
-                  txData.map((txDatum, index: number) => {
+                  txData.map((txDatum, index) => {
                     return (
                       <TxListItemEthToFuel
                         key={`${index}-${txDatum.log.transactionHash}`}
