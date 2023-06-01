@@ -1,72 +1,48 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, Text, Image, Icon, FuelLogo } from '@fuel-ui/react';
-import { useEffect } from 'react';
+import { Box, Text, Image, Icon } from '@fuel-ui/react';
+import type { ReactNode } from 'react';
 
-import { useTxEthToFuel } from '~/systems/Chains';
-
-type BridgeTransactionItemProps = {
+type BridgeTxItemProps = {
   age: string;
+  fromLogo: ReactNode;
+  toLogo: ReactNode;
   asset: {
     assetImageSrc: string;
     assetAmount: string;
     assetSymbol: string;
   };
   onClick: () => void;
-  transactionHash: string;
-  isWithdraw: boolean;
+  txHash: string;
   key: string;
+  status: ReactNode;
 };
 
-export const BridgeTransactionItem = ({
+export const BridgeTxItem = ({
   age,
   asset,
   onClick,
-  transactionHash,
-  isWithdraw,
+  txHash,
   key,
-}: BridgeTransactionItemProps) => {
-  let isDone = false;
-  const val = localStorage.getItem(`ethToFuelTx${transactionHash}-done`);
-  if (val) {
-    isDone = true;
-  }
-  const { steps } = useTxEthToFuel({
-    id: transactionHash,
-    skipAnalyzeTx: isDone,
-  });
-
-  const overrideStatus = isDone ? <Text>Done!</Text> : steps && steps[3].status;
-
-  useEffect(() => {
-    if (steps && steps[3].isDone) {
-      localStorage.setItem(`ethToFuelTx${transactionHash}-done`, 'true');
-    }
-  }, [steps]);
-
+  fromLogo,
+  toLogo,
+  status,
+}: BridgeTxItemProps) => {
   return (
     <Box.Flex
       key={key}
       justify="space-between"
       onClick={() => {
-        if (transactionHash) {
+        if (txHash) {
           onClick();
         }
       }}
     >
       <Text css={styles.ageText}>{age}</Text>
-      {isWithdraw ? (
-        <Box.Flex css={styles.directionInfo}>
-          <Image width={14} height={14} src={asset.assetImageSrc} />
-          <Icon icon="ArrowNarrowRight" />
-          <FuelLogo size={14} />
-        </Box.Flex>
-      ) : (
-        <Box.Flex css={styles.directionInfo}>
-          <FuelLogo size={14} />
-          <Icon icon="ArrowNarrowRight" />
-          <Image width={14} height={14} src={asset.assetImageSrc} />
-        </Box.Flex>
-      )}
+      <Box.Flex css={styles.directionInfo}>
+        {fromLogo}
+        <Icon icon="ArrowNarrowRight" />
+        {toLogo}
+      </Box.Flex>
       <Box.Flex css={styles.txItem}>
         <Box.Flex css={styles.directionInfo}>
           <Image width={14} height={14} src={asset.assetImageSrc} />
@@ -74,7 +50,7 @@ export const BridgeTransactionItem = ({
           <Text css={styles.infoText}>{asset.assetSymbol}</Text>
         </Box.Flex>
       </Box.Flex>
-      {overrideStatus}
+      {status}
     </Box.Flex>
   );
 };

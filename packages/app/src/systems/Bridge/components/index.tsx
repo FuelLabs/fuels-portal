@@ -1,3 +1,3 @@
 export * from './BridgeSteps';
 export * from './BridgeTxOverview';
-export * from './BridgeTransactionItem';
+export * from './BridgeTxItem';
