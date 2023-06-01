@@ -2,8 +2,6 @@ import { cssObj, lightColors } from '@fuel-ui/css';
 import { Card, Text, Box, ContentLoader, Button } from '@fuel-ui/react';
 import { bn } from 'fuels';
 
-import { BridgeTxItem } from '../components';
-
 import { store } from '~/store';
 import {
   ethLogoSrc,
@@ -55,9 +53,6 @@ export const Transactions = () => {
                           }
                         }}
                         txHash={logs[index].transactionHash || ''}
-                        isWithdraw={
-                          event.args.recipient === fuelAddress?.toHexString()
-                        }
                         asset={{
                           assetAmount: bn(event.args.amount.toString()).format({
                             precision: 9,

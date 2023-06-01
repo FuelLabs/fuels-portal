@@ -15,7 +15,6 @@ type TxListItemEthToFuelProps = {
   };
   onClick: () => void;
   txHash: string;
-  isWithdraw: boolean;
   key: string;
 };
 

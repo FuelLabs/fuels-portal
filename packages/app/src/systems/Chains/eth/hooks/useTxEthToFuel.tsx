@@ -71,7 +71,8 @@ export function useTxEthToFuel({
   id: string;
   skipAnalyzeTx?: boolean;
 }) {
-  const { provider: ethProvider, publicClient } = useEthAccountConnection();
+  const { provider: ethProvider, publicClient: ethPublicClient } =
+    useEthAccountConnection();
   const { provider: fuelProvider, address: fuelAddress } =
     useFuelAccountConnection();
   const { data: ethTx } = useTransaction({
@@ -88,11 +89,11 @@ export function useTxEthToFuel({
           ethProvider,
           fuelProvider,
           fuelAddress,
-          publicClient,
+          ethPublicClient,
         },
       });
     }
-  }, [ethTx, ethProvider, fuelProvider, fuelAddress, service, publicClient]);
+  }, [ethTx, ethProvider, fuelProvider, fuelAddress, service, ethPublicClient]);
 
   return {
     handlers: {
