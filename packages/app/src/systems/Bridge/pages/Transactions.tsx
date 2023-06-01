@@ -37,7 +37,7 @@ export const Transactions = () => {
                   events.map((event: any, index: number) => {
                     return (
                       <TxListItemEthToFuel
-                        key={`${index}-${event.eventName}`}
+                        key={`${index}-${logs[index].transactionHash}`}
                         age={ages[index]}
                         onClick={() => {
                           if (logs && logs[index].transactionHash) {
