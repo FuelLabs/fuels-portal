@@ -41,27 +41,23 @@ export const FuelProvider = ({ children }: FuelProviderProps) => {
   const fuel = useWindowFuel();
 
   function onCurrentAccountChange() {
-    console.log('onCurrentAccountChange');
     fuelQueryClient.invalidateQueries([QUERY_KEYS.account]);
-    fuelQueryClient.invalidateQueries([QUERY_KEYS.wallet]);
-    fuelQueryClient.invalidateQueries([QUERY_KEYS.balance]);
+    fuelQueryClient.invalidateQueries([QUERY_KEYS.wallet, '*']);
+    fuelQueryClient.invalidateQueries([QUERY_KEYS.balance, '*']);
   }
 
   function onConnectionChange() {
-    console.log('onConnectionChange');
     fuelQueryClient.invalidateQueries([QUERY_KEYS.account]);
     fuelQueryClient.invalidateQueries([QUERY_KEYS.isConnected]);
-    fuelQueryClient.invalidateQueries([QUERY_KEYS.wallet]);
-    fuelQueryClient.invalidateQueries([QUERY_KEYS.balance]);
+    fuelQueryClient.invalidateQueries([QUERY_KEYS.wallet, '*']);
+    fuelQueryClient.invalidateQueries([QUERY_KEYS.balance, '*']);
   }
 
   function onNetworkChange() {
-    console.log('onNetworkChange');
     fuelQueryClient.invalidateQueries([QUERY_KEYS.provider]);
   }
 
   function onAccountsChange() {
-    console.log('onAccountsChange');
     fuelQueryClient.invalidateQueries([QUERY_KEYS.account]);
   }
 

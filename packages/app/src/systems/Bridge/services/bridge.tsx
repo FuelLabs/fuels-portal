@@ -72,6 +72,8 @@ export class BridgeService {
       });
 
       console.log(`txId`, txId);
+
+      return;
     }
 
     throw new Error(

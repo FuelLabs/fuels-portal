@@ -23,7 +23,6 @@ export class TxFuelToEthService {
     }
 
     const { amount, fuelWallet, ethAddress } = input;
-    debugger;
     const txFuel = await fuelWallet.withdrawToBaseLayer(
       Address.fromString(ethAddress),
       amount
