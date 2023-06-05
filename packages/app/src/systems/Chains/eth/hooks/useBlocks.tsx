@@ -9,7 +9,7 @@ export const useBlocks = (
 ) => {
   const { provider } = useEthAccountConnection();
 
-  const query = useQuery(['block', blockHashes], async () => {
+  const query = useQuery(['blocks', blockHashes], async () => {
     const blocksPromises = blockHashes?.map(async (blockHash) => {
       if (blockHash) {
         return provider.getBlock({ blockHash });
