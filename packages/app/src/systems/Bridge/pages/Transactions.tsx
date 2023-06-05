@@ -9,6 +9,7 @@ import {
   ethLogoSrc,
   useFuelAccountConnection,
   TxListItemEthToFuel,
+  FUEL_UNITS,
 } from '~/systems/Chains';
 
 export const Transactions = () => {
@@ -47,7 +48,7 @@ export const Transactions = () => {
                             txDatum.event.args.amount.toString()
                           ).format({
                             precision: 9,
-                            units: 9,
+                            units: FUEL_UNITS,
                           }),
                           assetImageSrc: ethLogoSrc,
                           assetSymbol: 'ETH',
