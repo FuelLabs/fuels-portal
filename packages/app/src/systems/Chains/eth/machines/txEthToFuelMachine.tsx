@@ -113,7 +113,7 @@ export const txEthToFuelMachine = createMachine(
               cond: FetchMachine.hasError,
             },
             {
-              actions: ['assignFuelMessage'],
+              actions: ['assignFuelMessage', 'setEthToFuelTxDone'],
               cond: 'hasFuelMessage',
               target: 'done',
             },
@@ -146,6 +146,11 @@ export const txEthToFuelMachine = createMachine(
       assignFuelMessage: assign({
         fuelMessage: (_, ev) => ev.data,
       }),
+      setEthToFuelTxDone: (ctx, ev) => {
+        if (ctx.ethTx?.hash && ev.data) {
+          localStorage.setItem(`ethToFuelTx${ctx.ethTx.hash}-done`, 'true');
+        }
+      },
     },
     guards: {
       hasFuelMessage: (ctx, ev) => !!ctx.fuelMessage || !!ev?.data,

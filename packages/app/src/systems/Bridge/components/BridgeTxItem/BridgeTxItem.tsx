@@ -1,9 +1,11 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, Text, Image, Icon } from '@fuel-ui/react';
+import { Box, Text, Image, Icon, CardList } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
 
+import { calculateDateDiff } from '~/systems/Core/utils/date';
+
 type BridgeTxItemProps = {
-  age: string;
+  date?: Date;
   fromLogo: ReactNode;
   toLogo: ReactNode;
   asset: {
@@ -13,31 +15,21 @@ type BridgeTxItemProps = {
   };
   onClick: () => void;
   txHash: string;
-  key: string;
   status: ReactNode;
 };
 
 export const BridgeTxItem = ({
-  age,
+  date,
   asset,
   onClick,
   txHash,
-  key,
   fromLogo,
   toLogo,
   status,
 }: BridgeTxItemProps) => {
   return (
-    <Box.Flex
-      key={key}
-      justify="space-between"
-      onClick={() => {
-        if (txHash) {
-          onClick();
-        }
-      }}
-    >
-      <Text css={styles.ageText}>{age}</Text>
+    <CardList.Item onClick={onClick}>
+      <Text css={styles.ageText}>{calculateDateDiff(date)}</Text>
       <Box.Flex css={styles.directionInfo}>
         {fromLogo}
         <Icon icon="ArrowNarrowRight" />
@@ -51,7 +43,7 @@ export const BridgeTxItem = ({
         </Box.Flex>
       </Box.Flex>
       {status}
-    </Box.Flex>
+    </CardList.Item>
   );
 };
 
@@ -72,7 +64,7 @@ const styles = cssObj({
   }),
   ageText: cssObj({
     fontSize: '$xs',
-    minWidth: '88px',
+    minWidth: '104px',
   }),
   labelText: cssObj({
     fontSize: '$xs',

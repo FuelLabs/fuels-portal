@@ -11,7 +11,7 @@ import { useOverlay } from '~/systems/Overlay';
 
 export function TxEthToFuelDialog() {
   const { metadata } = useOverlay<{ txId: string }>();
-  const { steps, handlers, ethTx, age } = useTxEthToFuel({
+  const { steps, handlers, ethTx, ethBlockDate } = useTxEthToFuel({
     id: metadata.txId,
   });
 
@@ -38,7 +38,7 @@ export function TxEthToFuelDialog() {
           <Box css={styles.border} />
           <BridgeTxOverview
             transactionId={shortAddress(metadata.txId)}
-            age={age}
+            date={ethBlockDate}
             isDeposit={true}
             asset={{
               assetSymbol: ETH_SYMBOL,

@@ -78,7 +78,12 @@ export function useTxEthToFuel({
   const { data: ethTx } = useTransaction({
     hash: id.startsWith('0x') ? (id as `0x${string}`) : undefined,
   });
-  const { age } = useBlock(ethTx?.blockHash as `0x${string}`);
+  const cachedBlockDate = localStorage.getItem(
+    `ethBlockDate-${ethTx?.blockHash}`
+  );
+  const { block } = useBlock(
+    !cachedBlockDate ? (ethTx?.blockHash as `0x${string}`) : undefined
+  );
   const service = useInterpret(txEthToFuelMachine);
   const steps = useSelector(service, selectors.steps);
   useEffect(() => {
@@ -95,12 +100,24 @@ export function useTxEthToFuel({
     }
   }, [ethTx, ethProvider, fuelProvider, fuelAddress, service, ethPublicClient]);
 
+  useEffect(() => {
+    if (block.date) {
+      localStorage.setItem(
+        `ethBlockDate-${block.hash}`,
+        block.date.getTime().toString()
+      );
+    }
+  }, [block.date]);
+
   return {
     handlers: {
       close: store.closeOverlay,
+      openTxEthToFuel: store.openTxEthToFuel,
     },
     ethTx,
+    ethBlockDate: cachedBlockDate
+      ? new Date(Number(cachedBlockDate))
+      : block.date,
     steps,
-    age,
   };
 }

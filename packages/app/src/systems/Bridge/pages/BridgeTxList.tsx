@@ -1,5 +1,12 @@
 import { cssObj, lightColors } from '@fuel-ui/css';
-import { Card, Text, Box, ContentLoader, Button } from '@fuel-ui/react';
+import {
+  Card,
+  Text,
+  Box,
+  ContentLoader,
+  Button,
+  CardList,
+} from '@fuel-ui/react';
 import { bn } from 'fuels';
 
 import { useBridgeTxs } from '../hooks';
@@ -11,9 +18,11 @@ import {
   TxListItemEthToFuel,
   FUEL_UNITS,
   ETH_SYMBOL,
+  isEthChain,
+  isFuelChain,
 } from '~/systems/Chains';
 
-export const Transactions = () => {
+export const BridgeTxList = () => {
   const { isConnected, isConnecting, handlers } = useFuelAccountConnection();
   const txData = useBridgeTxs();
 
@@ -28,37 +37,26 @@ export const Transactions = () => {
       {isConnected ? (
         <>
           <Card.Body css={styles.body}>
-            <Box.Stack>
-              <>
-                {txData &&
-                  txData.map((txDatum, index) => {
+            <CardList isClickable>
+              {txData &&
+                txData.map((txDatum, index) => {
+                  if (
+                    isEthChain(txDatum.fromNetwork) &&
+                    isFuelChain(txDatum.toNetwork)
+                  ) {
                     return (
                       <TxListItemEthToFuel
-                        key={`${index}-${txDatum.log.transactionHash}`}
-                        age={txDatum.age!}
-                        onClick={() => {
-                          if (txDatum.log.transactionHash) {
-                            store.openTxEthToFuel({
-                              txId: txDatum.log.transactionHash!,
-                            });
-                          }
-                        }}
-                        txHash={txDatum.log.transactionHash || ''}
-                        asset={{
-                          assetAmount: bn(
-                            txDatum.event.args.amount.toString()
-                          ).format({
-                            precision: 9,
-                            units: FUEL_UNITS,
-                          }),
-                          assetImageSrc: ethLogoSrc,
-                          assetSymbol: ETH_SYMBOL,
-                        }}
+                        key={`${index}-${txDatum.txHash}`}
+                        txHash={txDatum.txHash || ''}
+                        asset={txDatum.asset}
+                        isDone={txDatum.isDone}
                       />
                     );
-                  })}
-              </>
-            </Box.Stack>
+                  }
+
+                  return null;
+                })}
+            </CardList>
           </Card.Body>
         </>
       ) : (

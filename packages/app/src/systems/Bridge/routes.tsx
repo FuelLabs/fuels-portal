@@ -1,6 +1,6 @@
 import { Route } from 'react-router-dom';
 
-import { BridgeHome, Transactions, Bridge } from './pages';
+import { BridgeHome, BridgeTxList, Bridge } from './pages';
 
 import { Pages } from '~/types';
 
@@ -18,7 +18,7 @@ export const bridgeRoutes = (
       path={Pages.transactions}
       element={
         <BridgeHome>
-          <Transactions />
+          <BridgeTxList />
         </BridgeHome>
       }
     />

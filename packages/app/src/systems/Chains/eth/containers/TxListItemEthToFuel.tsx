@@ -1,4 +1,4 @@
-import { Image, FuelLogo, Text } from '@fuel-ui/react';
+import { Image, FuelLogo, Text, Box, Spinner } from '@fuel-ui/react';
 import { useEffect } from 'react';
 
 import { useTxEthToFuel } from '../hooks';
@@ -7,35 +7,44 @@ import { ethLogoSrc } from '../utils';
 import { BridgeTxItem } from '~/systems/Bridge';
 
 type TxListItemEthToFuelProps = {
-  age: string;
   asset: {
     assetImageSrc: string;
     assetAmount: string;
     assetSymbol: string;
   };
-  onClick: () => void;
   txHash: string;
-  key: string;
+  isDone?: boolean;
 };
 
 export const TxListItemEthToFuel = ({
-  age,
   asset,
-  onClick,
   txHash,
-  key,
+  isDone,
 }: TxListItemEthToFuelProps) => {
-  let isDone = false;
-  const val = localStorage.getItem(`ethToFuelTx${txHash}-done`);
-  if (val) {
-    isDone = true;
-  }
-  const { steps } = useTxEthToFuel({
+  const { steps, ethBlockDate, handlers } = useTxEthToFuel({
     id: txHash,
     skipAnalyzeTx: isDone,
   });
 
-  const overrideStatus = isDone ? <Text>Done!</Text> : steps && steps[3].status;
+  const bridgeTxStatus = steps?.find(({ isSelected }) => !!isSelected);
+
+  function getStatusComponent() {
+    if (isDone)
+      return (
+        <Text fontSize="xs" color="intentsBase11">
+          Settled
+        </Text>
+      );
+    if (bridgeTxStatus?.isLoading)
+      return (
+        <Box.Flex align="center" gap="$1">
+          <Spinner size={14} />
+          <Text fontSize="xs">Processing</Text>
+        </Box.Flex>
+      );
+
+    return '';
+  }
 
   useEffect(() => {
     if (steps && steps[3].isDone) {
@@ -45,14 +54,13 @@ export const TxListItemEthToFuel = ({
 
   return (
     <BridgeTxItem
-      age={age}
-      asset={asset}
-      onClick={onClick}
-      txHash={txHash}
-      key={key}
       fromLogo={<Image width={14} height={14} src={ethLogoSrc} />}
       toLogo={<FuelLogo size={14} />}
-      status={overrideStatus}
+      date={ethBlockDate}
+      asset={asset}
+      onClick={() => handlers.openTxEthToFuel({ txId: txHash })}
+      txHash={txHash}
+      status={getStatusComponent()}
     />
   );
 };

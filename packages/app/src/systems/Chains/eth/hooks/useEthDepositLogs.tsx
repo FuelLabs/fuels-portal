@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
 import { decodeEventLog } from 'viem';
 
 import { useFuelAccountConnection } from '../../fuel';
@@ -9,54 +10,64 @@ import { useEthAccountConnection } from './useEthAccountConnection';
 import { VITE_ETH_FUEL_MESSAGE_PORTAL } from '~/config';
 
 export const useEthDepositLogs = () => {
-  const { provider, address: ethAddress } = useEthAccountConnection();
+  const { provider, paddedAddress: ethPaddedAddress } =
+    useEthAccountConnection();
   const { address: fuelAddress } = useFuelAccountConnection();
-  const paddedEthAddress = `0x000000000000000000000000${ethAddress?.slice(
-    2
-  )}` as `0x${string}`;
+
   const query = useQuery(
-    ['ethDepositLogs', ethAddress, fuelAddress],
+    ['ethDepositLogs', ethPaddedAddress, fuelAddress],
     async () => {
       const logs = await provider!.getLogs({
         address: VITE_ETH_FUEL_MESSAGE_PORTAL as `0x${string}`,
+        // TODO: put correct data to generate topic[0] hash correctly
+        // event: {
+        //   type: 'event',
+        //   name: 'MessageSent',
+        //   inputs: [
+        //     { type: 'bytes32', indexed: true, name: 'sender' },
+        //     { type: 'bytes32', indexed: true, name: 'recipient' },
+        //     { type: 'uint256', indexed: true, name: 'nonce' },
+        //     { type: 'uint64', indexed: false, name: 'amount' },
+        //     { type: 'bytes', indexed: false, name: 'data' },
+        //   ],
+        // },
+        // args: {
+        //   sender: ethPaddedAddress,
+        //   recipient: fuelAddress?.toHexString() as `0x${string}`,
+        // },
         fromBlock: 'earliest',
       });
       return logs;
     },
     {
-      enabled: !!provider,
+      enabled: !!(provider && fuelAddress?.toHexString()),
     }
   );
 
-  // filter logs ourselves bc I cannot get viem to do it
-  // get all logs where the user is the sender or recipient
+  // TODO: remove this filtering when previous query gets fixed and returns correct data
   const filteredLogs = query.data?.filter((log) => {
-    // we can ignore logs where the topics length is less than 3
-    // we do not check for inequality because nonce can be indexed as well
     if (log.topics.length < 3) {
       return false;
     }
+
     return (
-      log.topics[1] === paddedEthAddress ||
+      // log.topics[1] === ethPaddedAddress ||
       log.topics[2] === fuelAddress?.toHexString()
     );
   });
 
-  const blockHashes = filteredLogs?.map((log) => {
-    return log.blockHash;
-  });
-
-  const decodedEvents = filteredLogs?.map((log) => {
-    return decodeEventLog({
-      abi: AbiFuelMessagePortal,
-      data: log.data,
-      topics: log.topics,
-    });
-  });
+  const decodedEvents = useMemo(() => {
+    return filteredLogs?.map((log) =>
+      decodeEventLog({
+        abi: AbiFuelMessagePortal,
+        data: log.data,
+        topics: log.topics,
+      })
+    );
+  }, [filteredLogs]);
 
   return {
     events: decodedEvents as any, // eslint-disable-line @typescript-eslint/no-explicit-any
-    blockHashes,
     logs: filteredLogs,
     ...query,
   };

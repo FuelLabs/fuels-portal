@@ -1,4 +1,5 @@
 import { useModal } from 'connectkit';
+import { bn } from 'fuels';
 import {
   useAccount,
   useBalance,
@@ -19,6 +20,7 @@ export function useEthAccountConnection() {
 
   const { open: isConnecting, setOpen } = useModal();
   const { disconnect } = useDisconnect();
+  const paddedAddress = bn(address).toHex(32) as `0x${string}`;
 
   return {
     handlers: {
@@ -26,6 +28,7 @@ export function useEthAccountConnection() {
       disconnect,
     },
     address,
+    paddedAddress,
     ens: {
       name: ensName || undefined,
       avatar: ensAvatar || undefined,
