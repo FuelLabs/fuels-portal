@@ -10,6 +10,7 @@ import {
   useFuelAccountConnection,
   TxListItemEthToFuel,
   FUEL_UNITS,
+  ETH_SYMBOL,
 } from '~/systems/Chains';
 
 export const Transactions = () => {
@@ -51,7 +52,7 @@ export const Transactions = () => {
                             units: FUEL_UNITS,
                           }),
                           assetImageSrc: ethLogoSrc,
-                          assetSymbol: 'ETH',
+                          assetSymbol: ETH_SYMBOL,
                         }}
                       />
                     );
