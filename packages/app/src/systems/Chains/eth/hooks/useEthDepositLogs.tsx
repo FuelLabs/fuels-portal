@@ -31,8 +31,9 @@ export const useEthDepositLogs = () => {
   // filter logs ourselves bc I cannot get viem to do it
   // get all logs where the user is the sender or recipient
   const filteredLogs = query.data?.filter((log) => {
-    // we can ignore logs where the topics length is not 3
-    if (log.topics.length !== 3) {
+    // we can ignore logs where the topics length is less than 3
+    // we do not check for inequality because nonce can be indexed as well
+    if (log.topics.length < 3) {
       return false;
     }
     return (
