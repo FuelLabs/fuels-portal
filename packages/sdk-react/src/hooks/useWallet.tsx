@@ -7,7 +7,7 @@ export const useWallet = ({ address }: { address?: string }) => {
   const { fuel } = useFuel();
 
   const { data, ...queryProps } = useQuery(
-    [QUERY_KEYS.wallet],
+    [QUERY_KEYS.wallet, address],
     async () => {
       try {
         const wallet = await fuel?.getWallet(address || '');
