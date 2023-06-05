@@ -3,7 +3,7 @@ import { Box, Dialog, Icon, IconButton, Text } from '@fuel-ui/react';
 import { bn } from 'fuels';
 
 import { useTxEthToFuel } from '../hooks';
-import { ETH_UNITS, ethLogoSrc } from '../utils';
+import { ETH_SYMBOL, ETH_UNITS, ethLogoSrc } from '../utils';
 
 import { BridgeTxOverview, BridgeSteps } from '~/systems/Bridge';
 import { shortAddress } from '~/systems/Core';
@@ -41,7 +41,7 @@ export function TxEthToFuelDialog() {
             age={age}
             isDeposit={true}
             asset={{
-              assetSymbol: 'ETH',
+              assetSymbol: ETH_SYMBOL,
               imageUrl: ethLogoSrc,
               assetAmount: bn(ethTx?.value.toString()).format({
                 precision: 9,

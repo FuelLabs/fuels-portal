@@ -6,6 +6,7 @@ import { BridgeButton, BridgeTabs } from '../containers';
 import { useBridge } from '../hooks';
 
 import {
+  ETH_SYMBOL,
   EthAccountConnection,
   ethLogoSrc,
   FuelAccountConnection,
@@ -46,7 +47,7 @@ export const Bridge = () => {
               <InputAmount
                 balance={assetBalance}
                 asset={{
-                  name: 'ETH',
+                  name: ETH_SYMBOL,
                   imageUrl: ethLogoSrc,
                 }}
                 assetTooltip="Fuel Bridge only supports ETH for now. Other assets will be added soon."
