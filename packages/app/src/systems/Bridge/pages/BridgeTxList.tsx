@@ -7,17 +7,12 @@ import {
   Button,
   CardList,
 } from '@fuel-ui/react';
-import { bn } from 'fuels';
 
 import { useBridgeTxs } from '../hooks';
 
-import { store } from '~/store';
 import {
-  ethLogoSrc,
   useFuelAccountConnection,
   TxListItemEthToFuel,
-  FUEL_UNITS,
-  ETH_SYMBOL,
   isEthChain,
   isFuelChain,
 } from '~/systems/Chains';

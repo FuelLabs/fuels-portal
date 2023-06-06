@@ -14,7 +14,6 @@ type BridgeTxItemProps = {
     assetSymbol: string;
   };
   onClick: () => void;
-  txHash: string;
   status: ReactNode;
 };
 
@@ -22,7 +21,6 @@ export const BridgeTxItem = ({
   date,
   asset,
   onClick,
-  txHash,
   fromLogo,
   toLogo,
   status,

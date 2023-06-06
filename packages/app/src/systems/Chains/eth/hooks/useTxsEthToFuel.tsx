@@ -1,7 +1,6 @@
 import { bn } from 'fuels';
 import { useMemo } from 'react';
 
-import { store } from '~/store';
 import {
   useEthDepositLogs,
   ethLogoSrc,

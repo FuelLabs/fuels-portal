@@ -3,8 +3,6 @@ import { bn } from 'fuels';
 
 import { useEthAccountConnection } from './useEthAccountConnection';
 
-import { calculateDateDiff } from '~/systems/Core/utils/date';
-
 export const useBlock = (blockHash?: `0x${string}`) => {
   const { provider } = useEthAccountConnection();
 
