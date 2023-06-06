@@ -8,6 +8,7 @@ import {
   CardList,
 } from '@fuel-ui/react';
 
+import { BridgeTxListEmpty } from '../components';
 import { useBridgeTxs } from '../hooks';
 
 import {
@@ -56,51 +57,10 @@ export const BridgeTxList = () => {
         </>
       ) : (
         <>
-          <Card.Body css={styles.body}>
-            <Box.Stack justify="center" gap="$4">
-              <ContentLoader
-                speed={2}
-                height="24px"
-                width="100%"
-                backgroundColor={lightColors.intentsBase3}
-                foregroundColor={lightColors.intentsBase3}
-              >
-                <ContentLoader.Rect width="100%" height="24" rx="4" />
-              </ContentLoader>
-              <ContentLoader
-                speed={2}
-                height="24px"
-                width="100%"
-                backgroundColor={lightColors.intentsBase2}
-                foregroundColor={lightColors.intentsBase2}
-              >
-                <ContentLoader.Rect width="100%" height="24" rx="4" />
-              </ContentLoader>
-              <ContentLoader
-                speed={2}
-                height="24px"
-                width="100%"
-                backgroundColor={lightColors.intentsBase1}
-                foregroundColor={lightColors.intentsBase1}
-              >
-                <ContentLoader.Rect width="100%" height="24" rx="4" />
-              </ContentLoader>
-              <Box.Flex justify="center">
-                <Text fontSize="lg" color="intentsBase12">
-                  Connect your wallet to see transactions
-                </Text>
-              </Box.Flex>
-              <Box.Flex justify="center">
-                <Button
-                  isLoading={isConnecting}
-                  onPress={handlers.connect}
-                  css={styles.connectButton}
-                >
-                  Connect Fuel Wallet
-                </Button>
-              </Box.Flex>
-            </Box.Stack>
-          </Card.Body>
+          <BridgeTxListEmpty
+            isConnecting={isConnecting}
+            onClick={handlers.connect}
+          />
         </>
       )}
     </Card>
@@ -117,5 +77,10 @@ const styles = cssObj({
   }),
   connectButton: cssObj({
     width: '$50',
+  }),
+  gridLayout: cssObj({
+    display: 'grid',
+    gridTemplateColumns: 'repeat(4, 1fr)',
+    gridTemplateRows: 'repeat(3, 1fr)',
   }),
 });

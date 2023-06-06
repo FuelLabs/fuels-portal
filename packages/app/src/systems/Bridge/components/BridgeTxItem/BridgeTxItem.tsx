@@ -26,7 +26,7 @@ export const BridgeTxItem = ({
   status,
 }: BridgeTxItemProps) => {
   return (
-    <CardList.Item onClick={onClick}>
+    <CardList.Item align="center" justify="space-between" onClick={onClick}>
       <Text css={styles.ageText}>{calculateDateDiff(date)}</Text>
       <Box.Flex css={styles.directionInfo}>
         {fromLogo}
@@ -34,11 +34,9 @@ export const BridgeTxItem = ({
         {toLogo}
       </Box.Flex>
       <Box.Flex css={styles.txItem}>
-        <Box.Flex css={styles.directionInfo}>
-          <Image width={14} height={14} src={asset.assetImageSrc} />
-          <Text css={styles.infoText}>{asset.assetAmount}</Text>
-          <Text css={styles.infoText}>{asset.assetSymbol}</Text>
-        </Box.Flex>
+        <Image width={14} height={14} src={asset.assetImageSrc} />
+        <Text css={styles.infoText}>{asset.assetAmount}</Text>
+        <Text css={styles.infoText}>{asset.assetSymbol}</Text>
       </Box.Flex>
       {status}
     </CardList.Item>
@@ -46,7 +44,7 @@ export const BridgeTxItem = ({
 };
 
 const styles = cssObj({
-  header: cssObj({
+  listItem: cssObj({
     justifyContent: 'space-between',
     alignItems: 'center',
   }),
@@ -57,12 +55,17 @@ const styles = cssObj({
     width: '100%',
   }),
   txItem: cssObj({
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    // flexWrap: 'wrap',
+    // justifyContent: 'space-between',
+    gap: '$1',
+    alignItems: 'center',
+    // justifyContent: 'center',
+    // gridColumn: '3 / 4',
   }),
   ageText: cssObj({
     fontSize: '$xs',
-    minWidth: '104px',
+    // gridColumn: '1 / 4',
+    minWidth: '70px',
   }),
   labelText: cssObj({
     fontSize: '$xs',
@@ -75,11 +78,10 @@ const styles = cssObj({
   directionInfo: cssObj({
     gap: '$1',
     alignItems: 'center',
+    justifyContent: 'center',
+    // gridColumn: '2 / 4',
   }),
-  paginationText: cssObj({
-    fontSize: `$sm`,
-  }),
-  connectButton: cssObj({
-    width: '$50',
+  status: cssObj({
+    // gridColumn: '4 / 4',
   }),
 });
