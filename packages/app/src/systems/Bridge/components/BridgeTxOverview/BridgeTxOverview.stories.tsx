@@ -19,7 +19,7 @@ export const Usage = () => {
     <Box.Flex align="center" justify="center" css={styles.storybook}>
       <BridgeTxOverview
         transactionId={bn(1234567876543456)}
-        age="5 days ago"
+        date={new Date()}
         isDeposit={true}
         asset={{ imageUrl: ethImage, assetSymbol: 'ETH', assetAmount: '1.500' }}
       />
@@ -32,7 +32,7 @@ export const Withdrawal = () => {
     <Box.Flex align="center" justify="center" css={styles.storybook}>
       <BridgeTxOverview
         transactionId={bn(1234567876543456)}
-        age="5 days ago"
+        date={new Date()}
         asset={{ imageUrl: ethImage, assetSymbol: 'ETH', assetAmount: '1.500' }}
       />
     </Box.Flex>

@@ -117,7 +117,7 @@ export function useTxEthToFuel({
     ethTx,
     ethBlockDate: cachedBlockDate
       ? new Date(Number(cachedBlockDate))
-      : block.date,
+      : block.date || new Date(),
     steps,
   };
 }

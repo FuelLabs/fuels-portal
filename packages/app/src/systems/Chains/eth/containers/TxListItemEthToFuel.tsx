@@ -59,7 +59,6 @@ export const TxListItemEthToFuel = ({
       date={ethBlockDate}
       asset={asset}
       onClick={() => handlers.openTxEthToFuel({ txId: txHash })}
-      txHash={txHash}
       status={getStatusComponent()}
     />
   );
