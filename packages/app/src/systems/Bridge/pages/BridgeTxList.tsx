@@ -1,12 +1,5 @@
-import { cssObj, lightColors } from '@fuel-ui/css';
-import {
-  Card,
-  Text,
-  Box,
-  ContentLoader,
-  Button,
-  CardList,
-} from '@fuel-ui/react';
+import { cssObj } from '@fuel-ui/css';
+import { Card, Text, CardList } from '@fuel-ui/react';
 
 import { BridgeTxListEmpty } from '../components';
 import { useBridgeTxs } from '../hooks';
