@@ -73,6 +73,12 @@ export class BridgeService {
 
       console.log(`txId`, txId);
 
+      if (txId) {
+        store.openTxFuelToEth({
+          txId,
+        });
+      }
+
       return;
     }
 

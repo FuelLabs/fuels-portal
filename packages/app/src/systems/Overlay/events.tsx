@@ -22,6 +22,17 @@ export function overlayEvents(store: Store) {
         },
       });
     },
+    openTxFuelToEth({ txId }: { txId: string }) {
+      store.send(Services.overlay, {
+        type: 'OPEN',
+        input: {
+          modal: 'tx.fromFuel.toEth',
+          params: {
+            txId,
+          },
+        },
+      });
+    },
     openFuelInstall() {
       store.send(Services.overlay, {
         type: 'OPEN',
