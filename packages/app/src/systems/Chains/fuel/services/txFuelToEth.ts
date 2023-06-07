@@ -1,15 +1,15 @@
 import type { FuelWalletLocked } from '@fuel-wallet/sdk';
-import type { Signer as EthSigner } from 'ethers';
+// import type { Signer as EthSigner } from 'ethers';
 import type {
   BN,
   Provider as FuelProvider,
   TransactionResponse as FuelTransactionResponse,
 } from 'fuels';
-import { Address, bn } from 'fuels';
+import { Address } from 'fuels';
 
-import { FuelMessagePortal__factory } from '../../eth/fuel-v2-contracts/factories/FuelMessagePortal__factory';
+// import { FuelMessagePortal__factory } from '../../eth/fuel-v2-contracts/factories/FuelMessagePortal__factory';
 
-import { VITE_ETH_FUEL_MESSAGE_PORTAL } from '~/config';
+// import { VITE_ETH_FUEL_MESSAGE_PORTAL } from '~/config';
 
 export type TxFuelToEthInputs = {
   create: {
@@ -17,21 +17,21 @@ export type TxFuelToEthInputs = {
     fuelWallet?: FuelWalletLocked;
     ethAddress?: string;
   };
-  getDepositNonce: {
+  getWithdrawHash: {
     fuelTx?: FuelTransactionResponse;
     fuelProvider?: FuelProvider;
   };
 };
 
 export class TxFuelToEthService {
-  static connectToFuelMessagePortal(
-    signerOrProvider: EthSigner | FuelProvider
-  ) {
-    return FuelMessagePortal__factory.connect(
-      VITE_ETH_FUEL_MESSAGE_PORTAL,
-      signerOrProvider
-    );
-  }
+  // static connectToFuelMessagePortal(
+  //   signerOrProvider: EthSigner | FuelProvider
+  // ) {
+  //   return FuelMessagePortal__factory.connect(
+  //     VITE_ETH_FUEL_MESSAGE_PORTAL,
+  //     signerOrProvider
+  //   );
+  // }
 
   static async create(input: TxFuelToEthInputs['create']) {
     if (!input?.fuelWallet) {
@@ -54,7 +54,7 @@ export class TxFuelToEthService {
     return txFuel.id;
   }
 
-  static async getDepositNonce(input: TxFuelToEthInputs['getDepositNonce']) {
+  static async getWithdrawHash(input: TxFuelToEthInputs['getWithdrawHash']) {
     if (!input?.fuelTx) {
       throw new Error('No fuel TX');
     }
@@ -62,14 +62,9 @@ export class TxFuelToEthService {
       throw new Error('No fuel Provider');
     }
 
-    const { fuelProvider, fuelTx } = input;
-    const fuelPortal =
-      TxFuelToEthService.connectToFuelMessagePortal(fuelProvider);
+    const { fuelTx } = input;
 
-    const receipt = await fuelTx.wait();
-    const event = fuelPortal.interface.parseLog(receipt.logs[0]);
-    const depositNonce = bn(event.args.nonce.toHexString());
-
-    return depositNonce;
+    const receipt = await fuelTx.waitForResult();
+    return receipt.transactionId;
   }
 }

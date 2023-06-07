@@ -1,4 +1,8 @@
-import type { BN, Provider as FuelProvider, TransactionResponse } from 'fuels';
+import type {
+  BN,
+  Provider as FuelProvider,
+  TransactionResponse as FuelTransactionResponse,
+} from 'fuels';
 import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
 
@@ -9,13 +13,13 @@ import { FetchMachine } from '~/systems/Core';
 
 type MachineContext = {
   fuelProvider?: FuelProvider;
-  fuelTx?: TransactionResponse;
-  fuelTxNonce?: BN;
+  fuelTx?: FuelTransactionResponse;
+  fuelTxHash?: string;
 };
 
 type MachineServices = {
-  getDepositNonce: {
-    data: BN;
+  getWithdrawHash: {
+    data: string;
   };
   getFuelTransaction: {
     data: any | undefined;
@@ -57,7 +61,7 @@ export const txFuelToEthMachine = createMachine(
       },
       checkingSettlement: {
         invoke: {
-          src: 'getDepositNonce',
+          src: 'getWithdrawHash',
           data: {
             input: (ctx: MachineContext) => ({
               fuelTx: ctx.fuelTx,
@@ -70,8 +74,8 @@ export const txFuelToEthMachine = createMachine(
               target: 'checkingSettlement',
             },
             {
-              actions: ['assignFuelTxNonce'],
-              cond: 'hasFuelTxNonce',
+              actions: ['assignFuelTxHash'],
+              cond: 'hasFuelTxHash',
               target: 'checkingEthTx',
             },
           ],
@@ -82,7 +86,27 @@ export const txFuelToEthMachine = createMachine(
           },
         },
       },
-      checkingEthTx: {},
+      checkingEthTx: {
+        invoke: {
+          src: 'getEthMessage',
+          data: {
+            input: (ctx: MachineContext) => ({
+              fuelTxHash: ctx.fuelTxHash,
+              fuelProvider: ctx.fuelProvider,
+            }),
+          },
+          onDone: [
+            {
+              cond: FetchMachine.hasError,
+            },
+            {
+              actions: ['assignEthTx'],
+              cond: 'hasEthTx',
+              target: 'done',
+            },
+          ],
+        },
+      },
       done: {
         type: 'final',
       },
@@ -94,17 +118,20 @@ export const txFuelToEthMachine = createMachine(
       assignAnalyzeTxInput: assign((_, ev) => ({
         fuelProvider: ev.input.fuelProvider,
       })),
-      assignFuelTxNonce: assign({
-        fuelTxNonce: (_, ev) => ev.data,
+      assignFuelTxHash: assign({
+        fuelTxHash: (_, ev) => ev.data,
+      }),
+      assignEthTx: assign({
+        ethTx: (_, ev) => ev.data,
       }),
     },
     guards: {
-      hasFuelTxNonce: (ctx, ev) => !!ctx.fuelTxNonce || !!ev?.data,
+      hasFuelTxHash: (ctx, ev) => !!ctx.fuelTxHash || !!ev?.data,
     },
     services: {
-      getDepositNonce: FetchMachine.create<
-        TxFuelToEthInputs['getDepositNonce'],
-        MachineServices['getDepositNonce']['data']
+      getWithdrawHash: FetchMachine.create<
+        TxFuelToEthInputs['getWithdrawHash'],
+        MachineServices['getWithdrawHash']['data']
       >({
         showError: true,
         async fetch({ input }) {
@@ -112,7 +139,7 @@ export const txFuelToEthMachine = createMachine(
             throw new Error('No input to getNonce');
           }
 
-          return TxFuelToEthService.getDepositNonce(input);
+          return TxFuelToEthService.getWithdrawHash(input);
         },
       }),
     },
