@@ -17,6 +17,7 @@ export function OverlayDialog() {
     >
       <Dialog.Content css={styles.content}>
         {overlay.is('tx.fromEth.toFuel') && <TxEthToFuelDialog />}
+        {overlay.is('tx.fromFuel.toEth') && <TxEthToFuelDialog />}
         {overlay.is('fuel.install') && <FuelInstallDialog />}
       </Dialog.Content>
     </Dialog>
