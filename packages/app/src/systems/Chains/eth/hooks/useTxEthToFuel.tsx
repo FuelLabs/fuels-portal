@@ -6,6 +6,7 @@ import { useFuelAccountConnection } from '../../fuel';
 import type { TxEthToFuelMachineState } from '../machines';
 import { TxEthToFuelStatus, txEthToFuelMachine } from '../machines';
 
+import { useBlock } from './useBlock';
 import { useEthAccountConnection } from './useEthAccountConnection';
 
 import { store } from '~/store';
@@ -70,9 +71,9 @@ export function useTxEthToFuel({ id }: { id: string }) {
   const { data: ethTx } = useTransaction({
     hash: id.startsWith('0x') ? (id as `0x${string}`) : undefined,
   });
+  const { age } = useBlock();
   const service = useInterpret(txEthToFuelMachine);
   const steps = useSelector(service, selectors.steps);
-
   useEffect(() => {
     if (ethTx && ethProvider && fuelProvider && fuelAddress) {
       service.send('START_ANALYZE_TX', {
@@ -92,5 +93,6 @@ export function useTxEthToFuel({ id }: { id: string }) {
     },
     ethTx,
     steps,
+    age,
   };
 }
