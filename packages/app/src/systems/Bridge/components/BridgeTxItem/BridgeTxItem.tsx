@@ -26,19 +26,21 @@ export const BridgeTxItem = ({
   status,
 }: BridgeTxItemProps) => {
   return (
-    <CardList.Item align="center" justify="space-between" onClick={onClick}>
-      <Text css={styles.ageText}>{calculateDateDiff(date)}</Text>
-      <Box.Flex css={styles.directionInfo}>
-        {fromLogo}
-        <Icon icon="ArrowNarrowRight" />
-        {toLogo}
+    <CardList.Item onClick={onClick} css={styles.listItem}>
+      <Box.Flex align="center" justify="space-between" css={{ width: '100%' }}>
+        <Text css={styles.ageText}>{calculateDateDiff(date)}</Text>
+        <Box.Flex css={styles.directionInfo}>
+          {fromLogo}
+          <Icon icon="ArrowNarrowRight" />
+          {toLogo}
+        </Box.Flex>
+        <Box.Flex css={styles.txItem}>
+          <Image width={14} height={14} src={asset.assetImageSrc} />
+          <Text css={styles.infoText}>{asset.assetAmount}</Text>
+          <Text css={styles.infoText}>{asset.assetSymbol}</Text>
+        </Box.Flex>
+        {status}
       </Box.Flex>
-      <Box.Flex css={styles.txItem}>
-        <Image width={14} height={14} src={asset.assetImageSrc} />
-        <Text css={styles.infoText}>{asset.assetAmount}</Text>
-        <Text css={styles.infoText}>{asset.assetSymbol}</Text>
-      </Box.Flex>
-      {status}
     </CardList.Item>
   );
 };
@@ -47,6 +49,7 @@ const styles = cssObj({
   listItem: cssObj({
     justifyContent: 'space-between',
     alignItems: 'center',
+    px: '0px !important',
   }),
   body: cssObj({
     minHeight: '$56',
