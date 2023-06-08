@@ -27,7 +27,7 @@ const selectors = {
     const isWaitingFuelTransaction =
       status === TxFuelToEthStatus.waitingFuelTransaction;
     const isWaitingSettlement = status === TxFuelToEthStatus.waitingSettlement;
-    const isWaitingReceive = status === TxFuelToEthStatus.waitingReceive;
+    // const isWaitingReceive = status === TxFuelToEthStatus.waitingReceive;
 
     const isDone = status === TxFuelToEthStatus.done;
     const steps = [

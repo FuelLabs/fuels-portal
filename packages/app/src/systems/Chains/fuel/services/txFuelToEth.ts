@@ -96,8 +96,6 @@ export class TxFuelToEthService {
       throw new Error('Need message proof to relay on ETH side');
     }
 
-    const { messageProof } = input;
-
     // TODO: finish this part later as we need to mege changes in interactions with ETH side from Matt's PR
     // return undefined;
   }
