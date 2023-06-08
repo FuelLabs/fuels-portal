@@ -65,7 +65,6 @@ const selectors = {
 export function useBridge() {
   const {
     address: ethAddress,
-    signer: ethSigner,
     handlers: ethHandlers,
     isConnecting: ethIsConnecting,
     balance: ethBalance,
