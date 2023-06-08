@@ -98,7 +98,7 @@ export class TxFuelToEthService {
 
     const { messageProof } = input;
 
-    // TODO: finish this part after merging code from Matt, because he has change on interactions with ETH side
-    return undefined;
+    // TODO: finish this part later as we need to mege changes in interactions with ETH side from Matt's PR
+    // return undefined;
   }
 }

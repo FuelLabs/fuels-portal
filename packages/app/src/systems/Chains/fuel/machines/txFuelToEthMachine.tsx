@@ -16,13 +16,13 @@ type MachineContext = {
 
 type MachineServices = {
   getMessageId: {
-    data?: string;
+    data: string | undefined;
   };
   getMessageProof: {
-    data?: MessageProof | null;
+    data: MessageProof | undefined | null;
   };
   relayMessageFromFuelBlock: {
-    data?: any;
+    data: void;
   };
 };
 
@@ -34,10 +34,15 @@ export enum TxFuelToEthStatus {
 }
 
 type AnalyzeInputs = TxFuelToEthInputs['getMessageProof'];
-export type TxFuelToEthMachineEvents = {
-  type: 'START_ANALYZE_TX';
-  input: AnalyzeInputs;
-};
+export type TxFuelToEthMachineEvents =
+  | {
+      type: 'START_ANALYZE_TX';
+      input: AnalyzeInputs;
+    }
+  | {
+      type: 'RELAY_TO_ETH';
+      input: void;
+    };
 
 export const txFuelToEthMachine = createMachine(
   {
@@ -105,14 +110,44 @@ export const txFuelToEthMachine = createMachine(
             {
               actions: ['assignMessageProof'],
               cond: 'hasMessageProof',
-              // TODO: create next state for continuing the flow
-              // target: 'checkingFuelTx',
+              target: 'waitingUserEthApproval',
             },
           ],
         },
         after: {
           10000: {
             target: 'checkingMessageProof',
+          },
+        },
+      },
+      waitingUserEthApproval: {
+        on: {
+          RELAY_TO_ETH: {
+            target: ['relayingMessageFromFuelBlock'],
+          },
+        },
+      },
+      relayingMessageFromFuelBlock: {
+        invoke: {
+          src: 'relayMessageFromFuelBlock',
+          data: {
+            input: (_: MachineContext) => ({}),
+          },
+          onDone: [
+            {
+              cond: FetchMachine.hasError,
+              target: 'idle',
+            },
+            {
+              // actions: ['assignEthTxId'],
+              // cond: 'hasEthTxId',
+              target: 'done',
+            },
+          ],
+        },
+        after: {
+          10000: {
+            target: 'relayingMessageFromFuelBlock',
           },
         },
       },
