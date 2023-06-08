@@ -76,6 +76,8 @@ export function useBridge() {
     address: fuelAddress,
     handlers: fuelHandlers,
     isConnecting: fuelIsConnecting,
+    balance: fuelBalance,
+    wallet: fuelWallet,
   } = useFuelAccountConnection();
   const fromNetwork = store.useSelector(Services.bridge, selectors.fromNetwork);
   const toNetwork = store.useSelector(Services.bridge, selectors.toNetwork);
@@ -97,12 +99,11 @@ export function useBridge() {
     }
 
     if (isFuelChain(fromNetwork)) {
-      // TODO: put correct fuel balance (when doing FUEL -> ETH bridge)
-      // return fuelAccount?.balance;
+      return fuelBalance;
     }
 
     return undefined;
-  }, [ethBalance, fromNetwork]);
+  }, [ethBalance, fromNetwork, fuelBalance]);
   const status = store.useSelector(
     Services.bridge,
     selectors.status({ ethAccount: ethAddress, fuelAccount, assetBalance })
@@ -175,9 +176,10 @@ export function useBridge() {
       goToWithdraw,
       startBridging: () =>
         store.startBridging({
-          ethSigner,
           fuelAddress,
           ethWalletClient,
+          fuelWallet,
+          ethAddress,
         }),
       connectFrom: () => connectNetwork(fromNetwork),
       connectTo: () => connectNetwork(toNetwork),

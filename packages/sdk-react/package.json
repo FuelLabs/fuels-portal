@@ -25,9 +25,9 @@
     "ts:check": "pnpm tsc --noEmit"
   },
   "dependencies": {
-    "@fuel-wallet/sdk": "^0.7.2",
+    "@fuel-wallet/sdk": "^0.9.0",
     "@tanstack/react-query": "^4.29.5",
-    "fuels": "^0.33.0",
+    "fuels": "0.44.1",
     "react": "^18.2.0"
   },
   "devDependencies": {

@@ -3,8 +3,13 @@ import type { Address as FuelAddress, BN } from 'fuels';
 import type { PublicClient, WalletClient } from 'wagmi';
 
 import { store } from '~/store';
-import type { FromToNetworks } from '~/systems/Chains';
+import type {
+  FromToNetworks,
+  TxEthToFuelInputs,
+  TxFuelToEthInputs,
+} from '~/systems/Chains';
 import {
+  TxFuelToEthService,
   ETH_UNITS,
   isEthChain,
   isFuelChain,
@@ -13,11 +18,11 @@ import {
 
 export type PossibleBridgeInputs = {
   assetAmount?: BN;
-  ethSigner?: WalletClient;
   ethWalletClient?: WalletClient;
   ethPublicClient?: PublicClient;
   fuelAddress?: FuelAddress;
-};
+} & Omit<TxEthToFuelInputs['create'], 'amount'> &
+  Omit<TxFuelToEthInputs['create'], 'amount'>;
 export type BridgeInputs = {
   bridge: FromToNetworks & PossibleBridgeInputs;
 };
@@ -28,8 +33,10 @@ export class BridgeService {
       fromNetwork,
       toNetwork,
       assetAmount,
-      fuelAddress,
       ethWalletClient,
+      fuelAddress,
+      fuelWallet,
+      ethAddress,
     } = input;
 
     if (!fromNetwork || !toNetwork) {
@@ -59,6 +66,22 @@ export class BridgeService {
       }
 
       return;
+    }
+
+    if (isFuelChain(fromNetwork) && isEthChain(toNetwork)) {
+      const txId = await TxFuelToEthService.create({
+        amount: assetAmount,
+        fuelWallet,
+        ethAddress,
+      });
+
+      if (txId) {
+        store.openTxFuelToEth({
+          txId,
+        });
+
+        return;
+      }
     }
 
     throw new Error(

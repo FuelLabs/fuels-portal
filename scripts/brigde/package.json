@@ -11,7 +11,7 @@
     "@ethersproject/bytes": "^5.7.0",
     "@ethersproject/providers": "^5.7.2",
     "ethers": "^5.7.2",
-    "fuels": "^0.33.0"
+    "fuels": "0.44.1"
   },
   "devDependencies": {
     "@types/node": "^18.13.0",

@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import { useContext, createContext, useEffect } from 'react';
 
 import { useWindowFuel } from '../hooks';
+import { QUERY_KEYS } from '../utils';
 
 export const fuelQueryClient = new QueryClient({
   defaultOptions: {
@@ -24,10 +25,6 @@ type FuelProviderProps = {
   children?: ReactNode;
 };
 
-export const ACCOUNT_KEY = 'account';
-export const IS_CONNECTED_KEY = 'isConnected';
-export const PROVIDER_KEY = 'provider';
-
 type FuelReactContextType = {
   fuel: Fuel | undefined;
 };
@@ -44,20 +41,25 @@ export const FuelProvider = ({ children }: FuelProviderProps) => {
   const fuel = useWindowFuel();
 
   function onCurrentAccountChange() {
-    fuelQueryClient.invalidateQueries([ACCOUNT_KEY]);
+    fuelQueryClient.invalidateQueries([QUERY_KEYS.account]);
+    fuelQueryClient.invalidateQueries([QUERY_KEYS.wallet, '*']);
+    fuelQueryClient.invalidateQueries([QUERY_KEYS.balance, '*']);
   }
 
   function onConnectionChange() {
-    fuelQueryClient.invalidateQueries([ACCOUNT_KEY]);
-    fuelQueryClient.invalidateQueries([IS_CONNECTED_KEY]);
+    fuelQueryClient.invalidateQueries([QUERY_KEYS.account]);
+    fuelQueryClient.invalidateQueries([QUERY_KEYS.isConnected]);
+    fuelQueryClient.invalidateQueries([QUERY_KEYS.wallet, '*']);
+    fuelQueryClient.invalidateQueries([QUERY_KEYS.balance, '*']);
   }
 
   function onNetworkChange() {
-    fuelQueryClient.invalidateQueries([PROVIDER_KEY]);
+    fuelQueryClient.invalidateQueries([QUERY_KEYS.provider]);
+    fuelQueryClient.invalidateQueries([QUERY_KEYS.transactionReceipts]);
   }
 
   function onAccountsChange() {
-    fuelQueryClient.invalidateQueries([ACCOUNT_KEY]);
+    fuelQueryClient.invalidateQueries([QUERY_KEYS.account]);
   }
 
   useEffect(() => {

@@ -80,10 +80,11 @@ export const bridgeMachine = createMachine(
               fromNetwork: ctx.fromNetwork,
               toNetwork: ctx.toNetwork,
               assetAmount: ctx.assetAmount,
-              ethSigner: ev.input.ethSigner,
               fuelAddress: ev.input.fuelAddress,
               ethWalletClient: ev.input.ethWalletClient,
               ethPublicClient: ev.input.ethPublicClient,
+              fuelWallet: ev.input.fuelWallet,
+              ethAddress: ev.input.ethAddress,
             }),
           },
           onDone: [
