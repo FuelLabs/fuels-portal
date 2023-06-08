@@ -43,3 +43,15 @@ jobs:
         run: |
           pnpm ts:check
           pnpm lint
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      pull-requests: write
+      contents: write
+    steps:
+      - name: Run build
+        run: |
+          pnpm build
