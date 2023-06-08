@@ -8,7 +8,7 @@ import { useOverlay } from '~/systems/Overlay';
 export function TxFuelToEthDialog() {
   const { metadata } = useOverlay<{ txId: string }>();
   const { steps } = useTxFuelToEth({
-    id: metadata.txId,
+    txId: metadata.txId,
   });
 
   return (

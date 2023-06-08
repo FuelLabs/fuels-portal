@@ -27,7 +27,6 @@ const selectors = {
     const isWaitingFuelTransaction =
       status === TxFuelToEthStatus.waitingFuelTransaction;
     const isWaitingSettlement = status === TxFuelToEthStatus.waitingSettlement;
-    // const isWaitingReceive = status === TxFuelToEthStatus.waitingReceive;
 
     const isDone = status === TxFuelToEthStatus.done;
     const steps = [
@@ -48,14 +47,15 @@ const selectors = {
       },
       {
         name: 'Confirm transaction',
+        // TODO: when doing approvar metamask part should: fix status text + isLoading + isDone + isSelected
         status: isDone ? 'Done!' : 'Automatic',
-        // TODO: put correct loading here when have metamask approval part done
         isLoading: false,
         isDone,
         isSelected: false,
       },
       {
         name: 'Receive on ETH',
+        // TODO: when doing approvar metamask part should: fix status text + isLoading + isDone + isSelected
         status: isDone ? 'Done!' : 'Automatic',
         isLoading: false,
         isDone,
@@ -66,21 +66,21 @@ const selectors = {
   },
 };
 
-export function useTxFuelToEth({ id }: { id: string }) {
+export function useTxFuelToEth({ txId }: { txId: string }) {
   const { provider: fuelProvider } = useFuelAccountConnection();
   const service = useInterpret(txFuelToEthMachine);
   const steps = useSelector(service, selectors.steps);
 
   useEffect(() => {
-    if (id && fuelProvider) {
+    if (txId && fuelProvider) {
       service.send('START_ANALYZE_TX', {
         input: {
-          fuelTxId: id,
+          fuelTxId: txId,
           fuelProvider,
         },
       });
     }
-  }, [id, fuelProvider]);
+  }, [txId, fuelProvider]);
 
   return {
     handlers: {
