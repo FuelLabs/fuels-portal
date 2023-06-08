@@ -27,7 +27,7 @@ export const BridgeTxItem = ({
 }: BridgeTxItemProps) => {
   return (
     <CardList.Item onClick={onClick} css={styles.listItem}>
-      <Box.Flex align="center" justify="space-between" css={{ width: '100%' }}>
+      <Box.Flex align="center" justify="space-between" css={styles.wrapper}>
         <Text css={styles.ageText}>{calculateDateDiff(date)}</Text>
         <Box.Flex css={styles.directionInfo}>
           {fromLogo}
@@ -51,28 +51,16 @@ const styles = cssObj({
     alignItems: 'center',
     px: '0px !important',
   }),
-  body: cssObj({
-    minHeight: '$56',
-  }),
-  footer: cssObj({
+  wrapper: cssObj({
     width: '100%',
   }),
   txItem: cssObj({
-    // flexWrap: 'wrap',
-    // justifyContent: 'space-between',
     gap: '$1',
     alignItems: 'center',
-    // justifyContent: 'center',
-    // gridColumn: '3 / 4',
   }),
   ageText: cssObj({
     fontSize: '$xs',
-    // gridColumn: '1 / 4',
     minWidth: '70px',
-  }),
-  labelText: cssObj({
-    fontSize: '$xs',
-    color: '$intentsBase8',
   }),
   infoText: cssObj({
     fontSize: '$sm',
@@ -82,9 +70,5 @@ const styles = cssObj({
     gap: '$1',
     alignItems: 'center',
     justifyContent: 'center',
-    // gridColumn: '2 / 4',
-  }),
-  status: cssObj({
-    // gridColumn: '4 / 4',
   }),
 });

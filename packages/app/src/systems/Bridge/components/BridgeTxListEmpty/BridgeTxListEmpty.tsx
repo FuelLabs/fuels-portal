@@ -60,19 +60,10 @@ export const BridgeTxListEmpty = ({
 };
 
 const styles = cssObj({
-  header: cssObj({
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  }),
   body: cssObj({
     minHeight: '$56',
   }),
   connectButton: cssObj({
     width: '$50',
-  }),
-  gridLayout: cssObj({
-    display: 'grid',
-    gridTemplateColumns: 'repeat(4, 1fr)',
-    gridTemplateRows: 'repeat(3, 1fr)',
   }),
 });
