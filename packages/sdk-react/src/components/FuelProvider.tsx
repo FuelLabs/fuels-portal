@@ -55,6 +55,7 @@ export const FuelProvider = ({ children }: FuelProviderProps) => {
 
   function onNetworkChange() {
     fuelQueryClient.invalidateQueries([QUERY_KEYS.provider]);
+    fuelQueryClient.invalidateQueries([QUERY_KEYS.transactionReceipts]);
   }
 
   function onAccountsChange() {

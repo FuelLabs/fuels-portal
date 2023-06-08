@@ -71,9 +71,13 @@ export class BridgeService {
         ethAddress,
       });
 
-      console.log(`txId`, txId);
+      if (txId) {
+        store.openTxFuelToEth({
+          txId,
+        });
 
-      return;
+        return;
+      }
     }
 
     throw new Error(

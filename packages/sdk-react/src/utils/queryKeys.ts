@@ -4,4 +4,6 @@ export const QUERY_KEYS = {
   provider: 'provider',
   balance: 'balance',
   wallet: 'wallet',
+  transaction: 'transaction',
+  transactionReceipts: 'transactionReceipts',
 };
