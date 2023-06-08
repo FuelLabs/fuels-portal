@@ -39,6 +39,7 @@ const selectors = {
       },
       {
         name: 'Settlement',
+        // TODO: put correct time left, how?
         status: !isWaitingSettlement ? 'Done!' : '~XX minutes left',
         isLoading: isWaitingSettlement,
         isDone: !isWaitingSettlement,
@@ -52,7 +53,7 @@ const selectors = {
         isSelected: isWaitingReceiveFuel,
       },
       {
-        name: 'Receive funds',
+        name: 'Receive on Fuel',
         status: isDone ? 'Done!' : 'Automatic',
         isLoading: false,
         isDone,
