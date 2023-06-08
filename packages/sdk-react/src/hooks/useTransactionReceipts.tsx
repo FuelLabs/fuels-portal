@@ -1,5 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { TransactionResponse } from 'fuels';
+// should import BN because of this TS error: https://github.com/microsoft/TypeScript/issues/47663
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { TransactionResultReceipt } from 'fuels';
 
 import { useFuel } from '../components';
 import { QUERY_KEYS } from '../utils';
