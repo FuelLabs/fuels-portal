@@ -7,3 +7,4 @@ export * from './useProvider';
 export * from './useTransactionReceipts';
 export * from './useWallet';
 export * from './useWindowFuel';
+export * from './useTransaction';

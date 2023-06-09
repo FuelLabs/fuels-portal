@@ -1,3 +1,4 @@
+import { useTransaction } from '@fuels-portal/sdk-react';
 import { useInterpret, useSelector } from '@xstate/react';
 import { useEffect } from 'react';
 
@@ -82,10 +83,13 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
     }
   }, [txId, fuelProvider]);
 
+  const { txResponse } = useTransaction(txId);
+
   return {
     handlers: {
       close: store.closeOverlay,
     },
+    fuelTx: txResponse,
     steps,
   };
 }

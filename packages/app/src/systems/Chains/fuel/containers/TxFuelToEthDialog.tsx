@@ -1,9 +1,9 @@
 import { cssObj } from '@fuel-ui/css';
 import { Dialog, Box, Text, Icon, IconButton } from '@fuel-ui/react';
-import { bn } from 'fuels';
 
-import { ETH_SYMBOL, ethLogoSrc, ETH_UNITS } from '../../eth';
+import { ETH_SYMBOL, ethLogoSrc } from '../../eth';
 import { useTxFuelToEth } from '../hooks';
+import { FUEL_UNITS } from '../utils';
 
 import { BridgeSteps, BridgeTxOverview } from '~/systems/Bridge';
 import { shortAddress } from '~/systems/Core';
@@ -11,7 +11,7 @@ import { useOverlay } from '~/systems/Overlay';
 
 export function TxFuelToEthDialog() {
   const { metadata } = useOverlay<{ txId: string }>();
-  const { steps, handlers } = useTxFuelToEth({
+  const { steps, handlers, fuelTx } = useTxFuelToEth({
     txId: metadata.txId,
   });
 
@@ -43,9 +43,9 @@ export function TxFuelToEthDialog() {
             asset={{
               assetSymbol: ETH_SYMBOL,
               imageUrl: ethLogoSrc,
-              assetAmount: bn(0).format({
+              assetAmount: fuelTx?.outputs[0].amount.format({
                 precision: 9,
-                units: ETH_UNITS,
+                units: FUEL_UNITS,
               }),
             }}
           />
