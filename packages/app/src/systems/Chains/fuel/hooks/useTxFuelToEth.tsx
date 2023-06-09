@@ -1,4 +1,4 @@
-import { useTransaction } from '@fuels-portal/sdk-react';
+import { useBlock, useTransaction } from '@fuels-portal/sdk-react';
 import { useInterpret, useSelector } from '@xstate/react';
 import { useEffect } from 'react';
 
@@ -72,6 +72,15 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
   const service = useInterpret(txFuelToEthMachine);
   const steps = useSelector(service, selectors.steps);
 
+  const { txResponse: fuelTx } = useTransaction(txId);
+
+  const cachedBlockDate = localStorage.getItem(
+    `fuelBlockDate-${fuelTx?.receiptsRoot}`
+  );
+  const { block } = useBlock(
+    !cachedBlockDate ? fuelTx?.receiptsRoot : undefined
+  );
+
   useEffect(() => {
     if (txId && fuelProvider) {
       service.send('START_ANALYZE_TX', {
@@ -81,15 +90,24 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
         },
       });
     }
-  }, [txId, fuelProvider]);
+  }, [txId, fuelProvider, fuelTx]);
 
-  const { txResponse } = useTransaction(txId);
+  useEffect(() => {
+    if (block && block.time) {
+      localStorage.setItem(`fuelBlockDate-${fuelTx?.receiptsRoot}`, block.time);
+    }
+  }, [block?.time]);
 
   return {
     handlers: {
       close: store.closeOverlay,
     },
-    fuelTx: txResponse,
+    fuelTx,
+    fuelBlockDate: cachedBlockDate
+      ? new Date(Number(cachedBlockDate))
+      : block?.time
+      ? new Date(Number(block?.time))
+      : new Date(),
     steps,
   };
 }
