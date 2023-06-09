@@ -2,7 +2,7 @@ import { cssObj } from '@fuel-ui/css';
 import { Box, Text, Image, Icon, CardList } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
 
-import { calculateDateDiff } from '~/systems/Core/utils/date';
+import { calculateDateDiff } from '~/systems/Core';
 
 type BridgeTxItemProps = {
   date?: Date;

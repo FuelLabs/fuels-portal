@@ -2,7 +2,7 @@ import { cssObj } from '@fuel-ui/css';
 import { Box, Text, FuelLogo, Image, Icon } from '@fuel-ui/react';
 import type { BigNumberish } from 'fuels';
 
-import { calculateDateDiff } from '~/systems/Core/utils/date';
+import { calculateDateDiff } from '~/systems/Core';
 
 type BridgeTxOverviewProps = {
   transactionId: BigNumberish;
