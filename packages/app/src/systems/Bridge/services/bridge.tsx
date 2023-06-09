@@ -1,5 +1,6 @@
 import { bn, DECIMAL_UNITS } from 'fuels';
-import type { BN } from 'fuels';
+import type { Address as FuelAddress, BN } from 'fuels';
+import type { PublicClient, WalletClient } from 'wagmi';
 
 import { store } from '~/store';
 import type {
@@ -17,6 +18,9 @@ import {
 
 export type PossibleBridgeInputs = {
   assetAmount?: BN;
+  ethWalletClient?: WalletClient;
+  ethPublicClient?: PublicClient;
+  fuelAddress?: FuelAddress;
 } & Omit<TxEthToFuelInputs['create'], 'amount'> &
   Omit<TxFuelToEthInputs['create'], 'amount'>;
 export type BridgeInputs = {
@@ -29,7 +33,7 @@ export class BridgeService {
       fromNetwork,
       toNetwork,
       assetAmount,
-      ethSigner,
+      ethWalletClient,
       fuelAddress,
       fuelWallet,
       ethAddress,
@@ -51,7 +55,7 @@ export class BridgeService {
       const amountEthUnits = bn.parseUnits(amountFormatted, ETH_UNITS);
       const txId = await TxEthToFuelService.create({
         amount: amountEthUnits.toHex(),
-        ethSigner,
+        ethWalletClient,
         fuelAddress,
       });
 
@@ -59,9 +63,9 @@ export class BridgeService {
         store.openTxEthToFuel({
           txId,
         });
-
-        return;
       }
+
+      return;
     }
 
     if (isFuelChain(fromNetwork) && isEthChain(toNetwork)) {

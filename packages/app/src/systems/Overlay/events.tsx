@@ -11,16 +11,18 @@ export function overlayEvents(store: Store) {
     closeOverlay() {
       store.send(Services.overlay, { type: 'CLOSE' });
     },
-    openTxEthToFuel({ txId }: { txId: string }) {
-      store.send(Services.overlay, {
-        type: 'OPEN',
-        input: {
-          modal: 'tx.fromEth.toFuel',
-          params: {
-            txId,
+    openTxEthToFuel({ txId }: { txId?: string }) {
+      if (txId) {
+        store.send(Services.overlay, {
+          type: 'OPEN',
+          input: {
+            modal: 'tx.fromEth.toFuel',
+            params: {
+              txId,
+            },
           },
-        },
-      });
+        });
+      }
     },
     openTxFuelToEth({ txId }: { txId: string }) {
       store.send(Services.overlay, {

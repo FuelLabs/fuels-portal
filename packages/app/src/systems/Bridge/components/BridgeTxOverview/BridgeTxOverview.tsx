@@ -2,9 +2,11 @@ import { cssObj } from '@fuel-ui/css';
 import { Box, Text, FuelLogo, Image, Icon } from '@fuel-ui/react';
 import type { BigNumberish } from 'fuels';
 
+import { calculateDateDiff } from '~/systems/Core/utils/date';
+
 type BridgeTxOverviewProps = {
   transactionId: BigNumberish;
-  age: string;
+  date: Date;
   isDeposit?: boolean;
   asset: {
     imageUrl?: string;
@@ -15,7 +17,7 @@ type BridgeTxOverviewProps = {
 
 export const BridgeTxOverview = ({
   transactionId,
-  age,
+  date,
   isDeposit,
   asset,
 }: BridgeTxOverviewProps) => {
@@ -27,7 +29,7 @@ export const BridgeTxOverview = ({
       </Box.Flex>
       <Box.Flex css={styles.txItem}>
         <Text css={styles.labelText}>Age</Text>
-        <Text css={styles.infoText}>{age}</Text>
+        <Text css={styles.infoText}>{calculateDateDiff(date)}</Text>
       </Box.Flex>
       <Box.Flex css={styles.txItem}>
         <Text css={styles.labelText}>Direction</Text>

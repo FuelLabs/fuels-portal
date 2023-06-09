@@ -65,35 +65,60 @@ const selectors = {
   },
 };
 
-export function useTxEthToFuel({ id }: { id: string }) {
-  const { provider: ethProvider } = useEthAccountConnection();
+export function useTxEthToFuel({
+  id,
+  skipAnalyzeTx,
+}: {
+  id: string;
+  skipAnalyzeTx?: boolean;
+}) {
+  const { provider: ethProvider, publicClient: ethPublicClient } =
+    useEthAccountConnection();
   const { provider: fuelProvider, address: fuelAddress } =
     useFuelAccountConnection();
   const { data: ethTx } = useTransaction({
     hash: id.startsWith('0x') ? (id as `0x${string}`) : undefined,
   });
-  const { age } = useBlock();
+  const cachedBlockDate = localStorage.getItem(
+    `ethBlockDate-${ethTx?.blockHash}`
+  );
+  const { block } = useBlock(
+    !cachedBlockDate ? (ethTx?.blockHash as `0x${string}`) : undefined
+  );
   const service = useInterpret(txEthToFuelMachine);
   const steps = useSelector(service, selectors.steps);
   useEffect(() => {
-    if (ethTx && ethProvider && fuelProvider && fuelAddress) {
+    if (ethTx && ethProvider && fuelProvider && fuelAddress && !skipAnalyzeTx) {
       service.send('START_ANALYZE_TX', {
         input: {
           ethTx,
           ethProvider,
           fuelProvider,
           fuelAddress,
+          ethPublicClient,
         },
       });
     }
-  }, [ethTx, ethProvider, fuelProvider, fuelAddress, service]);
+  }, [ethTx, ethProvider, fuelProvider, fuelAddress, service, ethPublicClient]);
+
+  useEffect(() => {
+    if (block.date) {
+      localStorage.setItem(
+        `ethBlockDate-${block.hash}`,
+        block.date.getTime().toString()
+      );
+    }
+  }, [block.date]);
 
   return {
     handlers: {
       close: store.closeOverlay,
+      openTxEthToFuel: store.openTxEthToFuel,
     },
     ethTx,
+    ethBlockDate: cachedBlockDate
+      ? new Date(Number(cachedBlockDate))
+      : block.date || new Date(),
     steps,
-    age,
   };
 }

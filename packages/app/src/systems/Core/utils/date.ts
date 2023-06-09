@@ -1,10 +1,16 @@
 import { formatDistanceToNow } from 'date-fns';
 
-export const calculateDateDiff = (timestamp?: number) => {
-  if (!timestamp) {
-    return 'N/A';
-  }
+export const calculateDateDiffFromTimestamp = (timestamp?: number) => {
+  if (!timestamp) return '';
+
   const blockDate = new Date(timestamp * 1000);
-  const diffInDays = formatDistanceToNow(blockDate, { addSuffix: true });
+
+  return calculateDateDiff(blockDate);
+};
+
+export const calculateDateDiff = (date?: Date) => {
+  if (!date) return '';
+
+  const diffInDays = formatDistanceToNow(date, { addSuffix: true });
   return diffInDays;
 };

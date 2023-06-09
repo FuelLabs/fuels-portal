@@ -8,6 +8,7 @@ import type {
   Address as FuelAddress,
   Provider as FuelProvider,
 } from 'fuels';
+import type { PublicClient } from 'wagmi';
 import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
 
@@ -23,6 +24,7 @@ type MachineContext = {
   fuelAddress?: FuelAddress;
   fuelProvider?: FuelProvider;
   fuelMessage?: Message;
+  ethPublicClient?: PublicClient;
 };
 
 type MachineServices = {
@@ -75,6 +77,7 @@ export const txEthToFuelMachine = createMachine(
             input: (ctx: MachineContext) => ({
               ethTx: ctx.ethTx,
               ethProvider: ctx.ethProvider,
+              ethPublicClient: ctx.ethPublicClient,
             }),
           },
           onDone: [
@@ -110,7 +113,7 @@ export const txEthToFuelMachine = createMachine(
               cond: FetchMachine.hasError,
             },
             {
-              actions: ['assignFuelMessage'],
+              actions: ['assignFuelMessage', 'setEthToFuelTxDone'],
               cond: 'hasFuelMessage',
               target: 'done',
             },
@@ -135,6 +138,7 @@ export const txEthToFuelMachine = createMachine(
         ethProvider: ev.input.ethProvider,
         fuelAddress: ev.input.fuelAddress,
         fuelProvider: ev.input.fuelProvider,
+        ethPublicClient: ev.input.ethPublicClient,
       })),
       assignEthTxNonce: assign({
         ethTxNonce: (_, ev) => ev.data,
@@ -142,6 +146,11 @@ export const txEthToFuelMachine = createMachine(
       assignFuelMessage: assign({
         fuelMessage: (_, ev) => ev.data,
       }),
+      setEthToFuelTxDone: (ctx, ev) => {
+        if (ctx.ethTx?.hash && ev.data) {
+          localStorage.setItem(`ethToFuelTx${ctx.ethTx.hash}-done`, 'true');
+        }
+      },
     },
     guards: {
       hasFuelMessage: (ctx, ev) => !!ctx.fuelMessage || !!ev?.data,

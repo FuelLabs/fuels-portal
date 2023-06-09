@@ -18,8 +18,8 @@
     "@ethersproject/abi": "^5.7.0",
     "@ethersproject/bytes": "^5.7.0",
     "@ethersproject/providers": "^5.7.2",
-    "@fuel-ui/css": "0.15.0-dev-9c7ba65",
-    "@fuel-ui/react": "0.15.0-dev-9c7ba65",
+    "@fuel-ui/css": "0.15.1-dev-80e1a79",
+    "@fuel-ui/react": "0.15.1-dev-80e1a79",
     "@fuel-wallet/sdk": "^0.9.0",
     "@fuels-portal/sdk-react": "workspace:*",
     "@fuels-portal/store": "workspace:*",
@@ -36,7 +36,8 @@
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
     "react-router-dom": "^6.8.2",
-    "wagmi": "^0.12.13",
+    "viem": "^0.3.36",
+    "wagmi": "^1.0.6",
     "xstate": "^4.37.0"
   },
   "devDependencies": {

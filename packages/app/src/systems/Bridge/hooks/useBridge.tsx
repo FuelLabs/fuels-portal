@@ -65,10 +65,10 @@ const selectors = {
 export function useBridge() {
   const {
     address: ethAddress,
-    signer: ethSigner,
     handlers: ethHandlers,
     isConnecting: ethIsConnecting,
     balance: ethBalance,
+    walletClient: ethWalletClient,
   } = useEthAccountConnection();
   const {
     account: fuelAccount,
@@ -175,8 +175,8 @@ export function useBridge() {
       goToWithdraw,
       startBridging: () =>
         store.startBridging({
-          ethSigner,
           fuelAddress,
+          ethWalletClient,
           fuelWallet,
           ethAddress,
         }),

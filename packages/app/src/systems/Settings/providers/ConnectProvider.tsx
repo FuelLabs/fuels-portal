@@ -1,7 +1,7 @@
 import { ConnectKitProvider } from 'connectkit';
 import type { ReactNode } from 'react';
 import type { ChainProviderFn } from 'wagmi';
-import { WagmiConfig, createClient, configureChains } from 'wagmi';
+import { WagmiConfig, createConfig, configureChains } from 'wagmi';
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
@@ -28,18 +28,17 @@ const app = {
 };
 const chainsToConnect = [ETH_CHAIN];
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const providers: ChainProviderFn<any, any, any>[] = [
-  alchemyProvider({ apiKey: VITE_ALCHEMY_ID, priority: 1 }),
-  infuraProvider({ apiKey: VITE_INFURA_ID, priority: 2 }),
+const providers: ChainProviderFn<any>[] = [
+  alchemyProvider({ apiKey: VITE_ALCHEMY_ID }),
+  infuraProvider({ apiKey: VITE_INFURA_ID }),
   jsonRpcProvider({
     rpc: (c) => {
       return { http: c.rpcUrls.default.http[0] };
     },
-    priority: 3,
   }),
-  publicProvider({ priority: 4 }),
+  publicProvider(),
 ];
-const { provider, chains, webSocketProvider } = configureChains(
+export const { publicClient, chains, webSocketPublicClient } = configureChains(
   chainsToConnect,
   providers
 );
@@ -81,11 +80,11 @@ const connectKitClient = {
       },
     }),
   ],
-  provider,
-  webSocketProvider,
+  publicClient,
+  webSocketPublicClient,
 };
 
-const client = createClient(connectKitClient);
+const config = createConfig(connectKitClient);
 
 type ProvidersProps = {
   children: ReactNode;
@@ -95,7 +94,7 @@ export function ConnectProvider({ children }: ProvidersProps) {
   const { theme } = useTheme();
 
   return (
-    <WagmiConfig client={client}>
+    <WagmiConfig config={config}>
       <ConnectKitProvider mode={theme}>{children}</ConnectKitProvider>
     </WagmiConfig>
   );

@@ -1,13 +1,16 @@
 import { cssObj } from '@fuel-ui/css';
 import { Text, Box, ButtonLink } from '@fuel-ui/react';
+import type { ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
-
-import { Bridge } from './Bridge';
 
 import { Layout } from '~/systems/Core';
 import { Pages } from '~/types';
 
-export const BridgeHome = () => {
+type BridgeHomeProps = {
+  children: ReactNode;
+};
+
+export const BridgeHome = ({ children }: BridgeHomeProps) => {
   const location = useLocation();
 
   const getClassName = (url: string) => {
@@ -21,12 +24,20 @@ export const BridgeHome = () => {
           Fuel Native Bridge
         </Text>
         <Box.Flex gap="$2" css={styles.buttonLinks}>
-          <ButtonLink className={getClassName(Pages.bridge)}>Bridge</ButtonLink>
-          <ButtonLink className={getClassName(Pages.transactions)}>
+          <ButtonLink
+            href={Pages.bridge}
+            className={getClassName(Pages.bridge)}
+          >
+            Bridge
+          </ButtonLink>
+          <ButtonLink
+            href={Pages.transactions}
+            className={getClassName(Pages.transactions)}
+          >
             Transactions
           </ButtonLink>
         </Box.Flex>
-        <Bridge />
+        {children}
       </Layout.Content>
     </Layout>
   );
