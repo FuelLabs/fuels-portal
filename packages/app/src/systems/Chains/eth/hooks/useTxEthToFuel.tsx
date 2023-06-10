@@ -4,7 +4,7 @@ import { useTransaction } from 'wagmi';
 
 import { useFuelAccountConnection } from '../../fuel';
 import type { TxEthToFuelMachineState } from '../machines';
-import { TxEthToFuelStatus, txEthToFuelMachine } from '../machines';
+import { txEthToFuelMachine } from '../machines';
 
 import { useBlock } from './useBlock';
 import { useEthAccountConnection } from './useEthAccountConnection';
@@ -13,23 +13,31 @@ import { store } from '~/store';
 
 const selectors = {
   status: (state: TxEthToFuelMachineState) => {
-    const { ethTxNonce, fuelMessage } = state.context;
+    const isSettlementLoading = state.hasTag('isSettlementLoading');
+    const isSettlementSelected = state.hasTag('isSettlementSelected');
+    const isSettlementDone = state.hasTag('isSettlementDone');
+    const isConfirmTransactionLoading = state.hasTag(
+      'isConfirmTransactionLoading'
+    );
+    const isConfirmTransactionSelected = state.hasTag(
+      'isConfirmTransactionSelected'
+    );
+    const isReceiveDone = state.hasTag('isReceiveDone');
 
-    if (!ethTxNonce) return TxEthToFuelStatus.waitingSettlement;
-    if (!fuelMessage) return TxEthToFuelStatus.waitingReceiveFuel;
-
-    return TxEthToFuelStatus.done;
+    return {
+      isSettlementLoading,
+      isSettlementSelected,
+      isSettlementDone,
+      isConfirmTransactionLoading,
+      isConfirmTransactionSelected,
+      isReceiveDone,
+    };
   },
   steps: (state: TxEthToFuelMachineState) => {
     const status = selectors.status(state);
     const { ethTx } = state.context;
 
     if (!ethTx) return undefined;
-
-    const isWaitingSettlement = status === TxEthToFuelStatus.waitingSettlement;
-    const isWaitingReceiveFuel =
-      status === TxEthToFuelStatus.waitingReceiveFuel;
-    const isDone = status === TxEthToFuelStatus.done;
 
     const steps = [
       {
@@ -40,23 +48,23 @@ const selectors = {
       {
         name: 'Settlement',
         // TODO: put correct time left, how?
-        status: !isWaitingSettlement ? 'Done!' : '~XX minutes left',
-        isLoading: isWaitingSettlement,
-        isDone: !isWaitingSettlement,
-        isSelected: isWaitingSettlement,
+        status: status.isSettlementDone ? 'Done!' : '~XX minutes left',
+        isLoading: status.isSettlementLoading,
+        isDone: status.isSettlementDone,
+        isSelected: status.isSettlementSelected,
       },
       {
         name: 'Confirm transaction',
-        status: isDone ? 'Done!' : 'Automatic',
-        isLoading: isWaitingReceiveFuel,
-        isDone,
-        isSelected: isWaitingReceiveFuel,
+        status: status.isReceiveDone ? 'Done!' : 'Automatic',
+        isLoading: status.isConfirmTransactionLoading,
+        isDone: status.isReceiveDone,
+        isSelected: status.isConfirmTransactionSelected,
       },
       {
         name: 'Receive on Fuel',
-        status: isDone ? 'Done!' : 'Automatic',
+        status: status.isReceiveDone ? 'Done!' : 'Automatic',
         isLoading: false,
-        isDone,
+        isDone: status.isReceiveDone,
         isSelected: false,
       },
     ];

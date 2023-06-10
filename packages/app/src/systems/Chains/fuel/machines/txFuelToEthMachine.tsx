@@ -32,14 +32,6 @@ type MachineServices = {
   };
 };
 
-export enum TxFuelToEthStatus {
-  waitingFuelTransaction = 'Waiting Fuel Transaction',
-  waitingSettlement = 'Waiting Settlement',
-  waitingEthWalletApproval = 'Waiting ETH Wallet Approval',
-  waitingReceive = 'Waiting Receive on ETH',
-  done = 'Done',
-}
-
 type AnalyzeInputs = TxFuelToEthInputs['getMessageProof'] &
   TxFuelToEthInputs['getMessageRelayed'];
 export type TxFuelToEthMachineEvents =
@@ -72,127 +64,165 @@ export const txFuelToEthMachine = createMachine(
         on: {
           START_ANALYZE_TX: {
             actions: ['assignAnalyzeTxInput'],
-            target: 'gettingMessageId',
+            target: 'submittingToBridge',
           },
         },
       },
-      gettingMessageId: {
-        invoke: {
-          src: 'getMessageId',
-          data: {
-            input: (ctx: MachineContext) => ({
-              fuelTxId: ctx.fuelTxId,
-              fuelProvider: ctx.fuelProvider,
-            }),
+      submittingToBridge: {
+        initial: 'gettingMessageId',
+        states: {
+          gettingMessageId: {
+            tags: ['isSubmitToBridgeLoading', 'isSubmitToBridgeSelected'],
+            invoke: {
+              src: 'getMessageId',
+              data: {
+                input: (ctx: MachineContext) => ({
+                  fuelTxId: ctx.fuelTxId,
+                  fuelProvider: ctx.fuelProvider,
+                }),
+              },
+              onDone: [
+                {
+                  cond: FetchMachine.hasError,
+                  target: 'gettingMessageId',
+                },
+                {
+                  actions: ['assignMessageId'],
+                  cond: 'hasMessageId',
+                  target: 'checkingSettlement',
+                },
+              ],
+            },
+            after: {
+              10000: {
+                target: 'gettingMessageId',
+              },
+            },
           },
-          onDone: [
-            {
-              cond: FetchMachine.hasError,
-              target: 'idle',
+          checkingSettlement: {
+            tags: ['isSubmitToBridgeDone'],
+            initial: 'checkingMessageProof',
+            states: {
+              checkingMessageProof: {
+                tags: ['isSettlementLoading', 'isSettlementSelected'],
+                invoke: {
+                  src: 'getMessageProof',
+                  data: {
+                    input: (ctx: MachineContext) => ({
+                      fuelTxId: ctx.fuelTxId,
+                      messageId: ctx.messageId,
+                      fuelProvider: ctx.fuelProvider,
+                    }),
+                  },
+                  onDone: [
+                    {
+                      cond: FetchMachine.hasError,
+                      target: 'checkingMessageProof',
+                    },
+                    {
+                      actions: ['assignMessageProof'],
+                      cond: 'hasMessageProof',
+                      target: 'checkingRelayed',
+                    },
+                  ],
+                },
+                after: {
+                  10000: {
+                    target: 'checkingMessageProof',
+                  },
+                },
+              },
+              checkingRelayed: {
+                tags: ['isSettlementDone'],
+                initial: 'checkingHasRelayedInEth',
+                states: {
+                  checkingHasRelayedInEth: {
+                    tags: ['isConfirmTransactionSelected'],
+                    invoke: {
+                      src: 'getMessageRelayed',
+                      data: {
+                        input: (ctx: MachineContext) => ({
+                          messageProof: ctx.messageProof,
+                          ethPublicClient: ctx.ethPublicClient,
+                        }),
+                      },
+                      onDone: [
+                        {
+                          cond: FetchMachine.hasError,
+                          target: 'checkingHasRelayedInEth',
+                        },
+                        {
+                          // TODO: fix here after we have event message when relayed in ETH side
+                          // actions: ['assignMessageRelayed'],
+                          // cond: 'hasMessageRelayed',
+                          target: 'waitingEthWalletApproval',
+                        },
+                        {
+                          // TODO: fix here after we have event message when relayed in ETH side
+                          // actions: ['assignMessageRelayed'],
+                          // cond: 'hasMessageRelayed',
+                          target: 'waitingReceive',
+                        },
+                      ],
+                    },
+                  },
+                  waitingEthWalletApproval: {
+                    tags: [
+                      'isConfirmTransactionSelected',
+                      'isWaitingEthWalletApproval',
+                    ],
+                    on: {
+                      RELAY_TO_ETH: {
+                        target: ['relayingMessageFromFuelBlock'],
+                      },
+                    },
+                  },
+                  relayingMessageFromFuelBlock: {
+                    tags: [
+                      'isConfirmTransactionLoading',
+                      'isConfirmTransactionSelected',
+                    ],
+                    invoke: {
+                      src: 'relayMessageFromFuelBlock',
+                      data: {
+                        input: (
+                          ctx: MachineContext,
+                          ev: Extract<
+                            TxFuelToEthMachineEvents,
+                            { type: 'RELAY_TO_ETH' }
+                          >
+                        ) => ({
+                          messageProof: ctx.messageProof,
+                          ethWalletClient: ev.input.ethWalletClient,
+                        }),
+                      },
+                      onDone: [
+                        {
+                          cond: FetchMachine.hasError,
+                          target: 'waitingEthWalletApproval',
+                        },
+                        {
+                          target: 'checkingHasRelayedInEth',
+                        },
+                      ],
+                    },
+                  },
+                  waitingReceive: {
+                    tags: ['isConfirmTransactionDone'],
+                    initial: 'done',
+                    states: {
+                      // here should implement state to wait for receipts of relayed txId, to make sure it's settled and put as done
+                      done: {
+                        tags: ['isReceiveDone'],
+                        type: 'final',
+                      },
+                    },
+                  },
+                },
+              },
             },
-            {
-              actions: ['assignMessageId'],
-              cond: 'hasMessageId',
-              target: 'checkingMessageProof',
-            },
-          ],
-        },
-        after: {
-          10000: {
-            target: 'gettingMessageId',
           },
         },
-      },
-      checkingMessageProof: {
-        invoke: {
-          src: 'getMessageProof',
-          data: {
-            input: (ctx: MachineContext) => ({
-              fuelTxId: ctx.fuelTxId,
-              messageId: ctx.messageId,
-              fuelProvider: ctx.fuelProvider,
-            }),
-          },
-          onDone: [
-            {
-              cond: FetchMachine.hasError,
-              target: 'idle',
-            },
-            {
-              actions: ['assignMessageProof'],
-              cond: 'hasMessageProof',
-              target: 'checkingHasRelayedInEth',
-            },
-          ],
-        },
-        after: {
-          10000: {
-            target: 'checkingMessageProof',
-          },
-        },
-      },
-      checkingHasRelayedInEth: {
-        invoke: {
-          src: 'getMessageRelayed',
-          data: {
-            input: (ctx: MachineContext) => ({
-              messageProof: ctx.messageProof,
-              ethPublicClient: ctx.ethPublicClient,
-            }),
-          },
-          onDone: [
-            {
-              cond: FetchMachine.hasError,
-              target: 'idle',
-            },
-            {
-              // TODO: fix here after we have event message when relayed in ETH side
-              // actions: ['assignMessageRelayed'],
-              // cond: 'hasMessageRelayed',
-              target: 'waitingEthWalletApproval',
-            },
-            {
-              // TODO: fix here after we have event message when relayed in ETH side
-              // actions: ['assignMessageRelayed'],
-              // cond: 'hasMessageRelayed',
-              target: 'waitingReceive',
-            },
-          ],
-        },
-      },
-      waitingEthWalletApproval: {
-        on: {
-          RELAY_TO_ETH: {
-            target: ['relayingMessageFromFuelBlock'],
-          },
-        },
-      },
-      relayingMessageFromFuelBlock: {
-        invoke: {
-          src: 'relayMessageFromFuelBlock',
-          data: {
-            input: (
-              ctx: MachineContext,
-              ev: Extract<TxFuelToEthMachineEvents, { type: 'RELAY_TO_ETH' }>
-            ) => ({
-              messageProof: ctx.messageProof,
-              ethWalletClient: ev.input.ethWalletClient,
-            }),
-          },
-          onDone: [
-            {
-              cond: FetchMachine.hasError,
-              target: 'waitingEthWalletApproval',
-            },
-            {
-              target: 'checkingHasRelayedInEth',
-            },
-          ],
-        },
-      },
-      waitingReceive: {},
-      done: {
-        type: 'final',
       },
       failed: {},
     },

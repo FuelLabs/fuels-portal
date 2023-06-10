@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 
 import { useEthAccountConnection } from '../../eth';
 import type { TxFuelToEthMachineState } from '../machines';
-import { TxFuelToEthStatus, txFuelToEthMachine } from '../machines';
+import { txFuelToEthMachine } from '../machines';
 
 import { useFuelAccountConnection } from './useFuelAccountConnection';
 
@@ -11,37 +11,44 @@ import { store } from '~/store';
 
 const selectors = {
   status: (state: TxFuelToEthMachineState) => {
-    const { messageId, messageProof } = state.context;
-    if (!messageId) return TxFuelToEthStatus.waitingFuelTransaction;
-    if (!messageProof) return TxFuelToEthStatus.waitingSettlement;
-    if (
-      state.matches('waitingEthWalletApproval') ||
-      state.matches('relayingMessageFromFuelBlock')
-    ) {
-      return TxFuelToEthStatus.waitingEthWalletApproval;
-    }
+    const isSubmitToBridgeLoading = state.hasTag('isSubmitToBridgeLoading');
+    const isSubmitToBridgeSelected = state.hasTag('isSubmitToBridgeSelected');
+    const isSubmitToBridgeDone = state.hasTag('isSubmitToBridgeDone');
+    const isSettlementLoading = state.hasTag('isSettlementLoading');
+    const isSettlementSelected = state.hasTag('isSettlementSelected');
+    const isSettlementDone = state.hasTag('isSettlementDone');
+    const isConfirmTransactionSelected = state.hasTag(
+      'isConfirmTransactionSelected'
+    );
+    const isConfirmTransactionLoading = state.hasTag(
+      'isConfirmTransactionLoading'
+    );
+    const isConfirmTransactionDone = state.hasTag('isConfirmTransactionDone');
+    const isWaitingEthWalletApproval = state.hasTag(
+      'isWaitingEthWalletApproval'
+    );
+    const isReceiveDone = state.hasTag('isReceiveDone');
 
-    if (state.matches('waitingReceive')) {
-      return TxFuelToEthStatus.waitingReceive;
-    }
-
-    return TxFuelToEthStatus.done;
+    return {
+      isSubmitToBridgeLoading,
+      isSubmitToBridgeSelected,
+      isSubmitToBridgeDone,
+      isSettlementLoading,
+      isSettlementSelected,
+      isSettlementDone,
+      isConfirmTransactionSelected,
+      isConfirmTransactionLoading,
+      isConfirmTransactionDone,
+      isWaitingEthWalletApproval,
+      isReceiveDone,
+    };
   },
   steps: (state: TxFuelToEthMachineState) => {
     const status = selectors.status(state);
 
-    const isWaitingFuelTransaction =
-      status === TxFuelToEthStatus.waitingFuelTransaction;
-    const isWaitingSettlement = status === TxFuelToEthStatus.waitingSettlement;
-    const isWaitingEthWalletApproval =
-      status === TxFuelToEthStatus.waitingEthWalletApproval;
-    const isWaitingReceive = status === TxFuelToEthStatus.waitingReceive;
-
-    const isDone = status === TxFuelToEthStatus.done;
-
     function getConfirmStatusText() {
-      if (isWaitingEthWalletApproval) return 'Action Required';
-      if (isWaitingReceive) return 'Done!';
+      if (status.isWaitingEthWalletApproval) return 'Action Required';
+      if (status.isConfirmTransactionDone) return 'Done!';
       return 'Action';
     }
 
@@ -50,31 +57,32 @@ const selectors = {
       {
         name: 'Submit to bridge',
         // TODO: put correct time left, how?
-        status: !isWaitingFuelTransaction ? 'Done!' : '~XX minutes left',
-        isSelected: isWaitingFuelTransaction,
-        isDone: !isWaitingFuelTransaction,
+        status: status.isSubmitToBridgeDone ? 'Done!' : '~XX minutes left',
+        isLoading: status.isSubmitToBridgeLoading,
+        isSelected: status.isSubmitToBridgeSelected,
+        isDone: status.isSubmitToBridgeDone,
       },
       {
         name: 'Settlement',
         // TODO: put correct time left, how? waiting for message Proof in this stage
-        status: !isWaitingSettlement ? 'Done!' : '~XX days left',
-        isLoading: isWaitingSettlement,
-        isDone: !isWaitingSettlement,
-        isSelected: isWaitingSettlement,
+        status: status.isSettlementDone ? 'Done!' : '~XX days left',
+        isLoading: status.isSettlementLoading,
+        isDone: status.isSettlementDone,
+        isSelected: status.isSettlementSelected,
       },
       {
         name: 'Confirm transaction',
         status: getConfirmStatusText(),
-        isLoading: false,
-        isDone: isWaitingReceive || isDone,
-        isSelected: isWaitingEthWalletApproval,
+        isLoading: status.isConfirmTransactionLoading,
+        isDone: status.isConfirmTransactionDone,
+        isSelected: status.isConfirmTransactionSelected,
       },
       {
         name: 'Receive on ETH',
-        status: isDone ? 'Done!' : 'Automatic',
-        isLoading: isWaitingReceive,
-        isDone,
-        isSelected: isWaitingReceive,
+        status: status.isReceiveDone ? 'Done!' : 'Automatic',
+        isLoading: false,
+        isDone: status.isReceiveDone,
+        isSelected: false,
       },
     ];
     return steps;
@@ -115,7 +123,6 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
       relayToEth,
     },
     steps,
-    isWaitingEthWalletApproval:
-      status === TxFuelToEthStatus.waitingEthWalletApproval,
+    isWaitingEthWalletApproval: status.isWaitingEthWalletApproval,
   };
 }
