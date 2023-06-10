@@ -20,6 +20,7 @@ export const useBlock = (blockHash?: string) => {
         console.log('block in querey: ', block);
         return block;
       } catch (error: unknown) {
+        console.log('error: ', error);
         return null;
       }
     },
