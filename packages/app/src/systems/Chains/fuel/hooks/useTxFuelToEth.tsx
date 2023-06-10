@@ -1,5 +1,6 @@
-import { useBlock, useTransaction } from '@fuels-portal/sdk-react';
+import { useTransaction } from '@fuels-portal/sdk-react';
 import { useInterpret, useSelector } from '@xstate/react';
+import { fromTai64ToUnix } from 'fuels';
 import { useEffect } from 'react';
 
 import { useEthAccountConnection } from '../../eth';
@@ -87,6 +88,10 @@ const selectors = {
     ];
     return steps;
   },
+  fuelTxResult: (state: TxFuelToEthMachineState) => {
+    const fuelTxResult = state.context.fuelTxResult;
+    return fuelTxResult;
+  },
 };
 
 export function useTxFuelToEth({ txId }: { txId: string }) {
@@ -96,15 +101,13 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
   const service = useInterpret(txFuelToEthMachine);
   const status = useSelector(service, selectors.status);
   const steps = useSelector(service, selectors.steps);
+  const fuelTxResult = useSelector(service, selectors.fuelTxResult);
+
+  const fuelTxDate = fuelTxResult?.time
+    ? new Date(fromTai64ToUnix(fuelTxResult?.time) * 1000)
+    : undefined;
 
   const { txResponse: fuelTx } = useTransaction(txId);
-
-  const cachedBlockDate = localStorage.getItem(
-    `fuelBlockDate-${fuelTx?.receiptsRoot}`
-  );
-  const { block } = useBlock(
-    !cachedBlockDate ? fuelTx?.receiptsRoot : undefined
-  );
 
   useEffect(() => {
     if (txId && fuelProvider) {
@@ -117,12 +120,6 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
       });
     }
   }, [txId, fuelProvider, fuelTx]);
-
-  useEffect(() => {
-    if (block && block.time) {
-      localStorage.setItem(`fuelBlockDate-${fuelTx?.receiptsRoot}`, block.time);
-    }
-  }, [block?.time]);
 
   function relayToEth() {
     service.send('RELAY_TO_ETH', {
@@ -138,11 +135,7 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
       relayToEth,
     },
     fuelTx,
-    fuelBlockDate: cachedBlockDate
-      ? new Date(Number(cachedBlockDate))
-      : block?.time
-      ? new Date(Number(block?.time))
-      : new Date(),
+    fuelTxDate,
     steps,
     isWaitingEthWalletApproval: status.isWaitingEthWalletApproval,
   };

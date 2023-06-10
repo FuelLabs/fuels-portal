@@ -6,7 +6,7 @@ import { calculateDateDiff } from '~/systems/Core';
 
 type BridgeTxOverviewProps = {
   transactionId: BigNumberish;
-  date: Date;
+  date?: Date;
   isDeposit?: boolean;
   asset: {
     imageUrl?: string;
