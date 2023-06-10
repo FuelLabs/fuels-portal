@@ -52,7 +52,6 @@ const selectors = {
       return 'Action';
     }
 
-    // should refactor machine substates with tags 'submitDone', 'settlementDone', 'confirmDone', 'receiveDone', 'submitLoading' ..... etc
     const steps = [
       {
         name: 'Submit to bridge',
