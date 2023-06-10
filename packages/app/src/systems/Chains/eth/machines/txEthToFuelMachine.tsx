@@ -36,12 +36,6 @@ type MachineServices = {
   };
 };
 
-export enum TxEthToFuelStatus {
-  waitingSettlement = 'Waiting Settlement',
-  waitingReceiveFuel = 'Waiting Receive on Fuel',
-  done = 'Done',
-}
-
 type AnalyzeInputs = TxEthToFuelInputs['getDepositNonce'] &
   TxEthToFuelInputs['getFuelMessage'];
 export type TxEthToFuelMachineEvents = {
@@ -71,62 +65,79 @@ export const txEthToFuelMachine = createMachine(
         },
       },
       checkingSettlement: {
-        invoke: {
-          src: 'getDepositNonce',
-          data: {
-            input: (ctx: MachineContext) => ({
-              ethTx: ctx.ethTx,
-              ethProvider: ctx.ethProvider,
-              ethPublicClient: ctx.ethPublicClient,
-            }),
-          },
-          onDone: [
-            {
-              cond: FetchMachine.hasError,
-              target: 'checkingSettlement',
+        initial: 'gettingNonce',
+        states: {
+          gettingNonce: {
+            tags: ['isSettlementLoading', 'isSettlementSelected'],
+            invoke: {
+              src: 'getDepositNonce',
+              data: {
+                input: (ctx: MachineContext) => ({
+                  ethTx: ctx.ethTx,
+                  ethProvider: ctx.ethProvider,
+                  ethPublicClient: ctx.ethPublicClient,
+                }),
+              },
+              onDone: [
+                {
+                  cond: FetchMachine.hasError,
+                  target: 'gettingNonce',
+                },
+                {
+                  actions: ['assignEthTxNonce'],
+                  cond: 'hasEthTxNonce',
+                  target: 'checkingFuelTx',
+                },
+              ],
             },
-            {
-              actions: ['assignEthTxNonce'],
-              cond: 'hasEthTxNonce',
-              target: 'checkingFuelTx',
+            after: {
+              10000: {
+                target: 'gettingNonce',
+              },
             },
-          ],
-        },
-        after: {
-          10000: {
-            target: 'checkingSettlement',
+          },
+          checkingFuelTx: {
+            tags: ['isSettlementDone'],
+            initial: 'gettingFuelMessage',
+            states: {
+              gettingFuelMessage: {
+                tags: [
+                  'isConfirmTransactionLoading',
+                  'isConfirmTransactionSelected',
+                ],
+                invoke: {
+                  src: 'getFuelMessage',
+                  data: {
+                    input: (ctx: MachineContext) => ({
+                      ethTxNonce: ctx.ethTxNonce,
+                      fuelAddress: ctx.fuelAddress,
+                      fuelProvider: ctx.fuelProvider,
+                    }),
+                  },
+                  onDone: [
+                    {
+                      cond: FetchMachine.hasError,
+                    },
+                    {
+                      actions: ['assignFuelMessage', 'setEthToFuelTxDone'],
+                      cond: 'hasFuelMessage',
+                      target: 'done',
+                    },
+                  ],
+                },
+                after: {
+                  10000: {
+                    target: 'gettingFuelMessage',
+                  },
+                },
+              },
+              done: {
+                tags: ['isReceiveDone'],
+                type: 'final',
+              },
+            },
           },
         },
-      },
-      checkingFuelTx: {
-        invoke: {
-          src: 'getFuelMessage',
-          data: {
-            input: (ctx: MachineContext) => ({
-              ethTxNonce: ctx.ethTxNonce,
-              fuelAddress: ctx.fuelAddress,
-              fuelProvider: ctx.fuelProvider,
-            }),
-          },
-          onDone: [
-            {
-              cond: FetchMachine.hasError,
-            },
-            {
-              actions: ['assignFuelMessage', 'setEthToFuelTxDone'],
-              cond: 'hasFuelMessage',
-              target: 'done',
-            },
-          ],
-        },
-        after: {
-          10000: {
-            target: 'checkingFuelTx',
-          },
-        },
-      },
-      done: {
-        type: 'final',
       },
       failed: {},
     },

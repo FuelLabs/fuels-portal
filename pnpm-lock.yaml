@@ -115,14 +115,14 @@ importers:
         specifier: ^5.7.2
         version: 5.7.2
       '@fuel-ui/css':
-        specifier: 0.15.1-dev-80e1a79
-        version: 0.15.1-dev-80e1a79
+        specifier: 0.16.0
+        version: 0.16.0
       '@fuel-ui/react':
-        specifier: 0.15.1-dev-80e1a79
-        version: 0.15.1-dev-80e1a79(@babel/core@7.21.4)(@jest/types@29.4.2)(@types/node@18.13.0)(@types/react@18.0.27)(csstype@3.1.2)(esbuild@0.17.16)(ts-node@10.9.1)(typescript@4.9.5)
+        specifier: 0.16.0
+        version: 0.16.0(@babel/core@7.21.4)(@jest/types@29.4.2)(@types/node@18.13.0)(@types/react@18.0.27)(csstype@3.1.2)(esbuild@0.17.16)(ts-node@10.9.1)(typescript@4.9.5)
       '@fuel-wallet/sdk':
-        specifier: ^0.9.0
-        version: 0.9.0(dexie@3.2.3)(fuels@0.44.1)
+        specifier: ^0.9.5
+        version: 0.9.5(dexie@3.2.3)(fuels@0.44.1)
       '@fuels-portal/sdk-react':
         specifier: workspace:*
         version: link:../sdk-react
@@ -327,8 +327,8 @@ importers:
   packages/sdk-react:
     dependencies:
       '@fuel-wallet/sdk':
-        specifier: ^0.9.0
-        version: 0.9.0(dexie@3.2.3)(fuels@0.44.1)
+        specifier: ^0.9.5
+        version: 0.9.5(dexie@3.2.3)(fuels@0.44.1)
       '@tanstack/react-query':
         specifier: ^4.29.5
         version: 4.29.5(react-dom@18.2.0)(react@18.2.0)
@@ -3028,8 +3028,27 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
+  /@fuel-ui/css@0.16.0:
+    resolution: {integrity: sha512-svDZEvvDcYHvgtEgBr0IUW4I4zz26V03Gz+GNRhI3VYPIJ1PDzjWpUz7A+/5qSPv4ABXlsU4ru7nhWq47zebGg==}
+    dependencies:
+      '@fuel-ui/design-tokens': 0.16.0
+      '@radix-ui/colors': 0.1.8
+      classnames: 2.3.2
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /@fuel-ui/design-tokens@0.15.1-dev-80e1a79:
     resolution: {integrity: sha512-cotbGy65+eIKHJGBAyw4NurJb2Sp3MlTMQQTKAvaORwrmVnmu1Ew//kEsFwOeh00skICMaCPx2PgtcJ4rGPr1Q==}
+    dependencies:
+      '@radix-ui/colors': 0.1.8
+      chroma-js: 2.4.2
+      copy-to-clipboard: 3.3.3
+      lodash: 4.17.21
+    dev: false
+
+  /@fuel-ui/design-tokens@0.16.0:
+    resolution: {integrity: sha512-R3mNv4OpxBCN1ShVfwSmP5+vUi/Uz0GfdWpa9+oNxaygHWUyKoJk/3C2pU7Im2sUgpjhXG2niBCxpsMiIrUWCw==}
     dependencies:
       '@radix-ui/colors': 0.1.8
       chroma-js: 2.4.2
@@ -3093,12 +3112,12 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@fuel-ui/react@0.15.1-dev-80e1a79(@babel/core@7.21.4)(@jest/types@29.4.2)(@types/node@18.13.0)(@types/react@18.0.27)(csstype@3.1.2)(esbuild@0.17.16)(ts-node@10.9.1)(typescript@4.9.5):
-    resolution: {integrity: sha512-KnuTEi8XPV7gb9pTuF8cvwJnvmnnhsMZRFmhtEqhwdOYiWn/4Pslzy2LQRTqv1u9rFVsc1q54NVExuSo/c/jrA==}
+  /@fuel-ui/react@0.16.0(@babel/core@7.21.4)(@jest/types@29.4.2)(@types/node@18.13.0)(@types/react@18.0.27)(csstype@3.1.2)(esbuild@0.17.16)(ts-node@10.9.1)(typescript@4.9.5):
+    resolution: {integrity: sha512-yNVQEgghd3aiudRuLK+nQr/YLElZS3coniWFKLx0U8xYFp+RQHO+k6S4Gd1iUDch5V9PwhfBtNRRhx0G+rLUnA==}
     dependencies:
       '@fuel-ts/math': 0.42.0
-      '@fuel-ui/css': 0.15.1-dev-80e1a79
-      '@fuel-ui/test-utils': 0.15.1-dev-80e1a79(@babel/core@7.21.4)(@jest/types@29.4.2)(@types/node@18.13.0)(esbuild@0.17.16)(react@18.2.0)(ts-node@10.9.1)(typescript@4.9.5)
+      '@fuel-ui/css': 0.16.0
+      '@fuel-ui/test-utils': 0.16.0(@babel/core@7.21.4)(@jest/types@29.4.2)(@types/node@18.13.0)(esbuild@0.17.16)(react@18.2.0)(ts-node@10.9.1)(typescript@4.9.5)
       '@radix-ui/react-accordion': 1.1.1(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-alert-dialog': 1.0.3(@types/react@18.0.27)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-aspect-ratio': 1.0.2(react-dom@18.2.0)(react@18.2.0)
@@ -3228,8 +3247,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@fuel-ui/test-utils@0.15.1-dev-80e1a79(@babel/core@7.21.4)(@jest/types@29.4.2)(@types/node@18.13.0)(esbuild@0.17.16)(react@18.2.0)(ts-node@10.9.1)(typescript@4.9.5):
-    resolution: {integrity: sha512-cXHDTHM6SQF3lbS5uxXHOUNNXR9PCkp0gMxn/Uv/YmcYJlKTrRmWozPV3JB8iFPMIgmXvaiuqbzLs4zqVpzOXQ==}
+  /@fuel-ui/test-utils@0.16.0(@babel/core@7.21.4)(@jest/types@29.4.2)(@types/node@18.13.0)(esbuild@0.17.16)(react@18.2.0)(ts-node@10.9.1)(typescript@4.9.5):
+    resolution: {integrity: sha512-+eYx5oxN1lE/NOCz0GTqlInwxiiBvdNaOFMvdnWE4xiuLnvntsk0zkIcZYrQ4zTrWt0svnYQmoBFdDbHekRMBQ==}
     peerDependencies:
       react: '*'
     peerDependenciesMeta:
@@ -3266,10 +3285,10 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@fuel-wallet/sdk@0.9.0(dexie@3.2.3)(fuels@0.44.1):
-    resolution: {integrity: sha512-oJG2v9vxTQo44ZQHxU5U79Yj+xCfahhk2TdrFk7nfqlaZ/iCrmw0HE8w3qyl4E9/XKuJNaj83FgaQAV6v1YpnQ==}
+  /@fuel-wallet/sdk@0.9.5(dexie@3.2.3)(fuels@0.44.1):
+    resolution: {integrity: sha512-HmKSKootBrjD4AWrEZuE3GwoMohXiiJ9dHVsOWlk3QY+VUwQRRICwvyD2NgQSNEonbsHIOsLpVcCgvaB3npKuw==}
     peerDependencies:
-      fuels: '>=0.41.0'
+      fuels: '>=0.43.0'
     dependencies:
       '@types/chrome': 0.0.212
       dexie-observable: 4.0.1-beta.13(dexie@3.2.3)

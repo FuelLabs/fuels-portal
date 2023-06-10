@@ -2,8 +2,9 @@ import { useBlock, useTransaction } from '@fuels-portal/sdk-react';
 import { useInterpret, useSelector } from '@xstate/react';
 import { useEffect } from 'react';
 
+import { useEthAccountConnection } from '../../eth';
 import type { TxFuelToEthMachineState } from '../machines';
-import { TxFuelToEthStatus, txFuelToEthMachine } from '../machines';
+import { txFuelToEthMachine } from '../machines';
 
 import { useFuelAccountConnection } from './useFuelAccountConnection';
 
@@ -11,55 +12,76 @@ import { store } from '~/store';
 
 const selectors = {
   status: (state: TxFuelToEthMachineState) => {
-    const { messageId, messageProof } = state.context;
-    if (!messageId) return TxFuelToEthStatus.waitingFuelTransaction;
-    if (!messageProof) return TxFuelToEthStatus.waitingSettlement;
+    const isSubmitToBridgeLoading = state.hasTag('isSubmitToBridgeLoading');
+    const isSubmitToBridgeSelected = state.hasTag('isSubmitToBridgeSelected');
+    const isSubmitToBridgeDone = state.hasTag('isSubmitToBridgeDone');
+    const isSettlementLoading = state.hasTag('isSettlementLoading');
+    const isSettlementSelected = state.hasTag('isSettlementSelected');
+    const isSettlementDone = state.hasTag('isSettlementDone');
+    const isConfirmTransactionSelected = state.hasTag(
+      'isConfirmTransactionSelected'
+    );
+    const isConfirmTransactionLoading = state.hasTag(
+      'isConfirmTransactionLoading'
+    );
+    const isConfirmTransactionDone = state.hasTag('isConfirmTransactionDone');
+    const isWaitingEthWalletApproval = state.hasTag(
+      'isWaitingEthWalletApproval'
+    );
+    const isReceiveDone = state.hasTag('isReceiveDone');
 
-    // TODO: add real condition waiting metamask approval
-    if (true) {
-      return TxFuelToEthStatus.waitingReceive;
-    }
-
-    return TxFuelToEthStatus.done;
+    return {
+      isSubmitToBridgeLoading,
+      isSubmitToBridgeSelected,
+      isSubmitToBridgeDone,
+      isSettlementLoading,
+      isSettlementSelected,
+      isSettlementDone,
+      isConfirmTransactionSelected,
+      isConfirmTransactionLoading,
+      isConfirmTransactionDone,
+      isWaitingEthWalletApproval,
+      isReceiveDone,
+    };
   },
   steps: (state: TxFuelToEthMachineState) => {
     const status = selectors.status(state);
 
-    const isWaitingFuelTransaction =
-      status === TxFuelToEthStatus.waitingFuelTransaction;
-    const isWaitingSettlement = status === TxFuelToEthStatus.waitingSettlement;
+    function getConfirmStatusText() {
+      if (status.isWaitingEthWalletApproval) return 'Action Required';
+      if (status.isConfirmTransactionDone) return 'Done!';
+      return 'Action';
+    }
 
-    const isDone = status === TxFuelToEthStatus.done;
     const steps = [
       {
         name: 'Submit to bridge',
         // TODO: put correct time left, how?
-        status: !isWaitingFuelTransaction ? 'Done!' : '~XX minutes left',
-        isSelected: isWaitingFuelTransaction,
-        isDone: !isWaitingFuelTransaction,
+        status: status.isSubmitToBridgeDone ? 'Done!' : '~XX minutes left',
+        isLoading: status.isSubmitToBridgeLoading,
+        isSelected: status.isSubmitToBridgeSelected,
+        isDone: status.isSubmitToBridgeDone,
       },
       {
         name: 'Settlement',
         // TODO: put correct time left, how? waiting for message Proof in this stage
-        status: !isWaitingSettlement ? 'Done!' : '~XX days left',
-        isLoading: isWaitingSettlement,
-        isDone: !isWaitingSettlement,
-        isSelected: isWaitingSettlement,
+        status: status.isSettlementDone ? 'Done!' : '~XX days left',
+        isLoading: status.isSettlementLoading,
+        isDone: status.isSettlementDone,
+        isSelected: status.isSettlementSelected,
       },
       {
         name: 'Confirm transaction',
-        // TODO: when doing approvar metamask part should: fix status text + isLoading + isDone + isSelected
-        status: isDone ? 'Done!' : 'Automatic',
-        isLoading: false,
-        isDone,
-        isSelected: false,
+        status: getConfirmStatusText(),
+        isLoading: status.isConfirmTransactionLoading,
+        isDone: status.isConfirmTransactionDone,
+        isSelected: status.isConfirmTransactionSelected,
       },
       {
         name: 'Receive on ETH',
-        // TODO: when doing approvar metamask part should: fix status text + isLoading + isDone + isSelected
-        status: isDone ? 'Done!' : 'Automatic',
+        status: status.isReceiveDone ? 'Done!' : 'Automatic',
         isLoading: false,
-        isDone,
+        isDone: status.isReceiveDone,
         isSelected: false,
       },
     ];
@@ -68,8 +90,11 @@ const selectors = {
 };
 
 export function useTxFuelToEth({ txId }: { txId: string }) {
+  const { walletClient: ethWalletClient, publicClient: ethPublicClient } =
+    useEthAccountConnection();
   const { provider: fuelProvider } = useFuelAccountConnection();
   const service = useInterpret(txFuelToEthMachine);
+  const status = useSelector(service, selectors.status);
   const steps = useSelector(service, selectors.steps);
 
   const { txResponse: fuelTx } = useTransaction(txId);
@@ -87,6 +112,7 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
         input: {
           fuelTxId: txId,
           fuelProvider,
+          ethPublicClient,
         },
       });
     }
@@ -98,9 +124,18 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
     }
   }, [block?.time]);
 
+  function relayToEth() {
+    service.send('RELAY_TO_ETH', {
+      input: {
+        ethWalletClient,
+      },
+    });
+  }
+
   return {
     handlers: {
       close: store.closeOverlay,
+      relayToEth,
     },
     fuelTx,
     fuelBlockDate: cachedBlockDate
@@ -109,5 +144,6 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
       ? new Date(Number(block?.time))
       : new Date(),
     steps,
+    isWaitingEthWalletApproval: status.isWaitingEthWalletApproval,
   };
 }

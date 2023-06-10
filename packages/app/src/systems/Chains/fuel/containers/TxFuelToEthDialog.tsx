@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Dialog, Box, Text, Icon, IconButton } from '@fuel-ui/react';
+import { Dialog, Box, Button, Text, Icon, IconButton } from '@fuel-ui/react';
 
 import { ETH_SYMBOL, ethLogoSrc } from '../../eth';
 import { useTxFuelToEth } from '../hooks';
@@ -11,9 +11,10 @@ import { useOverlay } from '~/systems/Overlay';
 
 export function TxFuelToEthDialog() {
   const { metadata } = useOverlay<{ txId: string }>();
-  const { steps, handlers, fuelTx, fuelBlockDate } = useTxFuelToEth({
-    txId: metadata.txId,
-  });
+  const { steps, isWaitingEthWalletApproval, handlers, fuelTx, fuelBlockDate } =
+    useTxFuelToEth({
+      txId: metadata.txId,
+    });
 
   return (
     <>
@@ -51,6 +52,11 @@ export function TxFuelToEthDialog() {
           />
         </Box.Stack>
       </Dialog.Description>
+      {isWaitingEthWalletApproval && (
+        <Dialog.Footer>
+          <Button onClick={handlers.relayToEth}>Confirm Transaction</Button>
+        </Dialog.Footer>
+      )}
     </>
   );
 }
