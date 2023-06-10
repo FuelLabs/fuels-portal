@@ -1,4 +1,4 @@
-import { Dialog } from '@fuel-ui/react';
+import { Button, Dialog } from '@fuel-ui/react';
 
 import { useTxFuelToEth } from '../hooks';
 
@@ -7,7 +7,7 @@ import { useOverlay } from '~/systems/Overlay';
 
 export function TxFuelToEthDialog() {
   const { metadata } = useOverlay<{ txId: string }>();
-  const { steps } = useTxFuelToEth({
+  const { steps, isWaitingEthWalletApproval, handlers } = useTxFuelToEth({
     txId: metadata.txId,
   });
 
@@ -18,6 +18,11 @@ export function TxFuelToEthDialog() {
       <Dialog.Description>
         <BridgeSteps steps={steps} />
       </Dialog.Description>
+      {isWaitingEthWalletApproval && (
+        <Dialog.Footer>
+          <Button onClick={handlers.relayToEth}>Confirm Transaction</Button>
+        </Dialog.Footer>
+      )}
     </>
   );
 }

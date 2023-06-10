@@ -169,6 +169,12 @@ export function useBridge() {
     return false;
   }
 
+  useEffect(() => {
+    store.openTxFuelToEth({
+      txId: '0x33fdada3331d5a4e34de49c5fc1dad615a909c06bbeff0b586d77afcb553f618',
+    });
+  });
+
   return {
     handlers: {
       goToDeposit,

@@ -1,6 +1,7 @@
 import { useInterpret, useSelector } from '@xstate/react';
 import { useEffect } from 'react';
 
+import { useEthAccountConnection } from '../../eth';
 import type { TxFuelToEthMachineState } from '../machines';
 import { TxFuelToEthStatus, txFuelToEthMachine } from '../machines';
 
@@ -13,9 +14,14 @@ const selectors = {
     const { messageId, messageProof } = state.context;
     if (!messageId) return TxFuelToEthStatus.waitingFuelTransaction;
     if (!messageProof) return TxFuelToEthStatus.waitingSettlement;
+    if (
+      state.matches('waitingEthWalletApproval') ||
+      state.matches('relayingMessageFromFuelBlock')
+    ) {
+      return TxFuelToEthStatus.waitingEthWalletApproval;
+    }
 
-    // TODO: add real condition waiting metamask approval
-    if (true) {
+    if (state.matches('waitingReceive')) {
       return TxFuelToEthStatus.waitingReceive;
     }
 
@@ -27,8 +33,19 @@ const selectors = {
     const isWaitingFuelTransaction =
       status === TxFuelToEthStatus.waitingFuelTransaction;
     const isWaitingSettlement = status === TxFuelToEthStatus.waitingSettlement;
+    const isWaitingEthWalletApproval =
+      status === TxFuelToEthStatus.waitingEthWalletApproval;
+    const isWaitingReceive = status === TxFuelToEthStatus.waitingReceive;
 
     const isDone = status === TxFuelToEthStatus.done;
+
+    function getConfirmStatusText() {
+      if (isWaitingEthWalletApproval) return 'Action Required';
+      if (isWaitingReceive) return 'Done!';
+      return 'Action';
+    }
+
+    // should refactor machine substates with tags 'submitDone', 'settlementDone', 'confirmDone', 'receiveDone', 'submitLoading' ..... etc
     const steps = [
       {
         name: 'Submit to bridge',
@@ -47,19 +64,17 @@ const selectors = {
       },
       {
         name: 'Confirm transaction',
-        // TODO: when doing approvar metamask part should: fix status text + isLoading + isDone + isSelected
-        status: isDone ? 'Done!' : 'Automatic',
+        status: getConfirmStatusText(),
         isLoading: false,
-        isDone,
-        isSelected: false,
+        isDone: isWaitingReceive || isDone,
+        isSelected: isWaitingEthWalletApproval,
       },
       {
         name: 'Receive on ETH',
-        // TODO: when doing approvar metamask part should: fix status text + isLoading + isDone + isSelected
         status: isDone ? 'Done!' : 'Automatic',
-        isLoading: false,
+        isLoading: isWaitingReceive,
         isDone,
-        isSelected: false,
+        isSelected: isWaitingReceive,
       },
     ];
     return steps;
@@ -67,8 +82,11 @@ const selectors = {
 };
 
 export function useTxFuelToEth({ txId }: { txId: string }) {
+  const { walletClient: ethWalletClient, publicClient: ethPublicClient } =
+    useEthAccountConnection();
   const { provider: fuelProvider } = useFuelAccountConnection();
   const service = useInterpret(txFuelToEthMachine);
+  const status = useSelector(service, selectors.status);
   const steps = useSelector(service, selectors.steps);
 
   useEffect(() => {
@@ -77,15 +95,27 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
         input: {
           fuelTxId: txId,
           fuelProvider,
+          ethPublicClient,
         },
       });
     }
   }, [txId, fuelProvider]);
 
+  function relayToEth() {
+    service.send('RELAY_TO_ETH', {
+      input: {
+        ethWalletClient,
+      },
+    });
+  }
+
   return {
     handlers: {
       close: store.closeOverlay,
+      relayToEth,
     },
     steps,
+    isWaitingEthWalletApproval:
+      status === TxFuelToEthStatus.waitingEthWalletApproval,
   };
 }
