@@ -133,6 +133,7 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
     handlers: {
       close: store.closeOverlay,
       relayToEth,
+      openTxFuelToEth: store.openTxFuelToEth,
     },
     fuelTx,
     fuelTxDate,

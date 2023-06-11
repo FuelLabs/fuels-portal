@@ -2,29 +2,31 @@ import { Image, FuelLogo, Text, Box, Spinner } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
 import { useEffect } from 'react';
 
-import { useTxEthToFuel } from '../hooks';
-import { ethLogoSrc } from '../utils';
+import { ethLogoSrc } from '../../eth';
+import { useTxFuelToEth } from '../hooks';
 
 import { BridgeTxItem } from '~/systems/Bridge';
 
-type TxListItemEthToFuelProps = {
+type TxListItemFuelToEthProps = {
   asset: {
     assetImageSrc: ReactNode | string;
     assetAmount: string;
     assetSymbol: string;
   };
   txHash: string;
+  date?: Date;
   isDone?: boolean;
 };
 
-export const TxListItemEthToFuel = ({
+export const TxListItemFuelToEth = ({
   asset,
   txHash,
+  date,
   isDone,
-}: TxListItemEthToFuelProps) => {
-  const { steps, ethBlockDate, handlers } = useTxEthToFuel({
-    id: txHash,
-    skipAnalyzeTx: isDone,
+}: TxListItemFuelToEthProps) => {
+  const { steps, handlers } = useTxFuelToEth({
+    txId: txHash,
+    // skipAnalyzeTx: isDone,
   });
 
   const bridgeTxStatus = steps?.find(({ isSelected }) => !!isSelected);
@@ -47,19 +49,13 @@ export const TxListItemEthToFuel = ({
     return '';
   }
 
-  useEffect(() => {
-    if (steps && steps[3].isDone) {
-      localStorage.setItem(`ethToFuelTx${txHash}-done`, 'true');
-    }
-  }, [steps]);
-
   return (
     <BridgeTxItem
-      fromLogo={<Image width={14} height={14} src={ethLogoSrc} />}
-      toLogo={<FuelLogo size={14} />}
-      date={ethBlockDate}
+      fromLogo={<FuelLogo size={14} />}
+      toLogo={<Image width={14} height={14} src={ethLogoSrc} />}
+      date={date}
       asset={asset}
-      onClick={() => handlers.openTxEthToFuel({ txId: txHash })}
+      onClick={() => handlers.openTxFuelToEth({ txId: txHash })}
       status={getStatusComponent()}
     />
   );

@@ -9,11 +9,12 @@ import {
   TxListItemEthToFuel,
   isEthChain,
   isFuelChain,
+  TxListItemFuelToEth,
 } from '~/systems/Chains';
 
 export const BridgeTxList = () => {
   const { isConnected, isConnecting, handlers } = useFuelAccountConnection();
-  const txData = useBridgeTxs();
+  const bridgeTxs = useBridgeTxs();
 
   return (
     <Card>
@@ -27,8 +28,8 @@ export const BridgeTxList = () => {
         <>
           <Card.Body css={styles.body}>
             <CardList isClickable>
-              {txData &&
-                txData.map((txDatum, index) => {
+              {bridgeTxs &&
+                bridgeTxs.map((txDatum, index) => {
                   if (
                     isEthChain(txDatum.fromNetwork) &&
                     isFuelChain(txDatum.toNetwork)
@@ -39,6 +40,20 @@ export const BridgeTxList = () => {
                         txHash={txDatum.txHash || ''}
                         asset={txDatum.asset}
                         isDone={txDatum.isDone}
+                      />
+                    );
+                  }
+                  if (
+                    isFuelChain(txDatum.fromNetwork) &&
+                    isEthChain(txDatum.toNetwork)
+                  ) {
+                    return (
+                      <TxListItemFuelToEth
+                        key={`${index}-${txDatum.txHash}`}
+                        txHash={txDatum.txHash || ''}
+                        asset={txDatum.asset}
+                        isDone={txDatum.isDone}
+                        date={txDatum.date}
                       />
                     );
                   }

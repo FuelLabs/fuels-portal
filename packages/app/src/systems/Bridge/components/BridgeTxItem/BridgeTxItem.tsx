@@ -9,7 +9,7 @@ type BridgeTxItemProps = {
   fromLogo: ReactNode;
   toLogo: ReactNode;
   asset: {
-    assetImageSrc: string;
+    assetImageSrc: ReactNode | string;
     assetAmount: string;
     assetSymbol: string;
   };
@@ -35,7 +35,11 @@ export const BridgeTxItem = ({
           {toLogo}
         </Box.Flex>
         <Box.Flex css={styles.txItem}>
-          <Image width={14} height={14} src={asset.assetImageSrc} />
+          {typeof asset.assetImageSrc === 'string' ? (
+            <Image width={14} height={14} src={asset.assetImageSrc} />
+          ) : (
+            asset.assetImageSrc
+          )}
           <Text css={styles.infoText}>{asset.assetAmount}</Text>
           <Text css={styles.infoText}>{asset.assetSymbol}</Text>
         </Box.Flex>

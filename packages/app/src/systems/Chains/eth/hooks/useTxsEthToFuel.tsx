@@ -1,6 +1,7 @@
 import { bn } from 'fuels';
 import { useMemo } from 'react';
 
+import type { BridgeTx } from '~/systems/Bridge/types';
 import {
   useEthDepositLogs,
   ethLogoSrc,
@@ -13,7 +14,7 @@ import {
 export const useTxsEthToFuel = () => {
   const { events, logs } = useEthDepositLogs();
 
-  const txs = useMemo(() => {
+  const txs: BridgeTx[] | undefined = useMemo(() => {
     return logs?.map((log, index) => {
       const txDatum = {
         asset: {
@@ -24,7 +25,7 @@ export const useTxsEthToFuel = () => {
           assetImageSrc: ethLogoSrc,
           assetSymbol: ETH_SYMBOL,
         },
-        txHash: log.transactionHash,
+        txHash: log.transactionHash || '0x',
         fromNetwork: ETH_CHAIN,
         toNetwork: FUEL_CHAIN,
         isDone:
