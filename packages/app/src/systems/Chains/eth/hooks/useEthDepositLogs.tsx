@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { bn } from 'fuels';
 import { useMemo } from 'react';
 import { decodeEventLog } from 'viem';
 
@@ -66,9 +67,35 @@ export const useEthDepositLogs = () => {
     );
   }, [filteredLogs]);
 
+  const blockQuery = useQuery(
+    ['ethBlockDates'],
+    async () => {
+      if (!filteredLogs) return null;
+      const blockPromises = filteredLogs.map((log) => {
+        if (log.blockHash) {
+          const blockPromise = provider.getBlock({ blockHash: log.blockHash });
+          return blockPromise;
+        }
+        return null;
+      });
+      const blocks = await Promise.all(blockPromises);
+      return blocks;
+    },
+    { enabled: !!(provider && filteredLogs) }
+  );
+
+  const dates = useMemo(() => {
+    return blockQuery.data?.map((block) => {
+      return block?.timestamp
+        ? new Date(bn(block.timestamp.toString()).mul(1000).toNumber())
+        : undefined;
+    });
+  }, [blockQuery.data]);
+
   return {
     events: decodedEvents as any, // eslint-disable-line @typescript-eslint/no-explicit-any
     logs: filteredLogs,
+    dates,
     ...query,
   };
 };
