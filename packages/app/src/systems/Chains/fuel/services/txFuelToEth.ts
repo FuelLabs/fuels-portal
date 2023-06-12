@@ -11,8 +11,6 @@ import type { WalletClient, PublicClient as EthPublicClient } from 'viem';
 import type { BlockHeader, MessageOutput } from '../../eth';
 import { TxEthToFuelService } from '../../eth';
 
-import { VITE_ETH_FUEL_MESSAGE_PORTAL } from '~/config';
-
 export type TxFuelToEthInputs = {
   create: {
     amount?: BN;
@@ -111,13 +109,13 @@ export class TxFuelToEthService {
       throw new Error('Need to connect ETH Wallet');
     }
 
-    const { messageProof, ethPublicClient } = input;
+    // const { messageProof, ethPublicClient } = input;
 
-    const logs = await ethPublicClient.getLogs({
-      address: VITE_ETH_FUEL_MESSAGE_PORTAL as `0x${string}`,
-      // TODO: put correct filters to get event messageRelayed (when it gets added)
-      fromBlock: 'earliest',
-    });
+    // const logs = await ethPublicClient.getLogs({
+    //   address: VITE_ETH_FUEL_MESSAGE_PORTAL as `0x${string}`,
+    //   // TODO: put correct filters to get event messageRelayed (when it gets added)
+    //   fromBlock: 'earliest',
+    // });
 
     return undefined;
   }
