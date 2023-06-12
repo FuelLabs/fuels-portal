@@ -49,6 +49,7 @@ const styles = {
     color: '$intentsBase12',
   }),
   buttonLinks: cssObj({
+    mb: '$3',
     a: {
       my: '$4',
       px: '0',

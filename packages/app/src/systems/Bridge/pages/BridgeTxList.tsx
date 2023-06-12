@@ -3,6 +3,7 @@ import { Card, Text, CardList } from '@fuel-ui/react';
 
 import { BridgeTxListEmpty } from '../components';
 import { useBridgeTxs } from '../hooks';
+import { bridgeTxListStyles } from '../styles';
 
 import {
   useFuelAccountConnection,
@@ -11,18 +12,43 @@ import {
   isFuelChain,
   TxListItemFuelToEth,
 } from '~/systems/Chains';
+import { coreStyles } from '~/systems/Core';
 
 export const BridgeTxList = () => {
   const { isConnected, isConnecting, handlers } = useFuelAccountConnection();
   const bridgeTxs = useBridgeTxs();
 
   return (
-    <Card>
+    <Card css={coreStyles.card}>
       <Card.Header css={styles.header}>
-        <Text>Age</Text>
-        <Text>Direction</Text>
-        <Text>Asset</Text>
-        <Text>Status</Text>
+        <Text
+          fontSize="sm"
+          color="intentsBase10"
+          css={bridgeTxListStyles.ageColumn}
+        >
+          Age
+        </Text>
+        <Text
+          fontSize="sm"
+          color="intentsBase10"
+          css={bridgeTxListStyles.directionColumn}
+        >
+          Direction
+        </Text>
+        <Text
+          fontSize="sm"
+          color="intentsBase10"
+          css={bridgeTxListStyles.assetColumn}
+        >
+          Asset
+        </Text>
+        <Text
+          fontSize="sm"
+          color="intentsBase10"
+          css={bridgeTxListStyles.statusColumn}
+        >
+          Status
+        </Text>
       </Card.Header>
       {isConnected ? (
         <>
@@ -77,8 +103,10 @@ export const BridgeTxList = () => {
 
 const styles = cssObj({
   header: cssObj({
-    justifyContent: 'space-between',
     alignItems: 'center',
+    px: '$0',
+    mx: '$4',
+    borderBottom: '1px solid $border',
   }),
   body: cssObj({
     minHeight: '$56',

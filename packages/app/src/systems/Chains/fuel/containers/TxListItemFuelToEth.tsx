@@ -1,6 +1,6 @@
-import { Image, FuelLogo, Text, Box, Spinner } from '@fuel-ui/react';
+import { cssObj } from '@fuel-ui/css';
+import { Image, FuelLogo, Text, Box, Spinner, Badge } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
-import { useEffect } from 'react';
 
 import { ethLogoSrc } from '../../eth';
 import { useTxFuelToEth } from '../hooks';
@@ -38,25 +38,41 @@ export const TxListItemFuelToEth = ({
           Settled
         </Text>
       );
-    if (bridgeTxStatus?.isLoading)
+
+    if (bridgeTxStatus?.isLoading) {
       return (
         <Box.Flex align="center" gap="$1">
           <Spinner size={14} />
           <Text fontSize="xs">Processing</Text>
         </Box.Flex>
       );
+    }
+
+    if (bridgeTxStatus?.name === 'Confirm transaction') {
+      return <Badge css={styles.actionBadge}>Action Required</Badge>;
+    }
 
     return '';
   }
 
   return (
     <BridgeTxItem
-      fromLogo={<FuelLogo size={14} />}
-      toLogo={<Image width={14} height={14} src={ethLogoSrc} />}
+      fromLogo={<FuelLogo size={17} />}
+      toLogo={<Image width={18} height={18} src={ethLogoSrc} />}
       date={date}
       asset={asset}
       onClick={() => handlers.openTxFuelToEth({ txId: txHash })}
       status={getStatusComponent()}
     />
   );
+};
+
+const styles = {
+  actionBadge: cssObj({
+    fontSize: '$xs',
+    lineHeight: 1,
+    padding: '$1',
+    textTransform: 'none',
+    backgroundColor: '$intentsError9',
+  }),
 };

@@ -3,6 +3,7 @@ import { Card, Text, Image, Button, Box, IconButton } from '@fuel-ui/react';
 import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
 
+import { coreStyles } from '~/systems/Core';
 import { animations, shortAddress } from '~/systems/Core/utils';
 
 const MotionCard = motion(Card);
@@ -31,11 +32,14 @@ export const AccountConnectionInput = ({
   onDisconnect,
 }: AccountConnectionInputProps) => {
   return (
-    <MotionCard {...animations.slideInTop()} css={styles.root}>
-      <Card.Body>
+    <MotionCard
+      {...animations.slideInTop()}
+      css={{ ...styles.root, ...coreStyles.card }}
+    >
+      <Card.Body css={styles.cardBody}>
         <Box.Stack gap="$1">
           <Box>
-            <Text css={styles.label}>{label}</Text>
+            <Text fontSize="sm">{label}</Text>
           </Box>
           <Box.Flex align="center" wrap="wrap" justify="space-between">
             <Box.Flex gap="$2" align="center">
@@ -44,13 +48,14 @@ export const AccountConnectionInput = ({
               ) : (
                 networkImage
               )}
-              <Text>{networkName}</Text>
+              <Text color="intentsBase12">{networkName}</Text>
             </Box.Flex>
             {!account?.address ? (
               <Button
                 onPress={onConnect}
                 isLoading={isConnecting}
                 css={styles.connectButton}
+                size="sm"
               >
                 Connect wallet
               </Button>
@@ -71,7 +76,7 @@ export const AccountConnectionInput = ({
                 }
                 variant="outlined"
                 intent="base"
-                size="xs"
+                size="sm"
                 css={{ ...styles.connectButton, ...styles.connectedButton }}
               >
                 <Text fontSize="xs">
@@ -89,19 +94,17 @@ export const AccountConnectionInput = ({
 
 const styles = {
   root: cssObj({
-    py: '$2',
-    px: '$3',
     minHeight: '$15',
     borderRadius: '$md',
   }),
-  label: cssObj({
-    fontSize: '$sm',
+  cardBody: cssObj({
+    px: '$3',
+    py: '$2',
   }),
   connectButton: cssObj({
     borderRadius: '$md',
     height: '22px',
     width: '140px',
-    fontSize: '$xs',
   }),
   connectedButton: cssObj({
     justifyContent: 'space-between',

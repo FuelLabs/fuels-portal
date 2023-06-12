@@ -55,8 +55,8 @@ export const TxListItemEthToFuel = ({
 
   return (
     <BridgeTxItem
-      fromLogo={<Image width={14} height={14} src={ethLogoSrc} />}
-      toLogo={<FuelLogo size={14} />}
+      fromLogo={<Image width={18} height={18} src={ethLogoSrc} />}
+      toLogo={<FuelLogo size={17} />}
       date={ethBlockDate}
       asset={asset}
       onClick={() => handlers.openTxEthToFuel({ txId: txHash })}

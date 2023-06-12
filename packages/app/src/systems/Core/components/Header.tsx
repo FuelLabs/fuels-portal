@@ -69,6 +69,7 @@ export function Header() {
 
 const styles = {
   root: cssObj({
+    backgroundColor: '$intentsBase1',
     borderBottom: '1px solid $intentsBase5',
     justifyContent: 'space-between',
     pl: '$14',

@@ -40,12 +40,13 @@ export const BridgeSteps = ({ steps }: BridgeStepsProps) => {
                   </Text>
                 )}
               </Box>
-
-              <Text css={styles.name}>{step.name}</Text>
+              <Text fontSize="sm" color="intentsBase12" css={styles.name}>
+                {step.name}
+              </Text>
             </Box.Flex>
             <Box.Flex align="center" gap="$1">
               {step.isLoading && <Spinner size={14} />}
-              <Text fontSize="xs">{step.status}</Text>
+              <Text fontSize="sm">{step.status}</Text>
             </Box.Flex>
           </Box.Flex>
         );
@@ -66,7 +67,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'space-between',
     px: '$3',
-    py: '$1',
+    py: '$2',
 
     '& ~ &': {
       borderTop: '1px solid $intentsBase5',
@@ -83,8 +84,6 @@ const styles = {
   }),
   name: cssObj({
     lineHeight: '1.5rem',
-    fontSize: '$xs',
-    color: '$intentsBase12',
   }),
   icon: cssObj({
     color: '$black12',

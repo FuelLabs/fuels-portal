@@ -13,7 +13,9 @@ import {
   isEthChain,
   isFuelChain,
 } from '~/systems/Chains';
-import { animations } from '~/systems/Core';
+import { animations, coreStyles } from '~/systems/Core';
+
+const MotionBox = motion(Box);
 
 export const Bridge = () => {
   const { fromNetwork, toNetwork, assetAmount, assetBalance, handlers } =
@@ -22,13 +24,13 @@ export const Bridge = () => {
   if (!fromNetwork || !toNetwork) return null;
 
   return (
-    <Card>
+    <Card css={coreStyles.card}>
       <Card.Body>
         <BridgeTabs />
         <Box.Stack gap="$6">
           {Boolean(fromNetwork && toNetwork) && (
             <Box.Stack gap="$2">
-              <Text fontSize="xs" css={styles.sectionHeader}>
+              <Text fontSize="sm" css={styles.sectionHeader}>
                 Network
               </Text>
               {isEthChain(fromNetwork) && <EthAccountConnection label="From" />}
@@ -40,10 +42,10 @@ export const Bridge = () => {
             </Box.Stack>
           )}
           <Box.Stack gap="$2">
-            <Text fontSize="xs" css={styles.sectionHeader}>
+            <Text fontSize="sm" css={styles.sectionHeader}>
               Asset
             </Text>
-            <motion.div {...animations.slideInTop()}>
+            <MotionBox {...animations.slideInTop()} css={styles.amountInput}>
               <InputAmount
                 balance={assetBalance}
                 asset={{
@@ -56,7 +58,7 @@ export const Bridge = () => {
                   handlers.changeAssetAmount({ assetAmount: val })
                 }
               />
-            </motion.div>
+            </MotionBox>
           </Box.Stack>
           <BridgeButton />
           {isFuelChain(toNetwork) && (
@@ -83,7 +85,13 @@ export const Bridge = () => {
 
 const styles = {
   sectionHeader: cssObj({
-    fontWeight: '$bold',
+    fontWeight: '$semibold',
     color: '$intentsBase12',
+  }),
+  amountInput: cssObj({
+    '& > div': {
+      px: '$3',
+      py: '$2',
+    },
   }),
 };

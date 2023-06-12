@@ -34,7 +34,9 @@ export function TxFuelToEthDialog() {
       </Dialog.Heading>
       <Dialog.Description>
         <Box.Stack gap="$2">
-          <Text css={styles.header}>Status</Text>
+          <Text fontSize="sm" color="intentsBase12">
+            Status
+          </Text>
           <BridgeSteps steps={steps} />
           <Box css={styles.border} />
           <BridgeTxOverview
@@ -44,6 +46,7 @@ export function TxFuelToEthDialog() {
             asset={{
               assetSymbol: ETH_SYMBOL,
               imageUrl: ethLogoSrc,
+              // TODO: fix this outputs[0], get from Receipt instead (like in list)
               assetAmount: fuelTx?.outputs[0].amount.format({
                 precision: 9,
                 units: FUEL_UNITS,
@@ -70,10 +73,6 @@ const styles = {
   }),
   dialogHeadingIcon: cssObj({
     color: '$intentsBase12 !important',
-  }),
-  header: cssObj({
-    color: '$intentsBase12',
-    fontSize: '$xs',
   }),
   border: cssObj({
     my: '$4',

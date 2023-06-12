@@ -19,7 +19,7 @@ export function TxEthToFuelDialog() {
     <>
       <Dialog.Heading css={styles.dialogHeading}>
         <Box.Flex justify="space-between" css={styles.dialogHeadingContainer}>
-          <Text fontSize="sm" color="intentsBase12">
+          <Text color="intentsBase12" fontSize="sm">
             Transaction: {shortAddress(metadata.txId)}
           </Text>
           <IconButton
@@ -33,7 +33,9 @@ export function TxEthToFuelDialog() {
       </Dialog.Heading>
       <Dialog.Description>
         <Box.Stack gap="$2">
-          <Text css={styles.header}>Status</Text>
+          <Text fontSize="sm" color="intentsBase12">
+            Status
+          </Text>
           <BridgeSteps steps={steps} />
           <Box css={styles.border} />
           <BridgeTxOverview
@@ -64,10 +66,6 @@ const styles = {
   }),
   dialogHeadingIcon: cssObj({
     color: '$intentsBase12 !important',
-  }),
-  header: cssObj({
-    color: '$intentsBase12',
-    fontSize: '$xs',
   }),
   border: cssObj({
     my: '$4',
