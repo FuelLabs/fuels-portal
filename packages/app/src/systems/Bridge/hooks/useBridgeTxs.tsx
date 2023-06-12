@@ -5,7 +5,10 @@ export const useBridgeTxs = () => {
   const { txs: ethToFuelTxs } = useTxsEthToFuel();
   const { txs: fuelToEthTxs } = useTxsFuelToEth();
 
+  console.log('eth txs: ', ethToFuelTxs);
+
   const allTxs = [...(ethToFuelTxs || []), ...(fuelToEthTxs || [])];
+  console.log('temp: ', allTxs);
   const sortedTxs = allTxs.sort((a, b) => {
     if (a.date === undefined) {
       return 1;

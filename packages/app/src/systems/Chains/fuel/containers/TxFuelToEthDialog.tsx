@@ -11,10 +11,15 @@ import { useOverlay } from '~/systems/Overlay';
 
 export function TxFuelToEthDialog() {
   const { metadata } = useOverlay<{ txId: string }>();
-  const { steps, isWaitingEthWalletApproval, handlers, fuelTx, fuelTxDate } =
-    useTxFuelToEth({
-      txId: metadata.txId,
-    });
+  const {
+    steps,
+    isWaitingEthWalletApproval,
+    handlers,
+    fuelTxDate,
+    fuelTxAmount,
+  } = useTxFuelToEth({
+    txId: metadata.txId,
+  });
 
   return (
     <>
@@ -46,11 +51,7 @@ export function TxFuelToEthDialog() {
             asset={{
               assetSymbol: ETH_SYMBOL,
               imageUrl: ethLogoSrc,
-              // TODO: fix this outputs[0], get from Receipt instead (like in list)
-              assetAmount: fuelTx?.outputs[0].amount.format({
-                precision: 9,
-                units: FUEL_UNITS,
-              }),
+              assetAmount: fuelTxAmount,
             }}
           />
         </Box.Stack>

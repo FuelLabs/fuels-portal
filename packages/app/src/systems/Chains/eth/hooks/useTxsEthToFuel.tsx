@@ -35,7 +35,7 @@ export const useTxsEthToFuel = () => {
       };
       return txDatum;
     });
-  }, [logs]);
+  }, [logs, events, dates]);
 
   return {
     txs,

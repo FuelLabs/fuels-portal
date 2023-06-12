@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { useEthAccountConnection } from '../../eth';
 import type { TxFuelToEthMachineState } from '../machines';
 import { txFuelToEthMachine } from '../machines';
+import { FUEL_UNITS } from '../utils';
 
 import { useFuelAccountConnection } from './useFuelAccountConnection';
 
@@ -113,6 +114,7 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
   const status = useSelector(service, selectors.status);
   const steps = useSelector(service, selectors.steps);
   const fuelTxResult = useSelector(service, selectors.fuelTxResult);
+  const fuelTxAmount = useSelector(service, selectors.amountSent);
 
   const fuelTxDate = fuelTxResult?.time
     ? new Date(fromTai64ToUnix(fuelTxResult?.time) * 1000)
@@ -148,6 +150,10 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
     },
     fuelTx,
     fuelTxDate,
+    fuelTxAmount: fuelTxAmount?.format({
+      precision: 9,
+      units: FUEL_UNITS,
+    }),
     steps,
     isWaitingEthWalletApproval: status.isWaitingEthWalletApproval,
   };
