@@ -211,7 +211,7 @@ export const txFuelToEthMachine = createMachine(
                     tags: ['isConfirmTransactionDone'],
                     initial: 'done',
                     states: {
-                      // here should implement state to wait for receipts of relayed txId, to make sure it's settled and put as done
+                      // TODO: here should implement state to wait for receipts of relayed txId, to make sure it's settled and put as done
                       done: {
                         tags: ['isReceiveDone'],
                         type: 'final',
