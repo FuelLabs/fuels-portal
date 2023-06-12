@@ -3,7 +3,6 @@ import { Dialog, Box, Button, Text, Icon, IconButton } from '@fuel-ui/react';
 
 import { ETH_SYMBOL, ethLogoSrc } from '../../eth';
 import { useTxFuelToEth } from '../hooks';
-import { FUEL_UNITS } from '../utils';
 
 import { BridgeSteps, BridgeTxOverview } from '~/systems/Bridge';
 import { shortAddress } from '~/systems/Core';
@@ -47,7 +46,7 @@ export function TxFuelToEthDialog() {
           <BridgeTxOverview
             transactionId={shortAddress(metadata.txId)}
             date={fuelTxDate}
-            isDeposit={true}
+            isDeposit={false}
             asset={{
               assetSymbol: ETH_SYMBOL,
               imageUrl: ethLogoSrc,
