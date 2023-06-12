@@ -20,22 +20,45 @@ export const useEthDepositLogs = () => {
     async () => {
       const logs = await provider!.getLogs({
         address: VITE_ETH_FUEL_MESSAGE_PORTAL as `0x${string}`,
-        // TODO: put correct data to generate topic[0] hash correctly
-        // event: {
-        //   type: 'event',
-        //   name: 'MessageSent',
-        //   inputs: [
-        //     { type: 'bytes32', indexed: true, name: 'sender' },
-        //     { type: 'bytes32', indexed: true, name: 'recipient' },
-        //     { type: 'uint256', indexed: true, name: 'nonce' },
-        //     { type: 'uint64', indexed: false, name: 'amount' },
-        //     { type: 'bytes', indexed: false, name: 'data' },
-        //   ],
-        // },
-        // args: {
-        //   sender: ethPaddedAddress,
-        //   recipient: fuelAddress?.toHexString() as `0x${string}`,
-        // },
+        event: {
+          type: 'event',
+          name: 'SentMessage',
+          inputs: [
+            {
+              indexed: true,
+              internalType: 'bytes32',
+              name: 'sender',
+              type: 'bytes32',
+            },
+            {
+              indexed: true,
+              internalType: 'bytes32',
+              name: 'recipient',
+              type: 'bytes32',
+            },
+            {
+              indexed: false,
+              internalType: 'uint64',
+              name: 'nonce',
+              type: 'uint64',
+            },
+            {
+              indexed: false,
+              internalType: 'uint64',
+              name: 'amount',
+              type: 'uint64',
+            },
+            {
+              indexed: false,
+              internalType: 'bytes',
+              name: 'data',
+              type: 'bytes',
+            },
+          ],
+        },
+        args: {
+          recipient: fuelAddress?.toHexString() as `0x${string}`,
+        },
         fromBlock: 'earliest',
       });
       return logs;
@@ -45,17 +68,7 @@ export const useEthDepositLogs = () => {
     }
   );
 
-  // TODO: remove this filtering when previous query gets fixed and returns correct data
-  const filteredLogs = query.data?.filter((log) => {
-    if (log.topics.length < 3) {
-      return false;
-    }
-
-    return (
-      // log.topics[1] === ethPaddedAddress ||
-      log.topics[2] === fuelAddress?.toHexString()
-    );
-  });
+  const filteredLogs = query.data;
 
   const decodedEvents = useMemo(() => {
     return filteredLogs?.map((log) =>
