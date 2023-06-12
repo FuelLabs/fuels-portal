@@ -1,6 +1,7 @@
 import { useTransaction } from '@fuels-portal/sdk-react';
 import { useInterpret, useSelector } from '@xstate/react';
-import { fromTai64ToUnix } from 'fuels';
+import type { ReceiptMessageOut } from 'fuels';
+import { ReceiptType, fromTai64ToUnix } from 'fuels';
 import { useEffect } from 'react';
 
 import { useEthAccountConnection } from '../../eth';
@@ -91,6 +92,16 @@ const selectors = {
   fuelTxResult: (state: TxFuelToEthMachineState) => {
     const fuelTxResult = state.context.fuelTxResult;
     return fuelTxResult;
+  },
+  amountSent: (state: TxFuelToEthMachineState) => {
+    const fuelTxResult = state.context.fuelTxResult;
+
+    const messageOutReceipt = fuelTxResult?.receipts.find(
+      ({ type }) => type === ReceiptType.MessageOut
+    ) as ReceiptMessageOut;
+
+    const amountSent = messageOutReceipt?.amount;
+    return amountSent;
   },
 };
 
