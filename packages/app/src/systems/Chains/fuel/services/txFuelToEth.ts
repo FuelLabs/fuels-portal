@@ -109,6 +109,7 @@ export class TxFuelToEthService {
       throw new Error('Need to connect ETH Wallet');
     }
 
+    // TODO: implement logic to identify relayed transaction/event in eth side
     // const { messageProof, ethPublicClient } = input;
 
     // const logs = await ethPublicClient.getLogs({
