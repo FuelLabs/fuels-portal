@@ -89,10 +89,9 @@ export function useBridge() {
     if (isEthChain(fromNetwork)) {
       if (ethBalance) {
         const [intPart, decimalPart] = ethBalance?.formatted?.split('.') || [];
-        const formattedUnits = `${intPart}.${decimalPart.slice(
-          0,
-          DECIMAL_UNITS
-        )}`;
+        const formattedUnits = `${intPart}.${
+          decimalPart?.slice(0, DECIMAL_UNITS) || '0'
+        }`;
         return ethBalance ? bn.parseUnits(formattedUnits) : undefined;
       }
     }
