@@ -1,5 +1,5 @@
 import { darkColors, lightColors } from '@fuel-ui/css';
-import { ThemeProvider, createTheme, darkTheme } from '@fuel-ui/react';
+import { ThemeProvider, createTheme } from '@fuel-ui/react';
 import type { PropsWithChildren } from 'react';
 
 import { useTheme } from '../hooks';

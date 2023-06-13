@@ -123,9 +123,9 @@ export class TxFuelToEthService {
       throw new Error('Need to connect ETH Wallet');
     }
 
-    const { messageProof, ethPublicClient } = input;
+    const { ethPublicClient } = input;
 
-    const logs = await ethPublicClient.getLogs({
+    await ethPublicClient.getLogs({
       address: VITE_ETH_FUEL_MESSAGE_PORTAL as `0x${string}`,
       // TODO: put correct filters to get event messageRelayed (when it gets added)
       fromBlock: 'earliest',
