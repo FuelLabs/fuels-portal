@@ -105,7 +105,7 @@ export class TxEthToFuelService {
       abi: AbiFuelMessagePortal,
       data: receipt.logs[0].data,
       topics: receipt.logs[0].topics,
-    }) as any; // eslint-disable-line @typescript-eslint/no-explicit-any
+    }) as unknown as { args: { nonce: number } };
     const depositNonce = bn(decodedEvent.args.nonce);
     return depositNonce;
   }

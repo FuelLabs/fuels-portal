@@ -1,6 +1,5 @@
 import { Image, FuelLogo, Text, Box, Spinner } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
-import { useEffect } from 'react';
 
 import { useTxEthToFuel } from '../hooks';
 import { ethLogoSrc } from '../utils';
@@ -46,12 +45,6 @@ export const TxListItemEthToFuel = ({
 
     return '';
   }
-
-  useEffect(() => {
-    if (steps && steps[3].isDone) {
-      localStorage.setItem(`ethToFuelTx${txHash}-done`, 'true');
-    }
-  }, [steps]);
 
   return (
     <BridgeTxItem

@@ -1,6 +1,5 @@
 export * from './useAccount';
 export * from './useBalance';
-export * from './useBlock';
 export * from './useConnect';
 export * from './useDisconnect';
 export * from './useIsConnected';

@@ -94,6 +94,7 @@ export const BridgeTxList = () => {
           <BridgeTxListEmpty
             isConnecting={isConnecting}
             onClick={handlers.connect}
+            hideConnectButton={isConnected}
           />
         </>
       )}

@@ -96,7 +96,14 @@ export function useTxEthToFuel({
   const service = useInterpret(txEthToFuelMachine);
   const steps = useSelector(service, selectors.steps);
   useEffect(() => {
-    if (ethTx && ethProvider && fuelProvider && fuelAddress && !skipAnalyzeTx) {
+    if (
+      ethTx &&
+      ethProvider &&
+      fuelProvider &&
+      fuelAddress &&
+      !skipAnalyzeTx &&
+      ethPublicClient
+    ) {
       service.send('START_ANALYZE_TX', {
         input: {
           ethTx,
@@ -107,7 +114,15 @@ export function useTxEthToFuel({
         },
       });
     }
-  }, [ethTx, ethProvider, fuelProvider, fuelAddress, service, ethPublicClient]);
+  }, [
+    ethTx,
+    ethProvider,
+    fuelProvider,
+    fuelAddress,
+    service,
+    ethPublicClient,
+    skipAnalyzeTx,
+  ]);
 
   useEffect(() => {
     if (block.date) {
@@ -126,7 +141,7 @@ export function useTxEthToFuel({
     ethTx,
     ethBlockDate: cachedBlockDate
       ? new Date(Number(cachedBlockDate))
-      : block.date || new Date(),
+      : block.date || undefined,
     steps,
   };
 }
