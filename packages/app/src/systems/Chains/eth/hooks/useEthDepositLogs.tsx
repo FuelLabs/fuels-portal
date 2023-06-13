@@ -85,6 +85,12 @@ export const useEthDepositLogs = () => {
     async () => {
       if (!filteredLogs) return null;
       const blockPromises = filteredLogs.map((log) => {
+        const cachedBlockDate = localStorage.getItem(
+          `ethBlockDate-${log?.blockHash}`
+        );
+        if (cachedBlockDate) {
+          return cachedBlockDate;
+        }
         if (log.blockHash) {
           const blockPromise = provider.getBlock({ blockHash: log.blockHash });
           return blockPromise;
@@ -99,6 +105,14 @@ export const useEthDepositLogs = () => {
 
   const dates = useMemo(() => {
     return blockQuery.data?.map((block) => {
+      if (typeof block === 'string') {
+        // We don't have to multiply by 1000 bc the time is already stored in ms
+        return new Date(bn(block).toNumber());
+      }
+      localStorage.setItem(
+        `ethBlockDate-${block?.hash}`,
+        bn(block?.timestamp.toString()).mul(1000).toString()
+      );
       return block?.timestamp
         ? new Date(bn(block.timestamp.toString()).mul(1000).toNumber())
         : undefined;
