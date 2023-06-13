@@ -1,4 +1,8 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
 
 importers:
 
@@ -12,7 +16,7 @@ importers:
         version: 0.15.1-dev-80e1a79
       '@fuel-ui/react':
         specifier: 0.15.1-dev-80e1a79
-        version: 0.15.1-dev-80e1a79(@babel/core@7.21.4)(@jest/types@29.4.2)(@types/node@18.13.0)(@types/react@18.0.27)(csstype@3.1.2)(esbuild@0.17.16)(ts-node@10.9.1)(typescript@4.9.5)
+        version: 0.15.1-dev-80e1a79(@babel/core@7.20.12)(@jest/types@29.4.2)(@types/node@18.13.0)(@types/react@18.0.27)(csstype@3.1.2)(ts-node@10.9.1)(typescript@4.9.5)
     devDependencies:
       '@babel/core':
         specifier: ^7.20.12
@@ -70,7 +74,7 @@ importers:
         version: 1.1.2
       ts-jest:
         specifier: ^29.0.5
-        version: 29.1.0(@babel/core@7.21.4)(@jest/types@29.4.2)(esbuild@0.15.18)(jest@29.4.2)(typescript@4.9.5)
+        version: 29.1.0(@babel/core@7.20.12)(@jest/types@29.4.2)(jest@29.4.2)(typescript@4.9.5)
       ts-node:
         specifier: ^10.9.1
         version: 10.9.1(@types/node@18.13.0)(typescript@4.9.5)
@@ -111,14 +115,14 @@ importers:
         specifier: ^5.7.2
         version: 5.7.2
       '@fuel-ui/css':
-        specifier: 0.15.1-dev-80e1a79
-        version: 0.15.1-dev-80e1a79
+        specifier: 0.16.0
+        version: 0.16.0
       '@fuel-ui/react':
-        specifier: 0.15.1-dev-80e1a79
-        version: 0.15.1-dev-80e1a79(@babel/core@7.21.4)(@jest/types@29.4.2)(@types/node@18.13.0)(@types/react@18.0.27)(csstype@3.1.2)(esbuild@0.17.16)(ts-node@10.9.1)(typescript@4.9.5)
+        specifier: 0.16.0
+        version: 0.16.0(@babel/core@7.21.4)(@jest/types@29.4.2)(@types/node@18.13.0)(@types/react@18.0.27)(csstype@3.1.2)(esbuild@0.17.16)(ts-node@10.9.1)(typescript@4.9.5)
       '@fuel-wallet/sdk':
-        specifier: ^0.9.0
-        version: 0.9.0(dexie@3.2.3)(fuels@0.44.1)
+        specifier: ^0.9.5
+        version: 0.9.5(dexie@3.2.3)(fuels@0.44.1)
       '@fuels-portal/sdk-react':
         specifier: workspace:*
         version: link:../sdk-react
@@ -323,8 +327,8 @@ importers:
   packages/sdk-react:
     dependencies:
       '@fuel-wallet/sdk':
-        specifier: ^0.9.0
-        version: 0.9.0(dexie@3.2.3)(fuels@0.44.1)
+        specifier: ^0.9.5
+        version: 0.9.5(dexie@3.2.3)(fuels@0.44.1)
       '@tanstack/react-query':
         specifier: ^4.29.5
         version: 4.29.5(react-dom@18.2.0)(react@18.2.0)
@@ -463,7 +467,6 @@ packages:
       semver: 6.3.0
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /@babel/core@7.21.4:
     resolution: {integrity: sha512-qt/YV149Jman/6AfmlxJ04LMIu8bMoyl3RB91yTFrxQmgbrSvQMy7cI8Q62FHx1t8wJ8B5fu0UDoLwHAhUo1QA==}
@@ -522,7 +525,6 @@ packages:
       browserslist: 4.21.5
       lru-cache: 5.1.1
       semver: 6.3.0
-    dev: true
 
   /@babel/helper-compilation-targets@7.21.4(@babel/core@7.21.4):
     resolution: {integrity: sha512-Fa0tTuOXZ1iL8IeDFUWCzjZcn+sJGd9RZdH9esYVjEejGmzf+FFYQpMi/kZUk2kPy/q1H3/GPw7np8qar/stfg==}
@@ -3026,6 +3028,16 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
+  /@fuel-ui/css@0.16.0:
+    resolution: {integrity: sha512-svDZEvvDcYHvgtEgBr0IUW4I4zz26V03Gz+GNRhI3VYPIJ1PDzjWpUz7A+/5qSPv4ABXlsU4ru7nhWq47zebGg==}
+    dependencies:
+      '@fuel-ui/design-tokens': 0.16.0
+      '@radix-ui/colors': 0.1.8
+      classnames: 2.3.2
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /@fuel-ui/design-tokens@0.15.1-dev-80e1a79:
     resolution: {integrity: sha512-cotbGy65+eIKHJGBAyw4NurJb2Sp3MlTMQQTKAvaORwrmVnmu1Ew//kEsFwOeh00skICMaCPx2PgtcJ4rGPr1Q==}
     dependencies:
@@ -3035,12 +3047,77 @@ packages:
       lodash: 4.17.21
     dev: false
 
-  /@fuel-ui/react@0.15.1-dev-80e1a79(@babel/core@7.21.4)(@jest/types@29.4.2)(@types/node@18.13.0)(@types/react@18.0.27)(csstype@3.1.2)(esbuild@0.17.16)(ts-node@10.9.1)(typescript@4.9.5):
+  /@fuel-ui/design-tokens@0.16.0:
+    resolution: {integrity: sha512-R3mNv4OpxBCN1ShVfwSmP5+vUi/Uz0GfdWpa9+oNxaygHWUyKoJk/3C2pU7Im2sUgpjhXG2niBCxpsMiIrUWCw==}
+    dependencies:
+      '@radix-ui/colors': 0.1.8
+      chroma-js: 2.4.2
+      copy-to-clipboard: 3.3.3
+      lodash: 4.17.21
+    dev: false
+
+  /@fuel-ui/react@0.15.1-dev-80e1a79(@babel/core@7.20.12)(@jest/types@29.4.2)(@types/node@18.13.0)(@types/react@18.0.27)(csstype@3.1.2)(ts-node@10.9.1)(typescript@4.9.5):
     resolution: {integrity: sha512-KnuTEi8XPV7gb9pTuF8cvwJnvmnnhsMZRFmhtEqhwdOYiWn/4Pslzy2LQRTqv1u9rFVsc1q54NVExuSo/c/jrA==}
     dependencies:
       '@fuel-ts/math': 0.42.0
       '@fuel-ui/css': 0.15.1-dev-80e1a79
-      '@fuel-ui/test-utils': 0.15.1-dev-80e1a79(@babel/core@7.21.4)(@jest/types@29.4.2)(@types/node@18.13.0)(esbuild@0.17.16)(react@18.2.0)(ts-node@10.9.1)(typescript@4.9.5)
+      '@fuel-ui/test-utils': 0.15.1-dev-80e1a79(@babel/core@7.20.12)(@jest/types@29.4.2)(@types/node@18.13.0)(react@18.2.0)(ts-node@10.9.1)(typescript@4.9.5)
+      '@radix-ui/react-accordion': 1.1.1(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-alert-dialog': 1.0.3(@types/react@18.0.27)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-aspect-ratio': 1.0.2(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-avatar': 1.0.2(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-checkbox': 1.0.3(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-dialog': 1.0.3(@types/react@18.0.27)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-label': 2.0.1(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-popover': 1.0.5(@types/react@18.0.27)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-radio-group': 1.1.2(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-switch': 1.0.2(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-tabs': 1.0.3(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-tooltip': 1.0.5(@types/react@18.0.27)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-visually-hidden': 1.0.2(react-dom@18.2.0)(react@18.2.0)
+      '@react-aria/focus': 3.12.0(react@18.2.0)
+      '@react-aria/overlays': 3.14.0(react-dom@18.2.0)(react@18.2.0)
+      '@react-aria/utils': 3.16.0(react@18.2.0)
+      '@storybook/global': 5.0.0
+      '@tabler/icons-react': 2.22.0(react@18.2.0)
+      '@xstate/react': 3.2.2(@types/react@18.0.27)(react@18.2.0)(xstate@4.37.2)
+      deepmerge-json: 1.5.0
+      framer-motion: 10.12.16(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+      react-aria: 3.24.0(react-dom@18.2.0)(react@18.2.0)
+      react-content-loader: 6.2.1(react@18.2.0)
+      react-dom: 18.2.0(react@18.2.0)
+      react-hot-toast: 2.4.1(csstype@3.1.2)(react-dom@18.2.0)(react@18.2.0)
+      react-number-format: 5.2.2(react-dom@18.2.0)(react@18.2.0)
+      react-stately: 3.22.0(react@18.2.0)
+      react-use: 17.4.0(react-dom@18.2.0)(react@18.2.0)
+      xstate: 4.37.2
+      zustand: 4.3.8(react@18.2.0)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@jest/types'
+      - '@types/node'
+      - '@types/react'
+      - '@xstate/fsm'
+      - babel-jest
+      - bufferutil
+      - canvas
+      - csstype
+      - esbuild
+      - immer
+      - node-notifier
+      - supports-color
+      - ts-node
+      - typescript
+      - utf-8-validate
+    dev: false
+
+  /@fuel-ui/react@0.16.0(@babel/core@7.21.4)(@jest/types@29.4.2)(@types/node@18.13.0)(@types/react@18.0.27)(csstype@3.1.2)(esbuild@0.17.16)(ts-node@10.9.1)(typescript@4.9.5):
+    resolution: {integrity: sha512-yNVQEgghd3aiudRuLK+nQr/YLElZS3coniWFKLx0U8xYFp+RQHO+k6S4Gd1iUDch5V9PwhfBtNRRhx0G+rLUnA==}
+    dependencies:
+      '@fuel-ts/math': 0.42.0
+      '@fuel-ui/css': 0.16.0
+      '@fuel-ui/test-utils': 0.16.0(@babel/core@7.21.4)(@jest/types@29.4.2)(@types/node@18.13.0)(esbuild@0.17.16)(react@18.2.0)(ts-node@10.9.1)(typescript@4.9.5)
       '@radix-ui/react-accordion': 1.1.1(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-alert-dialog': 1.0.3(@types/react@18.0.27)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-aspect-ratio': 1.0.2(react-dom@18.2.0)(react@18.2.0)
@@ -3132,8 +3209,46 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@fuel-ui/test-utils@0.15.1-dev-80e1a79(@babel/core@7.21.4)(@jest/types@29.4.2)(@types/node@18.13.0)(esbuild@0.17.16)(react@18.2.0)(ts-node@10.9.1)(typescript@4.9.5):
+  /@fuel-ui/test-utils@0.15.1-dev-80e1a79(@babel/core@7.20.12)(@jest/types@29.4.2)(@types/node@18.13.0)(react@18.2.0)(ts-node@10.9.1)(typescript@4.9.5):
     resolution: {integrity: sha512-cXHDTHM6SQF3lbS5uxXHOUNNXR9PCkp0gMxn/Uv/YmcYJlKTrRmWozPV3JB8iFPMIgmXvaiuqbzLs4zqVpzOXQ==}
+    peerDependencies:
+      react: '*'
+    peerDependenciesMeta:
+      react:
+        optional: true
+    dependencies:
+      '@testing-library/dom': 9.3.0
+      '@testing-library/jest-dom': 5.16.5
+      '@testing-library/react': 14.0.0(react-dom@18.2.0)(react@18.2.0)
+      '@testing-library/user-event': 14.4.3(@testing-library/dom@9.3.0)
+      identity-obj-proxy: 3.0.0
+      jest: 29.5.0(@types/node@18.13.0)(ts-node@10.9.1)
+      jest-axe: 7.0.1
+      jest-environment-jsdom: 29.5.0
+      jest-fail-on-console: 3.1.1
+      jest-matcher-utils: 29.5.0
+      jest-transform-stub: 2.0.0
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      resize-observer-polyfill: 1.5.1
+      ts-jest: 29.1.0(@babel/core@7.20.12)(@jest/types@29.4.2)(jest@29.5.0)(typescript@4.9.5)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@jest/types'
+      - '@types/node'
+      - babel-jest
+      - bufferutil
+      - canvas
+      - esbuild
+      - node-notifier
+      - supports-color
+      - ts-node
+      - typescript
+      - utf-8-validate
+    dev: false
+
+  /@fuel-ui/test-utils@0.16.0(@babel/core@7.21.4)(@jest/types@29.4.2)(@types/node@18.13.0)(esbuild@0.17.16)(react@18.2.0)(ts-node@10.9.1)(typescript@4.9.5):
+    resolution: {integrity: sha512-+eYx5oxN1lE/NOCz0GTqlInwxiiBvdNaOFMvdnWE4xiuLnvntsk0zkIcZYrQ4zTrWt0svnYQmoBFdDbHekRMBQ==}
     peerDependencies:
       react: '*'
     peerDependenciesMeta:
@@ -3170,10 +3285,10 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@fuel-wallet/sdk@0.9.0(dexie@3.2.3)(fuels@0.44.1):
-    resolution: {integrity: sha512-oJG2v9vxTQo44ZQHxU5U79Yj+xCfahhk2TdrFk7nfqlaZ/iCrmw0HE8w3qyl4E9/XKuJNaj83FgaQAV6v1YpnQ==}
+  /@fuel-wallet/sdk@0.9.5(dexie@3.2.3)(fuels@0.44.1):
+    resolution: {integrity: sha512-HmKSKootBrjD4AWrEZuE3GwoMohXiiJ9dHVsOWlk3QY+VUwQRRICwvyD2NgQSNEonbsHIOsLpVcCgvaB3npKuw==}
     peerDependencies:
-      fuels: '>=0.41.0'
+      fuels: '>=0.43.0'
     dependencies:
       '@types/chrome': 0.0.212
       dexie-observable: 4.0.1-beta.13(dexie@3.2.3)
@@ -19045,6 +19160,76 @@ packages:
   /ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
     dev: true
+
+  /ts-jest@29.1.0(@babel/core@7.20.12)(@jest/types@29.4.2)(jest@29.4.2)(typescript@4.9.5):
+    resolution: {integrity: sha512-ZhNr7Z4PcYa+JjMl62ir+zPiNJfXJN6E8hSLnaUKhOgqcn8vb3e537cpkd0FuAfRK3sR1LSqM1MOhliXNgOFPA==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+    hasBin: true
+    peerDependencies:
+      '@babel/core': '>=7.0.0-beta.0 <8'
+      '@jest/types': ^29.0.0
+      babel-jest: ^29.0.0
+      esbuild: '*'
+      jest: ^29.0.0
+      typescript: '>=4.3 <6'
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+      '@jest/types':
+        optional: true
+      babel-jest:
+        optional: true
+      esbuild:
+        optional: true
+    dependencies:
+      '@babel/core': 7.20.12
+      '@jest/types': 29.4.2
+      bs-logger: 0.2.6
+      fast-json-stable-stringify: 2.1.0
+      jest: 29.4.2(@types/node@18.13.0)(ts-node@10.9.1)
+      jest-util: 29.5.0
+      json5: 2.2.3
+      lodash.memoize: 4.1.2
+      make-error: 1.3.6
+      semver: 7.4.0
+      typescript: 4.9.5
+      yargs-parser: 21.1.1
+    dev: true
+
+  /ts-jest@29.1.0(@babel/core@7.20.12)(@jest/types@29.4.2)(jest@29.5.0)(typescript@4.9.5):
+    resolution: {integrity: sha512-ZhNr7Z4PcYa+JjMl62ir+zPiNJfXJN6E8hSLnaUKhOgqcn8vb3e537cpkd0FuAfRK3sR1LSqM1MOhliXNgOFPA==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+    hasBin: true
+    peerDependencies:
+      '@babel/core': '>=7.0.0-beta.0 <8'
+      '@jest/types': ^29.0.0
+      babel-jest: ^29.0.0
+      esbuild: '*'
+      jest: ^29.0.0
+      typescript: '>=4.3 <6'
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+      '@jest/types':
+        optional: true
+      babel-jest:
+        optional: true
+      esbuild:
+        optional: true
+    dependencies:
+      '@babel/core': 7.20.12
+      '@jest/types': 29.4.2
+      bs-logger: 0.2.6
+      fast-json-stable-stringify: 2.1.0
+      jest: 29.5.0(@types/node@18.13.0)(ts-node@10.9.1)
+      jest-util: 29.5.0
+      json5: 2.2.3
+      lodash.memoize: 4.1.2
+      make-error: 1.3.6
+      semver: 7.4.0
+      typescript: 4.9.5
+      yargs-parser: 21.1.1
+    dev: false
 
   /ts-jest@29.1.0(@babel/core@7.21.4)(@jest/types@29.4.2)(esbuild@0.15.18)(jest@29.4.2)(typescript@4.9.5):
     resolution: {integrity: sha512-ZhNr7Z4PcYa+JjMl62ir+zPiNJfXJN6E8hSLnaUKhOgqcn8vb3e537cpkd0FuAfRK3sR1LSqM1MOhliXNgOFPA==}
