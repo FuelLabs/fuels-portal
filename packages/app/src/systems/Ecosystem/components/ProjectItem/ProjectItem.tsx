@@ -58,7 +58,12 @@ export const ProjectItem = ({
             </Box.Flex>
             <Text> {description}</Text>
             <Box.Flex align="center" justify="space-between">
-              <ButtonLink variant="link" css={styles.link} href={url}>
+              <ButtonLink
+                variant="link"
+                css={styles.link}
+                href={url}
+                isExternal
+              >
                 {hostname}
               </ButtonLink>
               <Tag intent="base">
