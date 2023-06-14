@@ -48,8 +48,9 @@ export const ProjectItem = ({
           <IconButton
             intent="error"
             variant="ghost"
-            icon="Star"
+            icon="Bolt"
             aria-label="project-icon"
+            iconSize={20}
           />
           <Box.Stack gap="$2" css={styles.details}>
             <Box.Flex align="flex-start" justify="space-between">
