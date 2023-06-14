@@ -40,6 +40,7 @@ export function Header() {
           <ButtonLink
             href={Pages.bridge}
             className={getClassName(Pages.bridge)}
+            aria-label="Bridge"
           >
             Bridge
           </ButtonLink>

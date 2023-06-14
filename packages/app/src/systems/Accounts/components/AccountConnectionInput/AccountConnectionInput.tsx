@@ -51,6 +51,7 @@ export const AccountConnectionInput = ({
                 onPress={onConnect}
                 isLoading={isConnecting}
                 css={styles.connectButton}
+                aria-label={`${label} Connect wallet`}
               >
                 Connect wallet
               </Button>
