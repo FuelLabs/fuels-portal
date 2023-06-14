@@ -13,7 +13,7 @@ export const EcosystemTags = ({ tags, onTagClick }: EcosystemTagsProps) => {
     }
   };
   return (
-    <Box.Flex justify="flex-start" align="center" gap="$3">
+    <Box.Flex justify="flex-start" align="center" gap="$3" wrap="wrap">
       <Button
         variant="outlined"
         onPress={() => handleTagClick('all')}

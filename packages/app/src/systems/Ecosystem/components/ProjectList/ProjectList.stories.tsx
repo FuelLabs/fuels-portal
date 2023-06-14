@@ -6,7 +6,7 @@ import type { Project } from '../ProjectItem';
 
 import { ProjectList } from './ProjectList';
 
-const SAMPLE_PROJECTS: Project[] = [
+export const SAMPLE_PROJECTS: Project[] = [
   {
     name: 'Fuel',
     description: 'Fuel is a fast, scalable, and user-friendly payment network.',

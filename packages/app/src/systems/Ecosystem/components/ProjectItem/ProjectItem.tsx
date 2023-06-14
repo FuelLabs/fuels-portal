@@ -44,14 +44,14 @@ export const ProjectItem = ({
   return (
     <Card withDividers css={styles.card}>
       <Card.Body>
-        <Box.Flex align="flex-start" justify="space-between" gap="$4">
+        <Box.Flex align="flex-start" justify="flex-start" gap="$4">
           <IconButton
             intent="error"
             variant="ghost"
             icon="Star"
             aria-label="project-icon"
           />
-          <Box.Stack gap="$2">
+          <Box.Stack gap="$2" css={styles.details}>
             <Box.Flex align="flex-start" justify="space-between">
               <Text fontSize="lg"> {name}</Text>
               <Icon icon="ArrowUpRight" size={20} />
@@ -81,6 +81,9 @@ export const ProjectItem = ({
 const styles = {
   card: cssObj({
     borderColor: '$semanticOutlinedBaseBorder',
+  }),
+  details: cssObj({
+    flex: 1,
   }),
   link: cssObj({
     textDecoration: 'underline',
