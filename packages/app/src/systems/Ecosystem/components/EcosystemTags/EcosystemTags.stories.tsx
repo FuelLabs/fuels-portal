@@ -5,7 +5,7 @@ import { EcosystemTags } from './EcosystemTags';
 
 export default {
   component: EcosystemTags,
-  title: 'EcosystemTags',
+  title: 'Ecosystem / EcosystemTags',
   parameters: {
     layout: 'fullscreen',
   },
