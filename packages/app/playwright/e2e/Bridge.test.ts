@@ -1,7 +1,9 @@
 import type { Browser, Page } from '@playwright/test';
-import test, { chromium } from '@playwright/test';
+import { chromium } from '@playwright/test';
 
 import { hasText, visit } from '../commons';
+
+import { test } from './fixtures';
 
 test.describe('Bridge', () => {
   let browser: Browser;
