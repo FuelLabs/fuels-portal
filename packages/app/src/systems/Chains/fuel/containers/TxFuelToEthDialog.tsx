@@ -60,6 +60,11 @@ export function TxFuelToEthDialog() {
           <Button onClick={handlers.relayToEth}>Confirm Transaction</Button>
         </Dialog.Footer>
       )}
+      {isWaitingEthWalletApproval && (
+        <Dialog.Footer>
+          <Button onClick={handlers.relayToEth}>Confirm Transaction</Button>
+        </Dialog.Footer>
+      )}
     </>
   );
 }

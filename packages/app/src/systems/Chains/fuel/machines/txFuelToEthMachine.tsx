@@ -78,12 +78,12 @@ export const txFuelToEthMachine = createMachine(
         },
       },
       submittingToBridge: {
-        initial: 'waitingFuelTxResult',
+        initial: 'gettingMessageId',
         states: {
-          waitingFuelTxResult: {
+          gettingMessageId: {
             tags: ['isSubmitToBridgeLoading', 'isSubmitToBridgeSelected'],
             invoke: {
-              src: 'waitFuelTxResult',
+              src: 'getMessageId',
               data: {
                 input: (ctx: MachineContext) => ({
                   fuelTxId: ctx.fuelTxId,
@@ -93,29 +93,7 @@ export const txFuelToEthMachine = createMachine(
               onDone: [
                 {
                   cond: FetchMachine.hasError,
-                  target: 'waitingFuelTxResult',
-                },
-                {
-                  actions: ['assignFuelTxResult'],
-                  cond: 'hasFuelTxResult',
-                  target: 'gettingFuelMessageId',
-                },
-              ],
-            },
-          },
-          gettingFuelMessageId: {
-            tags: ['isSubmitToBridgeLoading', 'isSubmitToBridgeSelected'],
-            invoke: {
-              src: 'getMessageId',
-              data: {
-                input: (ctx: MachineContext) => ({
-                  receipts: ctx.fuelTxResult?.receipts,
-                }),
-              },
-              onDone: [
-                {
-                  cond: FetchMachine.hasError,
-                  target: 'waitingFuelTxResult',
+                  target: 'gettingMessageId',
                 },
                 {
                   actions: ['assignMessageId'],
@@ -126,7 +104,7 @@ export const txFuelToEthMachine = createMachine(
             },
             after: {
               10000: {
-                target: 'waitingFuelTxResult',
+                target: 'gettingMessageId',
               },
             },
           },
@@ -242,7 +220,7 @@ export const txFuelToEthMachine = createMachine(
                     tags: ['isConfirmTransactionDone'],
                     initial: 'done',
                     states: {
-                      // here should implement state to wait for receipts of relayed txId, to make sure it's settled and put as done
+                      // TODO: here should implement state to wait for receipts of relayed txId, to make sure it's settled and put as done
                       done: {
                         tags: ['isReceiveDone'],
                         type: 'final',
@@ -265,9 +243,6 @@ export const txFuelToEthMachine = createMachine(
         fuelProvider: ev.input.fuelProvider,
         ethPublicClient: ev.input.ethPublicClient,
       })),
-      assignFuelTxResult: assign({
-        fuelTxResult: (_, ev) => ev.data || undefined,
-      }),
       assignMessageId: assign({
         messageId: (_, ev) => ev.data || undefined,
       }),
@@ -276,27 +251,10 @@ export const txFuelToEthMachine = createMachine(
       }),
     },
     guards: {
-      hasFuelTxResult: (ctx, ev) => !!ctx.fuelTxResult || !!ev?.data,
       hasMessageId: (ctx, ev) => !!ctx.messageProof || !!ev?.data,
       hasMessageProof: (ctx, ev) => !!ctx.messageProof || !!ev?.data,
     },
     services: {
-      waitFuelTxResult: FetchMachine.create<
-        TxFuelToEthInputs['waitTxResult'],
-        MachineServices['waitFuelTxResult']['data']
-      >({
-        showError: true,
-        maxAttempts: 1,
-        async fetch({ input }) {
-          if (!input) {
-            throw new Error('No input to wait tx result');
-          }
-
-          const result = await TxFuelToEthService.waitTxResult(input);
-
-          return result;
-        },
-      }),
       getMessageId: FetchMachine.create<
         TxFuelToEthInputs['getMessageId'],
         MachineServices['getMessageId']['data']
