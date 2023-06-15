@@ -57,10 +57,10 @@ function ThemeWrapper(props) {
 
 export const decorators = [
   (Story) => (
-    <StoreProvider>
-      <ThemeWrapper>
-        <Story />
-      </ThemeWrapper>
-    </StoreProvider>
+    // <StoreProvider>
+    <ThemeWrapper>
+      <Story />
+    </ThemeWrapper>
+    // </StoreProvider>
   ),
 ];
