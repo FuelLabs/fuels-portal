@@ -9,7 +9,7 @@ import {
 } from 'fuels';
 import { useMemo } from 'react';
 
-import type { BridgeTx } from '~/systems/Bridge/types';
+import type { BridgeTx } from '~/systems/Bridge';
 import {
   ETH_CHAIN,
   ETH_SYMBOL,
