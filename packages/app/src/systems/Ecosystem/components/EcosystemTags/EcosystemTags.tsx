@@ -4,9 +4,16 @@ import { Box, Button } from '@fuel-ui/react';
 type EcosystemTagsProps = {
   tags?: string[];
   onTagClick?: (tag: string) => void;
+  activeTag?: string;
+  onAllClick?: () => void;
 };
 
-export const EcosystemTags = ({ tags, onTagClick }: EcosystemTagsProps) => {
+export const EcosystemTags = ({
+  tags,
+  onTagClick,
+  activeTag,
+  onAllClick,
+}: EcosystemTagsProps) => {
   const handleTagClick = (tag: string) => {
     if (onTagClick) {
       onTagClick(tag);
@@ -16,8 +23,8 @@ export const EcosystemTags = ({ tags, onTagClick }: EcosystemTagsProps) => {
     <Box.Flex justify="flex-start" align="center" gap="$3" wrap="wrap">
       <Button
         variant="outlined"
-        onPress={() => handleTagClick('all')}
-        css={styles.active}
+        onPress={onAllClick}
+        css={!activeTag ? styles.active : null}
       >
         All Categories
       </Button>
@@ -27,6 +34,7 @@ export const EcosystemTags = ({ tags, onTagClick }: EcosystemTagsProps) => {
           variant="outlined"
           key={tag}
           onPress={() => handleTagClick(tag)}
+          css={activeTag === tag ? styles.active : null}
         >
           {tag}
         </Button>

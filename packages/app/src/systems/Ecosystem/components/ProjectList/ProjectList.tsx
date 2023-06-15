@@ -15,7 +15,7 @@ export const ProjectList = ({ projects }: ProjectListProps) => {
       templateRows="repeat(2, 1fr)"
       css={styles.grid}
     >
-      {projects.map((project) => (
+      {projects?.map((project) => (
         <ProjectItem {...project} key={project.url} />
       ))}
     </Grid>
