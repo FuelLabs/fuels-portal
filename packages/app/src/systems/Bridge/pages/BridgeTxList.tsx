@@ -1,7 +1,7 @@
 import { cssObj } from '@fuel-ui/css';
 import { Card, Text, CardList } from '@fuel-ui/react';
 
-import { BridgeTxListEmpty } from '../components';
+import { BridgeListEmpty, BridgeTxListNotConnected } from '../components';
 import { useBridgeTxs } from '../hooks';
 import { bridgeTxListStyles } from '../styles';
 
@@ -53,9 +53,9 @@ export const BridgeTxList = () => {
       {isConnected ? (
         <>
           <Card.Body css={styles.body}>
-            <CardList isClickable>
-              {bridgeTxs &&
-                bridgeTxs.map((txDatum, index) => {
+            {bridgeTxs.length > 0 ? (
+              <CardList isClickable>
+                {bridgeTxs.map((txDatum, index) => {
                   if (
                     isEthChain(txDatum.fromNetwork) &&
                     isFuelChain(txDatum.toNetwork)
@@ -86,15 +86,17 @@ export const BridgeTxList = () => {
 
                   return null;
                 })}
-            </CardList>
+              </CardList>
+            ) : (
+              <BridgeListEmpty />
+            )}
           </Card.Body>
         </>
       ) : (
         <>
-          <BridgeTxListEmpty
+          <BridgeTxListNotConnected
             isConnecting={isConnecting}
             onClick={handlers.connect}
-            hideConnectButton={isConnected}
           />
         </>
       )}
