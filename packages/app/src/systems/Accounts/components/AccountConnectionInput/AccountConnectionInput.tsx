@@ -55,6 +55,7 @@ export const AccountConnectionInput = ({
                 isLoading={isConnecting}
                 css={styles.connectButton}
                 size="sm"
+                intent="primary"
               >
                 Connect wallet
               </Button>

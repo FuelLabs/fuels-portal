@@ -26,7 +26,7 @@ export const useTransaction = (txId?: string) => {
   );
 
   return {
-    txResponse: data || undefined,
+    transactionResponse: data || undefined,
     ...query,
   };
 };

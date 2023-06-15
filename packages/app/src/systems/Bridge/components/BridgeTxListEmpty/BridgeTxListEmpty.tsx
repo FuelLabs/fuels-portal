@@ -1,3 +1,5 @@
+// TODO: don't use light colors once https://github.com/FuelLabs/fuel-ui/issues/246
+// is fixed
 import { lightColors, cssObj } from '@fuel-ui/css';
 import { Box, Card, ContentLoader, Text, Button } from '@fuel-ui/react';
 
@@ -53,6 +55,7 @@ export const BridgeTxListEmpty = ({
               <Button
                 isLoading={isConnecting}
                 onPress={onClick}
+                intent="primary"
                 css={styles.connectButton}
               >
                 Connect Fuel Wallet

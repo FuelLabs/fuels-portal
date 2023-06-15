@@ -26,6 +26,7 @@ export const TxListItemFuelToEth = ({
 }: TxListItemFuelToEthProps) => {
   const { steps, handlers } = useTxFuelToEth({
     txId: txHash,
+    // TODO: add skip here when done status is implemented in FuelToEth bridge
     // skipAnalyzeTx: isDone,
   });
 

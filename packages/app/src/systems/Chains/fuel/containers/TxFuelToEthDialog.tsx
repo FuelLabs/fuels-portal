@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Dialog, Box, Button, Text, Icon, IconButton } from '@fuel-ui/react';
+import { Dialog, Box, Button, Text } from '@fuel-ui/react';
 
 import { ETH_SYMBOL, ethLogoSrc } from '../../eth';
 import { useTxFuelToEth } from '../hooks';
@@ -27,13 +27,7 @@ export function TxFuelToEthDialog() {
           <Text fontSize="sm" color="intentsBase12">
             Transaction: {shortAddress(metadata.txId)}
           </Text>
-          <IconButton
-            data-action="closed"
-            variant="link"
-            icon={<Icon icon="CircleX" css={styles.dialogHeadingIcon} />}
-            aria-label="Close unlock window"
-            onPress={handlers.close}
-          />
+          <Dialog.Close />
         </Box.Flex>
       </Dialog.Heading>
       <Dialog.Description>
@@ -55,11 +49,6 @@ export function TxFuelToEthDialog() {
           />
         </Box.Stack>
       </Dialog.Description>
-      {isWaitingEthWalletApproval && (
-        <Dialog.Footer>
-          <Button onClick={handlers.relayToEth}>Confirm Transaction</Button>
-        </Dialog.Footer>
-      )}
       {isWaitingEthWalletApproval && (
         <Dialog.Footer>
           <Button onClick={handlers.relayToEth}>Confirm Transaction</Button>

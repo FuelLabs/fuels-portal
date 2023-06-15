@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import type { BN } from 'fuels';
 import { bn } from 'fuels';
 import { useMemo } from 'react';
 import { decodeEventLog } from 'viem';
@@ -68,23 +69,21 @@ export const useEthDepositLogs = () => {
     }
   );
 
-  const filteredLogs = query.data;
-
   const decodedEvents = useMemo(() => {
-    return filteredLogs?.map((log) =>
+    return query.data?.map((log) =>
       decodeEventLog({
         abi: AbiFuelMessagePortal,
         data: log.data,
         topics: log.topics,
       })
     );
-  }, [filteredLogs]);
+  }, [query.data]);
 
   const blockQuery = useQuery(
     ['ethBlockDates'],
     async () => {
-      if (!filteredLogs) return null;
-      const blockPromises = filteredLogs.map((log) => {
+      if (!query.data) return null;
+      const blockPromises = query.data.map((log) => {
         const cachedBlockDate = localStorage.getItem(
           `ethBlockDate-${log?.blockHash}`
         );
@@ -100,7 +99,7 @@ export const useEthDepositLogs = () => {
       const blocks = await Promise.all(blockPromises);
       return blocks;
     },
-    { enabled: !!(provider && filteredLogs) }
+    { enabled: !!(provider && query.data) }
   );
 
   const dates = useMemo(() => {
@@ -120,8 +119,8 @@ export const useEthDepositLogs = () => {
   }, [blockQuery.data]);
 
   return {
-    events: decodedEvents as any, // eslint-disable-line @typescript-eslint/no-explicit-any
-    logs: filteredLogs,
+    events: decodedEvents as unknown as { args: { amount: BN } },
+    logs: query.data,
     dates,
     ...query,
   };

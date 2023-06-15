@@ -120,7 +120,7 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
     ? new Date(fromTai64ToUnix(fuelTxResult?.time) * 1000)
     : undefined;
 
-  const { txResponse: fuelTx } = useTransaction(txId);
+  const { transactionResponse: fuelTx } = useTransaction(txId);
 
   useEffect(() => {
     if (txId && fuelProvider) {
@@ -132,7 +132,7 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
         },
       });
     }
-  }, [txId, fuelProvider, fuelTx]);
+  }, [txId, fuelProvider]);
 
   function relayToEth() {
     service.send('RELAY_TO_ETH', {

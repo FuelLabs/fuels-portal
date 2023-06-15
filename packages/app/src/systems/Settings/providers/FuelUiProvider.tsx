@@ -12,6 +12,7 @@ export function FuelUiProvider({ children }: PropsWithChildren) {
       colors: {
         ...darkColors,
         cardBg: '$intentsBase0',
+        inputBaseBg: '$intentsBase0',
       },
     },
   });

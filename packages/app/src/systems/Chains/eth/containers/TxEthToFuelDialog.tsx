@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, Dialog, Icon, IconButton, Text } from '@fuel-ui/react';
+import { Box, Dialog, Text } from '@fuel-ui/react';
 import { bn } from 'fuels';
 
 import { useTxEthToFuel } from '../hooks';
@@ -11,7 +11,7 @@ import { useOverlay } from '~/systems/Overlay';
 
 export function TxEthToFuelDialog() {
   const { metadata } = useOverlay<{ txId: string }>();
-  const { steps, handlers, ethTx, ethBlockDate } = useTxEthToFuel({
+  const { steps, ethTx, ethBlockDate } = useTxEthToFuel({
     id: metadata.txId,
   });
 
@@ -22,13 +22,7 @@ export function TxEthToFuelDialog() {
           <Text color="intentsBase12" fontSize="sm">
             Transaction: {shortAddress(metadata.txId)}
           </Text>
-          <IconButton
-            data-action="closed"
-            variant="link"
-            icon={<Icon icon="CircleX" css={styles.dialogHeadingIcon} />}
-            aria-label="Close unlock window"
-            onPress={handlers.close}
-          />
+          <Dialog.Close />
         </Box.Flex>
       </Dialog.Heading>
       <Dialog.Description>
