@@ -66,12 +66,19 @@ type EcosystemMachineEvents =
       input: null;
     };
 
+const initialState: MachineContext = {
+  projects: [],
+  filteredProjects: [],
+  search: '',
+  tags: [],
+  filter: '',
+};
 export const ecosystemMachine = createMachine(
   {
     // eslint-disable-next-line @typescript-eslint/consistent-type-imports
     tsTypes: {} as import('./ecosystemMachine.typegen').Typegen0,
     schema: {
-      context: {} as MachineContext,
+      context: initialState as MachineContext,
       services: {} as MachineServices,
       events: {} as EcosystemMachineEvents,
     },

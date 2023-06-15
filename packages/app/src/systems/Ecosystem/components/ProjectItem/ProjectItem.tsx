@@ -8,6 +8,11 @@ import {
   Text,
   Icon,
 } from '@fuel-ui/react';
+import { motion } from 'framer-motion';
+
+import { animations } from '~/systems/Core';
+
+const MotionCard = motion(Card);
 
 type ProjectStatus = 'live' | 'testnet' | 'in-development';
 
@@ -42,7 +47,13 @@ export const ProjectItem = ({
     hostname = '';
   }
   return (
-    <Card withDividers css={styles.card}>
+    <MotionCard
+      withDividers
+      css={styles.card}
+      {...animations.slideInBottom({
+        transition: { type: 'spring' },
+      })}
+    >
       <Card.Body>
         <Box.Flex align="flex-start" justify="flex-start" gap="$4">
           <IconButton
@@ -75,7 +86,7 @@ export const ProjectItem = ({
           </Box.Stack>
         </Box.Flex>
       </Card.Body>
-    </Card>
+    </MotionCard>
   );
 };
 
