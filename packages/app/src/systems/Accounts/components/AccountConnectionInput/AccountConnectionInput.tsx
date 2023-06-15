@@ -3,8 +3,7 @@ import { Card, Text, Image, Button, Box, IconButton } from '@fuel-ui/react';
 import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
 
-import { coreStyles } from '~/systems/Core';
-import { animations, shortAddress } from '~/systems/Core/utils';
+import { coreStyles, animations, shortAddress } from '~/systems/Core';
 
 const MotionCard = motion(Card);
 
