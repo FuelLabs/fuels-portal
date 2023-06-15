@@ -11,7 +11,7 @@ import { assign, createMachine } from 'xstate';
 import type { TxFuelToEthInputs } from '../services';
 import { TxFuelToEthService } from '../services';
 
-import { FetchMachine } from '~/systems/Core/machines';
+import { FetchMachine } from '~/systems/Core';
 
 type MachineContext = {
   fuelProvider: FuelProvider;
