@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import type { BN } from 'fuels';
-import { bn } from 'fuels';
 import { useMemo } from 'react';
 import { decodeEventLog } from 'viem';
 
 import { useFuelAccountConnection } from '../../fuel';
 import { AbiFuelMessagePortal } from '../services/abi';
 
+import { useBlocks } from './useBlocks';
+import { useCachedBlocksDates } from './useCachedBlocksDates';
 import { useEthAccountConnection } from './useEthAccountConnection';
 
 import { VITE_ETH_FUEL_MESSAGE_PORTAL } from '~/config';
@@ -69,59 +70,38 @@ export const useEthDepositLogs = () => {
     }
   );
 
-  const decodedEvents = useMemo(() => {
-    return query.data?.map((log) =>
-      decodeEventLog({
+  const blockHashes = useMemo(() => {
+    const hashes = query.data?.map((log) => log.blockHash || '0x');
+
+    return hashes;
+  }, [query.data]);
+
+  const { blockDates, notCachedHashes } = useCachedBlocksDates(blockHashes);
+  const { blocks } = useBlocks(notCachedHashes);
+
+  const logs = useMemo(() => {
+    return query.data?.map((log) => {
+      const decodedEvent = decodeEventLog({
         abi: AbiFuelMessagePortal,
         data: log.data,
         topics: log.topics,
-      })
-    );
+      });
+      let date;
+      if (log.blockHash && blockDates) {
+        date = blockDates[log.blockHash]
+          ? blockDates[log.blockHash]
+          : blocks?.find((block) => block.hash === log.blockHash)?.date;
+      }
+      return {
+        ...log,
+        event: decodedEvent as unknown as { args: { amount: BN } },
+        date,
+      };
+    });
   }, [query.data]);
 
-  const blockQuery = useQuery(
-    ['ethBlockDates'],
-    async () => {
-      if (!query.data) return null;
-      const blockPromises = query.data.map((log) => {
-        const cachedBlockDate = localStorage.getItem(
-          `ethBlockDate-${log?.blockHash}`
-        );
-        if (cachedBlockDate) {
-          return cachedBlockDate;
-        }
-        if (log.blockHash) {
-          const blockPromise = provider.getBlock({ blockHash: log.blockHash });
-          return blockPromise;
-        }
-        return null;
-      });
-      const blocks = await Promise.all(blockPromises);
-      return blocks;
-    },
-    { enabled: !!(provider && query.data) }
-  );
-
-  const dates = useMemo(() => {
-    return blockQuery.data?.map((block) => {
-      if (typeof block === 'string') {
-        // We don't have to multiply by 1000 bc the time is already stored in ms
-        return new Date(bn(block).toNumber());
-      }
-      localStorage.setItem(
-        `ethBlockDate-${block?.hash}`,
-        bn(block?.timestamp.toString()).mul(1000).toString()
-      );
-      return block?.timestamp
-        ? new Date(bn(block.timestamp.toString()).mul(1000).toNumber())
-        : undefined;
-    });
-  }, [blockQuery.data]);
-
   return {
-    events: decodedEvents as unknown as { args: { amount: BN } },
-    logs: query.data,
-    dates,
+    logs,
     ...query,
   };
 };

@@ -12,20 +12,22 @@ import {
 } from '~/systems/Chains';
 
 export const useTxsEthToFuel = () => {
-  const { events, logs, dates } = useEthDepositLogs();
+  const { logs } = useEthDepositLogs();
 
   const txs: BridgeTx[] | undefined = useMemo(() => {
-    return logs?.map((log, index) => {
+    // debugger;
+
+    return logs?.map((log) => {
       const txDatum = {
         asset: {
-          assetAmount: bn(events[index].args.amount.toString()).format({
+          assetAmount: bn(log.event.args.amount.toString()).format({
             precision: 9,
             units: FUEL_UNITS,
           }),
           assetImageSrc: ethLogoSrc,
           assetSymbol: ETH_SYMBOL,
         },
-        date: dates?.at(index),
+        date: log.date,
         txHash: log.transactionHash || '0x',
         fromNetwork: ETH_CHAIN,
         toNetwork: FUEL_CHAIN,
@@ -35,7 +37,7 @@ export const useTxsEthToFuel = () => {
       };
       return txDatum;
     });
-  }, [logs, events, dates]);
+  }, [logs]);
 
   return {
     txs,

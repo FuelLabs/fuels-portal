@@ -3,7 +3,6 @@ import { useTxsEthToFuel, useTxsFuelToEth } from '~/systems/Chains';
 export const useBridgeTxs = () => {
   const { txs: ethToFuelTxs } = useTxsEthToFuel();
   const { txs: fuelToEthTxs } = useTxsFuelToEth();
-
   const allTxs = [...(ethToFuelTxs || []), ...(fuelToEthTxs || [])];
   const sortedTxs = allTxs.sort((a, b) => {
     if (a.date === undefined) {
