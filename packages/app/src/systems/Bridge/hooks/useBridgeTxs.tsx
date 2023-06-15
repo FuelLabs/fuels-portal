@@ -1,5 +1,4 @@
-import { useTxsEthToFuel } from '~/systems/Chains';
-import { useTxsFuelToEth } from '~/systems/Chains/fuel/hooks/useTxsFuelToEth';
+import { useTxsEthToFuel, useTxsFuelToEth } from '~/systems/Chains';
 
 export const useBridgeTxs = () => {
   const { txs: ethToFuelTxs } = useTxsEthToFuel();
