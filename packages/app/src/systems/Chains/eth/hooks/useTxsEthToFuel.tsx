@@ -12,7 +12,7 @@ import {
 } from '~/systems/Chains';
 
 export const useTxsEthToFuel = () => {
-  const { logs, isLoading } = useEthDepositLogs();
+  const { logs, isLoading, isFetching } = useEthDepositLogs();
 
   const txs: BridgeTx[] | undefined = useMemo(() => {
     return logs?.map((log) => {
@@ -39,6 +39,6 @@ export const useTxsEthToFuel = () => {
 
   return {
     txs,
-    isLoading,
+    isLoading: isFetching,
   };
 };

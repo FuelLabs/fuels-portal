@@ -24,7 +24,11 @@ export const useTxsFuelToEth = () => {
   const { address, provider } = useFuelAccountConnection();
   // TODO: we should use sdk to get transactions
   // TODO: how can we filter this in a better way I don't think graphql is allowing custom filters??
-  const { data: transactionsByOwner, isLoading } = useQuery(
+  const {
+    data: transactionsByOwner,
+    isLoading,
+    isFetching,
+  } = useQuery(
     ['transactionsByOwner'],
     async () => {
       const { transactionsByOwner } = await getGraphqlClient(
@@ -98,6 +102,6 @@ export const useTxsFuelToEth = () => {
 
   return {
     txs,
-    isLoading,
+    isLoading: isFetching,
   };
 };

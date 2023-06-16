@@ -23,6 +23,7 @@ export const BridgeTxList = () => {
   const { txs: bridgeTxs, isLoading } = useBridgeTxs();
 
   console.log('is loading', isLoading);
+  console.log(`isConnected`, isConnected);
   return (
     <Card css={coreStyles.card}>
       <Card.Header css={styles.header}>
@@ -57,7 +58,7 @@ export const BridgeTxList = () => {
       </Card.Header>
       <Card.Body css={styles.body}>
         {isLoading && <BridgeTxItemsLoading />}
-        {!isConnected && !isLoading && (
+        {isConnected === false && !isLoading && (
           <BridgeTxListNotConnected
             isConnecting={isConnecting}
             onClick={handlers.connect}
