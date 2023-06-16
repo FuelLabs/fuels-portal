@@ -12,11 +12,9 @@ import {
 } from '~/systems/Chains';
 
 export const useTxsEthToFuel = () => {
-  const { logs } = useEthDepositLogs();
+  const { logs, isLoading } = useEthDepositLogs();
 
   const txs: BridgeTx[] | undefined = useMemo(() => {
-    // debugger;
-
     return logs?.map((log) => {
       const txDatum = {
         asset: {
@@ -41,5 +39,6 @@ export const useTxsEthToFuel = () => {
 
   return {
     txs,
+    isLoading,
   };
 };

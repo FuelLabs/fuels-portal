@@ -1,8 +1,12 @@
 import { useTxsEthToFuel, useTxsFuelToEth } from '~/systems/Chains';
 
 export const useBridgeTxs = () => {
-  const { txs: ethToFuelTxs } = useTxsEthToFuel();
-  const { txs: fuelToEthTxs } = useTxsFuelToEth();
+  const { txs: ethToFuelTxs, isLoading: isEthToFuelLoading } =
+    useTxsEthToFuel();
+  console.log(`isEthToFuelLoading`, isEthToFuelLoading);
+  const { txs: fuelToEthTxs, isLoading: isFuelToEthLoading } =
+    useTxsFuelToEth();
+  console.log(`isFuelToEthLoading`, isFuelToEthLoading);
   const allTxs = [...(ethToFuelTxs || []), ...(fuelToEthTxs || [])];
   const sortedTxs = allTxs.sort((a, b) => {
     if (a.date === undefined) {
@@ -14,5 +18,8 @@ export const useBridgeTxs = () => {
     return a.date.getTime() - b.date.getTime();
   });
 
-  return sortedTxs;
+  return {
+    txs: sortedTxs,
+    isLoading: isEthToFuelLoading || isFuelToEthLoading,
+  };
 };

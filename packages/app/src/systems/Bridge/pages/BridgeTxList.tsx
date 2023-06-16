@@ -1,7 +1,11 @@
 import { cssObj } from '@fuel-ui/css';
-import { Card, Text, CardList } from '@fuel-ui/react';
+import { Card, Text, CardList, Box } from '@fuel-ui/react';
 
-import { BridgeListEmpty, BridgeTxListNotConnected } from '../components';
+import {
+  BridgeListEmpty,
+  BridgeTxItemsLoading,
+  BridgeTxListNotConnected,
+} from '../components';
 import { useBridgeTxs } from '../hooks';
 import { bridgeTxListStyles } from '../styles';
 
@@ -16,8 +20,9 @@ import { coreStyles } from '~/systems/Core';
 
 export const BridgeTxList = () => {
   const { isConnected, isConnecting, handlers } = useFuelAccountConnection();
-  const bridgeTxs = useBridgeTxs();
+  const { txs: bridgeTxs, isLoading } = useBridgeTxs();
 
+  console.log('is loading', isLoading);
   return (
     <Card css={coreStyles.card}>
       <Card.Header css={styles.header}>
@@ -50,9 +55,11 @@ export const BridgeTxList = () => {
           Status
         </Text>
       </Card.Header>
-      {isConnected ? (
-        <>
-          <Card.Body css={styles.body}>
+      <Card.Body css={styles.body}>
+        {isLoading && <BridgeTxItemsLoading />}
+
+        {isConnected && !isLoading ? (
+          <>
             {bridgeTxs.length > 0 ? (
               <CardList isClickable>
                 {bridgeTxs.map((txDatum, index) => {
@@ -90,16 +97,20 @@ export const BridgeTxList = () => {
             ) : (
               <BridgeListEmpty />
             )}
-          </Card.Body>
-        </>
-      ) : (
-        <>
-          <BridgeTxListNotConnected
-            isConnecting={isConnecting}
-            onClick={handlers.connect}
-          />
-        </>
-      )}
+          </>
+        ) : (
+          <>
+            {!isConnected && (
+              <Box.Stack gap="$4">
+                <BridgeTxListNotConnected
+                  isConnecting={isConnecting}
+                  onClick={handlers.connect}
+                />
+              </Box.Stack>
+            )}
+          </>
+        )}
+      </Card.Body>
     </Card>
   );
 };
