@@ -10,17 +10,14 @@ export const useBlocks = (blockHashes?: `0x${string}`[]) => {
     ['block', blockHashes],
     async () => {
       if (!blockHashes?.length) return null;
-      console.log(`QUERY LEVEL blockHashes`, blockHashes);
       const blockPromises = blockHashes?.map((blockHash) => {
         if (blockHash) {
           const blockPromise = provider.getBlock({ blockHash });
-          console.log(`blockPromise`, blockPromise);
           return blockPromise;
         }
         return null;
       });
       const blocks = await Promise.all(blockPromises);
-      console.log(`blocks`, blocks);
       return blocks;
     },
     {
@@ -30,12 +27,6 @@ export const useBlocks = (blockHashes?: `0x${string}`[]) => {
 
   const blockData = useMemo(() => {
     return query.data?.map((block) => {
-      console.log(`block mapping`, block);
-      console.log(`ethBlockDate-${block?.hash}`, `ethBlockDate-${block?.hash}`);
-      console.log(
-        `bn(block?.timestamp.toString()).mul(1000).toString()`,
-        bn(block?.timestamp.toString()).mul(1000).toString()
-      );
       localStorage.setItem(
         `ethBlockDate-${block?.hash}`,
         bn(block?.timestamp.toString()).mul(1000).toString()
