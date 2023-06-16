@@ -57,58 +57,49 @@ export const BridgeTxList = () => {
       </Card.Header>
       <Card.Body css={styles.body}>
         {isLoading && <BridgeTxItemsLoading />}
+        {!isConnected && !isLoading && (
+          <BridgeTxListNotConnected
+            isConnecting={isConnecting}
+            onClick={handlers.connect}
+          />
+        )}
+        {isConnected && !isLoading && bridgeTxs.length === 0 && (
+          <BridgeListEmpty />
+        )}
+        {bridgeTxs.length > 0 && isConnected && (
+          <CardList isClickable>
+            {bridgeTxs.map((txDatum, index) => {
+              if (
+                isEthChain(txDatum.fromNetwork) &&
+                isFuelChain(txDatum.toNetwork)
+              ) {
+                return (
+                  <TxListItemEthToFuel
+                    key={`${index}-${txDatum.txHash}`}
+                    txHash={txDatum.txHash || ''}
+                    asset={txDatum.asset}
+                    isDone={txDatum.isDone}
+                  />
+                );
+              }
+              if (
+                isFuelChain(txDatum.fromNetwork) &&
+                isEthChain(txDatum.toNetwork)
+              ) {
+                return (
+                  <TxListItemFuelToEth
+                    key={`${index}-${txDatum.txHash}`}
+                    txHash={txDatum.txHash || ''}
+                    asset={txDatum.asset}
+                    isDone={txDatum.isDone}
+                    date={txDatum.date}
+                  />
+                );
+              }
 
-        {isConnected && !isLoading ? (
-          <>
-            {bridgeTxs.length > 0 ? (
-              <CardList isClickable>
-                {bridgeTxs.map((txDatum, index) => {
-                  if (
-                    isEthChain(txDatum.fromNetwork) &&
-                    isFuelChain(txDatum.toNetwork)
-                  ) {
-                    return (
-                      <TxListItemEthToFuel
-                        key={`${index}-${txDatum.txHash}`}
-                        txHash={txDatum.txHash || ''}
-                        asset={txDatum.asset}
-                        isDone={txDatum.isDone}
-                      />
-                    );
-                  }
-                  if (
-                    isFuelChain(txDatum.fromNetwork) &&
-                    isEthChain(txDatum.toNetwork)
-                  ) {
-                    return (
-                      <TxListItemFuelToEth
-                        key={`${index}-${txDatum.txHash}`}
-                        txHash={txDatum.txHash || ''}
-                        asset={txDatum.asset}
-                        isDone={txDatum.isDone}
-                        date={txDatum.date}
-                      />
-                    );
-                  }
-
-                  return null;
-                })}
-              </CardList>
-            ) : (
-              <BridgeListEmpty />
-            )}
-          </>
-        ) : (
-          <>
-            {!isConnected && (
-              <Box.Stack gap="$4">
-                <BridgeTxListNotConnected
-                  isConnecting={isConnecting}
-                  onClick={handlers.connect}
-                />
-              </Box.Stack>
-            )}
-          </>
+              return null;
+            })}
+          </CardList>
         )}
       </Card.Body>
     </Card>
