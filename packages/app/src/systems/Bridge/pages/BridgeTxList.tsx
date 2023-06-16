@@ -22,8 +22,6 @@ export const BridgeTxList = () => {
   const { isConnected, isConnecting, handlers } = useFuelAccountConnection();
   const { txs: bridgeTxs, isLoading } = useBridgeTxs();
 
-  console.log('is loading', isLoading);
-  console.log(`isConnected`, isConnected);
   return (
     <Card css={coreStyles.card}>
       <Card.Header css={styles.header}>
@@ -58,6 +56,7 @@ export const BridgeTxList = () => {
       </Card.Header>
       <Card.Body css={styles.body}>
         {isLoading && <BridgeTxItemsLoading />}
+        {/** need to check for strict equality bc we care if isConnected is not undefined */}
         {isConnected === false && !isLoading && (
           <BridgeTxListNotConnected
             isConnecting={isConnecting}
