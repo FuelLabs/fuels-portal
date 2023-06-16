@@ -1,7 +1,9 @@
 // TODO: don't use light colors once https://github.com/FuelLabs/fuel-ui/issues/246
 // is fixed
-import { lightColors, cssObj } from '@fuel-ui/css';
+import { lightColors, cssObj, darkColors } from '@fuel-ui/css';
 import { Box, Card, ContentLoader, Text, Button } from '@fuel-ui/react';
+
+import { useTheme } from '~/systems/Settings';
 
 type BridgeTxListEmptyProps = {
   isConnecting: boolean;
@@ -12,6 +14,8 @@ export const BridgeTxListNotConnected = ({
   isConnecting,
   onClick,
 }: BridgeTxListEmptyProps) => {
+  const { theme } = useTheme();
+
   return (
     <Card.Body css={styles.body}>
       <Box.Stack justify="center" gap="$4">
@@ -19,8 +23,16 @@ export const BridgeTxListNotConnected = ({
           speed={2}
           height="24px"
           width="100%"
-          backgroundColor={lightColors.intentsBase3}
-          foregroundColor={lightColors.intentsBase3}
+          backgroundColor={
+            theme === 'light'
+              ? lightColors.intentsBase3
+              : darkColors.intentsBase3
+          }
+          foregroundColor={
+            theme === 'light'
+              ? lightColors.intentsBase3
+              : darkColors.intentsBase3
+          }
         >
           <ContentLoader.Rect width="100%" height="24" rx="4" />
         </ContentLoader>
@@ -28,8 +40,16 @@ export const BridgeTxListNotConnected = ({
           speed={2}
           height="24px"
           width="100%"
-          backgroundColor={lightColors.intentsBase2}
-          foregroundColor={lightColors.intentsBase2}
+          backgroundColor={
+            theme === 'light'
+              ? lightColors.intentsBase2
+              : darkColors.intentsBase2
+          }
+          foregroundColor={
+            theme === 'light'
+              ? lightColors.intentsBase2
+              : darkColors.intentsBase2
+          }
         >
           <ContentLoader.Rect width="100%" height="24" rx="4" />
         </ContentLoader>
@@ -37,8 +57,16 @@ export const BridgeTxListNotConnected = ({
           speed={2}
           height="24px"
           width="100%"
-          backgroundColor={lightColors.intentsBase1}
-          foregroundColor={lightColors.intentsBase1}
+          backgroundColor={
+            theme === 'light'
+              ? lightColors.intentsBase1
+              : darkColors.intentsBase1
+          }
+          foregroundColor={
+            theme === 'light'
+              ? lightColors.intentsBase1
+              : darkColors.intentsBase1
+          }
         >
           <ContentLoader.Rect width="100%" height="24" rx="4" />
         </ContentLoader>
