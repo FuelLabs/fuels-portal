@@ -64,6 +64,7 @@ const styles = cssObj({
     alignItems: 'center',
     px: '0px !important',
     py: '$1 !important',
+    width: '$full',
   }),
   wrapper: cssObj({
     width: '100%',

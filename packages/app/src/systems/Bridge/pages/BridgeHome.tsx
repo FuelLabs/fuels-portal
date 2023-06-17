@@ -14,6 +14,8 @@ export const BridgeHome = ({ children }: BridgeHomeProps) => {
   const location = useLocation();
 
   const getClassName = (url: string) => {
+    console.log('location: ', location.pathname);
+    console.log(`url`, url);
     return location.pathname === url ? 'header--navItemActive' : undefined;
   };
 
@@ -76,7 +78,7 @@ const styles = {
 
     'a.header--navItemActive': {
       color: '$intentsBase12',
-      borderBottom: '2px solid $green9 !important',
+      borderBottom: '2px solid $intentsPrimary9 !important',
     },
   }),
 };

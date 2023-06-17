@@ -39,6 +39,6 @@ export const Usage = () => {
 const styles = {
   storybook: cssObj({
     margin: '20px',
-    width: '100%',
+    width: '386px',
   }),
 };

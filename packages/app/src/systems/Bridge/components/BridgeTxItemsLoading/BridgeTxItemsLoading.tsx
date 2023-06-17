@@ -1,4 +1,4 @@
-import { lightColors, darkColors, cssObj } from '@fuel-ui/css';
+import { lightColors, darkColors } from '@fuel-ui/css';
 import { Box, ContentLoader } from '@fuel-ui/react';
 
 import { useTheme } from '~/systems/Settings';
@@ -6,7 +6,7 @@ import { useTheme } from '~/systems/Settings';
 export const BridgeTxItemsLoading = () => {
   const { theme } = useTheme();
   return (
-    <Box.Stack justify="center" gap="$4" css={styles.stack}>
+    <Box.Stack justify="center" gap="$4">
       <ContentLoader
         speed={2}
         height="24px"
@@ -48,10 +48,4 @@ export const BridgeTxItemsLoading = () => {
       </ContentLoader>
     </Box.Stack>
   );
-};
-
-const styles = {
-  stack: cssObj({
-    // maxWidth: '80%',
-  }),
 };
