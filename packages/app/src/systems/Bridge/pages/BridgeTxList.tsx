@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Card, Text, CardList, Box } from '@fuel-ui/react';
+import { Card, Text, CardList } from '@fuel-ui/react';
 
 import {
   BridgeListEmpty,
