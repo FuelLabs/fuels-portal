@@ -16,7 +16,12 @@ export const BridgeHome = ({ children }: BridgeHomeProps) => {
   const getClassName = (url: string) => {
     console.log('location: ', location.pathname);
     console.log(`url`, url);
-    return location.pathname === url ? 'header--navItemActive' : undefined;
+
+    const temp =
+      location.pathname === url ? 'header--navItemActive' : undefined;
+    console.log(`temp`, temp);
+    console.log(`location.pathname === url`, location.pathname === url);
+    return temp;
   };
 
   return (
