@@ -94,7 +94,7 @@ export const useTxsFuelToEth = () => {
     }, [] as BridgeTx[]);
 
     return txs;
-  }, [transactionsByOwner]);
+  }, [JSON.stringify(transactionsByOwner)]);
 
   return {
     txs,
