@@ -59,16 +59,16 @@ const selectors = {
     const steps = [
       {
         name: 'Submit to bridge',
-        // TODO: put correct time left, how?
-        status: status.isSubmitToBridgeDone ? 'Done!' : '~XX minutes left',
+        // TODO: put correct time left '~XX minutes left', how?
+        status: status.isSubmitToBridgeDone ? 'Done!' : 'Waiting',
         isLoading: status.isSubmitToBridgeLoading,
         isSelected: status.isSubmitToBridgeSelected,
         isDone: status.isSubmitToBridgeDone,
       },
       {
         name: 'Settlement',
-        // TODO: put correct time left, how? waiting for message Proof in this stage
-        status: status.isSettlementDone ? 'Done!' : '~XX days left',
+        // TODO: put correct time left '~XX days left', how? waiting for message Proof in this stage
+        status: status.isSettlementDone ? 'Done!' : 'Waiting',
         isLoading: status.isSettlementLoading,
         isDone: status.isSettlementDone,
         isSelected: status.isSettlementSelected,
@@ -159,6 +159,6 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
       units: FUEL_UNITS,
     }),
     steps,
-    isWaitingEthWalletApproval: status.isWaitingEthWalletApproval,
+    status,
   };
 }

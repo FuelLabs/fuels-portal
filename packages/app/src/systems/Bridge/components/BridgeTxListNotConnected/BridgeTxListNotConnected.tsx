@@ -1,5 +1,3 @@
-// TODO: don't use light colors once https://github.com/FuelLabs/fuel-ui/issues/246
-// is fixed
 import { cssObj } from '@fuel-ui/css';
 import { Box, Text, Button } from '@fuel-ui/react';
 

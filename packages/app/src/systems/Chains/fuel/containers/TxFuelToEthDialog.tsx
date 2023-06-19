@@ -10,13 +10,7 @@ import { useOverlay } from '~/systems/Overlay';
 
 export function TxFuelToEthDialog() {
   const { metadata } = useOverlay<{ txId: string }>();
-  const {
-    steps,
-    isWaitingEthWalletApproval,
-    handlers,
-    fuelTxDate,
-    fuelTxAmount,
-  } = useTxFuelToEth({
+  const { steps, status, handlers, fuelTxDate, fuelTxAmount } = useTxFuelToEth({
     txId: metadata.txId,
   });
 
@@ -49,12 +43,14 @@ export function TxFuelToEthDialog() {
           />
         </Box.Stack>
       </Dialog.Description>
-      {isWaitingEthWalletApproval && (
+      {(status.isWaitingEthWalletApproval ||
+        status.isConfirmTransactionLoading) && (
         <Dialog.Footer>
           <Button
             onPress={handlers.relayToEth}
             intent="primary"
             css={styles.actionButton}
+            isLoading={status.isConfirmTransactionLoading}
           >
             Confirm Transaction
           </Button>
