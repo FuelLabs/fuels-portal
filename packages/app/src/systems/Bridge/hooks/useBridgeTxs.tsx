@@ -18,7 +18,7 @@ export const useBridgeTxs = () => {
     if (b.date === undefined) {
       return -1;
     }
-    return a.date.getTime() - b.date.getTime();
+    return b.date.getTime() - a.date.getTime();
   });
 
   const isLoading = isEthToFuelLoading || isFuelToEthLoading;

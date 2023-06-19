@@ -48,8 +48,8 @@ const selectors = {
       },
       {
         name: 'Settlement',
-        // TODO: put correct time left, how?
-        status: status.isSettlementDone ? 'Done!' : '~XX minutes left',
+        // TODO: put correct time left '~XX minutes left', how?
+        status: status.isSettlementDone ? 'Done!' : 'Waiting',
         isLoading: status.isSettlementLoading,
         isDone: status.isSettlementDone,
         isSelected: status.isSettlementSelected,
