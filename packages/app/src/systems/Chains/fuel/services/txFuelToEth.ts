@@ -4,7 +4,6 @@ import type {
   Provider as FuelProvider,
   MessageProof,
   ReceiptMessageOut,
-  TransactionResultReceipt,
 } from 'fuels';
 import { bn, TransactionResponse, ReceiptType, Address } from 'fuels';
 import type { WalletClient, PublicClient as EthPublicClient } from 'viem';
@@ -17,10 +16,6 @@ export type TxFuelToEthInputs = {
     amount?: BN;
     fuelWallet?: FuelWalletLocked;
     ethAddress?: string;
-  };
-  waitTxResult: {
-    fuelTxId: string;
-    fuelProvider?: FuelProvider;
   };
   getMessageId: {
     fuelTxId: string;
@@ -61,20 +56,6 @@ export class TxFuelToEthService {
     );
 
     return txFuel.id;
-  }
-
-  static async waitTxResult(input: TxFuelToEthInputs['waitTxResult']) {
-    if (!input?.fuelProvider) {
-      throw new Error('Need to connect Fuel Provider');
-    }
-    if (!input?.fuelTxId) {
-      throw new Error('Need transaction Id');
-    }
-
-    const { fuelTxId, fuelProvider } = input;
-
-    const response = new TransactionResponse(fuelTxId || '', fuelProvider);
-    return response.waitForResult();
   }
 
   static async getMessageId(input: TxFuelToEthInputs['getMessageId']) {

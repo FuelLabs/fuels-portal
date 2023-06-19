@@ -24,9 +24,6 @@ type MachineContext = {
 };
 
 type MachineServices = {
-  waitFuelTxResult: {
-    data: TransactionResult<any, void>;
-  };
   getMessageId: {
     data: string | undefined;
   };
@@ -265,8 +262,6 @@ export const txFuelToEthMachine = createMachine(
           if (!input) {
             throw new Error('No input to get fuel message');
           }
-
-          debugger;
 
           return TxFuelToEthService.getMessageId(input);
         },
