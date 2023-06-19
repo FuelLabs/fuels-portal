@@ -50,7 +50,11 @@ export const TxListItemFuelToEth = ({
     }
 
     if (bridgeTxStatus?.name === 'Confirm transaction') {
-      return <Badge css={styles.actionBadge}>Action Required</Badge>;
+      return (
+        <Badge css={styles.actionBadge} intent="error">
+          Action Required
+        </Badge>
+      );
     }
 
     return '';
@@ -74,6 +78,5 @@ const styles = {
     lineHeight: 1,
     padding: '$1',
     textTransform: 'none',
-    backgroundColor: '$intentsError9',
   }),
 };

@@ -2,7 +2,7 @@ import { useTransaction } from '@fuels-portal/sdk-react';
 import { useInterpret, useSelector } from '@xstate/react';
 import type { ReceiptMessageOut } from 'fuels';
 import { ReceiptType, fromTai64ToUnix } from 'fuels';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { useEthAccountConnection } from '../../eth';
 import type { TxFuelToEthMachineState } from '../machines';
@@ -116,9 +116,13 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
   const fuelTxResult = useSelector(service, selectors.fuelTxResult);
   const fuelTxAmount = useSelector(service, selectors.amountSent);
 
-  const fuelTxDate = fuelTxResult?.time
-    ? new Date(fromTai64ToUnix(fuelTxResult?.time) * 1000)
-    : undefined;
+  const fuelTxDate = useMemo(
+    () =>
+      fuelTxResult?.time
+        ? new Date(fromTai64ToUnix(fuelTxResult?.time) * 1000)
+        : undefined,
+    [fuelTxResult?.time]
+  );
 
   const { transaction: fuelTx } = useTransaction(txId);
 

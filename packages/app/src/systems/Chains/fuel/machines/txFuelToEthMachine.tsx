@@ -24,6 +24,9 @@ type MachineContext = {
 };
 
 type MachineServices = {
+  waitFuelTxResult: {
+    data: TransactionResult<any, void>;
+  };
   getMessageId: {
     data: string | undefined;
   };
@@ -75,12 +78,12 @@ export const txFuelToEthMachine = createMachine(
         },
       },
       submittingToBridge: {
-        initial: 'gettingMessageId',
+        initial: 'waitingFuelTxResult',
         states: {
-          gettingMessageId: {
+          waitingFuelTxResult: {
             tags: ['isSubmitToBridgeLoading', 'isSubmitToBridgeSelected'],
             invoke: {
-              src: 'getMessageId',
+              src: 'waitFuelTxResult',
               data: {
                 input: (ctx: MachineContext) => ({
                   fuelTxId: ctx.fuelTxId,
@@ -90,7 +93,29 @@ export const txFuelToEthMachine = createMachine(
               onDone: [
                 {
                   cond: FetchMachine.hasError,
-                  target: 'gettingMessageId',
+                  target: 'waitingFuelTxResult',
+                },
+                {
+                  actions: ['assignFuelTxResult'],
+                  cond: 'hasFuelTxResult',
+                  target: 'gettingFuelMessageId',
+                },
+              ],
+            },
+          },
+          gettingFuelMessageId: {
+            tags: ['isSubmitToBridgeLoading', 'isSubmitToBridgeSelected'],
+            invoke: {
+              src: 'getMessageId',
+              data: {
+                input: (ctx: MachineContext) => ({
+                  receipts: ctx.fuelTxResult?.receipts,
+                }),
+              },
+              onDone: [
+                {
+                  cond: FetchMachine.hasError,
+                  target: 'waitingFuelTxResult',
                 },
                 {
                   actions: ['assignMessageId'],
@@ -101,7 +126,7 @@ export const txFuelToEthMachine = createMachine(
             },
             after: {
               10000: {
-                target: 'gettingMessageId',
+                target: 'waitingFuelTxResult',
               },
             },
           },
@@ -240,6 +265,9 @@ export const txFuelToEthMachine = createMachine(
         fuelProvider: ev.input.fuelProvider,
         ethPublicClient: ev.input.ethPublicClient,
       })),
+      assignFuelTxResult: assign({
+        fuelTxResult: (_, ev) => ev.data || undefined,
+      }),
       assignMessageId: assign({
         messageId: (_, ev) => ev.data || undefined,
       }),
@@ -248,10 +276,27 @@ export const txFuelToEthMachine = createMachine(
       }),
     },
     guards: {
+      hasFuelTxResult: (ctx, ev) => !!ctx.fuelTxResult || !!ev?.data,
       hasMessageId: (ctx, ev) => !!ctx.messageProof || !!ev?.data,
       hasMessageProof: (ctx, ev) => !!ctx.messageProof || !!ev?.data,
     },
     services: {
+      waitFuelTxResult: FetchMachine.create<
+        TxFuelToEthInputs['waitTxResult'],
+        MachineServices['waitFuelTxResult']['data']
+      >({
+        showError: true,
+        maxAttempts: 1,
+        async fetch({ input }) {
+          if (!input) {
+            throw new Error('No input to wait tx result');
+          }
+
+          const result = await TxFuelToEthService.waitTxResult(input);
+
+          return result;
+        },
+      }),
       getMessageId: FetchMachine.create<
         TxFuelToEthInputs['getMessageId'],
         MachineServices['getMessageId']['data']
