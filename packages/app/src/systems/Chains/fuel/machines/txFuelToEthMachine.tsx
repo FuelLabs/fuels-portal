@@ -266,6 +266,8 @@ export const txFuelToEthMachine = createMachine(
             throw new Error('No input to get fuel message');
           }
 
+          debugger;
+
           return TxFuelToEthService.getMessageId(input);
         },
       }),

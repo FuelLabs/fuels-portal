@@ -51,7 +51,13 @@ export function TxFuelToEthDialog() {
       </Dialog.Description>
       {isWaitingEthWalletApproval && (
         <Dialog.Footer>
-          <Button onPress={handlers.relayToEth}>Confirm Transaction</Button>
+          <Button
+            onPress={handlers.relayToEth}
+            intent="primary"
+            css={styles.actionButton}
+          >
+            Confirm Transaction
+          </Button>
         </Dialog.Footer>
       )}
     </>
@@ -73,6 +79,6 @@ const styles = {
     borderBottom: '1px solid $intentsBase8',
   }),
   actionButton: cssObj({
-    width: '100%',
+    width: '$full',
   }),
 };

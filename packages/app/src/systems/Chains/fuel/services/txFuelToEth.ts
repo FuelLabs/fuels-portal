@@ -23,7 +23,9 @@ export type TxFuelToEthInputs = {
     fuelProvider?: FuelProvider;
   };
   getMessageId: {
-    receipts: TransactionResultReceipt[];
+    fuelTxId: string;
+    messageId: string;
+    fuelProvider?: FuelProvider;
   };
   getMessageProof: {
     fuelTxId: string;
@@ -76,11 +78,17 @@ export class TxFuelToEthService {
   }
 
   static async getMessageId(input: TxFuelToEthInputs['getMessageId']) {
-    if (!input?.receipts) {
-      throw new Error('Need receipts from tx result');
+    if (!input?.fuelProvider) {
+      throw new Error('Need to connect Fuel Provider');
     }
-    const { receipts } = input;
+    if (!input?.fuelTxId) {
+      throw new Error('Need transaction Id');
+    }
 
+    const { fuelTxId, fuelProvider } = input;
+
+    const response = new TransactionResponse(fuelTxId || '', fuelProvider);
+    const { receipts } = await response.waitForResult();
     // TODO: this should be replaced with tx utils getReceiptsMessageOut
     const message = receipts.find((r) => {
       return r.type === ReceiptType.MessageOut;
