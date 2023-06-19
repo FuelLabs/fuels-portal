@@ -19,8 +19,14 @@ import {
 import { coreStyles } from '~/systems/Core';
 
 export const BridgeTxList = () => {
-  const { isConnected, isConnecting, handlers } = useFuelAccountConnection();
-  const { txs: bridgeTxs, isLoading } = useBridgeTxs();
+  const { isConnecting, handlers } = useFuelAccountConnection();
+  const {
+    txs: bridgeTxs,
+    isLoading,
+    shouldShowNotConnected,
+    shouldShowEmpty,
+    shouldShowList,
+  } = useBridgeTxs();
 
   return (
     <Card css={coreStyles.card}>
@@ -57,16 +63,14 @@ export const BridgeTxList = () => {
       <Card.Body css={styles.body}>
         {isLoading && <BridgeTxItemsLoading />}
         {/** need to check for strict equality bc we care if isConnected is not undefined */}
-        {isConnected === false && !isLoading && (
+        {shouldShowNotConnected && (
           <BridgeTxListNotConnected
             isConnecting={isConnecting}
             onClick={handlers.connect}
           />
         )}
-        {isConnected && !isLoading && bridgeTxs.length === 0 && (
-          <BridgeListEmpty />
-        )}
-        {bridgeTxs.length > 0 && isConnected && (
+        {shouldShowEmpty && <BridgeListEmpty />}
+        {shouldShowList && (
           <CardList isClickable>
             {bridgeTxs.map((txDatum, index) => {
               if (
