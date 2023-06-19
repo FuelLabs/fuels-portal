@@ -98,7 +98,7 @@ export class TxEthToFuelService {
 
     const { ethTx, ethPublicClient } = input;
 
-    const receipt = await ethPublicClient.waitForTransactionReceipt({
+    const receipt = await ethPublicClient.getTransactionReceipt({
       hash: ethTx.hash as `0x${string}`,
     });
     const decodedEvent = decodeEventLog({
