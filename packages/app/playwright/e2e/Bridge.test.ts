@@ -105,18 +105,24 @@ test.describe('Bridge', () => {
     await connectFuel.click();
     await walletApprove(context);
 
+    // Deposit asset
+    const depositAmount = '1.000';
     const depositInput = page.locator('input');
-    await depositInput.fill('1');
+    await depositInput.fill(depositAmount);
     const depositButton = getButtonByText(page, 'Bridge asset');
     await depositButton.click();
     await metamask.confirmTransaction();
 
-    // check the popup is correct?
+    // check the popup is correct
+    const assetAmount = getByAriaLabel(page, 'Asset amount');
+    expect((await assetAmount.innerHTML()).trim()).toBe(depositAmount);
     const closeEthPopup = getByAriaLabel(page, 'Close unlock window');
     await closeEthPopup.click();
 
     // Go to transaction page
     const transactionList = page.locator('a').getByText('Transactions');
     await transactionList.click();
+
+    // check the transaction is there
   });
 });

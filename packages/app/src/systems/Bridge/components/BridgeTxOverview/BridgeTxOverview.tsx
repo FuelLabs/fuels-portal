@@ -53,7 +53,9 @@ export const BridgeTxOverview = ({
         <Text css={styles.labelText}>Asset</Text>
         <Box.Flex css={styles.directionInfo}>
           <Image width={14} height={14} src={asset.imageUrl} />
-          <Text css={styles.infoText}>{asset.assetAmount}</Text>
+          <Text aria-label="Asset amount" css={styles.infoText}>
+            {asset.assetAmount}
+          </Text>
           <Text css={styles.infoText}>{asset.assetSymbol}</Text>
         </Box.Flex>
       </Box.Flex>
