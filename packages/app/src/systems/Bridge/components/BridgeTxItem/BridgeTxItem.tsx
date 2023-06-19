@@ -36,7 +36,9 @@ export const BridgeTxItem = ({
         </Box.Flex>
         <Box.Flex css={styles.txItem}>
           <Image width={14} height={14} src={asset.assetImageSrc} />
-          <Text css={styles.infoText}>{asset.assetAmount}</Text>
+          <Text aria-label="Asset amount" css={styles.infoText}>
+            {asset.assetAmount}
+          </Text>
           <Text css={styles.infoText}>{asset.assetSymbol}</Text>
         </Box.Flex>
         {status}

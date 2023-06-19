@@ -75,9 +75,6 @@ async function walletApprove(context: BrowserContext) {
 }
 
 test.describe('Bridge', () => {
-  // let browser: Browser;
-  // let page: Page;
-
   test.beforeAll(async ({ context, extensionId, page }) => {
     await walletSetup(context, extensionId, page);
   });
@@ -97,7 +94,7 @@ test.describe('Bridge', () => {
     const metamaskConnect = getButtonByText(page, 'Metamask');
     await metamaskConnect.click();
     // sometimes it goes too quick
-    await page.waitForTimeout(3000);
+    await page.waitForTimeout(500);
     await metamask.acceptAccess();
 
     // Connect fuel
@@ -115,6 +112,7 @@ test.describe('Bridge', () => {
 
     // check the popup is correct
     const assetAmount = getByAriaLabel(page, 'Asset amount');
+    await page.waitForTimeout(500);
     expect((await assetAmount.innerHTML()).trim()).toBe(depositAmount);
     const closeEthPopup = getByAriaLabel(page, 'Close unlock window');
     await closeEthPopup.click();
@@ -124,5 +122,16 @@ test.describe('Bridge', () => {
     await transactionList.click();
 
     // check the transaction is there
+    const transactionAssetAmount = getByAriaLabel(page, 'Asset amount');
+    expect((await transactionAssetAmount.last().innerHTML()).trim()).toBe(
+      depositAmount
+    );
+
+    // Go to the bridge page
+    // Go to the withdraw page
+    // Withdraw asset
+    // Check the popup is correct
+    // Go to the transaction page
+    // Check the transaction is there
   });
 });
