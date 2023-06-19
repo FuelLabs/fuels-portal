@@ -1,4 +1,5 @@
 import type { Provider as FuelProvider, MessageProof } from 'fuels';
+import type { PublicClient as EthPublicClient } from 'viem';
 import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
 
@@ -12,6 +13,8 @@ type MachineContext = {
   fuelTxId: string;
   messageId?: string;
   messageProof?: MessageProof;
+  ethTxId?: string;
+  ethPublicClient?: EthPublicClient;
 };
 
 type MachineServices = {
@@ -21,19 +24,16 @@ type MachineServices = {
   getMessageProof: {
     data: MessageProof | undefined | null;
   };
+  getMessageRelayed: {
+    data: string | undefined;
+  };
   relayMessageFromFuelBlock: {
-    data: void;
+    data: string;
   };
 };
 
-export enum TxFuelToEthStatus {
-  waitingFuelTransaction = 'Waiting Fuel Transaction',
-  waitingSettlement = 'Waiting Settlement',
-  waitingReceive = 'Waiting Receive on ETH',
-  done = 'Done',
-}
-
-type AnalyzeInputs = TxFuelToEthInputs['getMessageProof'];
+type AnalyzeInputs = TxFuelToEthInputs['getMessageProof'] &
+  TxFuelToEthInputs['getMessageRelayed'];
 export type TxFuelToEthMachineEvents =
   | {
       type: 'START_ANALYZE_TX';
@@ -41,7 +41,10 @@ export type TxFuelToEthMachineEvents =
     }
   | {
       type: 'RELAY_TO_ETH';
-      input: void;
+      input: Omit<
+        TxFuelToEthInputs['relayMessageFromFuelBlock'],
+        'messageProof'
+      >;
     };
 
 export const txFuelToEthMachine = createMachine(
@@ -61,98 +64,165 @@ export const txFuelToEthMachine = createMachine(
         on: {
           START_ANALYZE_TX: {
             actions: ['assignAnalyzeTxInput'],
-            target: 'gettingMessageId',
+            target: 'submittingToBridge',
           },
         },
       },
-      gettingMessageId: {
-        invoke: {
-          src: 'getMessageId',
-          data: {
-            input: (ctx: MachineContext) => ({
-              fuelTxId: ctx.fuelTxId,
-              fuelProvider: ctx.fuelProvider,
-            }),
-          },
-          onDone: [
-            {
-              cond: FetchMachine.hasError,
-              target: 'idle',
+      submittingToBridge: {
+        initial: 'gettingMessageId',
+        states: {
+          gettingMessageId: {
+            tags: ['isSubmitToBridgeLoading', 'isSubmitToBridgeSelected'],
+            invoke: {
+              src: 'getMessageId',
+              data: {
+                input: (ctx: MachineContext) => ({
+                  fuelTxId: ctx.fuelTxId,
+                  fuelProvider: ctx.fuelProvider,
+                }),
+              },
+              onDone: [
+                {
+                  cond: FetchMachine.hasError,
+                  target: 'gettingMessageId',
+                },
+                {
+                  actions: ['assignMessageId'],
+                  cond: 'hasMessageId',
+                  target: 'checkingSettlement',
+                },
+              ],
             },
-            {
-              actions: ['assignMessageId'],
-              cond: 'hasMessageId',
-              target: 'checkingMessageProof',
+            after: {
+              10000: {
+                target: 'gettingMessageId',
+              },
             },
-          ],
-        },
-        after: {
-          10000: {
-            target: 'gettingMessageId',
           },
-        },
-      },
-      checkingMessageProof: {
-        invoke: {
-          src: 'getMessageProof',
-          data: {
-            input: (ctx: MachineContext) => ({
-              fuelTxId: ctx.fuelTxId,
-              messageId: ctx.messageId,
-              fuelProvider: ctx.fuelProvider,
-            }),
-          },
-          onDone: [
-            {
-              cond: FetchMachine.hasError,
-              target: 'idle',
+          checkingSettlement: {
+            tags: ['isSubmitToBridgeDone'],
+            initial: 'checkingMessageProof',
+            states: {
+              checkingMessageProof: {
+                tags: ['isSettlementLoading', 'isSettlementSelected'],
+                invoke: {
+                  src: 'getMessageProof',
+                  data: {
+                    input: (ctx: MachineContext) => ({
+                      fuelTxId: ctx.fuelTxId,
+                      messageId: ctx.messageId,
+                      fuelProvider: ctx.fuelProvider,
+                    }),
+                  },
+                  onDone: [
+                    {
+                      cond: FetchMachine.hasError,
+                      target: 'checkingMessageProof',
+                    },
+                    {
+                      actions: ['assignMessageProof'],
+                      cond: 'hasMessageProof',
+                      target: 'checkingRelayed',
+                    },
+                  ],
+                },
+                after: {
+                  10000: {
+                    target: 'checkingMessageProof',
+                  },
+                },
+              },
+              checkingRelayed: {
+                tags: ['isSettlementDone'],
+                initial: 'checkingHasRelayedInEth',
+                states: {
+                  checkingHasRelayedInEth: {
+                    tags: ['isConfirmTransactionSelected'],
+                    invoke: {
+                      src: 'getMessageRelayed',
+                      data: {
+                        input: (ctx: MachineContext) => ({
+                          messageProof: ctx.messageProof,
+                          ethPublicClient: ctx.ethPublicClient,
+                        }),
+                      },
+                      onDone: [
+                        {
+                          cond: FetchMachine.hasError,
+                          target: 'checkingHasRelayedInEth',
+                        },
+                        {
+                          // TODO: fix here after we have event message when relayed in ETH side
+                          // actions: ['assignMessageRelayed'],
+                          // cond: 'hasMessageRelayed',
+                          target: 'waitingEthWalletApproval',
+                        },
+                        {
+                          // TODO: fix here after we have event message when relayed in ETH side
+                          // actions: ['assignMessageRelayed'],
+                          // cond: 'hasMessageRelayed',
+                          target: 'waitingReceive',
+                        },
+                      ],
+                    },
+                  },
+                  waitingEthWalletApproval: {
+                    tags: [
+                      'isConfirmTransactionSelected',
+                      'isWaitingEthWalletApproval',
+                    ],
+                    on: {
+                      RELAY_TO_ETH: {
+                        target: ['relayingMessageFromFuelBlock'],
+                      },
+                    },
+                  },
+                  relayingMessageFromFuelBlock: {
+                    tags: [
+                      'isConfirmTransactionLoading',
+                      'isConfirmTransactionSelected',
+                    ],
+                    invoke: {
+                      src: 'relayMessageFromFuelBlock',
+                      data: {
+                        input: (
+                          ctx: MachineContext,
+                          ev: Extract<
+                            TxFuelToEthMachineEvents,
+                            { type: 'RELAY_TO_ETH' }
+                          >
+                        ) => ({
+                          messageProof: ctx.messageProof,
+                          ethWalletClient: ev.input.ethWalletClient,
+                        }),
+                      },
+                      onDone: [
+                        {
+                          cond: FetchMachine.hasError,
+                          target: 'waitingEthWalletApproval',
+                        },
+                        {
+                          target: 'checkingHasRelayedInEth',
+                        },
+                      ],
+                    },
+                  },
+                  waitingReceive: {
+                    tags: ['isConfirmTransactionDone'],
+                    initial: 'done',
+                    states: {
+                      // TODO: here should implement state to wait for receipts of relayed txId, to make sure it's settled and put as done
+                      done: {
+                        tags: ['isReceiveDone'],
+                        type: 'final',
+                      },
+                    },
+                  },
+                },
+              },
             },
-            {
-              actions: ['assignMessageProof'],
-              cond: 'hasMessageProof',
-              target: 'waitingUserEthApproval',
-            },
-          ],
-        },
-        after: {
-          10000: {
-            target: 'checkingMessageProof',
           },
         },
-      },
-      waitingUserEthApproval: {
-        on: {
-          RELAY_TO_ETH: {
-            target: ['relayingMessageFromFuelBlock'],
-          },
-        },
-      },
-      relayingMessageFromFuelBlock: {
-        invoke: {
-          src: 'relayMessageFromFuelBlock',
-          data: {
-            input: (_: MachineContext) => ({}),
-          },
-          onDone: [
-            {
-              cond: FetchMachine.hasError,
-              target: 'idle',
-            },
-            {
-              // actions: ['assignEthTxId'],
-              // cond: 'hasEthTxId',
-              target: 'done',
-            },
-          ],
-        },
-        after: {
-          10000: {
-            target: 'relayingMessageFromFuelBlock',
-          },
-        },
-      },
-      done: {
-        type: 'final',
       },
       failed: {},
     },
@@ -162,6 +232,7 @@ export const txFuelToEthMachine = createMachine(
       assignAnalyzeTxInput: assign((_, ev) => ({
         fuelTxId: ev.input.fuelTxId,
         fuelProvider: ev.input.fuelProvider,
+        ethPublicClient: ev.input.ethPublicClient,
       })),
       assignMessageId: assign({
         messageId: (_, ev) => ev.data || undefined,
@@ -203,6 +274,20 @@ export const txFuelToEthMachine = createMachine(
           return TxFuelToEthService.getMessageProof(input);
         },
       }),
+      getMessageRelayed: FetchMachine.create<
+        TxFuelToEthInputs['getMessageRelayed'],
+        MachineServices['getMessageRelayed']['data']
+      >({
+        showError: true,
+        maxAttempts: 1,
+        async fetch({ input }) {
+          if (!input) {
+            throw new Error('No input to get message relayed');
+          }
+
+          return TxFuelToEthService.getMessageRelayed(input);
+        },
+      }),
       relayMessageFromFuelBlock: FetchMachine.create<
         TxFuelToEthInputs['relayMessageFromFuelBlock'],
         MachineServices['relayMessageFromFuelBlock']['data']
@@ -214,7 +299,11 @@ export const txFuelToEthMachine = createMachine(
             throw new Error('No input to get fuel message');
           }
 
-          return TxFuelToEthService.relayMessageFromFuelBlock(input);
+          const resp = await TxFuelToEthService.relayMessageFromFuelBlock(
+            input
+          );
+
+          return resp;
         },
       }),
     },
