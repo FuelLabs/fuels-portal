@@ -69,7 +69,7 @@ export const ProjectItem = ({
               <Icon icon="ArrowUpRight" size={20} />
             </Box.Flex>
             <Text> {description}</Text>
-            <Box.Flex align="center" justify="space-between">
+            <Box.Flex align="center" justify="space-between" wrap="wrap">
               <ButtonLink
                 variant="link"
                 css={styles.link}
