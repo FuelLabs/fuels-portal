@@ -98,9 +98,17 @@ export class TxEthToFuelService {
 
     const { ethTx, ethPublicClient } = input;
 
-    const receipt = await ethPublicClient.getTransactionReceipt({
-      hash: ethTx.hash as `0x${string}`,
-    });
+    let receipt;
+    try {
+      receipt = await ethPublicClient.getTransactionReceipt({
+        hash: ethTx.hash as `0x${string}`,
+      });
+    } catch (err: unknown) {
+      receipt = await ethPublicClient.waitForTransactionReceipt({
+        hash: ethTx.hash as `0x${string}`,
+        timeout: 10_000,
+      });
+    }
     const decodedEvent = decodeEventLog({
       abi: AbiFuelMessagePortal,
       data: receipt.logs[0].data,
