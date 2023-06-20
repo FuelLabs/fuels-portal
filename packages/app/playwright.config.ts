@@ -8,6 +8,7 @@ const config: PlaywrightTestConfig = {
   workers: 1,
   testMatch: join(__dirname, './playwright/**/*.test.ts'),
   testDir: join(__dirname, './playwright/'),
+  timeout: 50000,
   reporter: [['list', { printSteps: true }]],
   // Retry tests on CI if they fail
   retries: IS_CI ? 2 : 0,

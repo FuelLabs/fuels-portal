@@ -1,8 +1,7 @@
-import type { Browser, BrowserContext, Page } from '@playwright/test';
-import { chromium } from '@playwright/test';
+import type { BrowserContext, Page } from '@playwright/test';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 
-import { getByAriaLabel, hasText, visit, getButtonByText } from '../commons';
+import { getByAriaLabel, getButtonByText } from '../commons';
 
 import { test } from './fixtures';
 
@@ -60,7 +59,7 @@ async function walletSetup(
   await toFinish.click();
 }
 
-async function walletApprove(context: BrowserContext) {
+async function walletConnect(context: BrowserContext) {
   let approvePage = context.pages().find((p) => p.url().includes('/popup'));
   if (!approvePage) {
     approvePage = await context.waitForEvent('page', {
@@ -72,6 +71,18 @@ async function walletApprove(context: BrowserContext) {
   await nextButton.click();
   const connectButton = approvePage.locator('button').getByText('Connect');
   await connectButton.click();
+}
+
+async function walletApprove(context: BrowserContext) {
+  let approvePage = context.pages().find((p) => p.url().includes('/popup'));
+  if (!approvePage) {
+    approvePage = await context.waitForEvent('page', {
+      predicate: (page) => page.url().includes('/popup'),
+    });
+  }
+
+  const approveButton = approvePage.locator('button').getByText('Approve');
+  await approveButton.click();
 }
 
 test.describe('Bridge', () => {
@@ -92,15 +103,15 @@ test.describe('Bridge', () => {
     const connectKitButton = getByAriaLabel(page, 'From Connect wallet');
     await connectKitButton.click();
     const metamaskConnect = getButtonByText(page, 'Metamask');
-    await metamaskConnect.click({ timeout: 3000 });
+    await metamaskConnect.click();
     // sometimes it goes too quick
-    await page.waitForTimeout(7000);
+    await page.waitForTimeout(3000);
     await metamask.acceptAccess();
 
     // Connect fuel
     const connectFuel = getByAriaLabel(page, 'To Connect wallet');
     await connectFuel.click();
-    await walletApprove(context);
+    await walletConnect(context);
 
     // Deposit asset
     const depositAmount = '1.000';
@@ -140,7 +151,21 @@ test.describe('Bridge', () => {
     await withdrawPage.click();
 
     // Withdraw asset
+    const withdrawAmount = '0.010';
+    const withdrawInput = page.locator('input');
+    await withdrawInput.fill(withdrawAmount);
+    // TODO check balance is correct and gets updated
+    const withdrawButton = getButtonByText(page, 'Bridge asset');
+    await withdrawButton.click();
+    await walletApprove(context);
+
     // Check the popup is correct
+    const assetAmountWithdraw = getByAriaLabel(page, 'Asset amount');
+    await page.waitForTimeout(9000);
+    expect((await assetAmountWithdraw.innerHTML()).trim()).toBe(withdrawAmount);
+    const closeEthPopupWithdraw = getByAriaLabel(page, 'Close unlock window');
+    await closeEthPopupWithdraw.click();
+
     // Go to the transaction page
     // Check the transaction is there
   });
