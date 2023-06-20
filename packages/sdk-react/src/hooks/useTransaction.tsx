@@ -1,11 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useQuery } from '@tanstack/react-query';
-// should import BN because of this error: https://github.com/FuelLabs/fuels-ts/issues/1054
-import type {
-  TransactionScript,
-  TransactionCreate,
-  TransactionMint,
-} from 'fuels';
+// TODO: fix this import when sdk error gets fixed: https://github.com/FuelLabs/fuels-ts/issues/1054
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type * as fuels from 'fuels';
 
 import { useFuel } from '../components';
 
