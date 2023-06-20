@@ -28,6 +28,6 @@ export const useBridgeTxs = () => {
     isLoading,
     shouldShowNotConnected: isConnected === false && !isLoading,
     shouldShowEmpty: isConnected && !isLoading && txs.length === 0,
-    shouldShowList: txs.length > 0 && isConnected,
+    shouldShowList: !isLoading && isConnected && txs.length > 0,
   };
 };

@@ -104,10 +104,12 @@ export class TxEthToFuelService {
         hash: ethTx.hash as `0x${string}`,
       });
     } catch (err: unknown) {
+      // workaround in place because waitForTransactionReceipt stop working after first time using it
       receipt = await ethPublicClient.waitForTransactionReceipt({
         hash: ethTx.hash as `0x${string}`,
       });
     }
+
     const decodedEvent = decodeEventLog({
       abi: AbiFuelMessagePortal,
       data: receipt.logs[0].data,
