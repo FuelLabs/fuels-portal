@@ -3,7 +3,7 @@ import { Text, Box, ButtonLink } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { Layout } from '~/systems/Core';
+import { Layout, removeTrailingSlash } from '~/systems/Core';
 import { Pages } from '~/types';
 
 type BridgeHomeProps = {
@@ -13,8 +13,11 @@ type BridgeHomeProps = {
 export const BridgeHome = ({ children }: BridgeHomeProps) => {
   const location = useLocation();
 
-  const getClassName = (url: string) => {
-    return location.pathname === url ? 'header--navItemActive' : undefined;
+  const getClassName = (pageUrl: string) => {
+    const isCurrentPage =
+      removeTrailingSlash(location.pathname) === removeTrailingSlash(pageUrl);
+
+    return (isCurrentPage && 'header--navItemActive') || '';
   };
 
   return (
