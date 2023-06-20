@@ -6,7 +6,8 @@ import { useFuelAccountConnection } from '../../fuel';
 import type { TxEthToFuelMachineState } from '../machines';
 import { txEthToFuelMachine } from '../machines';
 
-import { useBlock } from './useBlock';
+import { useBlocks } from './useBlocks';
+import { useCachedBlocksDates } from './useCachedBlocksDates';
 import { useEthAccountConnection } from './useEthAccountConnection';
 
 import { store } from '~/store';
@@ -47,8 +48,8 @@ const selectors = {
       },
       {
         name: 'Settlement',
-        // TODO: put correct time left, how?
-        status: status.isSettlementDone ? 'Done!' : '~XX minutes left',
+        // TODO: put correct time left '~XX minutes left', how?
+        status: status.isSettlementDone ? 'Done!' : 'Waiting',
         isLoading: status.isSettlementLoading,
         isDone: status.isSettlementDone,
         isSelected: status.isSettlementSelected,
@@ -87,16 +88,22 @@ export function useTxEthToFuel({
   const { data: ethTx } = useTransaction({
     hash: id.startsWith('0x') ? (id as `0x${string}`) : undefined,
   });
-  const cachedBlockDate = localStorage.getItem(
-    `ethBlockDate-${ethTx?.blockHash}`
+
+  const { blockDates, notCachedHashes } = useCachedBlocksDates(
+    ethTx?.blockHash ? [ethTx?.blockHash] : undefined
   );
-  const { block } = useBlock(
-    !cachedBlockDate ? (ethTx?.blockHash as `0x${string}`) : undefined
-  );
+  const { blocks } = useBlocks(notCachedHashes);
   const service = useInterpret(txEthToFuelMachine);
   const steps = useSelector(service, selectors.steps);
   useEffect(() => {
-    if (ethTx && ethProvider && fuelProvider && fuelAddress && !skipAnalyzeTx) {
+    if (
+      ethTx &&
+      ethProvider &&
+      fuelProvider &&
+      fuelAddress &&
+      !skipAnalyzeTx &&
+      ethPublicClient
+    ) {
       service.send('START_ANALYZE_TX', {
         input: {
           ethTx,
@@ -107,16 +114,20 @@ export function useTxEthToFuel({
         },
       });
     }
-  }, [ethTx, ethProvider, fuelProvider, fuelAddress, service, ethPublicClient]);
+  }, [
+    ethTx,
+    ethProvider,
+    fuelProvider,
+    fuelAddress,
+    service,
+    ethPublicClient,
+    skipAnalyzeTx,
+  ]);
 
-  useEffect(() => {
-    if (block.date) {
-      localStorage.setItem(
-        `ethBlockDate-${block.hash}`,
-        block.date.getTime().toString()
-      );
-    }
-  }, [block.date]);
+  const ethBlockDate = ethTx?.blockHash
+    ? blockDates?.[ethTx.blockHash] ||
+      blocks?.find((block) => block.hash === ethTx.blockHash)?.date
+    : undefined;
 
   return {
     handlers: {
@@ -124,9 +135,7 @@ export function useTxEthToFuel({
       openTxEthToFuel: store.openTxEthToFuel,
     },
     ethTx,
-    ethBlockDate: cachedBlockDate
-      ? new Date(Number(cachedBlockDate))
-      : block.date || new Date(),
+    ethBlockDate,
     steps,
   };
 }

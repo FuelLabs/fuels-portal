@@ -1,11 +1,10 @@
 import { createStore } from '@fuels-portal/store';
 
-import { bridgeMachine } from '../Bridge';
-import { bridgeEvents } from '../Bridge/events';
-import { overlayMachine, overlayEvents } from '../Overlay';
-
 import type { StoreMachines } from './types';
 import { Services } from './types';
+
+import { bridgeMachine, bridgeEvents } from '~/systems/Bridge';
+import { overlayMachine, overlayEvents } from '~/systems/Overlay';
 
 export * from './types';
 

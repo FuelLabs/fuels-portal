@@ -3,7 +3,7 @@ import { Text, Box, ButtonLink } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { Layout } from '~/systems/Core';
+import { Layout, removeTrailingSlash } from '~/systems/Core';
 import { Pages } from '~/types';
 
 type BridgeHomeProps = {
@@ -13,8 +13,11 @@ type BridgeHomeProps = {
 export const BridgeHome = ({ children }: BridgeHomeProps) => {
   const location = useLocation();
 
-  const getClassName = (url: string) => {
-    return location.pathname === url ? 'header--navItemActive' : undefined;
+  const getClassName = (pageUrl: string) => {
+    const isCurrentPage =
+      removeTrailingSlash(location.pathname) === removeTrailingSlash(pageUrl);
+
+    return (isCurrentPage && 'header--navItemActive') || '';
   };
 
   return (
@@ -49,6 +52,7 @@ const styles = {
     color: '$intentsBase12',
   }),
   buttonLinks: cssObj({
+    mb: '$3',
     a: {
       my: '$4',
       px: '0',
@@ -66,6 +70,9 @@ const styles = {
         outlineOffset: 'unset !important',
         borderRadius: 0,
       },
+      '&:hover': {
+        color: '$intentsBase12 !important',
+      },
     },
 
     'a.active, a:hover': {
@@ -75,7 +82,7 @@ const styles = {
 
     'a.header--navItemActive': {
       color: '$intentsBase12',
-      borderBottom: '2px solid $green9 !important',
+      borderBottom: '2px solid $intentsPrimary9 !important',
     },
   }),
 };

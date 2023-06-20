@@ -1,9 +1,13 @@
+import { useTransaction } from '@fuels-portal/sdk-react';
 import { useInterpret, useSelector } from '@xstate/react';
-import { useEffect } from 'react';
+import type { ReceiptMessageOut } from 'fuels';
+import { ReceiptType, fromTai64ToUnix } from 'fuels';
+import { useEffect, useMemo } from 'react';
 
 import { useEthAccountConnection } from '../../eth';
 import type { TxFuelToEthMachineState } from '../machines';
 import { txFuelToEthMachine } from '../machines';
+import { FUEL_UNITS } from '../utils';
 
 import { useFuelAccountConnection } from './useFuelAccountConnection';
 
@@ -55,16 +59,16 @@ const selectors = {
     const steps = [
       {
         name: 'Submit to bridge',
-        // TODO: put correct time left, how?
-        status: status.isSubmitToBridgeDone ? 'Done!' : '~XX minutes left',
+        // TODO: put correct time left '~XX minutes left', how?
+        status: status.isSubmitToBridgeDone ? 'Done!' : 'Waiting',
         isLoading: status.isSubmitToBridgeLoading,
         isSelected: status.isSubmitToBridgeSelected,
         isDone: status.isSubmitToBridgeDone,
       },
       {
         name: 'Settlement',
-        // TODO: put correct time left, how? waiting for message Proof in this stage
-        status: status.isSettlementDone ? 'Done!' : '~XX days left',
+        // TODO: put correct time left '~XX days left', how? waiting for message Proof in this stage
+        status: status.isSettlementDone ? 'Done!' : 'Waiting',
         isLoading: status.isSettlementLoading,
         isDone: status.isSettlementDone,
         isSelected: status.isSettlementSelected,
@@ -86,6 +90,20 @@ const selectors = {
     ];
     return steps;
   },
+  fuelTxResult: (state: TxFuelToEthMachineState) => {
+    const fuelTxResult = state.context.fuelTxResult;
+    return fuelTxResult;
+  },
+  amountSent: (state: TxFuelToEthMachineState) => {
+    const fuelTxResult = state.context.fuelTxResult;
+
+    const messageOutReceipt = fuelTxResult?.receipts.find(
+      ({ type }) => type === ReceiptType.MessageOut
+    ) as ReceiptMessageOut;
+
+    const amountSent = messageOutReceipt?.amount;
+    return amountSent;
+  },
 };
 
 export function useTxFuelToEth({ txId }: { txId: string }) {
@@ -95,6 +113,18 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
   const service = useInterpret(txFuelToEthMachine);
   const status = useSelector(service, selectors.status);
   const steps = useSelector(service, selectors.steps);
+  const fuelTxResult = useSelector(service, selectors.fuelTxResult);
+  const fuelTxAmount = useSelector(service, selectors.amountSent);
+
+  const fuelTxDate = useMemo(
+    () =>
+      fuelTxResult?.time
+        ? new Date(fromTai64ToUnix(fuelTxResult?.time) * 1000)
+        : undefined,
+    [fuelTxResult?.time]
+  );
+
+  const { transaction: fuelTx } = useTransaction(txId);
 
   useEffect(() => {
     if (txId && fuelProvider) {
@@ -106,7 +136,7 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
         },
       });
     }
-  }, [txId, fuelProvider]);
+  }, [txId, fuelProvider, ethPublicClient]);
 
   function relayToEth() {
     service.send('RELAY_TO_ETH', {
@@ -120,8 +150,15 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
     handlers: {
       close: store.closeOverlay,
       relayToEth,
+      openTxFuelToEth: store.openTxFuelToEth,
     },
+    fuelTx,
+    fuelTxDate,
+    fuelTxAmount: fuelTxAmount?.format({
+      precision: 9,
+      units: FUEL_UNITS,
+    }),
     steps,
-    isWaitingEthWalletApproval: status.isWaitingEthWalletApproval,
+    status,
   };
 }
