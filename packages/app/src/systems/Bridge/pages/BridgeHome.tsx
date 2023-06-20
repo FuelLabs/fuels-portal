@@ -67,6 +67,9 @@ const styles = {
         outlineOffset: 'unset !important',
         borderRadius: 0,
       },
+      '&:hover': {
+        color: '$intentsBase12 !important',
+      },
     },
 
     'a.active, a:hover': {
