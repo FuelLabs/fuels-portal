@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Fuelet",
+    "description": "Non-custodial wallet on Fuel.",
+    "url": "https://fuelet.app/",
+    "tags": ["wallet", "infra"],
+    "status": "testnet"
+  },
+  {
+    "name": "Sway Swap",
+    "description": "SwaySwap is a blazingly fast DEX built on the fastest modular execution layer: Fuel.",
+    "url": "https://fuellabs.github.io/swayswap/",
+    "tags": ["swap", "infra", "defi"],
+    "status": "in-development"
+  },
+  {
+    "name": "ThunderNFT",
+    "description": "The Superior NFT Experience, on Fuel.",
+    "url": "https://thundernft.market/",
+    "tags": ["nft", "marketplace"],
+    "status": "in-development"
+  }
+]

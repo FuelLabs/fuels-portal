@@ -2,9 +2,10 @@ import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
 
 import type { Project } from '../components/ProjectItem';
-import { SAMPLE_PROJECTS } from '../components/ProjectList/ProjectList.stories';
+import PROJECTS from '../data/projects.json';
 
 import { FetchMachine } from '~/systems/Core';
+
 
 export type EcosystemInputs = {
   filter: {
@@ -160,7 +161,7 @@ export const ecosystemMachine = createMachine(
         showError: true,
         maxAttempts: 1,
         async fetch() {
-          const projects = SAMPLE_PROJECTS;
+          const projects = PROJECTS as Project[];
           const tags = new Set<string>('');
           projects.map((project) => project.tags.map((tag) => tags.add(tag)));
           return {

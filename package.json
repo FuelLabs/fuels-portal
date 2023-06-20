@@ -36,7 +36,8 @@
     "ts:check": "turbo run ts:check",
     "prepare": "husky install",
     "storybook": "pnpm --filter=@fuels-portal/bridge storybook",
-    "xstate:typegen": "pnpm -r xstate:typegen"
+    "xstate:typegen": "pnpm -r xstate:typegen",
+    "fetch:ecosystem-projects": "pnpm --filter=@fuels-portal/bridge fetch:ecosystem-projects "
   },
   "dependencies": {
     "@fuel-ui/config": "0.15.1-dev-80e1a79",

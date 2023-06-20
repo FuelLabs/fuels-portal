@@ -12,7 +12,8 @@
     "test": "playwright test",
     "storybook": "storybook dev -p 6006",
     "ts:check": "pnpm xstate:typegen && tsc --noEmit",
-    "xstate:typegen": "xstate typegen 'src/**/*.ts?(x)'"
+    "xstate:typegen": "xstate typegen 'src/**/*.ts?(x)'",
+    "fetch:ecosystem-projects": "node ./src/systems/Ecosystem/scripts/fetchEcosystemProjects.js"
   },
   "dependencies": {
     "@ethersproject/abi": "^5.7.0",
@@ -38,7 +39,8 @@
     "react-router-dom": "^6.8.2",
     "viem": "^0.3.36",
     "wagmi": "^1.0.6",
-    "xstate": "^4.37.0"
+    "xstate": "^4.37.0",
+    "@notionhq/client": "^2.2.5"
   },
   "devDependencies": {
     "@playwright/test": "^1.31.1",

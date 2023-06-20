@@ -6,7 +6,7 @@ import type { Project } from '../ProjectItem';
 
 import { ProjectList } from './ProjectList';
 
-export const SAMPLE_PROJECTS: Project[] = [
+const SAMPLE_PROJECTS: Project[] = [
   {
     name: 'Sway Swap',
     description:
