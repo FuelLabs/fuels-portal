@@ -94,7 +94,7 @@ test.describe('Bridge', () => {
     const metamaskConnect = getButtonByText(page, 'Metamask');
     await metamaskConnect.click();
     // sometimes it goes too quick
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(3000);
     await metamask.acceptAccess();
 
     // Connect fuel
@@ -106,6 +106,7 @@ test.describe('Bridge', () => {
     const depositAmount = '1.000';
     const depositInput = page.locator('input');
     await depositInput.fill(depositAmount);
+    // TODO check balance is correct and gets updated
     const depositButton = getButtonByText(page, 'Bridge asset');
     await depositButton.click();
     await metamask.confirmTransaction();
