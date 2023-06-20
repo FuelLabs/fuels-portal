@@ -1,9 +1,34 @@
-import { useTxsEthToFuel } from '~/systems/Chains';
+import {
+  useFuelAccountConnection,
+  useTxsEthToFuel,
+  useTxsFuelToEth,
+} from '~/systems/Chains';
 
 export const useBridgeTxs = () => {
-  const { txs: ethToFuelTxs } = useTxsEthToFuel();
+  const { isConnected } = useFuelAccountConnection();
+  const { txs: ethToFuelTxs, isLoading: isEthToFuelLoading } =
+    useTxsEthToFuel();
+  const { txs: fuelToEthTxs, isLoading: isFuelToEthLoading } =
+    useTxsFuelToEth();
+  const allTxs = [...(ethToFuelTxs || []), ...(fuelToEthTxs || [])];
+  const txs = allTxs.sort((a, b) => {
+    if (a.date === undefined) {
+      return 1;
+    }
+    if (b.date === undefined) {
+      return -1;
+    }
+    return b.date.getTime() - a.date.getTime();
+  });
 
-  // TODO sort by age when we have multiple lists of transactions
+  const isLoading = isEthToFuelLoading || isFuelToEthLoading;
 
-  return [...(ethToFuelTxs || [])];
+  return {
+    txs,
+    isLoading,
+    // need to check for strict equality bc we care if isConnected is not undefined
+    shouldShowNotConnected: isConnected === false && !isLoading,
+    shouldShowEmpty: isConnected && !isLoading && txs.length === 0,
+    shouldShowList: !isLoading && isConnected && txs.length > 0,
+  };
 };

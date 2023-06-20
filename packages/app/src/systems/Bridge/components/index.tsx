@@ -1,4 +1,6 @@
 export * from './BridgeSteps';
 export * from './BridgeTxOverview';
 export * from './BridgeTxItem';
-export * from './BridgeTxListEmpty';
+export * from './BridgeTxListNotConnected';
+export * from './BridgeListEmpty';
+export * from './BridgeTxItemsLoading';

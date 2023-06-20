@@ -98,14 +98,23 @@ export class TxEthToFuelService {
 
     const { ethTx, ethPublicClient } = input;
 
-    const receipt = await ethPublicClient.waitForTransactionReceipt({
-      hash: ethTx.hash as `0x${string}`,
-    });
+    let receipt;
+    try {
+      receipt = await ethPublicClient.getTransactionReceipt({
+        hash: ethTx.hash as `0x${string}`,
+      });
+    } catch (err: unknown) {
+      // workaround in place because waitForTransactionReceipt stop working after first time using it
+      receipt = await ethPublicClient.waitForTransactionReceipt({
+        hash: ethTx.hash as `0x${string}`,
+      });
+    }
+
     const decodedEvent = decodeEventLog({
       abi: AbiFuelMessagePortal,
       data: receipt.logs[0].data,
       topics: receipt.logs[0].topics,
-    }) as any; // eslint-disable-line @typescript-eslint/no-explicit-any
+    }) as unknown as { args: { nonce: number } };
     const depositNonce = bn(decodedEvent.args.nonce);
     return depositNonce;
   }

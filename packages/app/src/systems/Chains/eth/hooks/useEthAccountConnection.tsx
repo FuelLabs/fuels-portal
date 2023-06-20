@@ -1,5 +1,4 @@
 import { useModal } from 'connectkit';
-import { bn } from 'fuels';
 import {
   useAccount,
   useBalance,
@@ -9,6 +8,8 @@ import {
   usePublicClient,
   useWalletClient,
 } from 'wagmi';
+
+import { parseEthAddressToFuel } from '../utils';
 
 export function useEthAccountConnection() {
   const { address, isConnected } = useAccount();
@@ -20,7 +21,7 @@ export function useEthAccountConnection() {
 
   const { open: isConnecting, setOpen } = useModal();
   const { disconnect } = useDisconnect();
-  const paddedAddress = bn(address).toHex(32) as `0x${string}`;
+  const paddedAddress = parseEthAddressToFuel(address);
 
   return {
     handlers: {

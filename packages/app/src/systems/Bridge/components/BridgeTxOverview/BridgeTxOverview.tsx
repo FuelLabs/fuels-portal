@@ -2,11 +2,11 @@ import { cssObj } from '@fuel-ui/css';
 import { Box, Text, FuelLogo, Image, Icon } from '@fuel-ui/react';
 import type { BigNumberish } from 'fuels';
 
-import { calculateDateDiff } from '~/systems/Core/utils/date';
+import { calculateDateDiff } from '~/systems/Core';
 
 type BridgeTxOverviewProps = {
   transactionId: BigNumberish;
-  date: Date;
+  date?: Date;
   isDeposit?: boolean;
   asset: {
     imageUrl?: string;
@@ -35,24 +35,24 @@ export const BridgeTxOverview = ({
         <Text css={styles.labelText}>Direction</Text>
         {isDeposit ? (
           <Box.Flex css={styles.directionInfo}>
-            <Text css={styles.labelText}>(Deposit)</Text>
-            <Image width={14} height={14} src={asset.imageUrl} />
+            <Text css={styles.subtleText}>(Deposit)</Text>
+            <Image width={18} height={18} src={asset.imageUrl} />
             <Icon icon="ArrowNarrowRight" />
-            <FuelLogo size={14} />
+            <FuelLogo size={17} />
           </Box.Flex>
         ) : (
           <Box.Flex css={styles.directionInfo}>
-            <Text css={styles.labelText}>(Withdrawal)</Text>
-            <FuelLogo size={14} />
+            <Text css={styles.subtleText}>(Withdrawal)</Text>
+            <FuelLogo size={17} />
             <Icon icon="ArrowNarrowRight" />
-            <Image width={14} height={14} src={asset.imageUrl} />
+            <Image width={18} height={18} src={asset.imageUrl} />
           </Box.Flex>
         )}
       </Box.Flex>
       <Box.Flex css={styles.txItem}>
         <Text css={styles.labelText}>Asset</Text>
         <Box.Flex css={styles.directionInfo}>
-          <Image width={14} height={14} src={asset.imageUrl} />
+          <Image width={18} height={18} src={asset.imageUrl} />
           <Text aria-label="Asset amount" css={styles.infoText}>
             {asset.assetAmount}
           </Text>
@@ -72,11 +72,15 @@ const styles = {
     justifyContent: 'space-between',
   }),
   labelText: cssObj({
-    fontSize: '$xs',
+    fontSize: '$sm',
     color: '$intentsBase11',
   }),
-  infoText: cssObj({
+  subtleText: cssObj({
     fontSize: '$xs',
+    color: '$intentsBase10',
+  }),
+  infoText: cssObj({
+    fontSize: '$sm',
     color: '$intentsBase12',
   }),
   directionInfo: cssObj({

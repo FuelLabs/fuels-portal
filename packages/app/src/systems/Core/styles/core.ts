@@ -36,7 +36,12 @@ export const buttonListItem = cssObj({
   px: '$3',
 });
 
+const card = cssObj({
+  border: '1px solid $border',
+});
+
 export const coreStyles = {
   scrollable,
   buttonListItem,
+  card,
 };

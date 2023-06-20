@@ -6,7 +6,7 @@ import type { BridgeInputs, PossibleBridgeInputs } from '../services';
 import { BridgeService } from '../services';
 
 import type { FromToNetworks } from '~/systems/Chains';
-import { FetchMachine } from '~/systems/Core';
+import { FetchMachine } from '~/systems/Core/machines';
 
 type MachineContext = {
   assetAmount?: BN;
