@@ -1,7 +1,7 @@
 import type { StoreClass } from '@fuels-portal/store';
 
 import type { BridgeMachine } from '../Bridge';
-import type { EcosystemMachine } from '../Ecosystem/machines';
+import type { EcosystemMachine } from '../Ecosystem';
 import type { OverlayMachine } from '../Overlay';
 
 export enum Services {

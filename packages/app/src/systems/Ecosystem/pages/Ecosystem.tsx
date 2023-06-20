@@ -58,7 +58,7 @@ export function Ecosystem() {
                   activeTag={filter}
                   onPressAllCategories={handlers.clearFilters}
                 />
-                <ProjectList projects={filteredProjects} />
+                <ProjectList projects={filteredProjects || []} />
               </>
             )}
           </Box.Stack>

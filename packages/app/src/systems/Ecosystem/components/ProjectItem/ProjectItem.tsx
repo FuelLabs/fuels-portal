@@ -10,25 +10,12 @@ import {
 } from '@fuel-ui/react';
 import { motion } from 'framer-motion';
 
+import type { Project} from '../../types';
+import { STATUS_TEXT } from '../../types';
+
 import { animations } from '~/systems/Core';
 
 const MotionCard = motion(Card);
-
-type ProjectStatus = 'live' | 'testnet' | 'in-development';
-
-const STATUS_TEXT: Record<ProjectStatus, string> = {
-  live: 'Live on Mainnet',
-  testnet: 'Live on Testnet',
-  'in-development': 'In development',
-};
-
-export type Project = {
-  name: string;
-  description: string;
-  tags: string[];
-  url: string;
-  status: ProjectStatus;
-};
 
 export type ProjectItemProps = Project & {
   onPress?: () => void;

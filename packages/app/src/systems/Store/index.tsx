@@ -2,7 +2,7 @@ import { createStore } from '@fuels-portal/store';
 
 import { bridgeMachine } from '../Bridge';
 import { bridgeEvents } from '../Bridge/events';
-import { ecosystemMachine } from '../Ecosystem/machines';
+import { ecosystemMachine } from '../Ecosystem';
 import { overlayMachine, overlayEvents } from '../Overlay';
 
 import type { StoreMachines } from './types';

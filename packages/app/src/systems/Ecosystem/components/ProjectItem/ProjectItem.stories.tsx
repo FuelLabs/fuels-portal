@@ -3,9 +3,9 @@ import { Box } from '@fuel-ui/react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { SAMPLE_PROJECTS } from '../../data';
+import type { Project } from '../../types';
 
-import { ProjectItem, type Project } from './ProjectItem';
-
+import { ProjectItem } from './ProjectItem';
 
 const meta: Meta<typeof ProjectItem> = {
   component: ProjectItem,

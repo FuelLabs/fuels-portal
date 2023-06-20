@@ -1,8 +1,8 @@
 import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
 
-import type { Project } from '../components/ProjectItem';
-import SAMPLE_PROJECTS from '../data/sample_projects.json';
+import { SAMPLE_PROJECTS } from '../data';
+import type { Project } from '../types';
 
 import { FetchMachine } from '~/systems/Core';
 
@@ -56,14 +56,6 @@ type EcosystemMachineEvents =
   | {
       type: 'CLEAR_FILTER';
       input: null;
-    }
-  | {
-      type: 'CLEAR_SEARCH';
-      input: null;
-    }
-  | {
-      type: 'CLEAR_SEARCH_AND_FILTER';
-      input: null;
     };
 
 const initialState: MachineContext = {
@@ -102,15 +94,10 @@ export const ecosystemMachine = createMachine(
           CLEAR_FILTER: {
             actions: ['clearFilter'],
           },
-          CLEAR_SEARCH: {
-            actions: ['clearSearch'],
-          },
-          CLEAR_SEARCH_AND_FILTER: {
-            actions: ['clearSearchAndFilter'],
-          },
         },
       },
       fetching: {
+        tags: ['isLoading'],
         invoke: {
           src: 'fetchProjectsAndTags',
           onDone: {
@@ -120,6 +107,8 @@ export const ecosystemMachine = createMachine(
         },
       },
       filtering: {
+        entry: ['clearSearch'],
+        tags: ['isLoading'],
         invoke: {
           src: 'filterProjects',
           data: {
@@ -135,6 +124,8 @@ export const ecosystemMachine = createMachine(
         },
       },
       searching: {
+        entry: ['clearFilter'],
+        tags: ['isLoading'],
         invoke: {
           src: 'searchProjects',
           data: {
@@ -160,7 +151,7 @@ export const ecosystemMachine = createMachine(
         showError: true,
         maxAttempts: 1,
         async fetch() {
-          const projects = SAMPLE_PROJECTS;
+          const projects = SAMPLE_PROJECTS as Project[];
           const tags = new Set<string>('');
           projects.map((project) => project.tags.map((tag) => tags.add(tag)));
           return {
