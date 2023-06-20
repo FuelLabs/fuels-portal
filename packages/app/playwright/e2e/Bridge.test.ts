@@ -92,9 +92,9 @@ test.describe('Bridge', () => {
     const connectKitButton = getByAriaLabel(page, 'From Connect wallet');
     await connectKitButton.click();
     const metamaskConnect = getButtonByText(page, 'Metamask');
-    await metamaskConnect.click();
+    await metamaskConnect.click({ timeout: 3000 });
     // sometimes it goes too quick
-    await page.waitForTimeout(3000);
+    await page.waitForTimeout(7000);
     await metamask.acceptAccess();
 
     // Connect fuel
@@ -129,7 +129,16 @@ test.describe('Bridge', () => {
     );
 
     // Go to the bridge page
+    const bridgePage = page
+      .locator('div')
+      .filter({ hasText: 'BridgeTransactions' })
+      .getByRole('link', { name: 'Bridge ' });
+    await bridgePage.first().click();
+
     // Go to the withdraw page
+    const withdrawPage = getButtonByText(page, 'Withdraw from Fuel');
+    await withdrawPage.click();
+
     // Withdraw asset
     // Check the popup is correct
     // Go to the transaction page
