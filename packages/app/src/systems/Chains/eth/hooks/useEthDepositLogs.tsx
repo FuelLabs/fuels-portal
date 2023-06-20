@@ -17,7 +17,7 @@ export const useEthDepositLogs = () => {
     useEthAccountConnection();
   const { address: fuelAddress } = useFuelAccountConnection();
 
-  const query = useQuery(
+  const { isFetching: isFetchingLogs, ...query } = useQuery(
     ['ethDepositLogs', ethPaddedAddress, fuelAddress],
     async () => {
       const logs = await provider!.getLogs({
@@ -77,7 +77,7 @@ export const useEthDepositLogs = () => {
   }, [query.data]);
 
   const { blockDates, notCachedHashes } = useCachedBlocksDates(blockHashes);
-  const { blocks } = useBlocks(notCachedHashes);
+  const { blocks, isFetching: isFetchingBlocks } = useBlocks(notCachedHashes);
 
   const logs = useMemo(() => {
     return query.data?.map((log) => {
@@ -103,5 +103,6 @@ export const useEthDepositLogs = () => {
   return {
     logs,
     ...query,
+    isFetching: isFetchingLogs || isFetchingBlocks,
   };
 };

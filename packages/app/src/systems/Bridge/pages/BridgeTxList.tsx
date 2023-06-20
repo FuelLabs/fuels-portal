@@ -62,7 +62,6 @@ export const BridgeTxList = () => {
       </Card.Header>
       <Card.Body css={styles.body}>
         {isLoading && <BridgeTxItemsLoading />}
-        {/** need to check for strict equality bc we care if isConnected is not undefined */}
         {shouldShowNotConnected && (
           <BridgeTxListNotConnected
             isConnecting={isConnecting}

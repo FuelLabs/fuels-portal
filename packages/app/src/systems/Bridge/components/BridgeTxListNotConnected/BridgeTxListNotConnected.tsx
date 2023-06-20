@@ -34,11 +34,8 @@ export const BridgeTxListNotConnected = ({
   );
 };
 
-const styles = cssObj({
-  body: cssObj({
-    // minHeight: '$28',
-  }),
+const styles = {
   connectButton: cssObj({
     width: '$50',
   }),
-});
+};
