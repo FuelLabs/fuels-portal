@@ -54,9 +54,9 @@ export function Ecosystem() {
               <>
                 <EcosystemTags
                   tags={tags}
-                  onTagClick={handleTagButtonClick}
+                  onPressTag={handleTagButtonClick}
                   activeTag={filter}
-                  onAllClick={handlers.clearFilters}
+                  onPressAllCategories={handlers.clearFilters}
                 />
                 <ProjectList projects={filteredProjects} />
               </>

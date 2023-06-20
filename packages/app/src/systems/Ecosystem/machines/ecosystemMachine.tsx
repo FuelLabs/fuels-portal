@@ -2,7 +2,7 @@ import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
 
 import type { Project } from '../components/ProjectItem';
-import { SAMPLE_PROJECTS } from '../components/ProjectList/ProjectList.stories';
+import SAMPLE_PROJECTS from '../data/sample_projects.json';
 
 import { FetchMachine } from '~/systems/Core';
 

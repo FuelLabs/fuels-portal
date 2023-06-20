@@ -31,7 +31,7 @@ export type Project = {
 };
 
 export type ProjectItemProps = Project & {
-  onClick?: () => void;
+  onPress?: () => void;
 };
 
 export const ProjectItem = ({
@@ -46,6 +46,11 @@ export const ProjectItem = ({
   } catch (e) {
     hostname = '';
   }
+
+  const onCardPress = () => {
+    window.open(url, '_blank');
+  };
+
   return (
     <MotionCard
       withDividers
@@ -53,6 +58,7 @@ export const ProjectItem = ({
       {...animations.slideInBottom({
         transition: { type: 'spring' },
       })}
+      onClick={onCardPress}
     >
       <Card.Body>
         <Box.Flex align="flex-start" justify="flex-start" gap="$4">
@@ -62,23 +68,27 @@ export const ProjectItem = ({
             icon="Bolt"
             aria-label="project-icon"
             iconSize={20}
+            css={styles.projectIcon}
           />
           <Box.Stack gap="$2" css={styles.details}>
             <Box.Flex align="flex-start" justify="space-between">
-              <Text fontSize="lg"> {name}</Text>
-              <Icon icon="ArrowUpRight" size={20} />
+              <Text fontSize="base" color="intentsBase12">
+                {name}
+              </Text>
+              <Icon icon="ArrowUpRight" size={20} stroke={1} />
             </Box.Flex>
-            <Text> {description}</Text>
+            <Text fontSize="sm"> {description}</Text>
             <Box.Flex align="center" justify="space-between" wrap="wrap">
               <ButtonLink
                 variant="link"
                 css={styles.link}
                 href={url}
-                isExternal
+                color="intentsBase12"
+                size="sm"
               >
                 {hostname}
               </ButtonLink>
-              <Tag intent="base">
+              <Tag intent="base" size="xs" css={styles.tag}>
                 <Box css={{ ...styles.dot, ...styles[`dot-${status}`] }} />
                 {STATUS_TEXT[status]}
               </Tag>
@@ -93,31 +103,48 @@ export const ProjectItem = ({
 const styles = {
   card: cssObj({
     borderColor: '$semanticOutlinedBaseBorder',
+    padding: '$4',
+    '&:hover': {
+      cursor: 'pointer',
+    },
   }),
   details: cssObj({
     flex: 1,
   }),
   link: cssObj({
     textDecoration: 'underline',
+    color: '$intentsBase12',
   }),
   dot: cssObj({
-    width: '8px',
-    height: '8px',
+    width: '$2',
+    height: '$2',
     borderRadius: '50%',
   }),
   'dot-live': cssObj({
-    background: '$intentsPrimary9',
-    border: '1px solid $intentsPrimary11',
-    boxShadow: ' 0px 0px 4px',
+    background: '$intentsPrimary6',
+    border: '1px solid $intentsPrimary9',
+    boxShadow: ' 0px 0px 4px #ffffff',
   }),
   'dot-testnet': cssObj({
-    background: '$intentsInfo9',
-    border: '1px solid $intentsInfo11',
-    boxShadow: ' 0px 0px 4px',
+    background: '$intentsInfo6',
+    border: '1px solid $intentsInfo9',
+    boxShadow: ' 0px 0px 4px #ffffff',
   }),
   'dot-in-development': cssObj({
-    background: '$intentsWarning9',
-    border: '1px solid $intentsWarning11',
-    boxShadow: ' 0px 0px 4px',
+    background: '$intentsWarning6',
+    border: '1px solid $intentsWarning9',
+    boxShadow: ' 0px 0px 4px #ffffff',
+  }),
+  tag: cssObj({
+    color: '$intentsBase12',
+    borderRadius: '$sm',
+    padding: '0 $2',
+    backgroundColor: '$gray5',
+  }),
+  projectIcon: cssObj({
+    padding: '$3 $2',
+    '& svg': {
+      strokeWidth: '1.5px',
+    },
   }),
 };

@@ -49,7 +49,10 @@ export function Header() {
           >
             Explorer
           </ButtonLink>
-          <ButtonLink href={Pages.ecosystem} className={Pages.ecosystem}>
+          <ButtonLink
+            href={Pages.ecosystem}
+            className={getClassName(Pages.ecosystem)}
+          >
             Ecosystem
           </ButtonLink>
         </Box.Flex>
@@ -75,7 +78,7 @@ const styles = {
     zIndex: '$10',
     position: 'sticky',
     top: 0,
-    background: '$bodyBg',
+    background: '#0000000',
     gap: '$2',
     py: '$4',
     px: '$4',
