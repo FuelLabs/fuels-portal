@@ -45,21 +45,17 @@ export function Ecosystem() {
               </Input>
             </Box.Stack>
           </Box.Flex>
-          {isLoading ? (
-            <>
-              <Text>Loading...</Text>
-            </>
-          ) : (
-            <>
-              <EcosystemTags
-                tags={tags}
-                onPressTag={handleTagButtonClick}
-                activeTag={filter}
-                onPressAllCategories={handlers.clearFilters}
-              />
-              <ProjectList projects={filteredProjects || []} />
-            </>
-          )}
+          <EcosystemTags
+            tags={tags}
+            onPressTag={handleTagButtonClick}
+            activeTag={filter}
+            onPressAllCategories={handlers.clearFilters}
+            isLoading={isLoading}
+          />
+          <ProjectList
+            isLoading={isLoading}
+            projects={filteredProjects || []}
+          />
         </Box.Stack>
       </Box.Flex>
     </MotionLayout>

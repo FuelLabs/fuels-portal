@@ -1,18 +1,13 @@
 import { cssObj } from '@fuel-ui/css';
 import { Grid } from '@fuel-ui/react';
 
-import { type Project } from '../../types';
 import { ProjectItem } from '../ProjectItem';
 
-import { ProjectListLoading } from './ProjectListLoading';
-
-type ProjectListProps = {
-  projects: Project[];
-  isLoading?: boolean;
+type ProjectListLoadingProps = {
+  items?: number;
 };
 
-export const ProjectList = ({ projects, isLoading }: ProjectListProps) => {
-  if (isLoading) return <ProjectList.Loading />;
+export const ProjectListLoading = ({ items = 8 }: ProjectListLoadingProps) => {
   return (
     <Grid
       gap="$8"
@@ -20,8 +15,8 @@ export const ProjectList = ({ projects, isLoading }: ProjectListProps) => {
       templateRows="repeat(2, 1fr)"
       css={styles.grid}
     >
-      {projects.map((project) => (
-        <ProjectItem {...project} key={project.url} />
+      {Array.from({ length: items }).map((_, idx) => (
+        <ProjectItem.Loader key={idx} />
       ))}
     </Grid>
   );
@@ -35,5 +30,3 @@ const styles = {
     },
   }),
 };
-
-ProjectList.Loading = ProjectListLoading;

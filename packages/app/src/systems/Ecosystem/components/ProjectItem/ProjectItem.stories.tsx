@@ -40,3 +40,9 @@ const styles = {
     margin: '20px',
   }),
 };
+
+export const Loader = () => (
+  <Box.Flex align="center" justify="center" css={styles.storybook}>
+    <ProjectItem.Loader />
+  </Box.Flex>
+);

@@ -3,10 +3,9 @@ import { Box } from '@fuel-ui/react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { SAMPLE_PROJECTS } from '../../data';
-import type { Project } from '../ProjectItem';
+import type { Project } from '../../types';
 
 import { ProjectList } from './ProjectList';
-
 
 const meta: Meta<typeof ProjectList> = {
   component: ProjectList,
@@ -28,6 +27,12 @@ export const Usage: Story = {
   ),
   args: { projects: SAMPLE_PROJECTS as Project[] },
 };
+
+export const Loading = () => (
+  <Box.Flex align="center" justify="center" css={styles.storybook}>
+    <ProjectList.Loading />
+  </Box.Flex>
+);
 
 const styles = {
   storybook: cssObj({

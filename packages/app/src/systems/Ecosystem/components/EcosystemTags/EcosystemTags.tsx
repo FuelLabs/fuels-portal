@@ -1,11 +1,14 @@
 import { cssObj } from '@fuel-ui/css';
 import { Box, Button } from '@fuel-ui/react';
 
+import { EcosystemTagsLoading } from './EcosystemTagsLoading';
+
 type EcosystemTagsProps = {
   tags?: string[];
   onPressTag?: (tag: string) => void;
   activeTag?: string;
   onPressAllCategories?: () => void;
+  isLoading?: boolean;
 };
 
 export const EcosystemTags = ({
@@ -13,7 +16,9 @@ export const EcosystemTags = ({
   onPressTag,
   activeTag,
   onPressAllCategories,
+  isLoading,
 }: EcosystemTagsProps) => {
+  if (isLoading) return <EcosystemTagsLoading />;
   return (
     <Box.Flex justify="flex-start" align="center" gap="$3" wrap="wrap">
       <Button
@@ -48,3 +53,5 @@ const styles = {
     backgroundColor: '$intentsBase',
   }),
 };
+
+EcosystemTags.Loading = EcosystemTagsLoading;

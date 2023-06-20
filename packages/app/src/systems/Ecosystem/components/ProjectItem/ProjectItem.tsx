@@ -9,9 +9,12 @@ import {
   Icon,
 } from '@fuel-ui/react';
 import { motion } from 'framer-motion';
+import type { FC } from 'react';
 
-import type { Project} from '../../types';
+import type { Project } from '../../types';
 import { STATUS_TEXT } from '../../types';
+
+import { ProjectItemLoader } from './ProjectItemLoader';
 
 import { animations } from '~/systems/Core';
 
@@ -21,7 +24,11 @@ export type ProjectItemProps = Project & {
   onPress?: () => void;
 };
 
-export const ProjectItem = ({
+type ProjectItemComponent = FC<ProjectItemProps> & {
+  Loader: typeof ProjectItemLoader;
+};
+
+export const ProjectItem: ProjectItemComponent = ({
   name,
   description,
   url,
@@ -135,3 +142,5 @@ const styles = {
     },
   }),
 };
+
+ProjectItem.Loader = ProjectItemLoader;
