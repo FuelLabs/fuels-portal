@@ -106,7 +106,6 @@ export class TxEthToFuelService {
     } catch (err: unknown) {
       receipt = await ethPublicClient.waitForTransactionReceipt({
         hash: ethTx.hash as `0x${string}`,
-        timeout: 10_000,
       });
     }
     const decodedEvent = decodeEventLog({
