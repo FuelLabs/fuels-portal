@@ -1,8 +1,8 @@
 import type { StoreClass } from '@fuels-portal/store';
 
-import type { BridgeMachine } from '../Bridge';
-import type { EcosystemMachine } from '../Ecosystem';
-import type { OverlayMachine } from '../Overlay';
+import type { BridgeMachine } from '~/systems/Bridge';
+import type { EcosystemMachine } from '~/systems/Ecosystem';
+import type { OverlayMachine } from '~/systems/Overlay';
 
 export enum Services {
   overlay = 'overlay',
