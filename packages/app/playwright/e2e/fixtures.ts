@@ -67,7 +67,7 @@ export const test = base.extend<{
       args: browserArgs,
     });
     // wait for metamask
-    await context.pages()[context.pages().length - 1].waitForTimeout(3000);
+    await context.pages()[context.pages().length - 1].waitForTimeout(1500);
     // setup metamask
     await initialSetup(chromium, {
       secretWordsOrPrivateKey:
