@@ -1,4 +1,5 @@
 import type { PlaywrightTestConfig } from '@playwright/test';
+import { devices } from '@playwright/test';
 import { join } from 'path';
 
 const IS_CI = !!process.env.CI;
@@ -21,6 +22,12 @@ const config: PlaywrightTestConfig = {
     baseURL: `http://localhost:${PORT}/`,
     permissions: ['clipboard-read', 'clipboard-write'],
   },
+  projects: [
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
+  ],
 };
 
 export default config;

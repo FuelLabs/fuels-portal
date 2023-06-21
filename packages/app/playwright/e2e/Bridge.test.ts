@@ -95,6 +95,11 @@ test.describe('Bridge', () => {
   });
 
   test('e2e', async ({ context, page }) => {
+    const hasFuel = await page.evaluate(() => {
+      return typeof window.fuel === 'object';
+    });
+    expect(hasFuel).toBeTruthy();
+
     // Go to the bridge page
     const goToBridge = getByAriaLabel(page, 'Bridge');
     await goToBridge.click();
@@ -104,9 +109,7 @@ test.describe('Bridge', () => {
     await connectKitButton.click();
     const metamaskConnect = getButtonByText(page, 'Metamask');
     await metamaskConnect.click();
-    // sometimes it goes too quick
-    await page.waitForTimeout(3000);
-    await metamask.acceptAccess();
+    await metamask.acceptAccess({ timeout: 3000 });
 
     // Connect fuel
     const connectFuel = getByAriaLabel(page, 'To Connect wallet');
@@ -124,7 +127,7 @@ test.describe('Bridge', () => {
 
     // check the popup is correct
     const assetAmount = getByAriaLabel(page, 'Asset amount');
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(5000);
     expect((await assetAmount.innerHTML()).trim()).toBe(depositAmount);
     const closeEthPopup = getByAriaLabel(page, 'Close unlock window');
     await closeEthPopup.click();
