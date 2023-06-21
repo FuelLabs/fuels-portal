@@ -77,7 +77,6 @@ export const test = base.extend<{
       password: 'Tester@1234',
       enableAdvancedSettings: true,
     });
-    await context.pages()[0].waitForTimeout(3000);
     await use(context);
     await context.close();
   },

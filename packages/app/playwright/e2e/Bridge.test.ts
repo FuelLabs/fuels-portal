@@ -54,13 +54,6 @@ async function walletSetup(
     `chrome-extension://${fuelExtensionId}/popup.html#/wallet`
   );
 
-  // let walletPage = context.pages().find((p) => p.url().includes('/popup'));
-  // if (!walletPage) {
-  //   walletPage = await context.waitForEvent('page', {
-  //     predicate: (page) => page.url().includes('/popup'),
-  //   });
-  // }
-
   // Navigate to add network and add test network
   await signupPage.locator('[aria-label="Selected Network"]').click();
   await signupPage.locator('button').getByText('Add new network').click();
@@ -114,21 +107,6 @@ test.describe('Bridge', () => {
     });
     expect(hasFuel).toBeTruthy();
 
-    // const walletPage = await context.newPage();
-    // await walletPage.goto(
-    //   `chrome-extension://${extensionId}/popup.html#/wallet`
-    // );
-    // await walletPage.reload();
-    // // Navigate to add network and add test network
-    // await walletPage.locator('[aria-label="Selected Network"]').click();
-    // await walletPage.locator('button').getByText('Add new network').click();
-    // await walletPage
-    //   .locator('[aria-label="Network URL"]')
-    //   .fill(
-    //     process.env.VITE_FUEL_PROVIDER_URL || 'http://localhost:4000/graphql'
-    //   );
-    // await page.locator('button', { hasText: 'Add' }).click();
-
     // Go to the bridge page
     const goToBridge = getByAriaLabel(page, 'Bridge');
     await goToBridge.click();
@@ -138,10 +116,7 @@ test.describe('Bridge', () => {
     await connectKitButton.click();
     const metamaskConnect = getButtonByText(page, 'Metamask');
     await metamaskConnect.click();
-    await page.waitForTimeout(5000);
     await metamask.acceptAccess();
-
-    await page.waitForTimeout(4000);
 
     // Connect fuel
     const connectFuel = getByAriaLabel(page, 'To Connect wallet');
