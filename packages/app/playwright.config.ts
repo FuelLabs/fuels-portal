@@ -10,7 +10,7 @@ const config: PlaywrightTestConfig = {
   testMatch: join(__dirname, './playwright/**/*.test.ts'),
   testDir: join(__dirname, './playwright/'),
   timeout: 50000,
-  reporter: [['list', { printSteps: true }]],
+  reporter: 'html',
   // Retry tests on CI if they fail
   retries: IS_CI ? 2 : 0,
   webServer: {

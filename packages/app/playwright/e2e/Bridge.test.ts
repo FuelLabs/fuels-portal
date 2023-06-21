@@ -14,16 +14,6 @@ async function walletSetup(
   fuelExtensionId: string,
   page: Page
 ) {
-  // const appPage = await context.newPage();
-  // await appPage.goto('/');
-
-  // const hasFuel = await appPage.evaluate(() => {
-  //   return typeof window.fuel === 'object';
-  // });
-  // expect(hasFuel).toBeTruthy();
-
-  // Wallet Setup
-  // const walletPage = await context.newPage();
   await page.goto(`chrome-extension://${fuelExtensionId}/popup.html`);
 
   const signupPage = await context.waitForEvent('page', {
@@ -178,7 +168,7 @@ test.describe('Bridge', () => {
     );
 
     await transactionAssetAmount.last().click();
-    await page.waitForTimeout(10000);
+    // await page.waitForTimeout(10000);
     // Check the popup is correct
     // assetAmountWithdraw = getByAriaLabel(page, 'Asset amount');
     // expect((await assetAmountWithdraw.innerHTML()).trim()).toBe(withdrawAmount);
