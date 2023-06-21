@@ -20,6 +20,14 @@ jobs:
       - name: Setup Node
         uses: ./.github/actions/setup-node
 
+      - name: Setup Docker
+        uses: ./.github/actions/setup-docker
+        with:
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Start Test Node
+        run: pnpm node:start
+
       # E2E tests running with Playwright
       - name: Install Playwright Browsers
         run: |

@@ -109,7 +109,7 @@ test.describe('Bridge', () => {
     await connectKitButton.click();
     const metamaskConnect = getButtonByText(page, 'Metamask');
     await metamaskConnect.click();
-    await metamask.acceptAccess({ timeout: 3000 });
+    await metamask.acceptAccess({ timeout: 30000 });
 
     // Connect fuel
     const connectFuel = getByAriaLabel(page, 'To Connect wallet');
@@ -170,6 +170,12 @@ test.describe('Bridge', () => {
     await closeEthPopupWithdraw.click();
 
     // Go to the transaction page
+    await transactionList.click();
+
     // Check the transaction is there
+    expect((await transactionAssetAmount.last().innerHTML()).trim()).toBe(
+      withdrawAmount
+    );
+    // Confirm the transaction
   });
 });
