@@ -55,12 +55,12 @@ export const test = base.extend<{
       `--load-extension=${metamaskPath},${pathToExtension}`,
       '--remote-debugging-port=9222',
     ];
-    if (process.env.CI) {
-      browserArgs.push('--disable-gpu');
-    }
-    if (process.env.HEADLESS_MODE) {
-      browserArgs.push('--headless=new');
-    }
+    // if (process.env.CI) {
+    //   browserArgs.push('--disable-gpu');
+    // }
+    // if (process.env.HEADLESS_MODE) {
+    //   browserArgs.push('--headless=new');
+    // }
     // launch browser
     const context = await chromium.launchPersistentContext('', {
       headless: false,
@@ -68,8 +68,9 @@ export const test = base.extend<{
     });
     // wait for metamask
     await context.pages()[0].waitForTimeout(3000);
-    console.log('chromeium: ', chromium);
+    // console.log('chromeium: ', chromium);
     // setup metamask
+    // TODO sometimes this step is flaky, but I'm not sure how to fix
     await initialSetup(chromium, {
       secretWordsOrPrivateKey:
         'test test test test test test test test test test test junk',
