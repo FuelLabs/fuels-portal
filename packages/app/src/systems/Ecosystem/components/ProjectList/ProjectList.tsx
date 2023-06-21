@@ -4,6 +4,7 @@ import { Grid } from '@fuel-ui/react';
 import { type Project } from '../../types';
 import { ProjectItem } from '../ProjectItem';
 
+import { ProjectListEmpty } from './ProjectListEmpty';
 import { ProjectListLoading } from './ProjectListLoading';
 
 type ProjectListProps = {
@@ -13,6 +14,9 @@ type ProjectListProps = {
 
 export const ProjectList = ({ projects, isLoading }: ProjectListProps) => {
   if (isLoading) return <ProjectList.Loading />;
+  const isEmpty = projects.length === 0;
+
+  if (isEmpty) return <ProjectList.Empty />;
   return (
     <Grid
       gap="$8"
@@ -37,3 +41,4 @@ const styles = {
 };
 
 ProjectList.Loading = ProjectListLoading;
+ProjectList.Empty = ProjectListEmpty;

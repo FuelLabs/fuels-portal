@@ -96,7 +96,7 @@ export const ProjectItem: ProjectItemComponent = ({
 
 const styles = {
   card: cssObj({
-    borderColor: '$semanticOutlinedBaseBorder',
+    border: '1px solid $semanticOutlinedBaseBorder',
     padding: '$4',
     '&:hover': {
       cursor: 'pointer',
