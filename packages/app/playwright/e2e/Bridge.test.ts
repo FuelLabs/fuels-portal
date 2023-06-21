@@ -47,24 +47,48 @@ async function walletSetup(
   await confirmPassword.type(WALLET_PASSWORD);
   const toFinish = getButtonByText(signupPage, 'Next: Finish set-up');
   await toFinish.click();
+
+  await signupPage.waitForTimeout(5000);
+
+  await signupPage.goto(
+    `chrome-extension://${fuelExtensionId}/popup.html#/wallet`
+  );
+
+  // let walletPage = context.pages().find((p) => p.url().includes('/popup'));
+  // if (!walletPage) {
+  //   walletPage = await context.waitForEvent('page', {
+  //     predicate: (page) => page.url().includes('/popup'),
+  //   });
+  // }
+
+  // Navigate to add network and add test network
+  await signupPage.locator('[aria-label="Selected Network"]').click();
+  await signupPage.locator('button').getByText('Add new network').click();
+  await signupPage
+    .locator('[aria-label="Network URL"]')
+    .fill(
+      process.env.VITE_FUEL_PROVIDER_URL || 'http://localhost:4000/graphql'
+    );
+  const addButton = getButtonByText(signupPage, 'Add');
+  await addButton.click();
 }
 
 async function walletConnect(context: BrowserContext) {
-  let approvePage = context.pages().find((p) => p.url().includes('/popup'));
+  let approvePage = context.pages().find((p) => p.url().includes('/popup?'));
   if (!approvePage) {
     approvePage = await context.waitForEvent('page', {
       predicate: (page) => page.url().includes('/popup'),
     });
   }
 
-  const nextButton = approvePage.locator('button').getByText('Next');
+  const nextButton = getButtonByText(approvePage, 'Next');
   await nextButton.click();
-  const connectButton = approvePage.locator('button').getByText('Connect');
+  const connectButton = getButtonByText(approvePage, 'Connect');
   await connectButton.click();
 }
 
 async function walletApprove(context: BrowserContext) {
-  let approvePage = context.pages().find((p) => p.url().includes('/popup'));
+  let approvePage = context.pages().find((p) => p.url().includes('/popup?'));
   if (!approvePage) {
     approvePage = await context.waitForEvent('page', {
       predicate: (page) => page.url().includes('/popup'),
@@ -90,6 +114,21 @@ test.describe('Bridge', () => {
     });
     expect(hasFuel).toBeTruthy();
 
+    // const walletPage = await context.newPage();
+    // await walletPage.goto(
+    //   `chrome-extension://${extensionId}/popup.html#/wallet`
+    // );
+    // await walletPage.reload();
+    // // Navigate to add network and add test network
+    // await walletPage.locator('[aria-label="Selected Network"]').click();
+    // await walletPage.locator('button').getByText('Add new network').click();
+    // await walletPage
+    //   .locator('[aria-label="Network URL"]')
+    //   .fill(
+    //     process.env.VITE_FUEL_PROVIDER_URL || 'http://localhost:4000/graphql'
+    //   );
+    // await page.locator('button', { hasText: 'Add' }).click();
+
     // Go to the bridge page
     const goToBridge = getByAriaLabel(page, 'Bridge');
     await goToBridge.click();
@@ -99,7 +138,10 @@ test.describe('Bridge', () => {
     await connectKitButton.click();
     const metamaskConnect = getButtonByText(page, 'Metamask');
     await metamaskConnect.click();
+    await page.waitForTimeout(5000);
     await metamask.acceptAccess();
+
+    await page.waitForTimeout(4000);
 
     // Connect fuel
     const connectFuel = getByAriaLabel(page, 'To Connect wallet');
@@ -128,7 +170,7 @@ test.describe('Bridge', () => {
 
     // check the transaction is there
     const transactionAssetAmount = getByAriaLabel(page, 'Asset amount');
-    expect((await transactionAssetAmount.last().innerHTML()).trim()).toBe(
+    expect((await transactionAssetAmount.first().innerHTML()).trim()).toBe(
       depositAmount
     );
 
@@ -154,7 +196,7 @@ test.describe('Bridge', () => {
 
     // Check the popup is correct
     const assetAmountWithdraw = getByAriaLabel(page, 'Asset amount');
-    await page.waitForTimeout(10000);
+    await page.waitForTimeout(11000);
     expect((await assetAmountWithdraw.innerHTML()).trim()).toBe(withdrawAmount);
     const closeEthPopupWithdraw = getByAriaLabel(page, 'Close unlock window');
     await closeEthPopupWithdraw.click();
@@ -163,11 +205,11 @@ test.describe('Bridge', () => {
     await transactionList.click();
 
     // Check the transaction is there
-    expect((await transactionAssetAmount.last().innerHTML()).trim()).toBe(
+    expect((await transactionAssetAmount.first().innerHTML()).trim()).toBe(
       withdrawAmount
     );
 
-    await transactionAssetAmount.last().click();
+    await transactionAssetAmount.first().click();
     // await page.waitForTimeout(10000);
     // Check the popup is correct
     // assetAmountWithdraw = getByAriaLabel(page, 'Asset amount');
