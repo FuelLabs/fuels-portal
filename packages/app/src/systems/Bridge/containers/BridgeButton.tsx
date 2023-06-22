@@ -10,6 +10,7 @@ export const BridgeButton = () => {
       onPress={handlers.action}
       isLoading={isLoading}
       isDisabled={isDisabled}
+      intent="primary"
     >
       {text}
     </Button>

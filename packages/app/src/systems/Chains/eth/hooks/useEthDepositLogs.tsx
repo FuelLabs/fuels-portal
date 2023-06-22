@@ -1,10 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
+import type { BN } from 'fuels';
 import { useMemo } from 'react';
 import { decodeEventLog } from 'viem';
 
 import { useFuelAccountConnection } from '../../fuel';
 import { AbiFuelMessagePortal } from '../services/abi';
 
+import { useBlocks } from './useBlocks';
+import { useCachedBlocksDates } from './useCachedBlocksDates';
 import { useEthAccountConnection } from './useEthAccountConnection';
 
 import { VITE_ETH_FUEL_MESSAGE_PORTAL } from '~/config';
@@ -14,27 +17,50 @@ export const useEthDepositLogs = () => {
     useEthAccountConnection();
   const { address: fuelAddress } = useFuelAccountConnection();
 
-  const query = useQuery(
+  const { isFetching: isFetchingLogs, ...query } = useQuery(
     ['ethDepositLogs', ethPaddedAddress, fuelAddress],
     async () => {
       const logs = await provider!.getLogs({
         address: VITE_ETH_FUEL_MESSAGE_PORTAL as `0x${string}`,
-        // TODO: put correct data to generate topic[0] hash correctly
-        // event: {
-        //   type: 'event',
-        //   name: 'MessageSent',
-        //   inputs: [
-        //     { type: 'bytes32', indexed: true, name: 'sender' },
-        //     { type: 'bytes32', indexed: true, name: 'recipient' },
-        //     { type: 'uint256', indexed: true, name: 'nonce' },
-        //     { type: 'uint64', indexed: false, name: 'amount' },
-        //     { type: 'bytes', indexed: false, name: 'data' },
-        //   ],
-        // },
-        // args: {
-        //   sender: ethPaddedAddress,
-        //   recipient: fuelAddress?.toHexString() as `0x${string}`,
-        // },
+        event: {
+          type: 'event',
+          name: 'SentMessage',
+          inputs: [
+            {
+              indexed: true,
+              internalType: 'bytes32',
+              name: 'sender',
+              type: 'bytes32',
+            },
+            {
+              indexed: true,
+              internalType: 'bytes32',
+              name: 'recipient',
+              type: 'bytes32',
+            },
+            {
+              indexed: false,
+              internalType: 'uint64',
+              name: 'nonce',
+              type: 'uint64',
+            },
+            {
+              indexed: false,
+              internalType: 'uint64',
+              name: 'amount',
+              type: 'uint64',
+            },
+            {
+              indexed: false,
+              internalType: 'bytes',
+              name: 'data',
+              type: 'bytes',
+            },
+          ],
+        },
+        args: {
+          recipient: fuelAddress?.toHexString() as `0x${string}`,
+        },
         fromBlock: 'earliest',
       });
       return logs;
@@ -44,31 +70,39 @@ export const useEthDepositLogs = () => {
     }
   );
 
-  // TODO: remove this filtering when previous query gets fixed and returns correct data
-  const filteredLogs = query.data?.filter((log) => {
-    if (log.topics.length < 3) {
-      return false;
-    }
+  const blockHashes = useMemo(() => {
+    const hashes = query.data?.map((log) => log.blockHash || '0x');
 
-    return (
-      // log.topics[1] === ethPaddedAddress ||
-      log.topics[2] === fuelAddress?.toHexString()
-    );
-  });
+    return hashes;
+  }, [query.data]);
 
-  const decodedEvents = useMemo(() => {
-    return filteredLogs?.map((log) =>
-      decodeEventLog({
+  const { blockDates, notCachedHashes } = useCachedBlocksDates(blockHashes);
+  const { blocks, isFetching: isFetchingBlocks } = useBlocks(notCachedHashes);
+
+  const logs = useMemo(() => {
+    return query.data?.map((log) => {
+      const decodedEvent = decodeEventLog({
         abi: AbiFuelMessagePortal,
         data: log.data,
         topics: log.topics,
-      })
-    );
-  }, [filteredLogs]);
+      });
+      let date;
+      if (log.blockHash && blockDates) {
+        date = blockDates[log.blockHash]
+          ? blockDates[log.blockHash]
+          : blocks?.find((block) => block.hash === log.blockHash)?.date;
+      }
+      return {
+        ...log,
+        event: decodedEvent as unknown as { args: { amount: BN } },
+        date,
+      };
+    });
+  }, [query.data]);
 
   return {
-    events: decodedEvents as any, // eslint-disable-line @typescript-eslint/no-explicit-any
-    logs: filteredLogs,
+    logs,
     ...query,
+    isFetching: isFetchingLogs || isFetchingBlocks,
   };
 };

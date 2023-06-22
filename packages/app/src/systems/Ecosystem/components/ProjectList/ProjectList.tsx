@@ -1,34 +1,38 @@
 import { cssObj } from '@fuel-ui/css';
 import { Grid } from '@fuel-ui/react';
-import { AnimatePresence, motion } from 'framer-motion';
 
-import { ProjectItem, type Project } from '../ProjectItem';
+import { type Project } from '../../types';
+import { ProjectItem } from '../ProjectItem';
 
-import { animations } from '~/systems/Core';
-
-const MotionGrid = motion(Grid);
+import { ProjectListEmpty } from './ProjectListEmpty';
+import { ProjectListLoading } from './ProjectListLoading';
 
 type ProjectListProps = {
   projects: Project[];
+  isLoading?: boolean;
+  emptyText?: string;
 };
 
-export const ProjectList = ({ projects }: ProjectListProps) => {
+export const ProjectList = ({
+  projects,
+  isLoading,
+  emptyText,
+}: ProjectListProps) => {
+  if (isLoading) return <ProjectList.Loading />;
+  const isEmpty = projects.length === 0;
+
+  if (isEmpty) return <ProjectList.Empty text={emptyText} />;
   return (
-    <MotionGrid
+    <Grid
       gap="$8"
       templateColumns="repeat(2, 1fr)"
       templateRows="repeat(2, 1fr)"
       css={styles.grid}
-      {...animations.slideInBottom({
-        transition: { staggerChildren: 0.5, type: 'spring' },
-      })}
     >
-      <AnimatePresence initial={false} mode="sync">
-        {projects?.map((project) => (
-          <ProjectItem {...project} key={project.url} />
-        ))}
-      </AnimatePresence>
-    </MotionGrid>
+      {projects.map((project) => (
+        <ProjectItem {...project} key={project.url} />
+      ))}
+    </Grid>
   );
 };
 
@@ -40,3 +44,6 @@ const styles = {
     },
   }),
 };
+
+ProjectList.Loading = ProjectListLoading;
+ProjectList.Empty = ProjectListEmpty;

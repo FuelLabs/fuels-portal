@@ -1,6 +1,7 @@
 import { bn } from 'fuels';
 import { useMemo } from 'react';
 
+import type { BridgeTx } from '~/systems/Bridge/types';
 import {
   useEthDepositLogs,
   ethLogoSrc,
@@ -11,20 +12,21 @@ import {
 } from '~/systems/Chains';
 
 export const useTxsEthToFuel = () => {
-  const { events, logs } = useEthDepositLogs();
+  const { logs, isFetching } = useEthDepositLogs();
 
-  const txs = useMemo(() => {
-    return logs?.map((log, index) => {
+  const txs: BridgeTx[] | undefined = useMemo(() => {
+    return logs?.map((log) => {
       const txDatum = {
         asset: {
-          assetAmount: bn(events[index].args.amount.toString()).format({
+          assetAmount: bn(log.event.args.amount.toString()).format({
             precision: 9,
             units: FUEL_UNITS,
           }),
           assetImageSrc: ethLogoSrc,
           assetSymbol: ETH_SYMBOL,
         },
-        txHash: log.transactionHash,
+        date: log.date,
+        txHash: log.transactionHash || '0x',
         fromNetwork: ETH_CHAIN,
         toNetwork: FUEL_CHAIN,
         isDone:
@@ -37,5 +39,6 @@ export const useTxsEthToFuel = () => {
 
   return {
     txs,
+    isLoading: isFetching,
   };
 };

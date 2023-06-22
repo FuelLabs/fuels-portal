@@ -1,11 +1,10 @@
 import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
 
-import type { Project } from '../components/ProjectItem';
 import PROJECTS from '../data/projects.json';
+import type { Project } from '../types';
 
 import { FetchMachine } from '~/systems/Core';
-
 
 export type EcosystemInputs = {
   filter: {
@@ -57,14 +56,6 @@ type EcosystemMachineEvents =
   | {
       type: 'CLEAR_FILTER';
       input: null;
-    }
-  | {
-      type: 'CLEAR_SEARCH';
-      input: null;
-    }
-  | {
-      type: 'CLEAR_SEARCH_AND_FILTER';
-      input: null;
     };
 
 const initialState: MachineContext = {
@@ -103,15 +94,10 @@ export const ecosystemMachine = createMachine(
           CLEAR_FILTER: {
             actions: ['clearFilter'],
           },
-          CLEAR_SEARCH: {
-            actions: ['clearSearch'],
-          },
-          CLEAR_SEARCH_AND_FILTER: {
-            actions: ['clearSearchAndFilter'],
-          },
         },
       },
       fetching: {
+        tags: ['isLoading'],
         invoke: {
           src: 'fetchProjectsAndTags',
           onDone: {
@@ -121,6 +107,8 @@ export const ecosystemMachine = createMachine(
         },
       },
       filtering: {
+        entry: ['clearSearch'],
+        tags: ['isLoading'],
         invoke: {
           src: 'filterProjects',
           data: {
@@ -136,6 +124,8 @@ export const ecosystemMachine = createMachine(
         },
       },
       searching: {
+        entry: ['clearFilter'],
+        tags: ['isLoading'],
         invoke: {
           src: 'searchProjects',
           data: {

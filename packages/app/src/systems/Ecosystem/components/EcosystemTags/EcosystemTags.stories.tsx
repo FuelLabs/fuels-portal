@@ -25,11 +25,17 @@ export const Usage = () => {
   ];
 
   return (
-    <Box.Flex align="center" justify="center" css={styles.storybook}>
+    <Box.Flex align="center" justify="flex-start" css={styles.storybook}>
       <EcosystemTags tags={TAGS} />
     </Box.Flex>
   );
 };
+
+export const Loader = () => (
+  <Box.Flex align="center" justify="flex-start" css={styles.storybook}>
+    <EcosystemTags.Loading />
+  </Box.Flex>
+);
 
 const styles = {
   storybook: cssObj({

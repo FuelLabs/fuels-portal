@@ -11,10 +11,7 @@ const selectors = {
   tags: (state: EcosystemMachineState) => state.context?.tags,
   filter: (state: EcosystemMachineState) => state.context?.filter,
   search: (state: EcosystemMachineState) => state.context?.search,
-  isLoading: (state: EcosystemMachineState) =>
-    state.matches('fetching') ||
-    state.matches('searching') ||
-    state.matches('filtering'),
+  isLoading: (state: EcosystemMachineState) => state.hasTag('isLoading'),
 };
 
 export function useEcosystem() {
@@ -37,28 +34,15 @@ export function useEcosystem() {
   }, []);
 
   const filterProjects = (input: EcosystemInputs['filter']) => {
-    clearSearch();
     store.send(Services.ecosystem, { type: 'FILTER', input });
   };
 
   const searchProjects = (input: EcosystemInputs['search']) => {
-    clearFilters();
-    if (!input.query) clearSearch();
-    else store.send(Services.ecosystem, { type: 'SEARCH', input });
+    store.send(Services.ecosystem, { type: 'SEARCH', input });
   };
 
   const clearFilters = () => {
     store.send(Services.ecosystem, { type: 'CLEAR_FILTER', input: null });
-  };
-  const clearSearch = () => {
-    store.send(Services.ecosystem, { type: 'CLEAR_SEARCH', input: null });
-  };
-
-  const clearSearchAndFilter = () => {
-    store.send(Services.ecosystem, {
-      type: 'CLEAR_SEARCH_AND_FILTER',
-      input: null,
-    });
   };
 
   return {
@@ -72,8 +56,6 @@ export function useEcosystem() {
       filterProjects,
       searchProjects,
       clearFilters,
-      clearSearch,
-      clearSearchAndFilter,
     },
   };
 }

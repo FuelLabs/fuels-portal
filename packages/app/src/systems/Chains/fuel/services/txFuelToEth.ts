@@ -4,6 +4,7 @@ import type {
   Provider as FuelProvider,
   MessageProof,
   ReceiptMessageOut,
+  TransactionResultReceipt,
 } from 'fuels';
 import { bn, TransactionResponse, ReceiptType, Address } from 'fuels';
 import type { WalletClient, PublicClient as EthPublicClient } from 'viem';
@@ -17,9 +18,12 @@ export type TxFuelToEthInputs = {
     fuelWallet?: FuelWalletLocked;
     ethAddress?: string;
   };
-  getMessageId: {
+  waitTxResult: {
     fuelTxId: string;
     fuelProvider?: FuelProvider;
+  };
+  getMessageId: {
+    receipts: TransactionResultReceipt[];
   };
   getMessageProof: {
     fuelTxId: string;
@@ -57,7 +61,7 @@ export class TxFuelToEthService {
     return txFuel.id;
   }
 
-  static async getMessageId(input: TxFuelToEthInputs['getMessageId']) {
+  static async waitTxResult(input: TxFuelToEthInputs['waitTxResult']) {
     if (!input?.fuelProvider) {
       throw new Error('Need to connect Fuel Provider');
     }
@@ -68,7 +72,15 @@ export class TxFuelToEthService {
     const { fuelTxId, fuelProvider } = input;
 
     const response = new TransactionResponse(fuelTxId || '', fuelProvider);
-    const { receipts } = await response.waitForResult();
+    return response.waitForResult();
+  }
+
+  static async getMessageId(input: TxFuelToEthInputs['getMessageId']) {
+    if (!input?.receipts) {
+      throw new Error('Need receipts from tx result');
+    }
+    const { receipts } = input;
+
     // TODO: this should be replaced with tx utils getReceiptsMessageOut
     const message = receipts.find((r) => {
       return r.type === ReceiptType.MessageOut;

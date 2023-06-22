@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, Dialog, Icon, IconButton, Text } from '@fuel-ui/react';
+import { Box, Dialog, Text } from '@fuel-ui/react';
 import { bn } from 'fuels';
 
 import { useTxEthToFuel } from '../hooks';
@@ -11,7 +11,7 @@ import { useOverlay } from '~/systems/Overlay';
 
 export function TxEthToFuelDialog() {
   const { metadata } = useOverlay<{ txId: string }>();
-  const { steps, handlers, ethTx, ethBlockDate } = useTxEthToFuel({
+  const { steps, ethTx, ethBlockDate } = useTxEthToFuel({
     id: metadata.txId,
   });
 
@@ -19,21 +19,17 @@ export function TxEthToFuelDialog() {
     <>
       <Dialog.Heading css={styles.dialogHeading}>
         <Box.Flex justify="space-between" css={styles.dialogHeadingContainer}>
-          <Text fontSize="sm" color="intentsBase12">
+          <Text color="intentsBase12" fontSize="sm">
             Transaction: {shortAddress(metadata.txId)}
           </Text>
-          <IconButton
-            data-action="closed"
-            variant="link"
-            icon={<Icon icon="CircleX" css={styles.dialogHeadingIcon} />}
-            aria-label="Close unlock window"
-            onPress={handlers.close}
-          />
+          <Dialog.Close />
         </Box.Flex>
       </Dialog.Heading>
       <Dialog.Description>
         <Box.Stack gap="$2">
-          <Text css={styles.header}>Status</Text>
+          <Text fontSize="sm" color="intentsBase12">
+            Status
+          </Text>
           <BridgeSteps steps={steps} />
           <Box css={styles.border} />
           <BridgeTxOverview
@@ -64,10 +60,6 @@ const styles = {
   }),
   dialogHeadingIcon: cssObj({
     color: '$intentsBase12 !important',
-  }),
-  header: cssObj({
-    color: '$intentsBase12',
-    fontSize: '$xs',
   }),
   border: cssObj({
     my: '$4',
