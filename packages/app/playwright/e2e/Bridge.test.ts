@@ -48,7 +48,7 @@ async function walletSetup(
   const toFinish = getButtonByText(signupPage, 'Next: Finish set-up');
   await toFinish.click();
 
-  await signupPage.waitForTimeout(5000);
+  await signupPage.waitForTimeout(9000);
 
   await signupPage.goto(
     `chrome-extension://${fuelExtensionId}/popup.html#/wallet`
