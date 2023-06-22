@@ -37,7 +37,7 @@ jobs:
       - name: Run E2E Tests
         run: xvfb-run --auto-servernum -- pnpm test:all
         env:
-          NODE_ENV: test
+          NODE_ENV: development
 
       - uses: actions/upload-artifact@v2
         if: always()
