@@ -131,6 +131,7 @@ test.describe('Bridge', () => {
     const depositButton = getButtonByText(page, 'Bridge asset');
     await depositButton.click();
     await metamask.confirmTransaction();
+    await page.screenshot({ fullPage: true, path: 'test0.png' });
 
     // check the popup is correct
     const assetAmount = getByAriaLabel(page, 'Asset amount');
