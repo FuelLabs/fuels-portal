@@ -1,4 +1,3 @@
-import { cssObj } from '@fuel-ui/css';
 import { useTransaction } from '@fuels-portal/sdk-react';
 import { useInterpret, useSelector } from '@xstate/react';
 import type { ReceiptMessageOut } from 'fuels';
