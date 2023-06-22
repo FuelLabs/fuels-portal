@@ -1,14 +1,11 @@
 import { cssObj } from '@fuel-ui/css';
 import { Text, Box, Heading, Input, Icon } from '@fuel-ui/react';
-import { motion } from 'framer-motion';
 
 import { EcosystemTags } from '../components/EcosystemTags';
 import { ProjectList } from '../components/ProjectList/ProjectList';
 import { useEcosystem } from '../hooks/useEcosystem';
 
 import { Layout, animations } from '~/systems/Core';
-
-const MotionLayout = motion(Layout);
 
 export function Ecosystem() {
   const { tags, isLoading, filter, search, handlers, filteredProjects } =
@@ -27,7 +24,7 @@ export function Ecosystem() {
     : undefined;
 
   return (
-    <MotionLayout {...animations.slideInTop()}>
+    <Layout {...animations.slideInTop()}>
       <Box.Flex css={styles.container} align="center" grow={1}>
         <Box.Stack gap="$10" grow={1}>
           <Box.Flex justify="space-between" align="bottom">
@@ -66,7 +63,7 @@ export function Ecosystem() {
           />
         </Box.Stack>
       </Box.Flex>
-    </MotionLayout>
+    </Layout>
   );
 }
 
