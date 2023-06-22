@@ -82,7 +82,7 @@ export const ProjectItem: ProjectItemComponent = ({
               >
                 {hostname}
               </ButtonLink>
-              <Tag intent="base" size="xs" css={styles.tag}>
+              <Tag intent="base" size="xs" css={styles.tag} variant="ghost">
                 <Box css={{ ...styles.dot, ...styles[`dot-${status}`] }} />
                 {STATUS_TEXT[status]}
               </Tag>
@@ -97,7 +97,7 @@ export const ProjectItem: ProjectItemComponent = ({
 const styles = {
   card: cssObj({
     border: '1px solid $semanticOutlinedBaseBorder',
-    padding: '$4',
+    padding: '$2 $4',
     '&:hover': {
       cursor: 'pointer',
     },

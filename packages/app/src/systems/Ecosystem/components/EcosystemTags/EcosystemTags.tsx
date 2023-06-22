@@ -24,7 +24,8 @@ export const EcosystemTags = ({
       <Button
         variant="outlined"
         onPress={onPressAllCategories}
-        css={!activeTag ? styles.active : null}
+        css={!activeTag ? styles.active : styles.default}
+        size="sm"
       >
         All Categories
       </Button>
@@ -34,7 +35,8 @@ export const EcosystemTags = ({
           variant="outlined"
           key={tag}
           onPress={() => onPressTag?.(tag)}
-          css={activeTag === tag ? styles.active : null}
+          css={activeTag === tag ? styles.active : styles.default}
+          size="sm"
         >
           {tag}
         </Button>
@@ -44,13 +46,17 @@ export const EcosystemTags = ({
 };
 
 const styles = {
+  default: cssObj({
+    color: '$intentsBase12',
+  }),
   active: cssObj({
     borderColor: '$intentsPrimary10',
+    color: '$intentsBase12',
   }),
   divider: cssObj({
     width: '1px',
     height: '$4',
-    backgroundColor: '$intentsBase',
+    backgroundColor: '$intentsBase9',
   }),
 };
 

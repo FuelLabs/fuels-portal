@@ -1,7 +1,11 @@
 import { Box, Text } from '@fuel-ui/react';
 
-export const ProjectListEmpty = () => (
+type ProjectListEmptyProps = {
+  text?: string;
+};
+
+export const ProjectListEmpty = ({ text }: ProjectListEmptyProps) => (
   <Box.Flex justify="center">
-    <Text> There are no projects that match your search. </Text>
+    <Text> {text ?? 'There are no projects to show you.'} </Text>
   </Box.Flex>
 );

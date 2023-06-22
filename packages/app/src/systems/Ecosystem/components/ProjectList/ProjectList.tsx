@@ -10,13 +10,18 @@ import { ProjectListLoading } from './ProjectListLoading';
 type ProjectListProps = {
   projects: Project[];
   isLoading?: boolean;
+  emptyText?: string;
 };
 
-export const ProjectList = ({ projects, isLoading }: ProjectListProps) => {
+export const ProjectList = ({
+  projects,
+  isLoading,
+  emptyText,
+}: ProjectListProps) => {
   if (isLoading) return <ProjectList.Loading />;
   const isEmpty = projects.length === 0;
 
-  if (isEmpty) return <ProjectList.Empty />;
+  if (isEmpty) return <ProjectList.Empty text={emptyText} />;
   return (
     <Grid
       gap="$8"

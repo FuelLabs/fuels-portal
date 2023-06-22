@@ -21,6 +21,11 @@ export function Ecosystem() {
   const handleTagButtonClick = (tag: string) => {
     handlers.filterProjects({ tag });
   };
+
+  const emptyText = search?.length
+    ? 'No results found for your search.'
+    : undefined;
+
   return (
     <MotionLayout {...animations.slideInTop()}>
       <Box.Flex css={styles.container} align="center" grow={1}>
@@ -30,7 +35,9 @@ export function Ecosystem() {
               <Heading as="h2" css={styles.heading}>
                 Explore Fuel Dapps
               </Heading>
-              <Text as="small">Here&apos;s a list of apps built on Fuel</Text>
+              <Text as="small" color="intentsBase12">
+                Here&apos;s a list of apps built on Fuel
+              </Text>
             </Box.Stack>
             <Box.Stack>
               <Input>
@@ -55,6 +62,7 @@ export function Ecosystem() {
           <ProjectList
             isLoading={isLoading}
             projects={filteredProjects || []}
+            emptyText={emptyText}
           />
         </Box.Stack>
       </Box.Flex>
