@@ -1,8 +1,8 @@
-import { cssObj } from '@fuel-ui/css';
-import { Image, FuelLogo, Text, Box, Spinner, Badge } from '@fuel-ui/react';
+import { Image, FuelLogo, Text, Box, Spinner } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
 
 import { ethLogoSrc } from '../../eth';
+import { ActionBadge } from '../components';
 import { useTxFuelToEth } from '../hooks';
 
 import { BridgeTxItem } from '~/systems/Bridge';
@@ -50,11 +50,7 @@ export const TxListItemFuelToEth = ({
     }
 
     if (bridgeTxStatus?.name === 'Confirm transaction') {
-      return (
-        <Badge css={styles.actionBadge} intent="error">
-          Action Required
-        </Badge>
-      );
+      return <ActionBadge />;
     }
 
     return '';
@@ -70,13 +66,4 @@ export const TxListItemFuelToEth = ({
       status={getStatusComponent()}
     />
   );
-};
-
-const styles = {
-  actionBadge: cssObj({
-    fontSize: '$xs',
-    lineHeight: 1,
-    padding: '$1',
-    textTransform: 'none',
-  }),
 };
