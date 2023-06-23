@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -151,8 +151,8 @@ importers:
         specifier: ^5
         version: 5.7.2
       framer-motion:
-        specifier: ^8.5.5
-        version: 8.5.5(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^10.12.16
+        version: 10.12.16(react-dom@18.2.0)(react@18.2.0)
       fuels:
         specifier: 0.44.1
         version: 0.44.1
@@ -4597,17 +4597,6 @@ packages:
 
   /@motionone/dom@10.12.0:
     resolution: {integrity: sha512-UdPTtLMAktHiqV0atOczNYyDd/d8Cf5fFsd1tua03PqTwwCe/6lwhLSQ8a7TbnQ5SN0gm44N1slBfj+ORIhrqw==}
-    dependencies:
-      '@motionone/animation': 10.15.1
-      '@motionone/generators': 10.15.1
-      '@motionone/types': 10.15.1
-      '@motionone/utils': 10.15.1
-      hey-listen: 1.0.8
-      tslib: 2.5.0
-    dev: false
-
-  /@motionone/dom@10.15.5:
-    resolution: {integrity: sha512-Xc5avlgyh3xukU9tydh9+8mB8+2zAq+WlLsC3eEIp7Ax7DnXgY7Bj/iv0a4X2R9z9ZFZiaXK3BO0xMYHKbAAdA==}
     dependencies:
       '@motionone/animation': 10.15.1
       '@motionone/generators': 10.15.1
@@ -14822,26 +14811,6 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       style-value-types: 5.0.0
-      tslib: 2.5.0
-    optionalDependencies:
-      '@emotion/is-prop-valid': 0.8.8
-    dev: false
-
-  /framer-motion@8.5.5(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-5IDx5bxkjWHWUF3CVJoSyUVOtrbAxtzYBBowRE2uYI/6VYhkEBD+rbTHEGuUmbGHRj6YqqSfoG7Aa1cLyWCrBA==}
-    peerDependencies:
-      react: '*'
-      react-dom: '*'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
-    dependencies:
-      '@motionone/dom': 10.15.5
-      hey-listen: 1.0.8
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
       tslib: 2.5.0
     optionalDependencies:
       '@emotion/is-prop-valid': 0.8.8

@@ -1,6 +1,15 @@
 import { cssObj } from '@fuel-ui/css';
-import { Card, Box, Text, InputAmount, Alert, Link } from '@fuel-ui/react';
-import { motion } from 'framer-motion';
+import {
+  Card,
+  Box,
+  Text,
+  InputAmount,
+  Alert,
+  Link,
+  Button,
+} from '@fuel-ui/react';
+import { motion, useAnimate, useAnimationControls } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
 import { BridgeButton, BridgeTabs } from '../containers';
 import { useBridge } from '../hooks';
@@ -15,54 +24,68 @@ import {
 } from '~/systems/Chains';
 import { animations, coreStyles } from '~/systems/Core';
 
-const MotionBox = motion(Box);
+// const MotionCard = motion(Card);
+// const MotionBox = motion(Box);
+/// const MotionStack = motion(Box.Stack);
 
 export const Bridge = () => {
   const { fromNetwork, toNetwork, assetAmount, assetBalance, handlers } =
     useBridge();
+
+  const controls = useAnimationControls();
+
+  // const [isDepositPage, setIsDepositPage] = useState(true);
+
+  // const triggerAnimation = async () => {
+  //   controls.set({ opacity: 0.4, x: 30 });
+  //   await controls.start({ opacity: 1, x: 0 });
+  // };
 
   if (!fromNetwork || !toNetwork) return null;
 
   return (
     <Card css={coreStyles.card}>
       <Card.Body>
-        <BridgeTabs />
-        <Box.Stack gap="$6">
-          {Boolean(fromNetwork && toNetwork) && (
+        <BridgeTabs controls={controls} />
+        <motion.div animate={controls}>
+          <Box.Stack gap="$6">
+            {Boolean(fromNetwork && toNetwork) && (
+              <Box.Stack gap="$2">
+                <Text fontSize="sm" css={styles.sectionHeader}>
+                  Network
+                </Text>
+                {isEthChain(fromNetwork) && (
+                  <EthAccountConnection label="From" />
+                )}
+                {isFuelChain(fromNetwork) && (
+                  <FuelAccountConnection label="From" />
+                )}
+                {isEthChain(toNetwork) && <EthAccountConnection label="To" />}
+                {isFuelChain(toNetwork) && <FuelAccountConnection label="To" />}
+              </Box.Stack>
+            )}
             <Box.Stack gap="$2">
               <Text fontSize="sm" css={styles.sectionHeader}>
-                Network
+                Asset
               </Text>
-              {isEthChain(fromNetwork) && <EthAccountConnection label="From" />}
-              {isFuelChain(fromNetwork) && (
-                <FuelAccountConnection label="From" />
-              )}
-              {isEthChain(toNetwork) && <EthAccountConnection label="To" />}
-              {isFuelChain(toNetwork) && <FuelAccountConnection label="To" />}
+              <Box css={styles.amountInput}>
+                <InputAmount
+                  balance={assetBalance}
+                  asset={{
+                    name: ETH_SYMBOL,
+                    imageUrl: ethLogoSrc,
+                  }}
+                  assetTooltip="Fuel Bridge only supports ETH for now. Other assets will be added soon."
+                  value={assetAmount}
+                  onChange={(val) =>
+                    handlers.changeAssetAmount({ assetAmount: val })
+                  }
+                />
+              </Box>
             </Box.Stack>
-          )}
-          <Box.Stack gap="$2">
-            <Text fontSize="sm" css={styles.sectionHeader}>
-              Asset
-            </Text>
-            <MotionBox {...animations.slideInTop()} css={styles.amountInput}>
-              <InputAmount
-                balance={assetBalance}
-                asset={{
-                  name: ETH_SYMBOL,
-                  imageUrl: ethLogoSrc,
-                }}
-                assetTooltip="Fuel Bridge only supports ETH for now. Other assets will be added soon."
-                value={assetAmount}
-                onChange={(val) =>
-                  handlers.changeAssetAmount({ assetAmount: val })
-                }
-              />
-            </MotionBox>
-          </Box.Stack>
-          <BridgeButton />
-          {isFuelChain(toNetwork) && (
-            <motion.div {...animations.slideInTop()}>
+            <BridgeButton />
+            {/* <Button onPress={triggerAnimation}>Trigger animatiuon</Button> */}
+            {isFuelChain(toNetwork) && (
               <Alert status="warning">
                 <Alert.Description>
                   <Text fontSize="sm">
@@ -75,9 +98,9 @@ export const Bridge = () => {
                   </Text>
                 </Alert.Description>
               </Alert>
-            </motion.div>
-          )}
-        </Box.Stack>
+            )}
+          </Box.Stack>
+        </motion.div>
       </Card.Body>
     </Card>
   );
