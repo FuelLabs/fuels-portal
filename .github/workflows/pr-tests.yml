@@ -33,9 +33,7 @@ jobs:
 
       # E2E tests running with Playwright
       - name: Install Playwright Browsers
-        run: |
-          cd packages/app
-          pnpm exec playwright install --with-deps chromium
+        run: pnpm exec playwright install --with-deps chromium
 
       - name: Run E2E Tests
         run: xvfb-run --auto-servernum -- pnpm test:all
