@@ -10,7 +10,6 @@
     "codegen": "graphql-codegen --config codegen.ts",
     "dev": "vite",
     "preview": "vite preview",
-    "test": "playwright test",
     "storybook": "storybook dev -p 6006",
     "ts:check": "pnpm xstate:typegen && tsc --noEmit",
     "xstate:typegen": "xstate typegen 'src/**/*.ts?(x)'"
