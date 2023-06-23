@@ -63,7 +63,7 @@ async function walletSetup(
       process.env.VITE_FUEL_PROVIDER_URL || 'http://localhost:4000/graphql'
     );
   const addButton = getButtonByText(signupPage, 'Add');
-  await addButton.click();
+  await addButton.click({ timeout: 9000 });
 }
 
 async function walletConnect(context: BrowserContext) {
