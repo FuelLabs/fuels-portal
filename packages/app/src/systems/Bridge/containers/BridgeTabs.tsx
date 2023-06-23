@@ -11,13 +11,15 @@ type BridgeTabsProps = {
 export const BridgeTabs = ({ controls }: BridgeTabsProps) => {
   const { handlers, isWithdraw } = useBridge();
 
+  const moveHorizontally = async (factor: number = 15) => {
+    controls.set({ opacity: 0.4, x: factor });
+    await controls.start({ opacity: 1, x: 0, transition: { duration: 1.5 } });
+  };
   const rightToLeft = async () => {
-    controls.set({ opacity: 0.4, x: 15 });
-    await controls.start({ opacity: 1, x: 0, transition: { duration: 1 } });
+    await moveHorizontally();
   };
   const leftToRight = async () => {
-    controls.set({ opacity: 0.4, x: -15 });
-    await controls.start({ opacity: 1, x: 0, transition: { duration: 1 } });
+    await moveHorizontally(-15);
   };
 
   return (

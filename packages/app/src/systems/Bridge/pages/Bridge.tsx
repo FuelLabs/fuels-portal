@@ -1,15 +1,6 @@
 import { cssObj } from '@fuel-ui/css';
-import {
-  Card,
-  Box,
-  Text,
-  InputAmount,
-  Alert,
-  Link,
-  Button,
-} from '@fuel-ui/react';
-import { motion, useAnimate, useAnimationControls } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { Card, Box, Text, InputAmount, Alert, Link } from '@fuel-ui/react';
+import { motion, useAnimationControls } from 'framer-motion';
 
 import { BridgeButton, BridgeTabs } from '../containers';
 import { useBridge } from '../hooks';
@@ -22,24 +13,13 @@ import {
   isEthChain,
   isFuelChain,
 } from '~/systems/Chains';
-import { animations, coreStyles } from '~/systems/Core';
-
-// const MotionCard = motion(Card);
-// const MotionBox = motion(Box);
-/// const MotionStack = motion(Box.Stack);
+import { coreStyles } from '~/systems/Core';
 
 export const Bridge = () => {
   const { fromNetwork, toNetwork, assetAmount, assetBalance, handlers } =
     useBridge();
 
   const controls = useAnimationControls();
-
-  // const [isDepositPage, setIsDepositPage] = useState(true);
-
-  // const triggerAnimation = async () => {
-  //   controls.set({ opacity: 0.4, x: 30 });
-  //   await controls.start({ opacity: 1, x: 0 });
-  // };
 
   if (!fromNetwork || !toNetwork) return null;
 
@@ -84,7 +64,6 @@ export const Bridge = () => {
               </Box>
             </Box.Stack>
             <BridgeButton />
-            {/* <Button onPress={triggerAnimation}>Trigger animatiuon</Button> */}
             {isFuelChain(toNetwork) && (
               <Alert status="warning">
                 <Alert.Description>
