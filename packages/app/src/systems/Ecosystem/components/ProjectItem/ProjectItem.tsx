@@ -16,7 +16,7 @@ import { STATUS_TEXT } from '../../types';
 
 import { ProjectItemLoader } from './ProjectItemLoader';
 
-import { animations } from '~/systems/Core';
+import { animations, getUrlHostName } from '~/systems/Core';
 
 const MotionCard = motion(Card);
 
@@ -34,13 +34,6 @@ export const ProjectItem: ProjectItemComponent = ({
   url,
   status,
 }: ProjectItemProps) => {
-  let hostname = '';
-  try {
-    hostname = new URL(url || 'https://#').hostname;
-  } catch (e) {
-    hostname = '';
-  }
-
   const onCardPress = () => {
     window.open(url, '_blank');
   };
@@ -54,7 +47,7 @@ export const ProjectItem: ProjectItemComponent = ({
       })}
       onClick={onCardPress}
     >
-      <Card.Body>
+      <Card.Body css={styles.cardBody}>
         <Box.Flex align="flex-start" justify="flex-start" gap="$4">
           <IconButton
             intent="error"
@@ -80,7 +73,7 @@ export const ProjectItem: ProjectItemComponent = ({
                 color="intentsBase12"
                 size="sm"
               >
-                {hostname}
+                {getUrlHostName(url)}
               </ButtonLink>
               <Tag intent="base" size="xs" css={styles.tag} variant="ghost">
                 <Box css={{ ...styles.dot, ...styles[`dot-${status}`] }} />
@@ -97,7 +90,6 @@ export const ProjectItem: ProjectItemComponent = ({
 const styles = {
   card: cssObj({
     border: '1px solid $semanticOutlinedBaseBorder',
-    padding: '$2 $4',
     '&:hover': {
       cursor: 'pointer',
     },
@@ -115,18 +107,18 @@ const styles = {
     borderRadius: '50%',
   }),
   'dot-live': cssObj({
-    background: '$intentsPrimary6',
-    border: '1px solid $intentsPrimary9',
+    background: '$intentsPrimary9',
+    border: '1px solid $intentsPrimary11',
     boxShadow: ' 0px 0px 4px #ffffff',
   }),
   'dot-testnet': cssObj({
-    background: '$intentsInfo6',
-    border: '1px solid $intentsInfo9',
+    background: '$intentsInfo9',
+    border: '1px solid $intentsInfo11',
     boxShadow: ' 0px 0px 4px #ffffff',
   }),
   'dot-in-development': cssObj({
-    background: '$intentsWarning6',
-    border: '1px solid $intentsWarning9',
+    background: '$intentsWarning9',
+    border: '1px solid $intentsWarning11',
     boxShadow: ' 0px 0px 4px #ffffff',
   }),
   tag: cssObj({
@@ -141,6 +133,7 @@ const styles = {
       strokeWidth: '1.5px',
     },
   }),
+  cardBody: cssObj({}),
 };
 
 ProjectItem.Loader = ProjectItemLoader;

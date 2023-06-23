@@ -2,8 +2,8 @@ import { Box, ContentLoader } from '@fuel-ui/react';
 
 export const TagLoader = () => {
   return (
-    <ContentLoader height={40} width={80} viewBox="0 0 80 40">
-      <rect height={40} width={80} rx="4" />
+    <ContentLoader height={32} width={80} viewBox="0 0 80 32">
+      <rect height={32} width={80} rx="4" />
     </ContentLoader>
   );
 };

@@ -6,6 +6,6 @@ type ProjectListEmptyProps = {
 
 export const ProjectListEmpty = ({ text }: ProjectListEmptyProps) => (
   <Box.Flex justify="center">
-    <Text> {text ?? 'There are no projects to show you.'} </Text>
+    <Text> {text ?? 'There are no projects to show.'} </Text>
   </Box.Flex>
 );
