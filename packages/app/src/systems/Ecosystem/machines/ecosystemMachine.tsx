@@ -19,7 +19,6 @@ export type EcosystemInputs = {
 
 type MachineContext = {
   projects: Project[];
-  filteredProjects: Project[];
   search: string;
   tags: string[];
   filter: string;
@@ -43,11 +42,11 @@ type MachineServices = {
 type EcosystemMachineEvents =
   | {
       type: 'FILTER';
-      input: { tag?: string; projects?: Project[] };
+      input: { tag?: string };
     }
   | {
       type: 'SEARCH';
-      input: { query?: string; projects?: Project[] };
+      input: { query?: string };
     }
   | {
       type: 'FETCH_PROJECTS_AND_TAGS';
@@ -60,7 +59,6 @@ type EcosystemMachineEvents =
 
 const initialState: MachineContext = {
   projects: [],
-  filteredProjects: [],
   search: '',
   tags: [],
   filter: '',
@@ -84,12 +82,10 @@ export const ecosystemMachine = createMachine(
             target: 'fetching',
           },
           FILTER: {
-            target: 'filtering',
-            actions: ['assignFilter'],
+            actions: ['clearSearch', 'assignFilter'],
           },
           SEARCH: {
-            target: 'searching',
-            actions: ['assignSearch'],
+            actions: ['clearFilter', 'assignSearch'],
           },
           CLEAR_FILTER: {
             actions: ['clearFilter'],
@@ -106,47 +102,13 @@ export const ecosystemMachine = createMachine(
           },
         },
       },
-      filtering: {
-        entry: ['clearSearch'],
-        tags: ['isLoading'],
-        invoke: {
-          src: 'filterProjects',
-          data: {
-            input: (_: MachineContext, ev: EcosystemMachineEvents) => ({
-              ...ev.input,
-              projects: _.projects,
-            }),
-          },
-          onDone: {
-            target: 'idle',
-            actions: ['assignFilteredProjects'],
-          },
-        },
-      },
-      searching: {
-        entry: ['clearFilter'],
-        tags: ['isLoading'],
-        invoke: {
-          src: 'searchProjects',
-          data: {
-            input: (_: MachineContext, ev: EcosystemMachineEvents) => ({
-              ...ev.input,
-              projects: _.projects,
-            }),
-          },
-          onDone: {
-            target: 'idle',
-            actions: ['assignFilteredProjects'],
-          },
-        },
-      },
     },
   },
   {
     services: {
       fetchProjectsAndTags: FetchMachine.create<
         null,
-        { projects: Project[]; tags: string[] }
+        MachineServices['fetchProjectsAndTags']['data']
       >({
         showError: true,
         maxAttempts: 1,
@@ -160,36 +122,6 @@ export const ecosystemMachine = createMachine(
           };
         },
       }),
-      filterProjects: FetchMachine.create<EcosystemInputs['filter'], Project[]>(
-        {
-          showError: true,
-          maxAttempts: 1,
-          async fetch({ input }) {
-            if (!input?.projects) throw new Error('Invalid projects');
-            if (!input?.tag) return input.projects;
-            const { tag, projects } = input;
-            const filteredProjects = projects.filter((project) => {
-              return project.tags.includes(tag);
-            });
-            return filteredProjects ?? [];
-          },
-        }
-      ),
-      searchProjects: FetchMachine.create<EcosystemInputs['search'], Project[]>(
-        {
-          showError: true,
-          maxAttempts: 1,
-          async fetch({ input }) {
-            if (!input?.projects) throw new Error('Invalid projects');
-            if (!input?.query) return input.projects;
-            const { query, projects } = input;
-            const filteredProjects = projects.filter((project) => {
-              return project.name.toLowerCase().includes(query.toLowerCase());
-            });
-            return filteredProjects ?? [];
-          },
-        }
-      ),
     },
     actions: {
       assignFilter: assign((ctx, ev) => ({
@@ -200,31 +132,23 @@ export const ecosystemMachine = createMachine(
         ...ctx,
         search: ev.input.query,
       })),
-      assignFilteredProjects: assign((ctx, ev) => ({
-        ...ctx,
-        filteredProjects: ev.data,
-      })),
       assignProjectsAndTags: assign((ctx, ev) => ({
         ...ctx,
         projects: ev.data.projects,
         tags: ev.data.tags,
-        filteredProjects: ev.data.projects,
       })),
       clearFilter: assign((ctx) => ({
         ...ctx,
         filter: '',
-        filteredProjects: ctx.projects,
       })),
       clearSearch: assign((ctx) => ({
         ...ctx,
         search: '',
-        filteredProjects: ctx.projects,
       })),
       clearSearchAndFilter: assign((ctx) => ({
         ...ctx,
         search: '',
         filter: '',
-        filteredProjects: ctx.projects,
       })),
     },
   }

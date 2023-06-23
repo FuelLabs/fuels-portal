@@ -5,9 +5,22 @@ import type { EcosystemInputs, EcosystemMachineState } from '../machines';
 import { Services, store } from '~/store';
 
 const selectors = {
-  context: (state: EcosystemMachineState) => state.context,
-  filteredProjects: (state: EcosystemMachineState) =>
-    state.context?.filteredProjects,
+  filteredProjects: (state: EcosystemMachineState) => {
+    const { projects, search, filter } = state.context;
+    if (search) {
+      return projects.filter((project) => {
+        return project.name.toLowerCase().includes(search.toLowerCase());
+      });
+    }
+
+    if (filter) {
+      return projects.filter((project) => {
+        return project.tags.includes(filter);
+      });
+    }
+
+    return projects;
+  },
   tags: (state: EcosystemMachineState) => state.context?.tags,
   filter: (state: EcosystemMachineState) => state.context?.filter,
   search: (state: EcosystemMachineState) => state.context?.search,
@@ -23,8 +36,6 @@ export function useEcosystem() {
   const filter = store.useSelector(Services.ecosystem, selectors.filter);
   const search = store.useSelector(Services.ecosystem, selectors.search);
   const isLoading = store.useSelector(Services.ecosystem, selectors.isLoading);
-
-  const context = store.useSelector(Services.ecosystem, selectors.context);
 
   useEffect(() => {
     store.send(Services.ecosystem, {
@@ -51,7 +62,6 @@ export function useEcosystem() {
     filter,
     search,
     isLoading,
-    context,
     handlers: {
       filterProjects,
       searchProjects,
