@@ -1,100 +1,37 @@
-import type { BrowserContext, Page } from '@playwright/test';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
+import type { HDAccount, PublicClient } from 'viem';
+import { createPublicClient, http } from 'viem';
+import { mnemonicToAccount } from 'viem/accounts';
+import { foundry } from 'viem/chains';
 
-import { getByAriaLabel, getButtonByText } from '../commons';
+import {
+  getByAriaLabel,
+  getButtonByText,
+  walletSetup,
+  walletApprove,
+  walletConnect,
+} from '../commons';
 
 import { test } from './fixtures';
 
-const MNEMONIC =
-  'demand fashion unaware upgrade upon heart bright august panel kangaroo want gaze';
-const WALLET_PASSWORD = '$123Ran123Dom123!';
-
-async function walletSetup(
-  context: BrowserContext,
-  fuelExtensionId: string,
-  page: Page
-) {
-  await page.goto(`chrome-extension://${fuelExtensionId}/popup.html`);
-
-  const signupPage = await context.waitForEvent('page', {
-    predicate: (page) => page.url().includes('sign-up'),
-  });
-  expect(signupPage.url()).toContain('sign-up');
-
-  const button = signupPage.locator('h3').getByText('Import seed phrase');
-  await button.click();
-
-  // Agree to T&S
-  await signupPage.getByRole('checkbox').click();
-  const toSeedPhrase = getButtonByText(signupPage, 'Next: Seed Phrase');
-  await toSeedPhrase.click();
-
-  // Copy and paste seed phrase
-  /** Copy words to clipboard area */
-  await signupPage.evaluate(`navigator.clipboard.writeText('${MNEMONIC}')`);
-  const pasteButton = signupPage.locator('button').getByText('Paste');
-  await pasteButton.click();
-  const toPassword = signupPage
-    .locator('button')
-    .getByText('Next: Your password');
-  await toPassword.click();
-
-  // Enter password
-  const enterPassword = signupPage.locator(`[aria-label="Your Password"]`);
-  await enterPassword.type(WALLET_PASSWORD);
-  // Confirm password
-  const confirmPassword = signupPage.locator(`[aria-label="Confirm Password"]`);
-  await confirmPassword.type(WALLET_PASSWORD);
-  const toFinish = getButtonByText(signupPage, 'Next: Finish set-up');
-  await toFinish.click();
-
-  await signupPage.waitForTimeout(9000);
-
-  await signupPage.goto(
-    `chrome-extension://${fuelExtensionId}/popup.html#/wallet`
-  );
-
-  // Navigate to add network and add test network
-  await signupPage.locator('[aria-label="Selected Network"]').click();
-  await signupPage.locator('button').getByText('Add new network').click();
-  await signupPage
-    .locator('[aria-label="Network URL"]')
-    .fill(
-      process.env.VITE_FUEL_PROVIDER_URL || 'http://localhost:4000/graphql'
-    );
-  const addButton = getButtonByText(signupPage, 'Add');
-  await addButton.click({ timeout: 9000 });
-}
-
-async function walletConnect(context: BrowserContext) {
-  let approvePage = context.pages().find((p) => p.url().includes('/popup?'));
-  if (!approvePage) {
-    approvePage = await context.waitForEvent('page', {
-      predicate: (page) => page.url().includes('/popup'),
-    });
-  }
-
-  const nextButton = getButtonByText(approvePage, 'Next');
-  await nextButton.click();
-  const connectButton = getButtonByText(approvePage, 'Connect');
-  await connectButton.click();
-}
-
-async function walletApprove(context: BrowserContext) {
-  let approvePage = context.pages().find((p) => p.url().includes('/popup?'));
-  if (!approvePage) {
-    approvePage = await context.waitForEvent('page', {
-      predicate: (page) => page.url().includes('/popup'),
-    });
-  }
-
-  const approveButton = approvePage.locator('button').getByText('Approve');
-  await approveButton.click();
-}
+// async function getBalanceOnEth() {
+//   const balance = await client.getBalance({ address: account.address });
+//   return balance;
+// }
 
 test.describe('Bridge', () => {
+  let client: PublicClient;
+  let account: HDAccount;
+
   test.beforeAll(async ({ context, extensionId, page }) => {
     await walletSetup(context, extensionId, page);
+    client = createPublicClient({
+      chain: foundry,
+      transport: http(),
+    });
+    account = mnemonicToAccount(
+      'test test test test test test test test test test test junk'
+    );
   });
 
   test.beforeEach(async ({ page }) => {
@@ -123,6 +60,10 @@ test.describe('Bridge', () => {
     await connectFuel.click();
     await walletConnect(context);
 
+    const prevDepositBalance = await client.getBalance({
+      address: account.address,
+    });
+
     // Deposit asset
     const depositAmount = '1.000';
     const depositInput = page.locator('input');
@@ -131,6 +72,15 @@ test.describe('Bridge', () => {
     const depositButton = getButtonByText(page, 'Bridge asset');
     await depositButton.click();
     await metamask.confirmTransaction();
+
+    const postDepositBalance = await client.getBalance({
+      address: account.address,
+    });
+
+    // TODO test fuel balance is updated
+    expect(
+      ((prevDepositBalance - postDepositBalance) / BigInt(1e18)).toString()
+    ).toBe('1');
 
     // check the popup is correct
     const assetAmount = getByAriaLabel(page, 'Asset amount');
@@ -160,11 +110,14 @@ test.describe('Bridge', () => {
     const withdrawPage = getButtonByText(page, 'Withdraw from Fuel');
     await withdrawPage.click();
 
+    const prevWithdrawBalance = await client.getBalance({
+      address: account.address,
+    });
+
     // Withdraw asset
     const withdrawAmount = '0.010';
     const withdrawInput = page.locator('input');
     await withdrawInput.fill(withdrawAmount);
-    // TODO check balance is correct and gets updated
     const withdrawButton = getButtonByText(page, 'Bridge asset');
     await withdrawButton.click();
     await walletApprove(context);
@@ -186,14 +139,18 @@ test.describe('Bridge', () => {
     );
 
     await transactionAssetAmount.first().click({ timeout: 10000 });
-    // await page.waitForTimeout(10000);
-    // Check the popup is correct
-    // assetAmountWithdraw = getByAriaLabel(page, 'Asset amount');
-    // expect((await assetAmountWithdraw.innerHTML()).trim()).toBe(withdrawAmount);
-    // Confirm the transaction
     const confirmButton = getButtonByText(page, 'Confirm Transaction');
     await confirmButton.click();
     await metamask.confirmTransaction();
+
+    const postWithdrawBalance = await client.getBalance({
+      address: account.address,
+    });
+
+    // We only divide by 15 bc bigint does not support decimals
+    expect((postWithdrawBalance - prevWithdrawBalance) / BigInt(1e15)).toBe(
+      BigInt(9)
+    );
     // TODO check if this worked
   });
 });
