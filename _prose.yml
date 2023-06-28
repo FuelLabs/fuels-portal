@@ -1,7 +1,7 @@
 prose:
   rooturl: '/packages/app/_projects'
   metadata:
-    _projects:
+    /packages/app/_projects:
       - name: 'tags'
         field:
           element: 'text'
