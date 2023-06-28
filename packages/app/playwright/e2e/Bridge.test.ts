@@ -144,7 +144,7 @@ test.describe('Bridge', () => {
     await transactionList.click();
 
     // check the transaction is there
-    const transactionAssetAmount = getByAriaLabel(page, 'Asset amount');
+    let transactionAssetAmount = getByAriaLabel(page, 'Asset amount');
     expect((await transactionAssetAmount.first().innerHTML()).trim()).toBe(
       depositAmount
     );
@@ -179,12 +179,13 @@ test.describe('Bridge', () => {
     // Go to the transaction page
     await transactionList.click();
 
+    transactionAssetAmount = getByAriaLabel(page, 'Asset amount');
     // Check the transaction is there
     expect((await transactionAssetAmount.first().innerHTML()).trim()).toBe(
       withdrawAmount
     );
 
-    await transactionAssetAmount.first().click();
+    await transactionAssetAmount.first().click({ timeout: 10000 });
     // await page.waitForTimeout(10000);
     // Check the popup is correct
     // assetAmountWithdraw = getByAriaLabel(page, 'Asset amount');
