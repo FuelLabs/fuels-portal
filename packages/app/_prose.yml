@@ -1,0 +1,26 @@
+prose:
+  rooturl: '_projects'
+  metadata:
+    _projects:
+      - name: 'tags'
+        field:
+          element: 'text'
+      - name: 'title'
+        field:
+          element: 'text'
+      - name: 'description'
+        field:
+          element: 'textarea'
+      - name: 'image'
+        field:
+          element: 'text'
+      - name: 'status'
+        field:
+          element: 'select'
+          options:
+            - name: 'Live'
+              value: 'live'
+            - name: 'In Testnet'
+              value: 'testnet'
+            - name: 'In Development'
+              value: 'development'
