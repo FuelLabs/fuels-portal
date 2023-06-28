@@ -1,5 +1,5 @@
 prose:
-  rooturl: '_projects'
+  rooturl: '/packages/app/_projects'
   metadata:
     _projects:
       - name: 'tags'
