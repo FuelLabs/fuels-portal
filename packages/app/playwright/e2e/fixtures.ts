@@ -68,7 +68,6 @@ export const test = base.extend<{
     });
     // wait for metamask
     await context.pages()[0].waitForTimeout(3000);
-    // console.log('chromeium: ', chromium);
     // setup metamask
     // TODO sometimes this step is flaky, but I'm not sure how to fix
     await initialSetup(chromium, {

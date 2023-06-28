@@ -2,7 +2,7 @@ import type { BrowserContext, Page } from '@playwright/test';
 
 import { getButtonByText } from './button';
 
-const MNEMONIC =
+export const FUEL_MNEMONIC =
   'demand fashion unaware upgrade upon heart bright august panel kangaroo want gaze';
 const WALLET_PASSWORD = '$123Ran123Dom123!';
 
@@ -28,7 +28,9 @@ export async function walletSetup(
 
   // Copy and paste seed phrase
   /** Copy words to clipboard area */
-  await signupPage.evaluate(`navigator.clipboard.writeText('${MNEMONIC}')`);
+  await signupPage.evaluate(
+    `navigator.clipboard.writeText('${FUEL_MNEMONIC}')`
+  );
   const pasteButton = signupPage.locator('button').getByText('Paste');
   await pasteButton.click();
   const toPassword = signupPage

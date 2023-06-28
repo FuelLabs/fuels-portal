@@ -1,4 +1,6 @@
 import * as metamask from '@synthetixio/synpress/commands/metamask';
+import type { WalletUnlocked } from 'fuels';
+import { NativeAssetId, Wallet } from 'fuels';
 import type { HDAccount, PublicClient } from 'viem';
 import { createPublicClient, http } from 'viem';
 import { mnemonicToAccount } from 'viem/accounts';
@@ -10,6 +12,7 @@ import {
   walletSetup,
   walletApprove,
   walletConnect,
+  FUEL_MNEMONIC,
 } from '../commons';
 
 import { test } from './fixtures';
@@ -22,6 +25,7 @@ import { test } from './fixtures';
 test.describe('Bridge', () => {
   let client: PublicClient;
   let account: HDAccount;
+  let fuelWallet: WalletUnlocked;
 
   test.beforeAll(async ({ context, extensionId, page }) => {
     await walletSetup(context, extensionId, page);
@@ -32,6 +36,7 @@ test.describe('Bridge', () => {
     account = mnemonicToAccount(
       'test test test test test test test test test test test junk'
     );
+    fuelWallet = Wallet.fromMnemonic(FUEL_MNEMONIC);
   });
 
   test.beforeEach(async ({ page }) => {
@@ -59,6 +64,8 @@ test.describe('Bridge', () => {
     const connectFuel = getByAriaLabel(page, 'To Connect wallet');
     await connectFuel.click();
     await walletConnect(context);
+
+    const preDepositBalanceFuel = await fuelWallet.getBalance(NativeAssetId);
 
     const prevDepositBalance = await client.getBalance({
       address: account.address,
@@ -89,6 +96,14 @@ test.describe('Bridge', () => {
     const closeEthPopup = getByAriaLabel(page, 'Close unlock window');
     await closeEthPopup.click();
 
+    const postDepositBalanceFuel = await fuelWallet.getBalance(NativeAssetId);
+
+    expect(
+      postDepositBalanceFuel
+        .sub(preDepositBalanceFuel)
+        .format({ precision: 3, units: 9 })
+    ).toBe(depositAmount);
+
     // Go to transaction page
     const transactionList = page.locator('a').getByText('Transactions');
     await transactionList.click();
@@ -109,6 +124,8 @@ test.describe('Bridge', () => {
     // Go to the withdraw page
     const withdrawPage = getButtonByText(page, 'Withdraw from Fuel');
     await withdrawPage.click();
+
+    const preWithdrawBalanceFuel = await fuelWallet.getBalance(NativeAssetId);
 
     const prevWithdrawBalance = await client.getBalance({
       address: account.address,
@@ -147,10 +164,17 @@ test.describe('Bridge', () => {
       address: account.address,
     });
 
+    // TODO check fuel balance updated correctly
+    const postWithdrawBalanceFuel = await fuelWallet.getBalance(NativeAssetId);
     // We only divide by 15 bc bigint does not support decimals
     expect((postWithdrawBalance - prevWithdrawBalance) / BigInt(1e15)).toBe(
       BigInt(9)
     );
-    // TODO check if this worked
+
+    expect(
+      preWithdrawBalanceFuel
+        .sub(postWithdrawBalanceFuel)
+        .format({ precision: 3, units: 9 })
+    ).toBe('0.010');
   });
 });
