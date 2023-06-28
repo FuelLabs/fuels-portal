@@ -22,7 +22,10 @@ function getEnvName() {
 }
 
 function getEthFuelL1Contracts() {
-  if (process.env.NODE_ENV === 'development') {
+  if (
+    process.env.NODE_ENV === 'development' ||
+    process.env.NODE_ENV === 'test'
+  ) {
     const { body } = retus('http://localhost:8080/deployments.local.json', {
       json: true,
     });
