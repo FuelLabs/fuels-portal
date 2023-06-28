@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "main": "./src/App.tsx",
   "scripts": {
-    "build": "tsc && vite build",
+    "build": "pnpm build:projects && tsc && vite build",
     "build:preview": "run-s build build:storybook",
     "build:storybook": "storybook build -o ./dist/storybook",
     "codegen": "graphql-codegen --config codegen.ts",
@@ -12,7 +12,8 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "ts:check": "pnpm xstate:typegen && tsc --noEmit",
-    "xstate:typegen": "xstate typegen 'src/**/*.ts?(x)'"
+    "xstate:typegen": "xstate typegen 'src/**/*.ts?(x)'",
+    "build:projects": "node ./src/systems/Ecosystem/scripts/buildProjectsData.js"
   },
   "dependencies": {
     "@ethersproject/abi": "^5.7.0",
@@ -73,6 +74,7 @@
     "@types/react-helmet": "^6.1.6",
     "@vitejs/plugin-react-swc": "^3.0.0",
     "@xstate/cli": "^0.4.2",
+    "jdown": "^1.0.5",
     "prop-types": "^15.8.1",
     "storybook": "^7.0.7",
     "storybook-addon-react-router-v6": "0.3.5",

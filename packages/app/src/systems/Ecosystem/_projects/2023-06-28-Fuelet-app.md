@@ -4,7 +4,7 @@ status: live
 published: false
 name: Fuelet app
 url: 'https://fuelet.app/'
-Tags:
+tags:
   - wallet
   - mobile
   - infra

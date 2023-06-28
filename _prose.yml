@@ -14,7 +14,7 @@ prose:
         field:
           label: 'Project URL'
           element: 'text'
-      - name: 'Tags'
+      - name: 'tags'
         field:
           label: 'Tags'
           element: 'multiselect'
