@@ -2,21 +2,27 @@ prose:
   rooturl: '/packages/app/_projects'
   metadata:
     /packages/app/_projects:
-      - name: 'tags'
+      - name: 'name'
         field:
+          label: 'Project Name'
           element: 'text'
-      - name: 'title'
+      - name: 'Tags'
         field:
-          element: 'text'
+          label: 'Tags'
+          element: 'multiselect'
+          alterable: true
       - name: 'description'
         field:
           element: 'textarea'
-      - name: 'image'
+          label: 'Description'
+      - name: 'icon url'
         field:
           element: 'text'
+          label: 'Project Icon URL'
       - name: 'status'
         field:
           element: 'select'
+          label: 'Project Status'
           options:
             - name: 'Live'
               value: 'live'
