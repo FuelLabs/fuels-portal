@@ -55,9 +55,9 @@ export const test = base.extend<{
       `--load-extension=${metamaskPath},${pathToExtension}`,
       '--remote-debugging-port=9222',
     ];
-    // if (process.env.CI) {
-    //   browserArgs.push('--disable-gpu');
-    // }
+    if (process.env.CI) {
+      browserArgs.push('--disable-gpu');
+    }
     // launch browser
     const context = await chromium.launchPersistentContext('', {
       headless: false,
