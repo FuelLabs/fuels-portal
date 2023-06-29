@@ -15,8 +15,8 @@ export const ProjectItemLoader = (props: ContentLoaderProps) => {
         <rect x="80" y="50" width="400" height="10" rx="4" />
         <rect x="80" y="70" width="400" height="10" rx="4" />
         <rect x="460" y="20" width="20" height="20" rx="4" />
-        <rect x="80" y="110" width="80" height="20" rx="4" />
-        <rect x="400" y="110" width="80" height="20" rx="4" />
+        <rect x="80" y="110" width="80" height="10" rx="4" />
+        <rect x="380" y="110" width="100" height="10" rx="4" />
       </ContentLoader>
     </Card>
   );

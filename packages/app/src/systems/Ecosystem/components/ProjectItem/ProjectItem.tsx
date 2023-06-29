@@ -47,41 +47,45 @@ export const ProjectItem: ProjectItemComponent = ({
       })}
       onClick={onCardPress}
     >
-      <Card.Body css={styles.cardBody}>
-        <Box.Flex align="flex-start" justify="flex-start" gap="$4">
-          <IconButton
-            intent="error"
-            variant="ghost"
-            icon="Bolt"
-            aria-label="project-icon"
-            iconSize={20}
-            css={styles.projectIcon}
-          />
-          <Box.Stack gap="$2" css={styles.details}>
-            <Box.Flex align="flex-start" justify="space-between">
+      <Card.Body css={styles.body}>
+        <IconButton
+          intent="error"
+          variant="ghost"
+          icon="Bolt"
+          aria-label="project-icon"
+          iconSize={20}
+          css={styles.projectIcon}
+        />
+        <Box.Stack gap="$2" justify="space-between" css={styles.details}>
+          <Box.Stack align="flex-start" gap="$2">
+            <Box.Flex
+              align="flex-start"
+              justify="space-between"
+              css={styles.title}
+            >
               <Text fontSize="base" color="intentsBase12">
                 {name}
               </Text>
               <Icon icon="ArrowUpRight" size={20} stroke={1} />
             </Box.Flex>
             <Text fontSize="sm"> {description}</Text>
-            <Box.Flex align="center" justify="space-between" wrap="wrap">
-              <ButtonLink
-                variant="link"
-                css={styles.link}
-                href={url}
-                color="intentsBase12"
-                size="sm"
-              >
-                {getUrlHostName(url)}
-              </ButtonLink>
-              <Tag intent="base" size="xs" css={styles.tag} variant="ghost">
-                <Box css={{ ...styles.dot, ...styles[`dot-${status}`] }} />
-                {STATUS_TEXT[status]}
-              </Tag>
-            </Box.Flex>
           </Box.Stack>
-        </Box.Flex>
+          <Box.Flex align="center" justify="space-between" wrap="wrap">
+            <ButtonLink
+              variant="link"
+              css={styles.link}
+              href={url}
+              color="intentsBase12"
+              size="sm"
+            >
+              {getUrlHostName(url)}
+            </ButtonLink>
+            <Tag intent="base" size="xs" css={styles.tag} variant="ghost">
+              <Box css={{ ...styles.dot, ...styles[`dot-${status}`] }} />
+              {STATUS_TEXT[status]}
+            </Tag>
+          </Box.Flex>
+        </Box.Stack>
       </Card.Body>
     </MotionCard>
   );
@@ -96,6 +100,7 @@ const styles = {
   }),
   details: cssObj({
     flex: 1,
+    height: '100%',
   }),
   link: cssObj({
     textDecoration: 'underline',
@@ -133,7 +138,17 @@ const styles = {
       strokeWidth: '1.5px',
     },
   }),
-  cardBody: cssObj({}),
+  title: cssObj({
+    width: '100%',
+  }),
+  body: cssObj({
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: '$4',
+    justifyContent: 'flex-start',
+  }),
 };
 
 ProjectItem.Loader = ProjectItemLoader;
