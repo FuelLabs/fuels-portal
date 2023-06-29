@@ -17,11 +17,6 @@ import {
 
 import { test } from './fixtures';
 
-// async function getBalanceOnEth() {
-//   const balance = await client.getBalance({ address: account.address });
-//   return balance;
-// }
-
 test.describe('Bridge', () => {
   let client: PublicClient;
   let account: HDAccount;
@@ -66,7 +61,6 @@ test.describe('Bridge', () => {
     await walletConnect(context);
 
     const preDepositBalanceFuel = await fuelWallet.getBalance(NativeAssetId);
-
     const prevDepositBalance = await client.getBalance({
       address: account.address,
     });
@@ -75,7 +69,6 @@ test.describe('Bridge', () => {
     const depositAmount = '1.000';
     const depositInput = page.locator('input');
     await depositInput.fill(depositAmount);
-    // TODO check balance is correct and gets updated
     const depositButton = getButtonByText(page, 'Bridge asset');
     await depositButton.click();
     await metamask.confirmTransaction();
@@ -84,7 +77,6 @@ test.describe('Bridge', () => {
       address: account.address,
     });
 
-    // TODO test fuel balance is updated
     expect(
       ((prevDepositBalance - postDepositBalance) / BigInt(1e18)).toString()
     ).toBe('1');
@@ -126,7 +118,6 @@ test.describe('Bridge', () => {
     await withdrawPage.click();
 
     const preWithdrawBalanceFuel = await fuelWallet.getBalance(NativeAssetId);
-
     const prevWithdrawBalance = await client.getBalance({
       address: account.address,
     });
@@ -163,9 +154,8 @@ test.describe('Bridge', () => {
     const postWithdrawBalance = await client.getBalance({
       address: account.address,
     });
-
-    // TODO check fuel balance updated correctly
     const postWithdrawBalanceFuel = await fuelWallet.getBalance(NativeAssetId);
+
     // We only divide by 15 bc bigint does not support decimals
     expect((postWithdrawBalance - prevWithdrawBalance) / BigInt(1e15)).toBe(
       BigInt(9)
