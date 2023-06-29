@@ -9,6 +9,7 @@ export const useBlocks = (blockHashes?: `0x${string}`[]) => {
   const query = useQuery(
     ['block', blockHashes],
     async () => {
+      console.log('in query', blockHashes);
       if (!blockHashes?.length) return null;
       const blockPromises = blockHashes?.map((blockHash) => {
         if (blockHash) {
