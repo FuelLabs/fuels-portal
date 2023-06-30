@@ -132,9 +132,6 @@ importers:
       '@fuels-portal/sdk-react':
         specifier: workspace:*
         version: link:../sdk-react
-      '@fuels-portal/storage':
-        specifier: ^0.0.1
-        version: link:../storage
       '@fuels-portal/store':
         specifier: workspace:*
         version: link:../store

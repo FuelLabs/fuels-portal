@@ -2,8 +2,6 @@ import type {
   Provider as EthProvider,
   TransactionResponse as EthTransactionResponse,
 } from '@ethersproject/providers';
-import { LocalStorage } from '@fuels-portal/storage';
-import type EventEmitter from 'events';
 import type {
   BN,
   Message,
@@ -45,7 +43,7 @@ export type TxEthToFuelMachineEvents = {
   input: Omit<AnalyzeInputs, 'ethTxNonce'>;
 };
 
-export const ethToFuelStorage = new LocalStorage(`ethToFuelMachine_`);
+// export const ethToFuelStorage = new LocalStorage(`ethToFuelMachine_`);
 
 export const txEthToFuelMachine = createMachine(
   {
@@ -163,8 +161,7 @@ export const txEthToFuelMachine = createMachine(
       }),
       setEthToFuelTxDone: (ctx, ev) => {
         if (ctx.ethTx?.hash && ev.data) {
-          ethToFuelStorage.setItem(`ethToFuelTx${ctx.ethTx.hash}-done`, 'true');
-          // window.dispatchEvent(new Event('storage'));
+          localStorage.setItem(`ethToFuelTx${ctx.ethTx.hash}-done`, 'true');
         }
       },
     },
