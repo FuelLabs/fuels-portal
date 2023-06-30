@@ -29,7 +29,7 @@ export const TxListItemEthToFuel = ({
   const bridgeTxStatus = steps?.find(({ isSelected }) => !!isSelected);
 
   function getStatusComponent() {
-    if (isDone)
+    if (isDone || steps?.at(3)?.isDone)
       return (
         <Text fontSize="xs" color="intentsBase11">
           Settled

@@ -1,5 +1,5 @@
 import { bn } from 'fuels';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import type { BridgeTx } from '~/systems/Bridge/types';
 import {
@@ -9,6 +9,7 @@ import {
   FUEL_UNITS,
   ETH_CHAIN,
   FUEL_CHAIN,
+  ethToFuelStorage,
 } from '~/systems/Chains';
 
 export const useTxsEthToFuel = () => {
@@ -30,7 +31,7 @@ export const useTxsEthToFuel = () => {
         fromNetwork: ETH_CHAIN,
         toNetwork: FUEL_CHAIN,
         isDone:
-          localStorage.getItem(`ethToFuelTx${log.transactionHash}-done`) ===
+          ethToFuelStorage.getItem(`ethToFuelTx${log.transactionHash}-done`) ===
           'true',
       };
       return txDatum;

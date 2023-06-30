@@ -23,6 +23,7 @@
     "@fuel-wallet/sdk": "^0.9.5",
     "@fuels-portal/sdk-react": "workspace:*",
     "@fuels-portal/store": "workspace:*",
+    "@fuels-portal/storage": "^0.0.1",
     "@storybook/manager-api": "^7.0.3",
     "@storybook/theming": "^7.0.3",
     "@tanstack/react-query": "^4.29.5",
