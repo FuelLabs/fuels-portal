@@ -43,8 +43,6 @@ export type TxEthToFuelMachineEvents = {
   input: Omit<AnalyzeInputs, 'ethTxNonce'>;
 };
 
-// export const ethToFuelStorage = new LocalStorage(`ethToFuelMachine_`);
-
 export const txEthToFuelMachine = createMachine(
   {
     // eslint-disable-next-line @typescript-eslint/consistent-type-imports
