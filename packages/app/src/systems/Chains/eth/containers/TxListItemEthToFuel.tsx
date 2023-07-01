@@ -21,7 +21,7 @@ export const TxListItemEthToFuel = ({
   txHash,
   isDone,
 }: TxListItemEthToFuelProps) => {
-  const { steps, ethBlockDate, handlers } = useTxEthToFuel({
+  const { steps, ethBlockDate, handlers, status } = useTxEthToFuel({
     id: txHash,
     skipAnalyzeTx: isDone,
   });
@@ -29,7 +29,7 @@ export const TxListItemEthToFuel = ({
   const bridgeTxStatus = steps?.find(({ isSelected }) => !!isSelected);
 
   function getStatusComponent() {
-    if (isDone || steps?.at(3)?.isDone)
+    if (isDone || status.isReceiveDone)
       return (
         <Text fontSize="xs" color="intentsBase11">
           Settled
