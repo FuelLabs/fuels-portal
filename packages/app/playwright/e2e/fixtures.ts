@@ -9,6 +9,8 @@ import * as fs from 'fs';
 import https from 'https';
 import path from 'path';
 
+import { ETH_MNEMONIC, ETH_WALLET_PASSWORD } from '../mocks';
+
 const pathToExtension = path.join(__dirname, './dist-crx');
 
 export const test = base.extend<{
@@ -68,11 +70,10 @@ export const test = base.extend<{
     // setup metamask
     // TODO sometimes this step is flaky, but I'm not sure how to fix
     await initialSetup(chromium, {
-      secretWordsOrPrivateKey:
-        'test test test test test test test test test test test junk',
+      secretWordsOrPrivateKey: ETH_MNEMONIC,
       rpcUrl: 'http://localhost:8080',
       network: 'localhost',
-      password: 'Tester@1234',
+      password: ETH_WALLET_PASSWORD,
       enableAdvancedSettings: true,
     });
     await use(context);

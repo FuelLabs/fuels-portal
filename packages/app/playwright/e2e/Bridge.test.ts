@@ -12,8 +12,8 @@ import {
   walletSetup,
   walletApprove,
   walletConnect,
-  FUEL_MNEMONIC,
 } from '../commons';
+import { ETH_MNEMONIC, FUEL_MNEMONIC } from '../mocks';
 
 import { test } from './fixtures';
 
@@ -28,9 +28,7 @@ test.describe('Bridge', () => {
       chain: foundry,
       transport: http(),
     });
-    account = mnemonicToAccount(
-      'test test test test test test test test test test test junk'
-    );
+    account = mnemonicToAccount(ETH_MNEMONIC);
     fuelWallet = Wallet.fromMnemonic(FUEL_MNEMONIC);
   });
 
@@ -88,7 +86,7 @@ test.describe('Bridge', () => {
     const assetAmount = getByAriaLabel(page, 'Asset amount');
     await page.waitForTimeout(5000);
     expect((await assetAmount.innerHTML()).trim()).toBe(depositAmount);
-    const closeEthPopup = getByAriaLabel(page, 'Close unlock window');
+    const closeEthPopup = getByAriaLabel(page, 'Close Transaction Dialog');
     await closeEthPopup.click();
 
     const postDepositBalanceFuel = await fuelWallet.getBalance(NativeAssetId);
@@ -137,7 +135,10 @@ test.describe('Bridge', () => {
     const assetAmountWithdraw = getByAriaLabel(page, 'Asset amount');
     await page.waitForTimeout(11000);
     expect((await assetAmountWithdraw.innerHTML()).trim()).toBe(withdrawAmount);
-    const closeEthPopupWithdraw = getByAriaLabel(page, 'Close unlock window');
+    const closeEthPopupWithdraw = getByAriaLabel(
+      page,
+      'Close Transaction Dialog'
+    );
     await closeEthPopupWithdraw.click();
 
     // Go to the transaction page

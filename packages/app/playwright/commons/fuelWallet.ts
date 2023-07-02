@@ -1,10 +1,8 @@
 import type { BrowserContext, Page } from '@playwright/test';
 
-import { getButtonByText } from './button';
+import { FUEL_MNEMONIC, FUEL_WALLET_PASSWORD } from '../mocks';
 
-export const FUEL_MNEMONIC =
-  'demand fashion unaware upgrade upon heart bright august panel kangaroo want gaze';
-const WALLET_PASSWORD = '$123Ran123Dom123!';
+import { getButtonByText } from './button';
 
 export async function walletSetup(
   context: BrowserContext,
@@ -40,10 +38,10 @@ export async function walletSetup(
 
   // Enter password
   const enterPassword = signupPage.locator(`[aria-label="Your Password"]`);
-  await enterPassword.type(WALLET_PASSWORD);
+  await enterPassword.type(FUEL_WALLET_PASSWORD);
   // Confirm password
   const confirmPassword = signupPage.locator(`[aria-label="Confirm Password"]`);
-  await confirmPassword.type(WALLET_PASSWORD);
+  await confirmPassword.type(FUEL_WALLET_PASSWORD);
   const toFinish = getButtonByText(signupPage, 'Next: Finish set-up');
   await toFinish.click();
 
