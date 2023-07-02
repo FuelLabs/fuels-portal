@@ -61,7 +61,7 @@ test.describe('Bridge', () => {
     await walletConnect(context);
 
     const preDepositBalanceFuel = await fuelWallet.getBalance(NativeAssetId);
-    const prevDepositBalance = await client.getBalance({
+    const prevDepositBalanceEth = await client.getBalance({
       address: account.address,
     });
 
@@ -73,12 +73,15 @@ test.describe('Bridge', () => {
     await depositButton.click();
     await metamask.confirmTransaction();
 
-    const postDepositBalance = await client.getBalance({
+    const postDepositBalanceEth = await client.getBalance({
       address: account.address,
     });
 
     expect(
-      ((prevDepositBalance - postDepositBalance) / BigInt(1e18)).toString()
+      (
+        (prevDepositBalanceEth - postDepositBalanceEth) /
+        BigInt(1e18)
+      ).toString()
     ).toBe('1');
 
     // check the popup is correct
@@ -118,7 +121,7 @@ test.describe('Bridge', () => {
     await withdrawPage.click();
 
     const preWithdrawBalanceFuel = await fuelWallet.getBalance(NativeAssetId);
-    const prevWithdrawBalance = await client.getBalance({
+    const prevWithdrawBalanceEth = await client.getBalance({
       address: account.address,
     });
 
@@ -151,15 +154,15 @@ test.describe('Bridge', () => {
     await confirmButton.click();
     await metamask.confirmTransaction();
 
-    const postWithdrawBalance = await client.getBalance({
+    const postWithdrawBalanceEth = await client.getBalance({
       address: account.address,
     });
     const postWithdrawBalanceFuel = await fuelWallet.getBalance(NativeAssetId);
 
     // We only divide by 15 bc bigint does not support decimals
-    expect((postWithdrawBalance - prevWithdrawBalance) / BigInt(1e15)).toBe(
-      BigInt(9)
-    );
+    expect(
+      (postWithdrawBalanceEth - prevWithdrawBalanceEth) / BigInt(1e15)
+    ).toBe(BigInt(9));
 
     expect(
       preWithdrawBalanceFuel

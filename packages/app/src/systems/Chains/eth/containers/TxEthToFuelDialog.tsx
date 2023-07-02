@@ -22,7 +22,7 @@ export function TxEthToFuelDialog() {
           <Text color="intentsBase12" fontSize="sm">
             Transaction: {shortAddress(metadata.txId)}
           </Text>
-          <Dialog.Close aria-label="Close unlock window" />
+          <Dialog.Close aria-label="Close Transaction Dialog" />
         </Box.Flex>
       </Dialog.Heading>
       <Dialog.Description>
