@@ -22,15 +22,18 @@ function getEnvName() {
 }
 
 function getEthFuelL1Contracts() {
-  if (
-    process.env.NODE_ENV === 'development' ||
-    process.env.NODE_ENV === 'test'
-  ) {
+  if (process.env.VITE_ETH_CHAIN === 'foundry') {
     const { body } = retus('http://localhost:8080/deployments.local.json', {
       json: true,
     });
 
     return body;
+  }
+
+  if (process.env.VITE_ETH_CHAIN === 'goerli') {
+    return {
+      FuelMessagePortal: '0xE6B0E27F85abaCfC5149642c30F4BE9a878Aa4e9',
+    };
   }
 }
 
