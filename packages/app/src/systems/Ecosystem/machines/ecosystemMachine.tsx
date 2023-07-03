@@ -114,8 +114,11 @@ export const ecosystemMachine = createMachine(
         maxAttempts: 1,
         async fetch() {
           const projects = PROJECTS as Project[];
-          const tags = new Set<string>('');
-          projects.map((project) => project.tags.map((tag) => tags.add(tag)));
+          const tagsArray = projects.reduce(
+            (acc, project) => [...acc, ...project.tags],
+            [] as string[]
+          );
+          const tags = new Set(tagsArray);
           return {
             projects,
             tags: Array.from(tags),
