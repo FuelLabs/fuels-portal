@@ -13,13 +13,13 @@ export const BridgeTabs = ({ controls }: BridgeTabsProps) => {
 
   const moveHorizontally = async (factor: number = 15) => {
     controls.set({ opacity: 0.4, x: factor });
-    await controls.start({ opacity: 1, x: 0, transition: { duration: 1.5 } });
+    await controls.start({ opacity: 1, x: 0, transition: { duration: 0.3 } });
   };
   const rightToLeft = async () => {
-    await moveHorizontally();
+    await moveHorizontally(50);
   };
   const leftToRight = async () => {
-    await moveHorizontally(-15);
+    await moveHorizontally(-50);
   };
 
   return (

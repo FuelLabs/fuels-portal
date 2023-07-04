@@ -38,6 +38,7 @@ export const buttonListItem = cssObj({
 
 const card = cssObj({
   border: '1px solid $border',
+  overflowX: 'hidden',
 });
 
 export const coreStyles = {
