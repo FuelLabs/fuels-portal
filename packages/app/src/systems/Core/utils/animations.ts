@@ -29,4 +29,13 @@ export const animations = {
     exit: { opacity: 0.4, x: factor },
     transition: { default: transition } as Transition,
   }),
+  slideInBottom: ({
+    factor = 30,
+    transition = defaultTransition,
+  }: Opts = defaultTransition) => ({
+    initial: { opacity: 0.4, y: factor },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0.4, y: factor },
+    transition: { default: transition } as Transition,
+  }),
 };
