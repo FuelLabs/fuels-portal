@@ -9,18 +9,29 @@ import type {
 } from 'fuels';
 import { bn } from 'fuels';
 import type { WalletClient } from 'viem';
-import { decodeEventLog, getContract } from 'viem';
+import { decodeEventLog, getContract, getContractAddress } from 'viem';
 import type { PublicClient } from 'wagmi';
 
-import { AbiFuelMessagePortal } from './abi';
+import { ETH_CHAIN } from '../../config';
+import { ETH_UNITS } from '../utils';
 
-import { VITE_ETH_FUEL_MESSAGE_PORTAL } from '~/config';
+import { AbiFuelMessagePortal } from './abi';
+import { AbiErc20, HashcodeErc20 } from './abiErc20';
+
+import {
+  VITE_ETH_ERC20_TOKEN_ADDRESS,
+  VITE_ETH_FUEL_MESSAGE_PORTAL,
+} from '~/config';
 
 export type TxEthToFuelInputs = {
   create: {
     amount: string;
     ethWalletClient?: WalletClient;
     fuelAddress?: FuelAddress;
+  };
+  createErc20Contract: {
+    ethWalletClient?: WalletClient;
+    ethPublicClient?: PublicClient;
   };
   getDepositNonce: {
     ethTx?: EthTransactionResponse;
@@ -47,6 +58,91 @@ export class TxEthToFuelService {
     });
 
     return contract;
+  }
+
+  // TODO: should remove this method when l1_chain creates erc20 contract by itself
+  static async createErc20Contract(
+    input: TxEthToFuelInputs['createErc20Contract']
+  ) {
+    if (ETH_CHAIN.name !== 'Foundry') return;
+
+    if (!input?.ethWalletClient) {
+      throw new Error('Need to connect ETH Wallet');
+    }
+
+    if (!input?.ethPublicClient) {
+      throw new Error('Need to connect ETH Provider');
+    }
+
+    const { ethWalletClient, ethPublicClient } = input;
+    if (ethWalletClient.account) {
+      try {
+        const balance = await ethPublicClient.readContract({
+          address: VITE_ETH_ERC20_TOKEN_ADDRESS,
+          abi: AbiErc20,
+          functionName: 'balanceOf',
+          args: [ethWalletClient.account.address],
+        });
+
+        if (!balance) {
+          debugger;
+          // mint tokens as starting balances
+          console.log(`Minting ERC-20 tokens to test with...`);
+          const mintToken = await ethWalletClient.writeContract({
+            address: VITE_ETH_ERC20_TOKEN_ADDRESS,
+            abi: AbiErc20,
+            functionName: 'mint',
+            account: ethWalletClient.account,
+            chain: ETH_CHAIN,
+            args: [
+              ethWalletClient.account.address,
+              bn.parseUnits('1000', ETH_UNITS),
+            ],
+          });
+          debugger;
+        }
+      } catch (e) {
+        const hash = await ethWalletClient.deployContract({
+          abi: AbiErc20,
+          account: ethWalletClient.account,
+          chain: ETH_CHAIN,
+          bytecode: HashcodeErc20,
+        });
+
+        const transaction = await ethPublicClient.getTransaction({ hash });
+
+        const erc20Address = await getContractAddress({
+          from: ethWalletClient.account.address,
+          nonce: BigInt(transaction.nonce),
+        });
+
+        console.log(
+          `Ethereum ERC-20 token contract created at address ${erc20Address}. now replace it in env file.`
+        );
+      }
+
+      // debugger;
+
+      // if (!contract) {
+      //   const hash = await ethWalletClient.deployContract({
+      //     abi: AbiErc20,
+      //     account: ethWalletClient.account,
+      //     chain: ETH_CHAIN,
+      //     bytecode: HashcodeErc20,
+      //   });
+
+      //   const transaction = await ethPublicClient.getTransaction({ hash });
+
+      //   const erc20Address = await getContractAddress({
+      //     from: ethWalletClient.account.address,
+      //     nonce: BigInt(transaction.nonce),
+      //   });
+
+      //   console.log(
+      //     `Ethereum ERC-20 token contract created at address ${erc20Address}.`
+      //   );
+      // }
+    }
   }
 
   static async create(input: TxEthToFuelInputs['create']) {
@@ -116,6 +212,7 @@ export class TxEthToFuelService {
       topics: receipt.logs[0].topics,
     }) as unknown as { args: { nonce: number } };
     const depositNonce = bn(decodedEvent.args.nonce);
+
     return depositNonce;
   }
 

@@ -6,6 +6,7 @@ export const {
   VITE_ETH_CHAIN,
   VITE_FUEL_CHAIN,
   NODE_ENV,
+  VITE_ETH_ERC20_TOKEN_ADDRESS,
 } = import.meta.env;
 
 export const IS_DEVELOPMENT = process.env.NODE_ENV !== 'production';

@@ -1,4 +1,5 @@
 import { useModal } from 'connectkit';
+import { useEffect } from 'react';
 import {
   useAccount,
   useBalance,
@@ -9,7 +10,10 @@ import {
   useWalletClient,
 } from 'wagmi';
 
+import { TxEthToFuelService } from '../services';
 import { parseEthAddressToFuel } from '../utils';
+
+let i = 0;
 
 export function useEthAccountConnection() {
   const { address, isConnected } = useAccount();
@@ -22,6 +26,21 @@ export function useEthAccountConnection() {
   const { open: isConnecting, setOpen } = useModal();
   const { disconnect } = useDisconnect();
   const paddedAddress = parseEthAddressToFuel(address);
+
+  // TODO: should remove this useEffect when we have erc20 contracts in l1_chain
+  useEffect(() => {
+    if (walletClient && publicClient) {
+      if (i) return;
+
+      // eslint-disable-next-line no-plusplus
+      i++;
+
+      TxEthToFuelService.createErc20Contract({
+        ethWalletClient: walletClient,
+        ethPublicClient: publicClient,
+      });
+    }
+  }, [walletClient, publicClient]);
 
   return {
     handlers: {
