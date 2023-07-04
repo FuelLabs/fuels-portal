@@ -2,6 +2,8 @@ import { cssObj } from '@fuel-ui/css';
 import { Box, FuelLogo, IconButton, ButtonLink, Link } from '@fuel-ui/react';
 import { useLocation } from 'react-router-dom';
 
+import { removeTrailingSlash } from '../utils';
+
 import { useTheme } from '~/systems/Settings';
 import { Pages } from '~/types';
 
@@ -10,7 +12,9 @@ export function Header() {
   const { handlers } = useTheme();
 
   const getClassName = (url: string) => {
-    return location.pathname === url ? 'header--navItemActive' : undefined;
+    return removeTrailingSlash(location.pathname) === removeTrailingSlash(url)
+      ? 'header--navItemActive'
+      : undefined;
   };
 
   return (
@@ -49,7 +53,10 @@ export function Header() {
           >
             Explorer
           </ButtonLink>
-          <ButtonLink href={Pages.ecosystem} className={Pages.ecosystem}>
+          <ButtonLink
+            href={Pages.ecosystem}
+            className={getClassName(Pages.ecosystem)}
+          >
             Ecosystem
           </ButtonLink>
         </Box.Flex>
