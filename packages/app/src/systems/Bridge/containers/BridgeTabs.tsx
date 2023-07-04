@@ -16,10 +16,10 @@ export const BridgeTabs = ({ controls }: BridgeTabsProps) => {
     await controls.start({ opacity: 1, x: 0, transition: { duration: 0.3 } });
   };
   const rightToLeft = async () => {
-    await moveHorizontally(50);
+    await moveHorizontally(-50);
   };
   const leftToRight = async () => {
-    await moveHorizontally(-50);
+    await moveHorizontally(50);
   };
 
   return (
