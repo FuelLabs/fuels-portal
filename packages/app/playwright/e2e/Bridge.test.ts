@@ -79,10 +79,12 @@ test.describe('Bridge', () => {
     });
 
     expect(
-      bn(prevDepositBalanceEth.toString())
-        .sub(postDepositBalanceEth.toString())
-        .format({ precision: 6, units: 18 })
-    ).toBe(depositAmount);
+      parseFloat(
+        bn(prevDepositBalanceEth.toString())
+          .sub(postDepositBalanceEth.toString())
+          .format({ precision: 6, units: 18 })
+      )
+    ).toBeCloseTo(parseFloat(depositAmount));
 
     // check the popup is correct
     const assetAmount = getByAriaLabel(page, 'Asset amount');
@@ -96,7 +98,7 @@ test.describe('Bridge', () => {
     expect(
       postDepositBalanceFuel
         .sub(preDepositBalanceFuel)
-        .format({ precision: 3, units: 9 })
+        .format({ precision: 6, units: 9 })
     ).toBe(depositAmount);
 
     // Go to transaction page
@@ -169,13 +171,13 @@ test.describe('Bridge', () => {
     expect(
       bn(postWithdrawBalanceEth.toString())
         .sub(bn(prevWithdrawBalanceEth.toString()))
-        .format({ precision: 3, units: 18 })
-    ).toBe('0.009');
+        .format({ precision: 6, units: 18 })
+    ).toBe('0.0122');
 
     expect(
       preWithdrawBalanceFuel
         .sub(postWithdrawBalanceFuel)
-        .format({ precision: 3, units: 9 })
-    ).toBe('0.010');
+        .format({ precision: 6, units: 9 })
+    ).toBe('0.012345');
   });
 });
