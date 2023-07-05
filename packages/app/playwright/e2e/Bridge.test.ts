@@ -1,6 +1,6 @@
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import type { WalletUnlocked } from 'fuels';
-import { NativeAssetId, Wallet } from 'fuels';
+import { NativeAssetId, Wallet, bn } from 'fuels';
 import type { HDAccount, PublicClient } from 'viem';
 import { createPublicClient, http } from 'viem';
 import { mnemonicToAccount } from 'viem/accounts';
@@ -76,11 +76,10 @@ test.describe('Bridge', () => {
     });
 
     expect(
-      (
-        (prevDepositBalanceEth - postDepositBalanceEth) /
-        BigInt(1e18)
-      ).toString()
-    ).toBe('1');
+      bn(prevDepositBalanceEth.toString())
+        .sub(postDepositBalanceEth.toString())
+        .format({ precision: 3, units: 18 })
+    ).toBe(depositAmount);
 
     // check the popup is correct
     const assetAmount = getByAriaLabel(page, 'Asset amount');
@@ -162,8 +161,10 @@ test.describe('Bridge', () => {
 
     // We only divide by 15 bc bigint does not support decimals
     expect(
-      (postWithdrawBalanceEth - prevWithdrawBalanceEth) / BigInt(1e15)
-    ).toBe(BigInt(9));
+      bn(postWithdrawBalanceEth.toString())
+        .sub(bn(prevWithdrawBalanceEth.toString()))
+        .format({ precision: 3, units: 18 })
+    ).toBe('0.009');
 
     expect(
       preWithdrawBalanceFuel
