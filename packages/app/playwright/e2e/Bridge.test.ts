@@ -74,6 +74,9 @@ test.describe('Bridge', () => {
     await page.waitForTimeout(10000);
     await metamask.confirmTransaction();
 
+    // Check steps
+    await page.locator(':nth-match(:text("Done"), 3)').waitFor();
+
     const postDepositBalanceEth = await client.getBalance({
       address: account.address,
     });
@@ -88,7 +91,6 @@ test.describe('Bridge', () => {
 
     // check the popup is correct
     const assetAmount = getByAriaLabel(page, 'Asset amount');
-    await page.waitForTimeout(5000);
     expect((await assetAmount.innerHTML()).trim()).toBe(depositAmount);
     const closeEthPopup = getByAriaLabel(page, 'Close Transaction Dialog');
     await closeEthPopup.click();
@@ -135,9 +137,10 @@ test.describe('Bridge', () => {
     await withdrawButton.click();
     await walletApprove(context);
 
+    await page.locator(':text("Action Required")').waitFor();
+
     // Check the popup is correct
     const assetAmountWithdraw = getByAriaLabel(page, 'Asset amount');
-    await page.waitForTimeout(11000);
     expect((await assetAmountWithdraw.innerHTML()).trim()).toBe(withdrawAmount);
     const closeEthPopupWithdraw = getByAriaLabel(
       page,
