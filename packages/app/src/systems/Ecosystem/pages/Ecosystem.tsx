@@ -40,7 +40,7 @@ export function Ecosystem() {
                 Here&apos;s a list of dapps built on Fuel
               </Text>
             </Box.Stack>
-            <Input size="sm">
+            <Input size="sm" css={styles.searchBar}>
               <Input.Field
                 name="search"
                 placeholder="Search"
@@ -80,9 +80,14 @@ const styles = {
     '@media (max-width: 768px)': {
       flexDirection: 'column',
       gap: '$10',
+      alignItems: 'flex-start',
     },
   }),
-  wrapper: cssObj({}),
+  searchBar: cssObj({
+    '@media (max-width: 768px)': {
+      width: '100%',
+    },
+  }),
   container: cssObj({
     marginTop: '$12',
     maxWidth: '$xl',
@@ -91,6 +96,7 @@ const styles = {
 
     '@media (max-width: 768px)': {
       maxWidth: '100%',
+      padding: '$12',
     },
   }),
 };
