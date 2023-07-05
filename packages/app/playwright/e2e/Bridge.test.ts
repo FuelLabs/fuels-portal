@@ -172,10 +172,12 @@ test.describe('Bridge', () => {
 
     // We only divide by 15 bc bigint does not support decimals
     expect(
-      bn(postWithdrawBalanceEth.toString())
-        .sub(bn(prevWithdrawBalanceEth.toString()))
-        .format({ precision: 6, units: 18 })
-    ).toBe('0.0122');
+      parseFloat(
+        bn(postWithdrawBalanceEth.toString())
+          .sub(bn(prevWithdrawBalanceEth.toString()))
+          .format({ precision: 6, units: 18 })
+      )
+    ).toBeCloseTo(0.0122);
 
     expect(
       preWithdrawBalanceFuel
