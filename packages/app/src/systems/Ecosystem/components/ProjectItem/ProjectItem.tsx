@@ -12,7 +12,6 @@ import { motion } from 'framer-motion';
 import type { FC } from 'react';
 
 import type { Project } from '../../types';
-import { STATUS_TEXT } from '../../types';
 
 import { ProjectItemLoader } from './ProjectItemLoader';
 
@@ -32,7 +31,7 @@ export const ProjectItem: ProjectItemComponent = ({
   name,
   description,
   url,
-  status,
+  isLive,
 }: ProjectItemProps) => {
   const onCardPress = () => {
     window.open(url, '_blank');
@@ -80,10 +79,12 @@ export const ProjectItem: ProjectItemComponent = ({
             >
               {getUrlHostName(url)}
             </ButtonLink>
-            <Tag intent="base" size="xs" css={styles.tag} variant="ghost">
-              <Box css={{ ...styles.dot, ...styles[`dot-${status}`] }} />
-              {STATUS_TEXT[status]}
-            </Tag>
+            {isLive ? (
+              <Tag intent="base" size="xs" css={styles.tag} variant="ghost">
+                <Box css={styles.dot} />
+                {'Live on mainnet'}
+              </Tag>
+            ) : null}
           </Box.Flex>
         </Box.Stack>
       </Card.Body>
@@ -107,24 +108,12 @@ const styles = {
     color: '$intentsBase12',
   }),
   dot: cssObj({
-    width: '$2',
-    height: '$2',
+    width: '$1',
+    height: '$1',
     borderRadius: '50%',
-  }),
-  'dot-live': cssObj({
-    background: '$intentsPrimary9',
-    border: '1px solid $intentsPrimary11',
-    boxShadow: ' 0px 0px 4px #ffffff',
-  }),
-  'dot-testnet': cssObj({
-    background: '$intentsInfo9',
-    border: '1px solid $intentsInfo11',
-    boxShadow: ' 0px 0px 4px #ffffff',
-  }),
-  'dot-in-development': cssObj({
-    background: '$intentsWarning9',
-    border: '1px solid $intentsWarning11',
-    boxShadow: ' 0px 0px 4px #ffffff',
+    border: '1px solid #A9F6D5',
+    background: '#00F58C',
+    boxShadow: '0px 0px 4px 0px #00F58C',
   }),
   tag: cssObj({
     color: '$intentsBase12',

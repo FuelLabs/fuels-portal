@@ -13,14 +13,6 @@ const meta: Meta<typeof ProjectItem> = {
   parameters: {
     layout: 'fullscreen',
   },
-  argTypes: {
-    status: {
-      options: ['live', 'testnet', 'in-development'],
-      control: {
-        type: 'select',
-      },
-    },
-  },
 };
 
 export default meta;

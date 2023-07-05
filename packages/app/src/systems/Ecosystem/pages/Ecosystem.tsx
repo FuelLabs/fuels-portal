@@ -27,27 +27,29 @@ export function Ecosystem() {
     <Layout {...animations.slideInTop()}>
       <Box.Flex css={styles.container} align="center" grow={1}>
         <Box.Stack gap="$10" grow={1}>
-          <Box.Flex justify="space-between" align="bottom">
-            <Box.Stack gap="$2">
-              <Heading as="h2" css={styles.heading}>
+          <Box.Flex
+            justify="space-between"
+            align="flex-end"
+            css={styles.headingWrapper}
+          >
+            <Box.Stack gap="$2" wrap="wrap">
+              <Heading as="h3" css={styles.heading}>
                 Explore Fuel Dapps
               </Heading>
-              <Text as="small" color="intentsBase12">
-                Here&apos;s a list of apps built on Fuel
+              <Text as="small" fontSize="sm" color="intentsBase12">
+                Here&apos;s a list of dapps built on Fuel
               </Text>
             </Box.Stack>
-            <Box.Stack>
-              <Input>
-                <Input.Field
-                  name="search"
-                  placeholder="Search"
-                  type="text"
-                  onChange={handleSearch}
-                  value={search || ''}
-                />
-                <Input.ElementRight element={<Icon icon="Search" />} />
-              </Input>
-            </Box.Stack>
+            <Input size="sm">
+              <Input.Field
+                name="search"
+                placeholder="Search"
+                type="text"
+                onChange={handleSearch}
+                value={search || ''}
+              />
+              <Input.ElementRight element={<Icon icon="Search" />} />
+            </Input>
           </Box.Flex>
           <EcosystemTags
             tags={tags}
@@ -71,11 +73,20 @@ const styles = {
   heading: cssObj({
     margin: 0,
   }),
+  subHeading: cssObj({
+    fontSize: '0.875rem',
+  }),
+  headingWrapper: cssObj({
+    '@media (max-width: 768px)': {
+      flexDirection: 'column',
+      gap: '$10',
+    },
+  }),
   wrapper: cssObj({}),
   container: cssObj({
     marginTop: '$12',
     maxWidth: '$xl',
-    padding: '$12',
+    padding: '$24 $40',
     margin: '0 auto',
 
     '@media (max-width: 768px)': {
