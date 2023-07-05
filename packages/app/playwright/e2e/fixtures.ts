@@ -33,14 +33,17 @@ export const test = base.extend<{
           // after download completed close filestream
           zipFileStream.on('finish', async () => {
             zipFileStream.close();
+            // eslint-disable-next-line no-console
             console.log('Download Completed extracting zip...');
             const zip = new admZip(zipFile); // eslint-disable-line new-cap
             zip.extractAllTo('./packages/app/playwright/e2e/dist-crx', true);
+            // eslint-disable-next-line no-console
             console.log('zip extracted');
             resolve(true);
           });
         })
         .on('error', (error) => {
+          // eslint-disable-next-line no-console
           console.log('error: ', error);
           reject(error);
         });

@@ -45,6 +45,13 @@ export async function walletSetup(
   const toFinish = getButtonByText(signupPage, 'Next: Finish set-up');
   await toFinish.click();
 
+  // TODO this doesn't work correctly
+  // it passes before the text is actually loaded on the page
+  const walletSuccessText = signupPage
+    .locator('h2')
+    .getByText('Wallet created successfully');
+  expect(walletSuccessText).toBeVisible();
+
   await signupPage.waitForTimeout(9000);
 
   await signupPage.goto(

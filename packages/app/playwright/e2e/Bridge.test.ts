@@ -64,11 +64,14 @@ test.describe('Bridge', () => {
     });
 
     // Deposit asset
-    const depositAmount = '1.000';
+    const depositAmount = '1.12345';
     const depositInput = page.locator('input');
     await depositInput.fill(depositAmount);
     const depositButton = getButtonByText(page, 'Bridge asset');
     await depositButton.click();
+
+    // Timeout needed until https://github.com/Synthetixio/synpress/issues/795 is fixed
+    await page.waitForTimeout(10000);
     await metamask.confirmTransaction();
 
     const postDepositBalanceEth = await client.getBalance({
@@ -78,7 +81,7 @@ test.describe('Bridge', () => {
     expect(
       bn(prevDepositBalanceEth.toString())
         .sub(postDepositBalanceEth.toString())
-        .format({ precision: 3, units: 18 })
+        .format({ precision: 6, units: 18 })
     ).toBe(depositAmount);
 
     // check the popup is correct
@@ -123,7 +126,7 @@ test.describe('Bridge', () => {
     });
 
     // Withdraw asset
-    const withdrawAmount = '0.010';
+    const withdrawAmount = '0.012345';
     const withdrawInput = page.locator('input');
     await withdrawInput.fill(withdrawAmount);
     const withdrawButton = getButtonByText(page, 'Bridge asset');
@@ -152,6 +155,9 @@ test.describe('Bridge', () => {
     await transactionAssetAmount.first().click({ timeout: 10000 });
     const confirmButton = getButtonByText(page, 'Confirm Transaction');
     await confirmButton.click();
+
+    // Timeout needed until https://github.com/Synthetixio/synpress/issues/795 is fixed
+    await page.waitForTimeout(10000);
     await metamask.confirmTransaction();
 
     const postWithdrawBalanceEth = await client.getBalance({
