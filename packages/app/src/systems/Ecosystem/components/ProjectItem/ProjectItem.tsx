@@ -55,8 +55,8 @@ export const ProjectItem: ProjectItemComponent = ({
           iconSize={20}
           css={styles.projectIcon}
         />
-        <Box.Stack gap="$2" justify="space-between" css={styles.details}>
-          <Box.Stack align="flex-start" gap="$2">
+        <Box.Stack gap="$1" justify="space-between" css={styles.details}>
+          <Box.Stack align="flex-start" gap="$1">
             <Box.Flex
               align="flex-start"
               justify="space-between"
@@ -65,7 +65,12 @@ export const ProjectItem: ProjectItemComponent = ({
               <Text fontSize="base" color="intentsBase12">
                 {name}
               </Text>
-              <Icon icon="ArrowUpRight" size={20} stroke={1} />
+              <Icon
+                icon="ArrowUpRight"
+                color="intentsBase8"
+                size={20}
+                stroke={1}
+              />
             </Box.Flex>
             <Text fontSize="sm"> {description}</Text>
           </Box.Stack>
@@ -75,7 +80,7 @@ export const ProjectItem: ProjectItemComponent = ({
               css={styles.link}
               href={url}
               color="intentsBase12"
-              size="sm"
+              size="xs"
             >
               {getUrlHostName(url)}
             </ButtonLink>
@@ -106,6 +111,7 @@ const styles = {
   link: cssObj({
     textDecoration: 'underline',
     color: '$intentsBase12',
+    padding: '0',
   }),
   dot: cssObj({
     width: '$1',
@@ -118,7 +124,7 @@ const styles = {
   tag: cssObj({
     color: '$intentsBase12',
     borderRadius: '$sm',
-    padding: '0 $2',
+    padding: '0 $1',
     backgroundColor: '$gray5',
   }),
   projectIcon: cssObj({
@@ -137,6 +143,7 @@ const styles = {
     alignItems: 'flex-start',
     gap: '$4',
     justifyContent: 'flex-start',
+    padding: '$6',
   }),
 };
 

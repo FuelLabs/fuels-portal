@@ -1,7 +1,7 @@
 [
   {
     "name": "Sway Swap",
-    "description": "SwaySwap is a blazingly fast DEX built on the fastest modular execution layer: Fuel.",
+    "description": "",
     "tags": ["defi", "swap"],
     "url": "https://fuellabs.github.io/swayswap/",
     "isLive": true
