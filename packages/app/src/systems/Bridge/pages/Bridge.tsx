@@ -6,9 +6,7 @@ import { BridgeButton, BridgeTabs } from '../containers';
 import { useBridge } from '../hooks';
 
 import {
-  ETH_SYMBOL,
   EthAccountConnection,
-  ethLogoSrc,
   FuelAccountConnection,
   isEthChain,
   isFuelChain,
@@ -18,7 +16,7 @@ import { animations, coreStyles } from '~/systems/Core';
 const MotionBox = motion(Box);
 
 export const Bridge = () => {
-  const { fromNetwork, toNetwork, assetAmount, assetBalance, handlers } =
+  const { fromNetwork, toNetwork, assetAmount, assetBalance, asset, handlers } =
     useBridge();
 
   if (!fromNetwork || !toNetwork) return null;
@@ -49,14 +47,14 @@ export const Bridge = () => {
               <InputAmount
                 balance={assetBalance}
                 asset={{
-                  name: ETH_SYMBOL,
-                  imageUrl: ethLogoSrc,
+                  name: asset?.symbol,
+                  imageUrl: asset?.image,
                 }}
-                assetTooltip="Fuel Bridge only supports ETH for now. Other assets will be added soon."
                 value={assetAmount}
                 onChange={(val) =>
                   handlers.changeAssetAmount({ assetAmount: val })
                 }
+                onClickAsset={handlers.openAssetsDialog}
               />
             </MotionBox>
           </Box.Stack>

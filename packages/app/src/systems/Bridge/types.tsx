@@ -14,3 +14,10 @@ export type BridgeTx = {
   toNetwork: SupportedChain;
   isDone: boolean;
 };
+
+export type BridgeAsset = {
+  address: string;
+  decimals: number;
+  symbol: string;
+  image: string;
+};
