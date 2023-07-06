@@ -12,6 +12,7 @@ import { FetchMachine } from '~/systems/Core/machines';
 type MachineContext = {
   assetAmount?: BN;
   assetAddress?: string;
+  assetAddressList: string[];
 } & Partial<FromToNetworks>;
 
 type MachineServices = {
@@ -47,6 +48,10 @@ export type BridgeMachineEvents =
   | {
       type: 'START_BRIDGING';
       input: PossibleBridgeInputs;
+    }
+  | {
+      type: 'ADD_ASSET_ADDRESS';
+      input: { assetAddress: string };
     };
 
 export const bridgeMachine = createMachine(
@@ -75,6 +80,9 @@ export const bridgeMachine = createMachine(
           },
           START_BRIDGING: {
             target: 'bridging',
+          },
+          ADD_ASSET_ADDRESS: {
+            actions: ['addAssetAddress'],
           },
         },
       },
@@ -126,6 +134,12 @@ export const bridgeMachine = createMachine(
       }),
       clearAssetAmmount: assign({
         assetAmount: undefined,
+      }),
+      addAssetAddress: assign({
+        assetAddressList: (ctx, ev) => {
+          ctx.assetAddressList.push(ev.input.assetAddress);
+          return ctx.assetAddressList;
+        },
       }),
       closeOverlay: () => {
         store.closeOverlay();

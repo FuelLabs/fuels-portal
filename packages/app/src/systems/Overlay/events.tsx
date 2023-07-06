@@ -51,5 +51,13 @@ export function overlayEvents(store: Store) {
         },
       });
     },
+    openManageAssetsDialog() {
+      store.send(Services.overlay, {
+        type: 'OPEN',
+        input: {
+          modal: 'eth.manage.assets',
+        },
+      });
+    },
   };
 }

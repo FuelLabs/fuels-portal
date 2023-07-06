@@ -1,24 +1,47 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, CardList, Dialog, Icon, Text } from '@fuel-ui/react';
+import { Box, CardList, Dialog, Icon, Input, Text } from '@fuel-ui/react';
+import { useState } from 'react';
 
 import { useAssets } from '../hooks';
 
-import { store } from '~/store';
 import { useBridge } from '~/systems/Bridge/hooks';
 
-export function EthAssetsDialog() {
+export function ManageEthAssetsDialog() {
   const { assets } = useAssets();
   const { handlers: bridgeHandlers } = useBridge();
+  const [newAssetAddress, setNewAssetAddress] = useState('');
 
   return (
     <>
-      <Dialog.Heading css={styles.dialogHeading}>
-        <Box.Flex justify="space-between" css={styles.dialogHeadingContainer}>
-          <Text color="intentsBase12" fontSize="sm">
-            Select token
-          </Text>
-          <Dialog.Close />
-        </Box.Flex>
+      <Dialog.Heading>
+        <Box.Stack>
+          <Box.Flex justify="space-between" css={styles.dialogHeadingContainer}>
+            <Icon icon="ArrowLeft" />
+            <Text color="intentsBase12" fontSize="sm">
+              Manage token list
+            </Text>
+            <Box>
+              <Dialog.Close />
+            </Box>
+          </Box.Flex>
+          <Input size="md" css={{ fontSize: '$sm' }}>
+            <Input.Field
+              placeholder="Paste custom address"
+              onChange={(e) => setNewAssetAddress(e.target.value)}
+              value={newAssetAddress}
+            />
+          </Input>
+          {!!newAssetAddress.length && (
+            <Icon
+              icon="Check"
+              onClick={() =>
+                bridgeHandlers.addAssetAddress({
+                  assetAddress: newAssetAddress,
+                })
+              }
+            />
+          )}
+        </Box.Stack>
       </Dialog.Heading>
       <Dialog.Description>
         <CardList isClickable>
@@ -37,20 +60,11 @@ export function EthAssetsDialog() {
           ))}
         </CardList>
       </Dialog.Description>
-      <Dialog.Footer css={styles.dialogFooter}>
-        <Box.Flex onClick={store.openManageAssetsDialog}>
-          <Icon icon="Edit" />
-          <Text color="intentsBase12">Manage token list</Text>
-        </Box.Flex>
-      </Dialog.Footer>
     </>
   );
 }
 
 const styles = {
-  dialogHeading: cssObj({
-    borderBottom: '1px solid $intentsBase8',
-  }),
   dialogHeadingContainer: cssObj({
     paddingBottom: '$4',
   }),

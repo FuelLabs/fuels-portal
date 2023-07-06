@@ -50,6 +50,7 @@ export const Bridge = () => {
                   name: asset?.symbol,
                   imageUrl: asset?.image,
                 }}
+                units={9}
                 value={assetAmount}
                 onChange={(val) =>
                   handlers.changeAssetAmount({ assetAmount: val })

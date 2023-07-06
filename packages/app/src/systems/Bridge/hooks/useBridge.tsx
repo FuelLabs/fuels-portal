@@ -233,6 +233,7 @@ export function useBridge() {
       connectTo: () => connectNetwork(toNetwork),
       changeAssetAmount: store.changeAssetAmount,
       changeAssetAddress: store.changeAssetAddress,
+      addAssetAddress: store.addAssetAddress,
       openAssetsDialog: () => openAssetsDialog(fromNetwork),
     },
     fromNetwork,
