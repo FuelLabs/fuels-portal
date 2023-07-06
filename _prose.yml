@@ -2,10 +2,6 @@ prose:
   rooturl: '/packages/app/src/systems/Ecosystem/_projects'
   metadata:
     /packages/app/src/systems/Ecosystem/_projects:
-      - name: 'title'
-        field:
-          label: 'Project Title'
-          element: 'text'
       - name: 'name'
         field:
           label: 'Project Name'
@@ -27,14 +23,7 @@ prose:
         field:
           element: 'text'
           label: 'Project Icon URL'
-      - name: 'status'
+      - name: 'isLive'
         field:
-          element: 'select'
-          label: 'Project Status'
-          options:
-            - name: 'Live'
-              value: 'live'
-            - name: 'In Testnet'
-              value: 'testnet'
-            - name: 'In Development'
-              value: 'development'
+          element: 'checkbox'
+          label: 'Is Live?'

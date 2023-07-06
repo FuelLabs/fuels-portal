@@ -1,14 +1,1 @@
-[
-  {
-    "title": "Fuelet app",
-    "status": "live",
-    "published": false,
-    "name": "Fuelet app",
-    "url": "https://fuelet.app/",
-    "tags": ["wallet", "mobile", "infra"],
-    "description": "Non-custodial wallet on Fuel.",
-    "icon_url": "https://fuelet.app/images/svg/logo.svg",
-    "contents": "",
-    "id": "20230628FueletApp"
-  }
-]
+[]
