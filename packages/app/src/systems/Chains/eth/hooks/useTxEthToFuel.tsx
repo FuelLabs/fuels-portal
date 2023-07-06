@@ -95,6 +95,7 @@ export function useTxEthToFuel({
   const { blocks } = useBlocks(notCachedHashes);
   const service = useInterpret(txEthToFuelMachine);
   const steps = useSelector(service, selectors.steps);
+  const status = useSelector(service, selectors.status);
   useEffect(() => {
     if (
       ethTx &&
@@ -137,5 +138,6 @@ export function useTxEthToFuel({
     ethTx,
     ethBlockDate,
     steps,
+    status,
   };
 }

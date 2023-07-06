@@ -98,7 +98,7 @@ export const useEthDepositLogs = () => {
         date,
       };
     });
-  }, [query.data]);
+  }, [query.data, blocks, blockDates]);
 
   return {
     logs,
