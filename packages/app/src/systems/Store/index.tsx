@@ -30,6 +30,7 @@ export const store = store$
           decimals: ETH_UNITS,
           symbol: 'ETH',
           image: ethLogoSrc,
+          name: 'Ether',
         },
       ],
     })

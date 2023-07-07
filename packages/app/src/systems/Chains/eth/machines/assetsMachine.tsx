@@ -1,21 +1,18 @@
 import type { StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
 
-import { ETH_UNITS, ethLogoSrc } from '../utils';
+import { AssetService } from '../services';
+
+import { FetchMachine } from '~/systems/Core';
 
 // TODO STORE ASSETS IN A DB
 
 export type Asset = {
-  address?: string;
-  image?: string;
+  assetId?: string;
+  imageUrl?: string;
   decimals: number;
   symbol: string;
-};
-
-const nativeAsset: Asset = {
-  decimals: ETH_UNITS,
-  symbol: 'ETH',
-  image: ethLogoSrc,
+  name?: string;
 };
 
 type MachineContext = {
@@ -46,12 +43,24 @@ export const assetListMachine = createMachine(
     },
     predictableActionArguments: true,
     id: '(machine)',
-    initial: 'idle',
+    initial: 'fetchingAssets',
     states: {
+      fetchingAssets: {
+        tags: ['loading'],
+        invoke: {
+          src: 'fetchAssets',
+          onDone: [
+            {
+              actions: ['assignAssets'],
+              target: 'idle',
+            },
+          ],
+        },
+      },
       idle: {
         on: {
           ADD_ASSET: {
-            actions: ['addAssetAddress'],
+            target: 'adding',
           },
           CHANGE_ASSET: {
             actions: [],
@@ -61,26 +70,60 @@ export const assetListMachine = createMachine(
           },
         },
       },
+      adding: {
+        tags: ['loading'],
+        invoke: {
+          src: 'addAsset',
+          data: {
+            input: (_: MachineContext, ev: AssetListMachineEvents) => ev.input,
+          },
+          onDone: {
+            target: 'idle',
+          },
+        },
+      },
     },
   },
   {
     actions: {
-      addAssetAddress: assign({
-        assetList: (ctx, ev) => {
-          const assetInfoList = ctx.assetList || [nativeAsset];
-          // TODO should we check for duplicates here?
-          assetInfoList.push(ev.input.asset);
-          return assetInfoList;
+      assignAssets: assign({
+        assetList: (_, ev) => ev.data,
+      }),
+      //   addAssetAddress: assign({
+      //     assetList: (ctx, ev) => {
+      //       const assetInfoList = ctx.assetList || [nativeAsset];
+      //       // TODO should we check for duplicates here?
+      //       assetInfoList.push(ev.input.asset);
+      //       return assetInfoList;
+      //     },
+      //   }),
+      //   removeAsset: assign({
+      //     assetList: (ctx, ev) => {
+      //       const assetInfoList = ctx.assetList || [nativeAsset];
+      //       const index = assetInfoList.indexOf(ev.input.asset);
+      //       if (index !== -1) {
+      //         assetInfoList.splice(index, 1);
+      //       }
+      //       return assetInfoList;
+      //     },
+      //   }),
+    },
+    services: {
+      fetchAssets: FetchMachine.create<null, Asset[]>({
+        showError: true,
+        async fetch() {
+          return AssetService.getAssets();
         },
       }),
-      removeAsset: assign({
-        assetList: (ctx, ev) => {
-          const assetInfoList = ctx.assetList || [nativeAsset];
-          const index = assetInfoList.indexOf(ev.input.asset);
-          if (index !== -1) {
-            assetInfoList.splice(index, 1);
+      addAsset: FetchMachine.create<{ asset: Asset }, boolean>({
+        showError: true,
+        async fetch({ input }) {
+          if (!input) {
+            throw new Error('No input to add asset');
           }
-          return assetInfoList;
+
+          await AssetService.addAsset({ data: input.asset });
+          return true;
         },
       }),
     },

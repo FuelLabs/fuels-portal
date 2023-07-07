@@ -54,8 +54,8 @@ export function AddAssetFormDialog() {
             onPress={() =>
               addAsset({
                 asset: {
-                  address: metadata.assetAddress,
-                  image: tokenImageSource,
+                  assetId: metadata.assetAddress,
+                  imageUrl: tokenImageSource,
                   decimals: Number(tokenDecimals),
                   symbol: tokenSymbol,
                 },

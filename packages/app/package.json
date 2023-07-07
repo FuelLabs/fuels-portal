@@ -29,6 +29,7 @@
     "@xstate/react": "^3.2.1",
     "connectkit": "^1.2.3",
     "date-fns": "^2.30.0",
+    "dexie": "^3.2.4",
     "ethers": "^5",
     "framer-motion": "^8.5.5",
     "fuels": "0.44.1",
