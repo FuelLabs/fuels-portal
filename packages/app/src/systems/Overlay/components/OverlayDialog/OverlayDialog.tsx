@@ -7,6 +7,7 @@ import {
   TxEthToFuelDialog,
   TxFuelToEthDialog,
   ManageEthAssetsDialog,
+  AddAssetFormDialog,
 } from '~/systems/Chains';
 import { useOverlay } from '~/systems/Overlay';
 
@@ -27,6 +28,7 @@ export function OverlayDialog() {
         {overlay.is('fuel.install') && <FuelInstallDialog />}
         {overlay.is('eth.assets') && <EthAssetsDialog />}
         {overlay.is('eth.manage.assets') && <ManageEthAssetsDialog />}
+        {overlay.is('eth.add.assets') && <AddAssetFormDialog />}
       </Dialog.Content>
     </Dialog>
   );

@@ -1,4 +1,4 @@
-import type { BN } from 'fuels';
+import { NativeAssetId, type BN } from 'fuels';
 import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
 
@@ -12,7 +12,6 @@ import { FetchMachine } from '~/systems/Core/machines';
 type MachineContext = {
   assetAmount?: BN;
   assetAddress?: string;
-  assetAddressList: string[];
 } & Partial<FromToNetworks>;
 
 type MachineServices = {
@@ -48,10 +47,6 @@ export type BridgeMachineEvents =
   | {
       type: 'START_BRIDGING';
       input: PossibleBridgeInputs;
-    }
-  | {
-      type: 'ADD_ASSET_ADDRESS';
-      input: { assetAddress: string };
     };
 
 export const bridgeMachine = createMachine(
@@ -59,7 +54,7 @@ export const bridgeMachine = createMachine(
     // eslint-disable-next-line @typescript-eslint/consistent-type-imports
     tsTypes: {} as import('./bridgeMachine.typegen').Typegen0,
     schema: {
-      context: {} as MachineContext,
+      context: { assetAddressList: [NativeAssetId] } as MachineContext,
       services: {} as MachineServices,
       events: {} as BridgeMachineEvents,
     },
@@ -80,9 +75,6 @@ export const bridgeMachine = createMachine(
           },
           START_BRIDGING: {
             target: 'bridging',
-          },
-          ADD_ASSET_ADDRESS: {
-            actions: ['addAssetAddress'],
           },
         },
       },
@@ -134,12 +126,6 @@ export const bridgeMachine = createMachine(
       }),
       clearAssetAmmount: assign({
         assetAmount: undefined,
-      }),
-      addAssetAddress: assign({
-        assetAddressList: (ctx, ev) => {
-          ctx.assetAddressList.push(ev.input.assetAddress);
-          return ctx.assetAddressList;
-        },
       }),
       closeOverlay: () => {
         store.closeOverlay();

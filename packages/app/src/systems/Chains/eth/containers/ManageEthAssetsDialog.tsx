@@ -1,9 +1,18 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, CardList, Dialog, Icon, Input, Text } from '@fuel-ui/react';
+import {
+  Box,
+  Button,
+  CardList,
+  Dialog,
+  Icon,
+  Input,
+  Text,
+} from '@fuel-ui/react';
 import { useState } from 'react';
 
 import { useAssets } from '../hooks';
 
+import { store } from '~/store';
 import { useBridge } from '~/systems/Bridge/hooks';
 
 export function ManageEthAssetsDialog() {
@@ -16,7 +25,7 @@ export function ManageEthAssetsDialog() {
       <Dialog.Heading>
         <Box.Stack>
           <Box.Flex justify="space-between" css={styles.dialogHeadingContainer}>
-            <Icon icon="ArrowLeft" />
+            <Icon icon="ArrowLeft" onClick={store.openEthAssetsDialog} />
             <Text color="intentsBase12" fontSize="sm">
               Manage token list
             </Text>
@@ -32,14 +41,16 @@ export function ManageEthAssetsDialog() {
             />
           </Input>
           {!!newAssetAddress.length && (
-            <Icon
-              icon="Check"
-              onClick={() =>
-                bridgeHandlers.addAssetAddress({
+            <Button
+              size="sm"
+              onPress={() =>
+                store.openAddAssetsDialog({
                   assetAddress: newAssetAddress,
                 })
               }
-            />
+            >
+              Add token
+            </Button>
           )}
         </Box.Stack>
       </Dialog.Heading>

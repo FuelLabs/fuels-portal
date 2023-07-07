@@ -4,4 +4,5 @@ export enum Overlays {
   'fuel.install' = 'fuel.install',
   'eth.assets' = 'eth.assets',
   'eth.manage.assets' = 'eth.manage.assets',
+  'eth.add.assets' = 'eth.add.assets',
 }

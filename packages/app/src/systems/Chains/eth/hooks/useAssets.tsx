@@ -1,21 +1,31 @@
-import { ETH_UNITS, ethLogoSrc } from '../utils';
+import type { AssetListMachineState } from '../machines';
 
-import { VITE_ETH_ERC20_TOKEN_ADDRESS } from '~/config';
+import { Services, store } from '~/store';
 
 export const useAssets = () => {
+  const assetList = store.useSelector(
+    Services.assetList,
+    (state: AssetListMachineState) => state.context?.assetList
+  );
+
+  // console.log(`assetList`, assetList);
   return {
-    assets: [
-      {
-        decimals: ETH_UNITS,
-        symbol: 'ETH',
-        image: ethLogoSrc,
-      },
-      {
-        address: VITE_ETH_ERC20_TOKEN_ADDRESS as `0x${string}`,
-        decimals: ETH_UNITS,
-        symbol: 'TKN',
-        // image: ethLogoSrc,
-      },
-    ],
+    assets: assetList || [],
+    addAsset: store.addAsset,
   };
+  // return {
+  //   assets: [
+  //     {
+  //       decimals: ETH_UNITS,
+  //       symbol: 'ETH',
+  //       image: ethLogoSrc,
+  //     },
+  //     {
+  //       address: VITE_ETH_ERC20_TOKEN_ADDRESS as `0x${string}`,
+  //       decimals: ETH_UNITS,
+  //       symbol: 'TKN',
+  //       // image: ethLogoSrc,
+  //     },
+  //   ],
+  // };
 };
