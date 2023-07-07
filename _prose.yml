@@ -1,7 +1,7 @@
 prose:
-  rooturl: '/packages/app/src/systems/Ecosystem/_projects'
+  rooturl: 'packages/app/src/systems/Ecosystem/_projects'
   metadata:
-    /packages/app/src/systems/Ecosystem/_projects:
+    packages/app/src/systems/Ecosystem/_projects:
       - name: 'name'
         field:
           label: 'Project Name'
@@ -26,4 +26,4 @@ prose:
       - name: 'isLive'
         field:
           element: 'checkbox'
-          label: 'Is Live?'
+          label: 'Is Project Live on Mainnet?'
