@@ -24,10 +24,10 @@ export function EthAssetsDialog() {
         <CardList isClickable>
           {assets.map((asset, i) => (
             <CardList.Item
-              key={asset.address + asset.symbol + String(i)}
+              key={asset.assetId + asset.symbol + String(i)}
               onClick={() =>
                 bridgeHandlers.changeAssetAddress({
-                  assetAddress: asset.address,
+                  assetAddress: asset.assetId,
                 })
               }
               css={styles.cardListItem}
