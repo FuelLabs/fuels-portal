@@ -2,13 +2,23 @@ import type { StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
 
 import { AssetService } from '../services';
+import { ethLogoSrc } from '../utils';
 
 import { FetchMachine } from '~/systems/Core';
 
-// TODO STORE ASSETS IN A DB
+export const AssetList = [
+  {
+    assetId:
+      '0x0000000000000000000000000000000000000000000000000000000000000000',
+    name: 'Ether',
+    symbol: 'ETH',
+    imageUrl: ethLogoSrc,
+    decimals: 18,
+  },
+];
 
 export type Asset = {
-  assetId?: string;
+  assetId: string;
   imageUrl?: string;
   decimals: number;
   symbol: string;
@@ -17,6 +27,18 @@ export type Asset = {
 
 type MachineContext = {
   assetList?: Asset[];
+};
+
+type MachineServices = {
+  fetchAssets: {
+    data: Asset[];
+  };
+  addAsset: {
+    data: boolean;
+  };
+  removeAsset: {
+    data: boolean;
+  };
 };
 
 type AssetListMachineEvents =
@@ -30,7 +52,7 @@ type AssetListMachineEvents =
     }
   | {
       type: 'REMOVE_ASSET';
-      input: { asset: Asset };
+      input: { assetId: string };
     };
 
 export const assetListMachine = createMachine(
@@ -39,12 +61,24 @@ export const assetListMachine = createMachine(
     tsTypes: {} as import('./assetsMachine.typegen').Typegen0,
     schema: {
       context: {} as MachineContext,
+      services: {} as MachineServices,
       events: {} as AssetListMachineEvents,
     },
     predictableActionArguments: true,
     id: '(machine)',
-    initial: 'fetchingAssets',
+    initial: 'setListedAssets',
     states: {
+      setListedAssets: {
+        tags: ['loading'],
+        invoke: {
+          src: 'setListedAssets',
+          onDone: [
+            {
+              target: 'fetchingAssets',
+            },
+          ],
+        },
+      },
       fetchingAssets: {
         tags: ['loading'],
         invoke: {
@@ -66,7 +100,7 @@ export const assetListMachine = createMachine(
             actions: [],
           },
           REMOVE_ASSET: {
-            actions: ['removeAsset'],
+            target: 'removing',
           },
         },
       },
@@ -78,8 +112,22 @@ export const assetListMachine = createMachine(
             input: (_: MachineContext, ev: AssetListMachineEvents) => ev.input,
           },
           onDone: {
-            target: 'idle',
+            target: 'fetchingAssets',
           },
+        },
+      },
+      removing: {
+        tags: ['loading'],
+        invoke: {
+          src: 'removeAsset',
+          data: {
+            input: (_: MachineContext, ev: AssetListMachineEvents) => ev.input,
+          },
+          onDone: [
+            {
+              target: 'fetchingAssets',
+            },
+          ],
         },
       },
     },
@@ -109,6 +157,21 @@ export const assetListMachine = createMachine(
       //   }),
     },
     services: {
+      setListedAssets: FetchMachine.create<null, void>({
+        showError: true,
+        async fetch() {
+          await Promise.all(
+            AssetList.map((asset) =>
+              AssetService.upsertAsset({
+                data: {
+                  ...asset,
+                  imageUrl: asset.imageUrl,
+                },
+              })
+            )
+          );
+        },
+      }),
       fetchAssets: FetchMachine.create<null, Asset[]>({
         showError: true,
         async fetch() {
@@ -123,6 +186,22 @@ export const assetListMachine = createMachine(
           }
 
           await AssetService.addAsset({ data: input.asset });
+          return true;
+        },
+      }),
+      removeAsset: FetchMachine.create<
+        {
+          assetId: string;
+        },
+        boolean
+      >({
+        showError: true,
+        async fetch({ input }) {
+          if (!input?.assetId) {
+            throw new Error('Missing data');
+          }
+
+          await AssetService.removeAsset(input);
           return true;
         },
       }),

@@ -4,12 +4,7 @@ import type { StoreMachines } from './types';
 import { Services } from './types';
 
 import { bridgeMachine, bridgeEvents } from '~/systems/Bridge';
-import {
-  assetListMachine,
-  ETH_UNITS,
-  ethLogoSrc,
-  assetListEvents,
-} from '~/systems/Chains';
+import { assetListMachine, assetListEvents } from '~/systems/Chains';
 import { ecosystemMachine } from '~/systems/Ecosystem';
 import { overlayMachine, overlayEvents } from '~/systems/Overlay';
 
@@ -23,18 +18,7 @@ export const store = store$
   .addMachine(Services.overlay, () => overlayMachine)
   .addMachine(Services.bridge, () => bridgeMachine)
   .addMachine(Services.ecosystem, () => ecosystemMachine)
-  .addMachine(Services.assetList, () =>
-    assetListMachine.withContext({
-      assetList: [
-        {
-          decimals: ETH_UNITS,
-          symbol: 'ETH',
-          image: ethLogoSrc,
-          name: 'Ether',
-        },
-      ],
-    })
-  )
+  .addMachine(Services.assetList, () => assetListMachine)
   .addHandlers(overlayEvents)
   .addHandlers(bridgeEvents)
   .addHandlers(assetListEvents)

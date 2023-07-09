@@ -8,10 +8,11 @@ export const useAssets = () => {
     (state: AssetListMachineState) => state.context?.assetList
   );
 
-  // console.log(`assetList`, assetList);
+  console.log(`assetList`, assetList);
   return {
     assets: assetList || [],
     addAsset: store.addAsset,
+    removeAsset: store.removeAsset,
   };
   // return {
   //   assets: [

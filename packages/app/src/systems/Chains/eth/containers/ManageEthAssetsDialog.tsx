@@ -16,7 +16,7 @@ import { store } from '~/store';
 import { useBridge } from '~/systems/Bridge/hooks';
 
 export function ManageEthAssetsDialog() {
-  const { assets } = useAssets();
+  const { assets, removeAsset } = useAssets();
   const { handlers: bridgeHandlers } = useBridge();
   const [newAssetAddress, setNewAssetAddress] = useState('');
 
@@ -58,15 +58,21 @@ export function ManageEthAssetsDialog() {
         <CardList isClickable>
           {assets.map((asset, i) => (
             <CardList.Item
-              key={asset.address + asset.symbol + String(i)}
+              key={asset.assetId + asset.symbol + String(i)}
               onClick={() =>
                 bridgeHandlers.changeAssetAddress({
-                  assetAddress: asset.address,
+                  assetAddress: asset.assetId,
                 })
               }
               css={styles.cardListItem}
             >
-              {asset.symbol}
+              <Box.Flex justify="space-between" css={{ width: '100%' }}>
+                {asset.symbol}
+                <Icon
+                  icon="SquareRoundedX"
+                  onClick={() => removeAsset({ assetId: asset.assetId })}
+                />
+              </Box.Flex>
             </CardList.Item>
           ))}
         </CardList>

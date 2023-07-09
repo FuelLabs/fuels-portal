@@ -7,7 +7,7 @@ export function assetListEvents(store: Store) {
     addAsset(input: { asset: Asset }) {
       store.send(Services.assetList, { type: 'ADD_ASSET', input });
     },
-    removeAsset(input: { asset: Asset }) {
+    removeAsset(input: { assetId: string }) {
       store.send(Services.assetList, { type: 'REMOVE_ASSET', input });
     },
   };
