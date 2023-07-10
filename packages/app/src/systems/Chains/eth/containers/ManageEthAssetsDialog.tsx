@@ -12,21 +12,32 @@ import {
 } from '@fuel-ui/react';
 import { useMemo, useState } from 'react';
 import { isAddress } from 'viem';
+import { useToken } from 'wagmi';
 
 import { useAssets } from '../hooks';
 
 import { store } from '~/store';
 
 export function ManageEthAssetsDialog() {
-  const { assets, removeAsset } = useAssets();
+  const { assets, removeAsset, addAsset } = useAssets();
   const [newAssetAddress, setNewAssetAddress] = useState('');
+
+  const { data, isError } = useToken({
+    address: newAssetAddress as `0x${string}`,
+  });
+
+  const doesAssetExist = useMemo(() => {
+    return assets.find((asset) => asset.address === newAssetAddress);
+  }, [assets, newAssetAddress]);
 
   const isValid = useMemo(() => {
     return (
-      (newAssetAddress.length !== 0 && isAddress(newAssetAddress)) ||
+      (newAssetAddress.length !== 0 &&
+        isAddress(newAssetAddress) &&
+        !doesAssetExist) ||
       newAssetAddress.length === 0
     );
-  }, [newAssetAddress]);
+  }, [newAssetAddress, doesAssetExist]);
 
   return (
     <>
@@ -49,9 +60,28 @@ export function ManageEthAssetsDialog() {
                 value={newAssetAddress}
               />
             </Input>
-            <Form.ErrorMessage>Please enter a valid address</Form.ErrorMessage>
+            <Form.ErrorMessage>{`Please enter a valid address.${
+              doesAssetExist ? '  This address has already been added.' : ''
+            }`}</Form.ErrorMessage>
           </Form.Control>
-          {!!newAssetAddress.length && isValid && (
+          {!isError && !!data && isValid && (
+            <Button
+              size="sm"
+              onPress={() => {
+                addAsset({
+                  asset: {
+                    address: data?.address,
+                    decimals: data?.decimals,
+                    symbol: data?.symbol,
+                  },
+                });
+                store.openManageAssetsDialog();
+              }}
+            >
+              Add token
+            </Button>
+          )}
+          {isError && !!newAssetAddress.length && isValid && (
             <Button
               size="sm"
               onPress={() =>

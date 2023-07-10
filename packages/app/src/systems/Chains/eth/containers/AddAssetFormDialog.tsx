@@ -16,8 +16,6 @@ export function AddAssetFormDialog() {
   const [tokenDecimals, setTokenDecimals] = useState('');
   const [tokenImageSource, setTokenImageSource] = useState('');
 
-  // TODO make form better (form labels required/optional fields etc)
-
   return (
     <>
       <Dialog.Heading>
