@@ -16,8 +16,8 @@ export type BridgeTx = {
 };
 
 export type BridgeAsset = {
-  address: string;
-  decimals: number;
-  symbol: string;
-  image: string;
+  address?: string;
+  decimals?: number;
+  symbol?: string;
+  image?: string;
 };
