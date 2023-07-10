@@ -8,18 +8,27 @@ import {
   Image,
   Input,
   Text,
+  Form,
 } from '@fuel-ui/react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { isAddress } from 'viem';
 
 import { useAssets } from '../hooks';
 
 import { store } from '~/store';
-import { useBridge } from '~/systems/Bridge/hooks';
 
 export function ManageEthAssetsDialog() {
   const { assets, removeAsset } = useAssets();
-  const { handlers: bridgeHandlers } = useBridge();
   const [newAssetAddress, setNewAssetAddress] = useState('');
+
+  const isValid = useMemo(() => {
+    return (
+      (newAssetAddress.length !== 0 && isAddress(newAssetAddress)) ||
+      newAssetAddress.length === 0
+    );
+  }, [newAssetAddress]);
+
+  console.log(`isInvalid`, isValid);
 
   return (
     <>
@@ -34,14 +43,17 @@ export function ManageEthAssetsDialog() {
               <Dialog.Close />
             </Box>
           </Box.Flex>
-          <Input size="md" css={{ fontSize: '$sm' }}>
-            <Input.Field
-              placeholder="Paste custom address"
-              onChange={(e) => setNewAssetAddress(e.target.value)}
-              value={newAssetAddress}
-            />
-          </Input>
-          {!!newAssetAddress.length && (
+          <Form.Control isInvalid={!isValid}>
+            <Input size="md" css={{ fontSize: '$sm' }}>
+              <Input.Field
+                placeholder="Paste custom address"
+                onChange={(e) => setNewAssetAddress(e.target.value)}
+                value={newAssetAddress}
+              />
+            </Input>
+            <Form.ErrorMessage>Please enter a valid address</Form.ErrorMessage>
+          </Form.Control>
+          {!!newAssetAddress.length && isValid && (
             <Button
               size="sm"
               onPress={() =>
@@ -56,15 +68,10 @@ export function ManageEthAssetsDialog() {
         </Box.Stack>
       </Dialog.Heading>
       <Dialog.Description>
-        <CardList isClickable>
+        <CardList>
           {assets.map((asset, i) => (
             <CardList.Item
               key={asset.address + asset.symbol + String(i)}
-              onClick={() =>
-                bridgeHandlers.changeAssetAddress({
-                  assetAddress: asset.address,
-                })
-              }
               css={styles.cardListItem}
             >
               <Box.Flex justify="space-between" css={{ width: '100%' }}>
