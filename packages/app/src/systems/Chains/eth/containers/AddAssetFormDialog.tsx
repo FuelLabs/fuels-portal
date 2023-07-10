@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, Button, Dialog, Icon, Input, Text } from '@fuel-ui/react';
+import { Box, Button, Dialog, Icon, Input, Text, Form } from '@fuel-ui/react';
 import { useState } from 'react';
 
 import { useAssets } from '../hooks';
@@ -33,26 +33,38 @@ export function AddAssetFormDialog() {
       </Dialog.Heading>
       <Dialog.Description>
         <Box.Stack>
-          <Input size="md" css={{ fontSize: '$sm' }}>
-            <Input.Field
-              placeholder="Token symbol"
-              onChange={(e) => setTokenSymbol(e.target.value)}
-            />
-          </Input>
-          <Input size="md" css={{ fontSize: '$sm' }}>
-            <Input.Number
-              placeholder="Token decimals"
-              onChange={(e) => setTokenDecimals(e.target.value)}
-            />
-          </Input>
-          <Input size="md" css={{ fontSize: '$sm' }}>
-            <Input.Field
-              placeholder="Token image source"
-              onChange={(e) => setTokenImageSource(e.target.value)}
-            />
-          </Input>
+          <Form.Control isRequired>
+            <Form.Label css={{ fontSize: '$sm' }}>Token symbol</Form.Label>
+            <Input size="md" css={{ fontSize: '$sm' }}>
+              <Input.Field
+                placeholder="ETH"
+                onChange={(e) => setTokenSymbol(e.target.value)}
+              />
+            </Input>
+          </Form.Control>
+          <Form.Control isRequired>
+            <Form.Label css={{ fontSize: '$sm' }}>Token decimals</Form.Label>
+            <Input size="md" css={{ fontSize: '$sm' }}>
+              <Input.Number
+                placeholder="18"
+                onChange={(e) => setTokenDecimals(e.target.value)}
+              />
+            </Input>
+          </Form.Control>
+          <Form.Control>
+            <Form.Label css={{ fontSize: '$sm' }}>
+              Token image source
+            </Form.Label>
+            <Input size="md" css={{ fontSize: '$sm' }}>
+              <Input.Field
+                placeholder="Token image source"
+                onChange={(e) => setTokenImageSource(e.target.value)}
+              />
+            </Input>
+          </Form.Control>
           <Button
             size="sm"
+            isDisabled={!tokenDecimals.length || !tokenSymbol.length}
             onPress={() =>
               addAsset({
                 asset: {

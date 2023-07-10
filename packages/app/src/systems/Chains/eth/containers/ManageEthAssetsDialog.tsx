@@ -28,8 +28,6 @@ export function ManageEthAssetsDialog() {
     );
   }, [newAssetAddress]);
 
-  console.log(`isInvalid`, isValid);
-
   return (
     <>
       <Dialog.Heading>

@@ -21,8 +21,6 @@ export const Bridge = () => {
 
   if (!fromNetwork || !toNetwork) return null;
 
-  console.log(`asset`, asset);
-
   return (
     <Card css={coreStyles.card}>
       <Card.Body>
