@@ -61,7 +61,7 @@ export function AddAssetFormDialog() {
           <Button
             size="sm"
             isDisabled={!tokenDecimals.length || !tokenSymbol.length}
-            onPress={() =>
+            onPress={() => {
               addAsset({
                 asset: {
                   address: metadata.assetAddress,
@@ -69,8 +69,9 @@ export function AddAssetFormDialog() {
                   decimals: Number(tokenDecimals),
                   symbol: tokenSymbol,
                 },
-              })
-            }
+              });
+              store.openManageAssetsDialog();
+            }}
           >
             Add token to list
           </Button>
