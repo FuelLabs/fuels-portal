@@ -104,7 +104,7 @@ export function useBridge() {
         const formattedUnits = `${intPart}.${
           decimalPart?.slice(0, DECIMAL_UNITS) || '0'
         }`;
-        return ethBalance ? bn.parseUnits(formattedUnits) : undefined;
+        return ethBalance ? bn.parseUnits(formattedUnits) : bn(0);
       }
     }
 
@@ -112,7 +112,7 @@ export function useBridge() {
       return fuelBalance;
     }
 
-    return undefined;
+    return bn(0);
   }, [ethBalance, fromNetwork, fuelBalance]);
   const status = store.useSelector(
     Services.bridge,
