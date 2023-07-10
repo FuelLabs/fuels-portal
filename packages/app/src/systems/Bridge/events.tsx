@@ -12,7 +12,6 @@ export function bridgeEvents(store: Store) {
       store.send(Services.bridge, { type: 'CHANGE_NETWORKS', input });
     },
     changeAssetAddress(input: { assetAddress?: string }) {
-      console.log(`assetAddress`, input);
       store.send(Services.bridge, { type: 'CHANGE_ASSET_ADDRESS', input });
     },
     startBridging(input: PossibleBridgeInputs) {
