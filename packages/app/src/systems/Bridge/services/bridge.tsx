@@ -48,7 +48,6 @@ export class BridgeService {
     if (!fromNetwork || !toNetwork) {
       throw new Error('"Network From" and "Network To" are required');
     }
-
     if (!assetAmount || assetAmount.isZero()) {
       throw new Error('Need to inform asset amount to be transfered');
     }
@@ -57,6 +56,7 @@ export class BridgeService {
       if (!ethAsset) {
         throw new Error('Need to inform asset to be transfered');
       }
+
       const amountFormatted = assetAmount.format({
         precision: DECIMAL_UNITS,
         units: DECIMAL_UNITS,
