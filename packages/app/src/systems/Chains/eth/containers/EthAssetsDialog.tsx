@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, CardList, Dialog, Icon, Text } from '@fuel-ui/react';
+import { Box, CardList, Dialog, Icon, Text, Image } from '@fuel-ui/react';
 
 import { useAssets } from '../hooks';
 
@@ -26,13 +26,13 @@ export function EthAssetsDialog() {
             <CardList.Item
               key={asset.address + asset.symbol + String(i)}
               onClick={() => {
-                console.log(`asset.address`, asset.address);
                 bridgeHandlers.changeAssetAddress({
                   assetAddress: asset.address,
                 });
               }}
               css={styles.cardListItem}
             >
+              <Image alt=" " src={asset.image} />
               {asset.symbol}
             </CardList.Item>
           ))}

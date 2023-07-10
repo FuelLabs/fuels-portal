@@ -5,6 +5,7 @@ import {
   CardList,
   Dialog,
   Icon,
+  Image,
   Input,
   Text,
 } from '@fuel-ui/react';
@@ -67,10 +68,14 @@ export function ManageEthAssetsDialog() {
               css={styles.cardListItem}
             >
               <Box.Flex justify="space-between" css={{ width: '100%' }}>
-                {asset.symbol}
+                <Box.Flex gap="$2" align="center">
+                  <Image alt=" " src={asset.image} />
+                  {asset.symbol}
+                </Box.Flex>
                 <Icon
                   icon="SquareRoundedX"
                   onClick={() => removeAsset({ address: asset.address })}
+                  color="scalesRed10"
                 />
               </Box.Flex>
             </CardList.Item>
