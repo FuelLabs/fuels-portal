@@ -11,7 +11,6 @@ import {
   isEthChain,
   isFuelChain,
 } from '~/systems/Chains';
-import { coreStyles } from '~/systems/Core';
 
 export const Bridge = () => {
   const { fromNetwork, toNetwork, assetAmount, assetBalance, asset, handlers } =
@@ -22,16 +21,14 @@ export const Bridge = () => {
   if (!fromNetwork || !toNetwork) return null;
 
   return (
-    <Card css={coreStyles.card}>
+    <Card>
       <Card.Body>
         <BridgeTabs controls={controls} />
         <motion.div animate={controls}>
           <Box.Stack gap="$6">
             {Boolean(fromNetwork && toNetwork) && (
               <Box.Stack gap="$2">
-                <Text fontSize="sm" css={styles.sectionHeader}>
-                  Network
-                </Text>
+                <Text color="intentsBase12">Network</Text>
                 {isEthChain(fromNetwork) && (
                   <EthAccountConnection label="From" />
                 )}
@@ -43,9 +40,7 @@ export const Bridge = () => {
               </Box.Stack>
             )}
             <Box.Stack gap="$2">
-              <Text fontSize="sm" css={styles.sectionHeader}>
-                Asset
-              </Text>
+              <Text color="intentsBase12">Asset</Text>
               <Box css={styles.amountInput}>
                 <InputAmount
                   balance={assetBalance}
@@ -62,20 +57,18 @@ export const Bridge = () => {
               </Box>
             </Box.Stack>
             <BridgeButton />
-            {isFuelChain(toNetwork) && (
-              <Alert status="warning">
-                <Alert.Description>
-                  <Text fontSize="sm">
-                    Any assets deposited to Fuel takes 7 days to withdraw back
-                    to Ethereum. Learn more about our architecture and security
-                    in our&nbsp;
-                    <Link href="https://fuel.sh/" isExternal>
-                      docs
-                    </Link>
-                  </Text>
-                </Alert.Description>
-              </Alert>
-            )}
+            <Alert status="warning">
+              <Alert.Description>
+                <Text fontSize="sm">
+                  Any assets deposited to Fuel takes 7 days to withdraw back to
+                  Ethereum. Learn more about our architecture and security in
+                  our&nbsp;
+                  <Link href="https://fuel.sh/" isExternal>
+                    docs
+                  </Link>
+                </Text>
+              </Alert.Description>
+            </Alert>
           </Box.Stack>
         </motion.div>
       </Card.Body>
@@ -84,10 +77,6 @@ export const Bridge = () => {
 };
 
 const styles = {
-  sectionHeader: cssObj({
-    fontWeight: '$semibold',
-    color: '$intentsBase12',
-  }),
   amountInput: cssObj({
     '& > div': {
       px: '$3',

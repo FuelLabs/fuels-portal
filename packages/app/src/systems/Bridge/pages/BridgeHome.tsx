@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Text, Box, ButtonLink } from '@fuel-ui/react';
+import { Text, ButtonLink, Tabs } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -13,34 +13,28 @@ type BridgeHomeProps = {
 export const BridgeHome = ({ children }: BridgeHomeProps) => {
   const location = useLocation();
 
-  const getClassName = (pageUrl: string) => {
-    const isCurrentPage =
-      removeTrailingSlash(location.pathname) === removeTrailingSlash(pageUrl);
+  const isCurrentPage = (pageUrl: string) =>
+    removeTrailingSlash(location.pathname) === removeTrailingSlash(pageUrl);
 
-    return (isCurrentPage && 'header--navItemActive') || '';
-  };
+  const currentTab = isCurrentPage(Pages.bridge) ? 'bridge' : 'transactions';
 
   return (
     <Layout>
       <Layout.Content>
-        <Text fontSize="2xl" css={styles.heading}>
+        <Text fontSize="3xl" css={styles.heading} color="intentsBase12">
           Fuel Native Bridge
         </Text>
-        <Box.Flex gap="$2" css={styles.buttonLinks}>
-          <ButtonLink
-            href={Pages.bridge}
-            className={getClassName(Pages.bridge)}
-          >
-            Bridge
-          </ButtonLink>
-          <ButtonLink
-            href={Pages.transactions}
-            className={getClassName(Pages.transactions)}
-          >
-            Transactions
-          </ButtonLink>
-        </Box.Flex>
-        {children}
+        <Tabs defaultValue={currentTab}>
+          <Tabs.List>
+            <ButtonLink href={Pages.bridge} css={styles.buttonLink}>
+              <Tabs.Trigger value="bridge">Bridge</Tabs.Trigger>
+            </ButtonLink>
+            <ButtonLink href={Pages.transactions} css={styles.buttonLink}>
+              <Tabs.Trigger value="transactions">Transactions</Tabs.Trigger>
+            </ButtonLink>
+          </Tabs.List>
+          {children}
+        </Tabs>
       </Layout.Content>
     </Layout>
   );
@@ -48,41 +42,12 @@ export const BridgeHome = ({ children }: BridgeHomeProps) => {
 
 const styles = {
   heading: cssObj({
-    mt: '$16',
-    color: '$intentsBase12',
+    mt: '$14',
+    mb: '$8',
   }),
-  buttonLinks: cssObj({
-    mb: '$3',
-    a: {
-      my: '$4',
-      px: '0',
-      color: '$intentsBase10',
-      transition: 'all 0.3s',
-      borderRadius: 0,
-      borderBottom: '2px solid transparent !important',
-
-      '&:not([aria-disabled=true]):active, &:not([aria-disabled=true])[aria-pressed=true]':
-        {
-          transform: 'none',
-        },
-      '&:focus-visible': {
-        outline: 'none !important',
-        outlineOffset: 'unset !important',
-        borderRadius: 0,
-      },
-      '&:hover': {
-        color: '$intentsBase12 !important',
-      },
-    },
-
-    'a.active, a:hover': {
-      color: '$accent8',
+  buttonLink: cssObj({
+    '&:hover': {
       textDecoration: 'none',
-    },
-
-    'a.header--navItemActive': {
-      color: '$intentsBase12',
-      borderBottom: '2px solid $intentsPrimary9 !important',
     },
   }),
 };

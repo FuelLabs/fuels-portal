@@ -75,7 +75,7 @@ const styles = cssObj({
   }),
   ageText: cssObj({
     fontSize: '$xs',
-    minWidth: '70px',
+    color: '$intentsBase12',
   }),
   infoText: cssObj({
     fontSize: '$sm',

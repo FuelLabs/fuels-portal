@@ -1,4 +1,3 @@
-import { cssObj } from '@fuel-ui/css';
 import { Tabs } from '@fuel-ui/react';
 import type { AnimationControls } from 'framer-motion';
 
@@ -16,18 +15,17 @@ export const BridgeTabs = ({ controls }: BridgeTabsProps) => {
     await controls.start({ opacity: 1, x: 0, transition: { duration: 0.3 } });
   };
   const rightToLeft = async () => {
-    await moveHorizontally(50);
+    await moveHorizontally(-50);
   };
   const leftToRight = async () => {
-    await moveHorizontally(-50);
+    await moveHorizontally(50);
   };
 
   return (
-    <Tabs defaultValue={isWithdraw ? 'withdraw' : 'deposit'}>
-      <Tabs.List aria-label="Manage deposits" css={styles.tabList}>
+    <Tabs defaultValue={isWithdraw ? 'withdraw' : 'deposit'} variant="subtle">
+      <Tabs.List aria-label="Manage deposits">
         <Tabs.Trigger
           value="deposit"
-          css={styles.tabTrigger}
           onClick={() => {
             rightToLeft();
             handlers.goToDeposit();
@@ -37,7 +35,6 @@ export const BridgeTabs = ({ controls }: BridgeTabsProps) => {
         </Tabs.Trigger>
         <Tabs.Trigger
           value="withdraw"
-          css={styles.tabTrigger}
           onClick={() => {
             leftToRight();
             handlers.goToWithdraw();
@@ -48,35 +45,4 @@ export const BridgeTabs = ({ controls }: BridgeTabsProps) => {
       </Tabs.List>
     </Tabs>
   );
-};
-
-const styles = {
-  tabList: cssObj({
-    borderBottom: 'none',
-    padding: '$1',
-    backgroundColor: '$intentsBase4',
-    borderRadius: '$md',
-    alignItems: 'center',
-
-    '& > :after': { content: 'none' },
-
-    'button.bridge--navItemActive': {
-      backgroundColor: '$intentsBase12',
-    },
-  }),
-  tabTrigger: cssObj({
-    borderRadius: '$md',
-    color: '$intentsBase11',
-    fontSize: '$sm',
-    flex: '1 0',
-    margin: '0 !important',
-    '&[data-state="active"]': {
-      color: '$intentsBase12',
-      backgroundColor: '$intentsBase1',
-      borderBottomColor: 'transparent',
-    },
-    '&:hover': {
-      color: '$intentsBase12',
-    },
-  }),
 };
