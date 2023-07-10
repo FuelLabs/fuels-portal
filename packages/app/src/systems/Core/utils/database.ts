@@ -1,15 +1,15 @@
 import type { Table } from 'dexie';
 import Dexie from 'dexie';
 
-import type { Asset } from '~/systems/Chains';
+import type { BridgeAsset } from '~/systems/Bridge';
 
 export class FuelDB extends Dexie {
-  assets!: Table<Asset, string>;
+  assets!: Table<BridgeAsset, string>;
 
   constructor() {
     super('FuelDB');
     this.version(1).stores({
-      assets: '&assetId, &name, $symbol',
+      assets: '&address, $symbol',
     });
   }
 

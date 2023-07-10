@@ -4,34 +4,34 @@ import { assign, createMachine } from 'xstate';
 import { AssetService } from '../services';
 import { ethLogoSrc } from '../utils';
 
+import type { BridgeAsset } from '~/systems/Bridge';
 import { FetchMachine } from '~/systems/Core';
 
 export const AssetList = [
   {
-    assetId:
+    address:
       '0x0000000000000000000000000000000000000000000000000000000000000000',
-    name: 'Ether',
     symbol: 'ETH',
-    imageUrl: ethLogoSrc,
+    image: ethLogoSrc,
     decimals: 18,
   },
 ];
 
-export type Asset = {
-  assetId: string;
-  imageUrl?: string;
-  decimals: number;
-  symbol: string;
-  name?: string;
-};
+// export type Asset = {
+//   assetId: string;
+//   imageUrl?: string;
+//   decimals: number;
+//   symbol: string;
+//   name?: string;
+// };
 
 type MachineContext = {
-  assetList?: Asset[];
+  assetList?: BridgeAsset[];
 };
 
 type MachineServices = {
   fetchAssets: {
-    data: Asset[];
+    data: BridgeAsset[];
   };
   addAsset: {
     data: boolean;
@@ -44,15 +44,15 @@ type MachineServices = {
 type AssetListMachineEvents =
   | {
       type: 'ADD_ASSET';
-      input: { asset: Asset };
+      input: { asset: BridgeAsset };
     }
   | {
       type: 'CHANGE_ASSET';
-      input: { asset: Asset };
+      input: { asset: BridgeAsset };
     }
   | {
       type: 'REMOVE_ASSET';
-      input: { assetId: string };
+      input: { address: string };
     };
 
 export const assetListMachine = createMachine(
@@ -165,20 +165,20 @@ export const assetListMachine = createMachine(
               AssetService.upsertAsset({
                 data: {
                   ...asset,
-                  imageUrl: asset.imageUrl,
+                  image: asset.image,
                 },
               })
             )
           );
         },
       }),
-      fetchAssets: FetchMachine.create<null, Asset[]>({
+      fetchAssets: FetchMachine.create<null, BridgeAsset[]>({
         showError: true,
         async fetch() {
           return AssetService.getAssets();
         },
       }),
-      addAsset: FetchMachine.create<{ asset: Asset }, boolean>({
+      addAsset: FetchMachine.create<{ asset: BridgeAsset }, boolean>({
         showError: true,
         async fetch({ input }) {
           if (!input) {
@@ -191,13 +191,13 @@ export const assetListMachine = createMachine(
       }),
       removeAsset: FetchMachine.create<
         {
-          assetId: string;
+          address: string;
         },
         boolean
       >({
         showError: true,
         async fetch({ input }) {
-          if (!input?.assetId) {
+          if (!input?.address) {
             throw new Error('Missing data');
           }
 

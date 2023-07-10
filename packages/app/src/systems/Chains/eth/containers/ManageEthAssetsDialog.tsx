@@ -58,10 +58,10 @@ export function ManageEthAssetsDialog() {
         <CardList isClickable>
           {assets.map((asset, i) => (
             <CardList.Item
-              key={asset.assetId + asset.symbol + String(i)}
+              key={asset.address + asset.symbol + String(i)}
               onClick={() =>
                 bridgeHandlers.changeAssetAddress({
-                  assetAddress: asset.assetId,
+                  assetAddress: asset.address,
                 })
               }
               css={styles.cardListItem}
@@ -70,7 +70,7 @@ export function ManageEthAssetsDialog() {
                 {asset.symbol}
                 <Icon
                   icon="SquareRoundedX"
-                  onClick={() => removeAsset({ assetId: asset.assetId })}
+                  onClick={() => removeAsset({ address: asset.address })}
                 />
               </Box.Flex>
             </CardList.Item>

@@ -13,7 +13,6 @@ export function AddAssetFormDialog() {
   const { addAsset } = useAssets();
 
   const [tokenSymbol, setTokenSymbol] = useState('');
-  const [tokenName, setTokenName] = useState('');
   const [tokenDecimals, setTokenDecimals] = useState('');
   const [tokenImageSource, setTokenImageSource] = useState('');
 
@@ -41,12 +40,6 @@ export function AddAssetFormDialog() {
             />
           </Input>
           <Input size="md" css={{ fontSize: '$sm' }}>
-            <Input.Field
-              placeholder="Token name"
-              onChange={(e) => setTokenName(e.target.value)}
-            />
-          </Input>
-          <Input size="md" css={{ fontSize: '$sm' }}>
             <Input.Number
               placeholder="Token decimals"
               onChange={(e) => setTokenDecimals(e.target.value)}
@@ -63,11 +56,10 @@ export function AddAssetFormDialog() {
             onPress={() =>
               addAsset({
                 asset: {
-                  assetId: metadata.assetAddress,
-                  imageUrl: tokenImageSource,
+                  address: metadata.assetAddress,
+                  image: tokenImageSource,
                   decimals: Number(tokenDecimals),
                   symbol: tokenSymbol,
-                  name: tokenName,
                 },
               })
             }

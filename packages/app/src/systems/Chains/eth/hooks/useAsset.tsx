@@ -10,7 +10,7 @@ export const useAsset = (params?: { address?: string }) => {
     () =>
       assets.find(
         // is both addresses empty or equal
-        (asset) => (!asset.assetId && !address) || asset.assetId === address
+        (asset) => (!asset.address && !address) || asset.address === address
       ),
     [assets, address]
   );
