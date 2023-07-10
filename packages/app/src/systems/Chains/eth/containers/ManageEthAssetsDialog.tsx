@@ -54,7 +54,7 @@ export function ManageEthAssetsDialog() {
             </Box>
           </Box.Flex>
           <Form.Control isInvalid={!isValid}>
-            <Input size="md" css={{ fontSize: '$sm' }}>
+            <Input size="md" css={styles.text}>
               <Input.Field
                 placeholder="Paste custom address"
                 onChange={(e) => setNewAssetAddress(e.target.value)}
@@ -104,7 +104,7 @@ export function ManageEthAssetsDialog() {
               key={asset.address + asset.symbol + String(i)}
               css={styles.cardListItem}
             >
-              <Box.Flex justify="space-between" css={{ width: '100%' }}>
+              <Box.Flex justify="space-between" css={styles.actionButton}>
                 <Box.Flex gap="$2" align="center">
                   <Image alt=" " src={asset.image} />
                   {asset.symbol}
@@ -136,9 +136,7 @@ const styles = {
     border: '1px solid $intentsBase8',
     borderRadius: '10px',
   }),
-  dialogFooter: cssObj({
-    borderTop: '1px solid $intentsBase8',
-    justifyContent: 'center',
-    paddingTop: '$4',
+  text: cssObj({
+    fontSize: '$sm',
   }),
 };

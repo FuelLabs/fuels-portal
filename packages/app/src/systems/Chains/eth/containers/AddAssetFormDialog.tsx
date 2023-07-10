@@ -32,8 +32,8 @@ export function AddAssetFormDialog() {
       <Dialog.Description>
         <Box.Stack>
           <Form.Control isRequired>
-            <Form.Label css={{ fontSize: '$sm' }}>Token symbol</Form.Label>
-            <Input size="md" css={{ fontSize: '$sm' }}>
+            <Form.Label css={styles.text}>Token symbol</Form.Label>
+            <Input size="md" css={styles.text}>
               <Input.Field
                 placeholder="ETH"
                 onChange={(e) => setTokenSymbol(e.target.value)}
@@ -41,8 +41,8 @@ export function AddAssetFormDialog() {
             </Input>
           </Form.Control>
           <Form.Control isRequired>
-            <Form.Label css={{ fontSize: '$sm' }}>Token decimals</Form.Label>
-            <Input size="md" css={{ fontSize: '$sm' }}>
+            <Form.Label css={styles.text}>Token decimals</Form.Label>
+            <Input size="md" css={styles.text}>
               <Input.Number
                 placeholder="18"
                 onChange={(e) => setTokenDecimals(e.target.value)}
@@ -50,10 +50,8 @@ export function AddAssetFormDialog() {
             </Input>
           </Form.Control>
           <Form.Control>
-            <Form.Label css={{ fontSize: '$sm' }}>
-              Token image source
-            </Form.Label>
-            <Input size="md" css={{ fontSize: '$sm' }}>
+            <Form.Label css={styles.text}>Token image source</Form.Label>
+            <Input size="md" css={styles.text}>
               <Input.Field
                 placeholder="Token image source"
                 onChange={(e) => setTokenImageSource(e.target.value)}
@@ -86,16 +84,7 @@ const styles = {
   dialogHeadingContainer: cssObj({
     paddingBottom: '$4',
   }),
-  actionButton: cssObj({
-    width: '100%',
-  }),
-  cardListItem: cssObj({
-    border: '1px solid $intentsBase8',
-    borderRadius: '10px',
-  }),
-  dialogFooter: cssObj({
-    borderTop: '1px solid $intentsBase8',
-    justifyContent: 'center',
-    paddingTop: '$4',
+  text: cssObj({
+    fontSize: '$sm',
   }),
 };
