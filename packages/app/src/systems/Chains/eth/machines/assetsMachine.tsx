@@ -17,14 +17,6 @@ export const AssetList = [
   },
 ];
 
-// export type Asset = {
-//   assetId: string;
-//   imageUrl?: string;
-//   decimals: number;
-//   symbol: string;
-//   name?: string;
-// };
-
 type MachineContext = {
   assetList?: BridgeAsset[];
 };
@@ -44,10 +36,6 @@ type MachineServices = {
 type AssetListMachineEvents =
   | {
       type: 'ADD_ASSET';
-      input: { asset: BridgeAsset };
-    }
-  | {
-      type: 'CHANGE_ASSET';
       input: { asset: BridgeAsset };
     }
   | {
@@ -95,9 +83,6 @@ export const assetListMachine = createMachine(
         on: {
           ADD_ASSET: {
             target: 'adding',
-          },
-          CHANGE_ASSET: {
-            actions: [],
           },
           REMOVE_ASSET: {
             target: 'removing',
