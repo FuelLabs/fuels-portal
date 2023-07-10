@@ -10,6 +10,7 @@ import {
   Text,
   Form,
 } from '@fuel-ui/react';
+import { NativeAssetId } from 'fuels';
 import { useMemo, useState } from 'react';
 import { isAddress } from 'viem';
 import { useToken } from 'wagmi';
@@ -107,11 +108,13 @@ export function ManageEthAssetsDialog() {
                   <Image alt=" " src={asset.image} />
                   {asset.symbol}
                 </Box.Flex>
-                <Icon
-                  icon="SquareRoundedX"
-                  onClick={() => removeAsset({ address: asset.address })}
-                  color="scalesRed10"
-                />
+                {asset.address !== NativeAssetId && (
+                  <Icon
+                    icon="SquareRoundedX"
+                    onClick={() => removeAsset({ address: asset.address })}
+                    color="scalesRed10"
+                  />
+                )}
               </Box.Flex>
             </CardList.Item>
           ))}
