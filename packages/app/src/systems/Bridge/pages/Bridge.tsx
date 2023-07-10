@@ -1,6 +1,6 @@
 import { cssObj } from '@fuel-ui/css';
 import { Card, Box, Text, InputAmount, Alert, Link } from '@fuel-ui/react';
-import { motion } from 'framer-motion';
+import { motion, useAnimationControls } from 'framer-motion';
 
 import { BridgeButton, BridgeTabs } from '../containers';
 import { useBridge } from '../hooks';
@@ -11,57 +11,59 @@ import {
   isEthChain,
   isFuelChain,
 } from '~/systems/Chains';
-import { animations, coreStyles } from '~/systems/Core';
-
-const MotionBox = motion(Box);
+import { coreStyles } from '~/systems/Core';
 
 export const Bridge = () => {
   const { fromNetwork, toNetwork, assetAmount, assetBalance, asset, handlers } =
     useBridge();
+
+  const controls = useAnimationControls();
 
   if (!fromNetwork || !toNetwork) return null;
 
   return (
     <Card css={coreStyles.card}>
       <Card.Body>
-        <BridgeTabs />
-        <Box.Stack gap="$6">
-          {Boolean(fromNetwork && toNetwork) && (
+        <BridgeTabs controls={controls} />
+        <motion.div animate={controls}>
+          <Box.Stack gap="$6">
+            {Boolean(fromNetwork && toNetwork) && (
+              <Box.Stack gap="$2">
+                <Text fontSize="sm" css={styles.sectionHeader}>
+                  Network
+                </Text>
+                {isEthChain(fromNetwork) && (
+                  <EthAccountConnection label="From" />
+                )}
+                {isFuelChain(fromNetwork) && (
+                  <FuelAccountConnection label="From" />
+                )}
+                {isEthChain(toNetwork) && <EthAccountConnection label="To" />}
+                {isFuelChain(toNetwork) && <FuelAccountConnection label="To" />}
+              </Box.Stack>
+            )}
             <Box.Stack gap="$2">
               <Text fontSize="sm" css={styles.sectionHeader}>
-                Network
+                Asset
               </Text>
-              {isEthChain(fromNetwork) && <EthAccountConnection label="From" />}
-              {isFuelChain(fromNetwork) && (
-                <FuelAccountConnection label="From" />
-              )}
-              {isEthChain(toNetwork) && <EthAccountConnection label="To" />}
-              {isFuelChain(toNetwork) && <FuelAccountConnection label="To" />}
+              <Box css={styles.amountInput}>
+                <InputAmount
+                  balance={assetBalance}
+                  asset={{
+                    name: asset?.symbol,
+                    imageUrl: asset?.image,
+                  }}
+                  assetTooltip="Fuel Bridge only supports ETH for now. Other assets will be added soon."
+                  value={assetAmount}
+                  onChange={(val) =>
+                    handlers.changeAssetAmount({ assetAmount: val })
+                  }
+                  onClickAsset={handlers.openAssetsDialog}
+                />
+              </Box>
             </Box.Stack>
-          )}
-          <Box.Stack gap="$2">
-            <Text fontSize="sm" css={styles.sectionHeader}>
-              Asset
-            </Text>
-            <MotionBox {...animations.slideInTop()} css={styles.amountInput}>
-              <InputAmount
-                balance={assetBalance}
-                asset={{
-                  name: asset?.symbol,
-                  imageUrl: asset?.image,
-                }}
-                units={9}
-                value={assetAmount}
-                onChange={(val) =>
-                  handlers.changeAssetAmount({ assetAmount: val })
-                }
-                onClickAsset={handlers.openAssetsDialog}
-              />
-            </MotionBox>
-          </Box.Stack>
-          <BridgeButton />
-          {isFuelChain(toNetwork) && (
-            <motion.div {...animations.slideInTop()}>
+            <BridgeButton />
+            {isFuelChain(toNetwork) && (
               <Alert status="warning">
                 <Alert.Description>
                   <Text fontSize="sm">
@@ -74,9 +76,9 @@ export const Bridge = () => {
                   </Text>
                 </Alert.Description>
               </Alert>
-            </motion.div>
-          )}
-        </Box.Stack>
+            )}
+          </Box.Stack>
+        </motion.div>
       </Card.Body>
     </Card>
   );

@@ -77,6 +77,7 @@ export function ManageEthAssetsDialog() {
                   },
                 });
                 store.openManageAssetsDialog();
+                setNewAssetAddress('');
               }}
             >
               Add token
