@@ -168,8 +168,9 @@ export class TxFuelToEthService {
       proof: messageProof.proofSet.slice(0, -1),
     };
 
-    const fuelPortal =
-      TxEthToFuelService.connectToFuelMessagePortal(ethWalletClient);
+    const fuelPortal = TxEthToFuelService.connectToFuelMessagePortal({
+      walletClient: ethWalletClient,
+    });
 
     const txHash = await fuelPortal.write.relayMessageFromFuelBlock([
       messageOutput,

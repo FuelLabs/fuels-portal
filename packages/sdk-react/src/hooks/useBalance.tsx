@@ -23,6 +23,7 @@ export const useBalance = ({
       try {
         // TODO: replace with ETH_ASSET_ID from asset-list package after this task gets done
         // https://linear.app/fuel-network/issue/FRO-144/make-asset-list-package-public-and-publish-in-npm
+        console.log('in balance query');
         const currentFuelBalance = await provider?.getBalance(
           Address.fromString(address || ''),
           assetId ||

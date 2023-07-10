@@ -1,6 +1,6 @@
 import { useModal } from 'connectkit';
+import { NativeAssetId } from 'fuels';
 import { useEffect } from 'react';
-import { isAddress } from 'viem';
 import {
   useAccount,
   useBalance,
@@ -25,11 +25,14 @@ export function useEthAccountConnection(props?: {
   const { address, isConnected } = useAccount();
   const { data: ensName } = useEnsName({ address });
   const { data: ensAvatar } = useEnsAvatar({ name: address });
-  const { data: balance } = useBalance({ address, token: erc20Address });
+  const { data: balance } = useBalance({
+    address,
+    token: erc20Address !== NativeAssetId ? erc20Address : undefined,
+  });
   const publicClient = usePublicClient();
   const { data: walletClient } = useWalletClient();
   const { asset } = useAsset({
-    address: erc20Address && isAddress(erc20Address) ? erc20Address : undefined,
+    address: erc20Address,
   });
 
   const { open: isConnecting, setOpen } = useModal();

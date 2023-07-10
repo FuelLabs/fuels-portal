@@ -25,11 +25,12 @@ export function EthAssetsDialog() {
           {assets.map((asset, i) => (
             <CardList.Item
               key={asset.address + asset.symbol + String(i)}
-              onClick={() =>
+              onClick={() => {
+                console.log(`asset.address`, asset.address);
                 bridgeHandlers.changeAssetAddress({
                   assetAddress: asset.address,
-                })
-              }
+                });
+              }}
               css={styles.cardListItem}
             >
               {asset.symbol}

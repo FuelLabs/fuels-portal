@@ -137,24 +137,6 @@ export const assetListMachine = createMachine(
       assignAssets: assign({
         assetList: (_, ev) => ev.data,
       }),
-      //   addAssetAddress: assign({
-      //     assetList: (ctx, ev) => {
-      //       const assetInfoList = ctx.assetList || [nativeAsset];
-      //       // TODO should we check for duplicates here?
-      //       assetInfoList.push(ev.input.asset);
-      //       return assetInfoList;
-      //     },
-      //   }),
-      //   removeAsset: assign({
-      //     assetList: (ctx, ev) => {
-      //       const assetInfoList = ctx.assetList || [nativeAsset];
-      //       const index = assetInfoList.indexOf(ev.input.asset);
-      //       if (index !== -1) {
-      //         assetInfoList.splice(index, 1);
-      //       }
-      //       return assetInfoList;
-      //     },
-      //   }),
     },
     services: {
       setListedAssets: FetchMachine.create<null, void>({

@@ -59,7 +59,6 @@ export class TxEthToFuelService {
     publicClient?: PublicClient;
   }) {
     const { walletClient, publicClient } = options;
-
     const contract = getContract({
       abi: ERC_20.abi,
       address: VITE_ETH_FUEL_ERC20_GATEWAY as `0x${string}`,
@@ -75,7 +74,6 @@ export class TxEthToFuelService {
     publicClient?: PublicClient;
   }) {
     const { walletClient, publicClient } = options;
-
     const contract = getContract({
       abi: FUEL_MESSAGE_PORTAL.abi,
       address: VITE_ETH_FUEL_MESSAGE_PORTAL as `0x${string}`,
@@ -92,7 +90,6 @@ export class TxEthToFuelService {
     address: `0x${string}`;
   }) {
     const { walletClient, publicClient, address } = options;
-
     const contract = getContract({
       abi: ERC_20.abi,
       address,
