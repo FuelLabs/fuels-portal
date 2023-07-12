@@ -38,9 +38,11 @@ export const ProjectList = ({
 
 const styles = {
   grid: cssObj({
+    alignItems: 'flex-start',
     /// show only 1 column on mobile
     '@media (max-width: 768px)': {
       gridTemplateColumns: '1fr',
+      alignItems: 'stretch',
     },
   }),
 };
