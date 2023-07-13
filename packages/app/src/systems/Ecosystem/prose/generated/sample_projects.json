@@ -1,7 +1,7 @@
 [
   {
     "name": "Sway Swap",
-    "description": "",
+    "description": "A blazingly fast DEX on Fuel.",
     "tags": ["defi", "swap"],
     "url": "https://fuellabs.github.io/swayswap/",
     "isLive": true

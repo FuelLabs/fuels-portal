@@ -23,12 +23,7 @@ export const ProjectList = ({
 
   if (isEmpty) return <ProjectList.Empty text={emptyText} />;
   return (
-    <Grid
-      gap="$8"
-      templateColumns="repeat(2, 1fr)"
-      templateRows="repeat(2, 1fr)"
-      css={styles.grid}
-    >
+    <Grid css={styles.grid}>
       {projects.map((project) => (
         <ProjectItem {...project} key={project.url} />
       ))}
@@ -38,11 +33,14 @@ export const ProjectList = ({
 
 const styles = {
   grid: cssObj({
-    alignItems: 'flex-start',
+    gridTemplateColumns: '1fr',
+    alignItems: 'stretch',
+    gap: '$6',
+
     /// show only 1 column on mobile
-    '@media (max-width: 768px)': {
-      gridTemplateColumns: '1fr',
-      alignItems: 'stretch',
+    '@sm': {
+      gridTemplateColumns: 'repeat(2, 1fr)',
+      gridTemplateRows: 'repeat(2, 1fr)',
     },
   }),
 };

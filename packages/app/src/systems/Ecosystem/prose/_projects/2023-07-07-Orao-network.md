@@ -1,10 +1,9 @@
 ---
 isLive: true
-published: false
 name: Orao network
 url: 'https://orao.network/'
 tags:
-  - infra
-  - data
+  - Infra
+  - Data
 description: Oracle Service for Custom Data Feeds.
 ---

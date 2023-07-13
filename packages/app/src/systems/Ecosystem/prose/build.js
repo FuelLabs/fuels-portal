@@ -1,6 +1,6 @@
 const jdown = require('jdown');
-const projectsFolder = __dirname + '/../_projects';
-const projectsDataFile = __dirname + '/../data/projects.json';
+const projectsFolder = __dirname + '/_projects';
+const projectsDataFile = __dirname + '/generated/projects.json';
 
 jdown(projectsFolder)
   .then((content) => {

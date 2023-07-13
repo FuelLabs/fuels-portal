@@ -25,9 +25,9 @@ export const EcosystemTags = ({
         variant="outlined"
         onPress={onPressAllCategories}
         css={{ ...styles.tag, ...(!activeTag && styles.active) }}
-        size="xs"
+        size="sm"
       >
-        All Categories
+        All categories
       </Button>
       <Box css={styles.divider} />
       {(tags || []).map((tag) => (
@@ -36,7 +36,7 @@ export const EcosystemTags = ({
           key={tag}
           onPress={() => onPressTag?.(tag)}
           css={{ ...styles.tag, ...(activeTag === tag && styles.active) }}
-          size="xs"
+          size="sm"
         >
           {tag}
         </Button>
@@ -48,7 +48,6 @@ export const EcosystemTags = ({
 const styles = {
   tag: cssObj({
     color: '$intentsBase12',
-    padding: '$4 $3',
   }),
   active: cssObj({
     borderColor: '$intentsPrimary10',

@@ -1,13 +1,11 @@
 ---
-title: Fuelet app
-status: live
-published: false
+isLive: true
 name: Fuelet app
 url: 'https://fuelet.app/'
 tags:
-  - wallet
-  - mobile
-  - infra
+  - Wallet
+  - Mobile
+  - Infra
 description: Non-custodial wallet on Fuel.
 icon_url: 'https://fuelet.app/images/svg/logo.svg'
 ---

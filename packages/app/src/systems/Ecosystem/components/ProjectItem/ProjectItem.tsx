@@ -79,15 +79,15 @@ export const ProjectItem: ProjectItemComponent = ({
               variant="link"
               css={styles.link}
               href={url}
-              color="intentsBase12"
-              size="xs"
+              color="intentsBase10"
+              size="sm"
             >
               {getUrlHostName(url)}
             </ButtonLink>
             {isLive ? (
               <Tag intent="base" size="xs" css={styles.tag} variant="ghost">
                 <Box css={styles.dot} />
-                {'Live on mainnet'}
+                {'Live on testnet'}
               </Tag>
             ) : null}
           </Box.Flex>
@@ -110,8 +110,8 @@ const styles = {
   }),
   link: cssObj({
     textDecoration: 'underline',
-    color: '$intentsBase12',
     padding: '0',
+    pointerEvents: 'none',
   }),
   dot: cssObj({
     width: '$1',

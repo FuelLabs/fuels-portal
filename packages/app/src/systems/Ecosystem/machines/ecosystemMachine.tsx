@@ -1,7 +1,7 @@
 import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
 
-import { PROJECTS } from '../data';
+import { PROJECTS } from '../prose';
 import type { Project } from '../types';
 
 import { FetchMachine } from '~/systems/Core';

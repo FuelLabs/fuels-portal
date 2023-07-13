@@ -25,22 +25,18 @@ export function Ecosystem() {
 
   return (
     <Layout {...animations.slideInTop()}>
-      <Box.Flex css={styles.container} align="center" grow={1}>
-        <Box.Stack gap="$10" grow={1}>
-          <Box.Flex
-            justify="space-between"
-            align="flex-end"
-            css={styles.headingWrapper}
-          >
+      <Layout.Content>
+        <Box.Stack gap="$12" grow={1}>
+          <Box.Flex css={styles.headingWrapper}>
             <Box.Stack gap="$2" wrap="wrap">
-              <Heading as="h3" css={styles.heading}>
+              <Heading as="h2" css={styles.heading}>
                 Explore Fuel Dapps
               </Heading>
-              <Text as="small" fontSize="sm" color="intentsBase12">
+              <Text color="intentsBase11">
                 Here&apos;s a list of dapps built on Fuel
               </Text>
             </Box.Stack>
-            <Input size="sm" css={styles.searchBar}>
+            <Input css={styles.searchBar}>
               <Input.Field
                 name="search"
                 placeholder="Search"
@@ -64,7 +60,7 @@ export function Ecosystem() {
             emptyText={emptyText}
           />
         </Box.Stack>
-      </Box.Flex>
+      </Layout.Content>
     </Layout>
   );
 }
@@ -77,26 +73,21 @@ const styles = {
     fontSize: '0.875rem',
   }),
   headingWrapper: cssObj({
-    '@media (max-width: 768px)': {
-      flexDirection: 'column',
+    flexDirection: 'column',
+    gap: '$10',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+
+    '@sm': {
+      flexDirection: 'row',
       gap: '$10',
-      alignItems: 'flex-start',
+      alignItems: 'flex-end',
     },
   }),
   searchBar: cssObj({
-    '@media (max-width: 768px)': {
-      width: '100%',
-    },
-  }),
-  container: cssObj({
-    marginTop: '$12',
-    maxWidth: '$xl',
-    padding: '$24 $40',
-    margin: '0 auto',
-
-    '@media (max-width: 768px)': {
-      maxWidth: '100%',
-      padding: '$12',
+    width: '100%',
+    '@sm': {
+      width: 'auto',
     },
   }),
 };

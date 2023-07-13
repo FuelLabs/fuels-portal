@@ -2,7 +2,7 @@ import { cssObj } from '@fuel-ui/css';
 import { Box } from '@fuel-ui/react';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { SAMPLE_PROJECTS } from '../../data';
+import { SAMPLE_PROJECTS } from '../../prose';
 import type { Project } from '../../types';
 
 import { ProjectItem } from './ProjectItem';
@@ -30,6 +30,10 @@ export const Usage: Story = {
 const styles = {
   storybook: cssObj({
     margin: '20px',
+    width: 465,
+    '.fuel_Card': {
+      flex: 1,
+    },
   }),
 };
 
