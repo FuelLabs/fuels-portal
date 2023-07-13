@@ -68,8 +68,8 @@ const styles = {
   }),
   content: cssObj({
     ...coreStyles.scrollable(),
-    padding: '$4',
-    maxWidth: 420,
+    padding: '$32 $4 $4',
+    maxWidth: 955,
     margin: '0 auto',
   }),
 };
