@@ -25,29 +25,27 @@ export function Ecosystem() {
 
   return (
     <Layout {...animations.slideInTop()}>
-      <Box.Flex css={styles.container} align="center" grow={1}>
-        <Box.Stack gap="$10" grow={1}>
-          <Box.Flex justify="space-between" align="bottom">
-            <Box.Stack gap="$2">
+      <Layout.Content>
+        <Box.Stack gap="$12" grow={1}>
+          <Box.Flex css={styles.headingWrapper}>
+            <Box.Stack gap="$2" wrap="wrap">
               <Heading as="h2" css={styles.heading}>
                 Explore Fuel Dapps
               </Heading>
-              <Text as="small" color="intentsBase12">
-                Here&apos;s a list of apps built on Fuel
+              <Text color="intentsBase11">
+                Here&apos;s a list of dapps built on Fuel
               </Text>
             </Box.Stack>
-            <Box.Stack>
-              <Input>
-                <Input.Field
-                  name="search"
-                  placeholder="Search"
-                  type="text"
-                  onChange={handleSearch}
-                  value={search || ''}
-                />
-                <Input.ElementRight element={<Icon icon="Search" />} />
-              </Input>
-            </Box.Stack>
+            <Input css={styles.searchBar}>
+              <Input.Field
+                name="search"
+                placeholder="Search"
+                type="text"
+                onChange={handleSearch}
+                value={search || ''}
+              />
+              <Input.ElementRight element={<Icon icon="Search" />} />
+            </Input>
           </Box.Flex>
           <EcosystemTags
             tags={tags}
@@ -62,7 +60,7 @@ export function Ecosystem() {
             emptyText={emptyText}
           />
         </Box.Stack>
-      </Box.Flex>
+      </Layout.Content>
     </Layout>
   );
 }
@@ -71,15 +69,25 @@ const styles = {
   heading: cssObj({
     margin: 0,
   }),
-  wrapper: cssObj({}),
-  container: cssObj({
-    marginTop: '$12',
-    maxWidth: '$xl',
-    padding: '$12',
-    margin: '0 auto',
+  subHeading: cssObj({
+    fontSize: '0.875rem',
+  }),
+  headingWrapper: cssObj({
+    flexDirection: 'column',
+    gap: '$10',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
 
-    '@media (max-width: 768px)': {
-      maxWidth: '100%',
+    '@sm': {
+      flexDirection: 'row',
+      gap: '$10',
+      alignItems: 'flex-end',
+    },
+  }),
+  searchBar: cssObj({
+    width: '100%',
+    '@sm': {
+      width: 'auto',
     },
   }),
 };

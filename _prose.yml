@@ -1,0 +1,29 @@
+prose:
+  rooturl: 'packages/app/src/systems/Ecosystem/_projects'
+  metadata:
+    packages/app/src/systems/Ecosystem/_projects:
+      - name: 'name'
+        field:
+          label: 'Project Name'
+          element: 'text'
+      - name: 'url'
+        field:
+          label: 'Project URL'
+          element: 'text'
+      - name: 'tags'
+        field:
+          label: 'Tags'
+          element: 'multiselect'
+          alterable: true
+      - name: 'description'
+        field:
+          element: 'textarea'
+          label: 'Description'
+      - name: 'icon_url'
+        field:
+          element: 'text'
+          label: 'Project Icon URL'
+      - name: 'isLive'
+        field:
+          element: 'checkbox'
+          label: 'Is Project Live on Mainnet?'
