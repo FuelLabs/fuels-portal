@@ -8,4 +8,5 @@ tags:
   - Infra
 description: Non-custodial wallet on Fuel.
 icon_url: 'https://fuelet.app/images/svg/logo.svg'
+published: true
 ---
