@@ -1,3 +1,4 @@
-import fuelet from './fuelet.svg';
+import fueletDark from './fuelet-dark.svg';
+import fueletLight from './fuelet-light.svg';
 
-export { fuelet };
+export { fueletDark, fueletLight };
