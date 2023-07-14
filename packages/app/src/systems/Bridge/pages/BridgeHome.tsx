@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Text, ButtonLink, Tabs } from '@fuel-ui/react';
+import { ButtonLink, Tabs, Heading } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -21,9 +21,9 @@ export const BridgeHome = ({ children }: BridgeHomeProps) => {
   return (
     <Layout>
       <Layout.Content css={styles.content}>
-        <Text fontSize="2xl" color="intentsBase12">
+        <Heading as="h2" css={styles.heading}>
           Fuel Native Bridge
-        </Text>
+        </Heading>
         <Tabs defaultValue={currentTab}>
           <Tabs.List>
             <ButtonLink href={Pages.bridge} css={styles.buttonLink}>
@@ -43,6 +43,10 @@ export const BridgeHome = ({ children }: BridgeHomeProps) => {
 const styles = {
   content: cssObj({
     maxWidth: '$sm',
+  }),
+  heading: cssObj({
+    mt: 0,
+    mb: '$4',
   }),
   buttonLink: cssObj({
     '&:hover': {
