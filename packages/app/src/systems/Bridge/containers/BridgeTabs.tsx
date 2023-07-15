@@ -13,14 +13,20 @@ export const BridgeTabs = ({ fromControls, toControls }: BridgeTabsProps) => {
 
   const moveVertically = async (
     control: AnimationControls,
-    factor: number = 15
+    factor: number = 15,
+    zIndex: number = 1
   ) => {
-    control.set({ opacity: 0.4, y: factor });
-    await control.start({ opacity: 1, y: 0, transition: { duration: 0.3 } });
+    control.set({ y: factor, zIndex });
+    await control.start({ y: 0, transition: { duration: 0.3 } });
   };
-  const invertFromTo = async () => {
-    moveVertically(fromControls, 80);
-    await moveVertically(toControls, -80);
+  const handleDepositAnimation = async () => {
+    moveVertically(fromControls, 78);
+    await moveVertically(toControls, -78, 999);
+  };
+
+  const handleWithdrawAnimation = async () => {
+    moveVertically(fromControls, 78, 999);
+    await moveVertically(toControls, -78);
   };
 
   return (
@@ -30,7 +36,7 @@ export const BridgeTabs = ({ fromControls, toControls }: BridgeTabsProps) => {
           value="deposit"
           onClick={() => {
             if (isWithdraw) {
-              invertFromTo();
+              handleDepositAnimation();
               handlers.goToDeposit();
             }
           }}
@@ -41,7 +47,7 @@ export const BridgeTabs = ({ fromControls, toControls }: BridgeTabsProps) => {
           value="withdraw"
           onClick={() => {
             if (!isWithdraw) {
-              invertFromTo();
+              handleWithdrawAnimation();
               handlers.goToWithdraw();
             }
           }}

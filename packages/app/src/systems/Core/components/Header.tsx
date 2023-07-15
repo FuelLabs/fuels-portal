@@ -78,7 +78,6 @@ export function Header() {
 
 const styles = {
   root: cssObj({
-    backgroundColor: '$intentsBase1',
     borderBottom: '1px solid $intentsBase5',
     pl: '$14',
     zIndex: '$10',
