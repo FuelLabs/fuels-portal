@@ -4,21 +4,23 @@ import type { AnimationControls } from 'framer-motion';
 import { useBridge } from '../hooks';
 
 type BridgeTabsProps = {
-  controls: AnimationControls;
+  fromControls: AnimationControls;
+  toControls: AnimationControls;
 };
 
-export const BridgeTabs = ({ controls }: BridgeTabsProps) => {
+export const BridgeTabs = ({ fromControls, toControls }: BridgeTabsProps) => {
   const { handlers, isWithdraw } = useBridge();
 
-  const moveHorizontally = async (factor: number = 15) => {
-    controls.set({ opacity: 0.4, x: factor });
-    await controls.start({ opacity: 1, x: 0, transition: { duration: 0.3 } });
+  const moveVertically = async (
+    control: AnimationControls,
+    factor: number = 15
+  ) => {
+    control.set({ opacity: 0.4, y: factor });
+    await control.start({ opacity: 1, y: 0, transition: { duration: 0.3 } });
   };
-  const rightToLeft = async () => {
-    await moveHorizontally(-50);
-  };
-  const leftToRight = async () => {
-    await moveHorizontally(50);
+  const invertFromTo = async () => {
+    moveVertically(fromControls, 80);
+    await moveVertically(toControls, -80);
   };
 
   return (
@@ -27,8 +29,10 @@ export const BridgeTabs = ({ controls }: BridgeTabsProps) => {
         <Tabs.Trigger
           value="deposit"
           onClick={() => {
-            rightToLeft();
-            handlers.goToDeposit();
+            if (isWithdraw) {
+              invertFromTo();
+              handlers.goToDeposit();
+            }
           }}
         >
           Deposit to Fuel
@@ -36,8 +40,10 @@ export const BridgeTabs = ({ controls }: BridgeTabsProps) => {
         <Tabs.Trigger
           value="withdraw"
           onClick={() => {
-            leftToRight();
-            handlers.goToWithdraw();
+            if (!isWithdraw) {
+              invertFromTo();
+              handlers.goToWithdraw();
+            }
           }}
         >
           Withdraw from Fuel

@@ -27,22 +27,16 @@ export function Header() {
           <ButtonLink
             href={Pages.developers}
             className={getClassName(Pages.developers)}
-            size="sm"
           >
             Developers
           </ButtonLink>
           <ButtonLink
             href={Pages.community}
             className={getClassName(Pages.community)}
-            size="sm"
           >
             Community
           </ButtonLink>
-          <ButtonLink
-            href={Pages.labs}
-            className={getClassName(Pages.labs)}
-            size="sm"
-          >
+          <ButtonLink href={Pages.labs} className={getClassName(Pages.labs)}>
             Labs
           </ButtonLink>
         </Box.Flex>
@@ -51,21 +45,18 @@ export function Header() {
             <ButtonLink
               href={Pages.bridge}
               className={getClassName(Pages.bridge)}
-              size="sm"
             >
               Bridge
             </ButtonLink>
             <ButtonLink
               href={Pages.explorer}
               className={getClassName(Pages.explorer)}
-              size="sm"
             >
               Explorer
             </ButtonLink>
             <ButtonLink
               href={Pages.ecosystem}
               className={getClassName(Pages.ecosystem)}
-              size="sm"
             >
               Ecosystem
             </ButtonLink>

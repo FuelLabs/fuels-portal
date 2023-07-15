@@ -25,7 +25,7 @@ export const BridgeHome = ({ children }: BridgeHomeProps) => {
           Fuel Native Bridge
         </Heading>
         <Tabs defaultValue={currentTab}>
-          <Tabs.List>
+          <Tabs.List css={styles.tabs}>
             <ButtonLink href={Pages.bridge} css={styles.buttonLink}>
               <Tabs.Trigger value="bridge">Bridge</Tabs.Trigger>
             </ButtonLink>
@@ -47,6 +47,10 @@ const styles = {
   heading: cssObj({
     mt: 0,
     mb: '$4',
+    ml: '$1',
+  }),
+  tabs: cssObj({
+    ml: 0,
   }),
   buttonLink: cssObj({
     '&:hover': {
