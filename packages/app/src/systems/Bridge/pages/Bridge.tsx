@@ -94,6 +94,7 @@ const styles = {
     '& > div': {
       px: '$3',
       py: '$2',
+      backgroundColor: 'transparent',
     },
   }),
 };

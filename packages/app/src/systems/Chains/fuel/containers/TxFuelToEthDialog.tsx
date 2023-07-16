@@ -19,6 +19,7 @@ export function TxFuelToEthDialog() {
       <Dialog.Close />
       <Dialog.Heading>
         Transaction: {shortAddress(metadata.txId)}
+        <Box css={styles.divider} />
       </Dialog.Heading>
       <Dialog.Description>
         <Box.Stack gap="$2">
@@ -61,5 +62,10 @@ const styles = {
   }),
   actionButton: cssObj({
     width: '$full',
+  }),
+  divider: cssObj({
+    h: 1,
+    bg: '$border',
+    mt: '$5',
   }),
 };

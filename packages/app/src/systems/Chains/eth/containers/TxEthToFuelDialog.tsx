@@ -20,6 +20,7 @@ export function TxEthToFuelDialog() {
       <Dialog.Close />
       <Dialog.Heading>
         Transaction: {shortAddress(metadata.txId)}
+        <Box css={styles.divider} />
       </Dialog.Heading>
       <Dialog.Description>
         <Box.Stack gap="$2">
@@ -49,6 +50,11 @@ const styles = {
   border: cssObj({
     my: '$4',
     borderBottom: '1px solid $border',
+  }),
+  divider: cssObj({
+    h: 1,
+    bg: '$border',
+    mt: '$5',
   }),
   actionButton: cssObj({
     width: '100%',
