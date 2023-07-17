@@ -2,7 +2,7 @@ import { cssObj } from '@fuel-ui/css';
 import { Box } from '@fuel-ui/react';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { SAMPLE_PROJECTS } from '../../prose';
+import { PROJECTS } from '../../data';
 import type { Project } from '../../types';
 
 import { ProjectList } from './ProjectList';
@@ -25,7 +25,7 @@ export const Usage: Story = {
       <ProjectList {...args} />
     </Box.Flex>
   ),
-  args: { projects: SAMPLE_PROJECTS as Project[] },
+  args: { projects: PROJECTS as Project[] },
 };
 
 export const Loading = () => (
