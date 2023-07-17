@@ -9,12 +9,7 @@ type ProjectListLoadingProps = {
 
 export const ProjectListLoading = ({ items = 8 }: ProjectListLoadingProps) => {
   return (
-    <Grid
-      gap="$8"
-      templateColumns="repeat(2, 1fr)"
-      templateRows="repeat(2, 1fr)"
-      css={styles.grid}
-    >
+    <Grid css={styles.grid}>
       {Array.from({ length: items }).map((_, idx) => (
         <ProjectItem.Loader key={idx} />
       ))}
@@ -24,9 +19,14 @@ export const ProjectListLoading = ({ items = 8 }: ProjectListLoadingProps) => {
 
 const styles = {
   grid: cssObj({
+    gridTemplateColumns: '1fr',
+    alignItems: 'stretch',
+    gap: '$6',
+
     /// show only 1 column on mobile
     '@media (max-width: 768px)': {
-      gridTemplateColumns: '1fr',
+      gridTemplateColumns: 'repeat(2, 1fr)',
+      gridTemplateRows: 'repeat(2, 1fr)',
     },
   }),
 };

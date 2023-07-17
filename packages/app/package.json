@@ -73,6 +73,7 @@
     "@types/react-helmet": "^6.1.6",
     "@vitejs/plugin-react-swc": "^3.0.0",
     "@xstate/cli": "^0.4.2",
+    "jdown": "^1.0.5",
     "prop-types": "^15.8.1",
     "storybook": "^7.0.7",
     "storybook-addon-react-router-v6": "0.3.5",

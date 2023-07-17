@@ -18,56 +18,67 @@ export function Header() {
   };
 
   return (
-    <Box.Flex as="header" css={styles.root}>
-      <Box.Flex gap="$4" css={styles.menu}>
-        <Link href="/" className="logo">
-          <FuelLogo size={24} />
-        </Link>
-        <ButtonLink
-          href={Pages.developers}
-          className={getClassName(Pages.developers)}
-        >
-          Developers
-        </ButtonLink>
-        <ButtonLink
-          href={Pages.community}
-          className={getClassName(Pages.community)}
-        >
-          Community
-        </ButtonLink>
-        <ButtonLink href={Pages.labs} className={getClassName(Pages.labs)}>
-          Labs
-        </ButtonLink>
-      </Box.Flex>
-      <Box.Flex gap="$4" css={styles.desktop}>
+    <Box.Flex as="header" css={styles.root} align="center" justify="center">
+      <Box.Flex css={styles.wrapper} align="center" justify="space-between">
         <Box.Flex gap="$4" css={styles.menu}>
+          <Link href="/" className="logo">
+            <FuelLogo size={24} />
+          </Link>
           <ButtonLink
-            href={Pages.bridge}
-            className={getClassName(Pages.bridge)}
+            href={Pages.developers}
+            className={getClassName(Pages.developers)}
+            size="sm"
           >
-            Bridge
+            Developers
           </ButtonLink>
           <ButtonLink
-            href={Pages.explorer}
-            className={getClassName(Pages.explorer)}
+            href={Pages.community}
+            className={getClassName(Pages.community)}
+            size="sm"
           >
-            Explorer
+            Community
           </ButtonLink>
           <ButtonLink
-            href={Pages.ecosystem}
-            className={getClassName(Pages.ecosystem)}
+            href={Pages.labs}
+            className={getClassName(Pages.labs)}
+            size="sm"
           >
-            Ecosystem
+            Labs
           </ButtonLink>
         </Box.Flex>
-        <Box.Flex gap="$1" css={styles.buttonContainer}>
-          <IconButton
-            icon="Moon"
-            aria-label="Theme-Switch"
-            iconSize={14}
-            css={styles.themeButton}
-            onPress={handlers.toggle}
-          />
+        <Box.Flex gap="$4" css={styles.desktop}>
+          <Box.Flex gap="$4" css={styles.menu}>
+            <ButtonLink
+              href={Pages.bridge}
+              className={getClassName(Pages.bridge)}
+              size="sm"
+            >
+              Bridge
+            </ButtonLink>
+            <ButtonLink
+              href={Pages.explorer}
+              className={getClassName(Pages.explorer)}
+              size="sm"
+            >
+              Explorer
+            </ButtonLink>
+            <ButtonLink
+              href={Pages.ecosystem}
+              className={getClassName(Pages.ecosystem)}
+              size="sm"
+            >
+              Ecosystem
+            </ButtonLink>
+          </Box.Flex>
+          <Box.Flex gap="$1" css={styles.buttonContainer}>
+            <IconButton
+              icon="Moon"
+              aria-label="Theme-Switch"
+              iconSize={14}
+              css={styles.themeButton}
+              onPress={handlers.toggle}
+            />
+          </Box.Flex>
         </Box.Flex>
       </Box.Flex>
     </Box.Flex>
@@ -78,16 +89,13 @@ const styles = {
   root: cssObj({
     backgroundColor: '$intentsBase1',
     borderBottom: '1px solid $intentsBase5',
-    justifyContent: 'space-between',
     pl: '$14',
     zIndex: '$10',
     position: 'sticky',
     top: 0,
-    background: '#0000000',
     gap: '$2',
     py: '$4',
     px: '$4',
-    alignItems: 'center',
     '.logo': {
       display: 'inline-flex',
       color: '$intentsBase8',
@@ -101,6 +109,10 @@ const styles = {
       py: '$4',
       px: '$8',
     },
+  }),
+  wrapper: cssObj({
+    width: '$full',
+    maxWidth: 1216,
   }),
   desktop: cssObj({
     alignItems: 'center',

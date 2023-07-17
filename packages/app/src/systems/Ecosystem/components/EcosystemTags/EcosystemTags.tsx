@@ -20,14 +20,14 @@ export const EcosystemTags = ({
 }: EcosystemTagsProps) => {
   if (isLoading) return <EcosystemTagsLoading />;
   return (
-    <Box.Flex justify="flex-start" align="center" gap="$3" wrap="wrap">
+    <Box.Flex justify="flex-start" align="center" gap="$2" wrap="wrap">
       <Button
         variant="outlined"
         onPress={onPressAllCategories}
-        css={!activeTag ? styles.active : styles.default}
+        css={{ ...styles.tag, ...(!activeTag && styles.active) }}
         size="sm"
       >
-        All Categories
+        All categories
       </Button>
       <Box css={styles.divider} />
       {(tags || []).map((tag) => (
@@ -35,7 +35,7 @@ export const EcosystemTags = ({
           variant="outlined"
           key={tag}
           onPress={() => onPressTag?.(tag)}
-          css={activeTag === tag ? styles.active : styles.default}
+          css={{ ...styles.tag, ...(activeTag === tag && styles.active) }}
           size="sm"
         >
           {tag}
@@ -46,7 +46,7 @@ export const EcosystemTags = ({
 };
 
 const styles = {
-  default: cssObj({
+  tag: cssObj({
     color: '$intentsBase12',
   }),
   active: cssObj({
@@ -55,8 +55,8 @@ const styles = {
   }),
   divider: cssObj({
     width: '1px',
-    height: '$4',
-    backgroundColor: '$intentsBase9',
+    height: '$3',
+    backgroundColor: '$intentsBase6',
   }),
 };
 
