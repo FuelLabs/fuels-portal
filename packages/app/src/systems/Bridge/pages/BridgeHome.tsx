@@ -22,7 +22,7 @@ export const BridgeHome = ({ children }: BridgeHomeProps) => {
 
   return (
     <Layout>
-      <Layout.Content>
+      <Layout.Content css={styles.content}>
         <Text fontSize="2xl" css={styles.heading}>
           Fuel Native Bridge
         </Text>
@@ -47,8 +47,10 @@ export const BridgeHome = ({ children }: BridgeHomeProps) => {
 };
 
 const styles = {
+  content: cssObj({
+    maxWidth: '$sm',
+  }),
   heading: cssObj({
-    mt: '$16',
     color: '$intentsBase12',
   }),
   buttonLinks: cssObj({

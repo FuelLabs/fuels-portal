@@ -4,12 +4,14 @@
   "version": "0.0.0",
   "main": "./src/App.tsx",
   "scripts": {
-    "build": "tsc && vite build",
+    "build": "run-s prose build:app",
+    "build:app": "tsc && vite build",
     "build:preview": "run-s build build:storybook",
     "build:storybook": "storybook build -o ./dist/storybook",
     "codegen": "graphql-codegen --config codegen.ts",
     "dev": "vite",
     "preview": "vite preview",
+    "prose": "node ./src/systems/Ecosystem/prose/build.js",
     "storybook": "storybook dev -p 6006",
     "ts:check": "pnpm xstate:typegen && tsc --noEmit",
     "xstate:typegen": "xstate typegen 'src/**/*.ts?(x)'"
@@ -75,6 +77,7 @@
     "@vitejs/plugin-react-swc": "^3.0.0",
     "@xstate/cli": "^0.4.2",
     "adm-zip": "^0.5.10",
+    "jdown": "^1.0.5",
     "prop-types": "^15.8.1",
     "storybook": "^7.0.7",
     "storybook-addon-react-router-v6": "0.3.5",

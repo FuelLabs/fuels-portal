@@ -1,44 +1,40 @@
 [
   {
     "name": "Sway Swap",
-    "description": "SwaySwap is a blazingly fast DEX built on the fastest modular execution layer: Fuel.",
+    "description": "A blazingly fast DEX on Fuel.",
     "tags": ["defi", "swap"],
     "url": "https://fuellabs.github.io/swayswap/",
-    "status": "live"
+    "isLive": true
   },
   {
     "name": "Fuelet",
     "description": "Non-custodial wallet on Fuel.",
     "tags": ["wallet", "mobile", "infra"],
-    "url": "https://fuelet.app/",
-    "status": "live"
+    "url": "https://fuelet.app/"
   },
   {
     "name": "ThunderNFT",
     "description": "The Superior NFT Experience, on Fuel.",
     "tags": ["marketplace", "nft"],
     "url": "https://thundernft.market/",
-    "status": "in-development"
+    "isLive": true
   },
   {
     "name": "Orao Network",
     "description": "Oracle Service for Custom Data Feeds.",
     "tags": ["oracle", "infra"],
-    "url": "https://orao.network/",
-    "status": "live"
+    "url": "https://orao.network/"
   },
   {
     "name": "SwayLend",
     "description": "First ever Lending protocol on Fuel Network.",
     "tags": ["defi", "lending"],
-    "url": "https://swaylend.com/",
-    "status": "testnet"
+    "url": "https://swaylend.com/"
   },
   {
     "name": "Poolshark",
     "description": "Poolshark is an open-source AMM protocol that makes it easy for users to catch directional moves from the comfort of a liquidity pool.",
     "tags": ["defi", "infra", "amm"],
-    "url": "https://docs.poolsharks.io/",
-    "status": "in-development"
+    "url": "https://docs.poolsharks.io/"
   }
 ]
