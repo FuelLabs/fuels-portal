@@ -49,6 +49,7 @@ export function Header() {
         <Box.Flex gap="$4" css={styles.desktop}>
           <Box.Flex gap="$4" css={styles.menu}>
             <ButtonLink
+              aria-label="Bridge"
               href={Pages.bridge}
               className={getClassName(Pages.bridge)}
               size="sm"
