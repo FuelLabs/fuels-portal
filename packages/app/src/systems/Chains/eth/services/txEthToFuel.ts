@@ -114,7 +114,7 @@ export class TxEthToFuelService {
 
     try {
       // only tokens will have address, as eth is native
-      if (isAddress(ethAsset.address)) {
+      if (ethAsset.address && isAddress(ethAsset.address)) {
         const fuelErc20Gateway = TxEthToFuelService.connectToFuelErc20Gateway({
           walletClient: ethWalletClient,
         });
