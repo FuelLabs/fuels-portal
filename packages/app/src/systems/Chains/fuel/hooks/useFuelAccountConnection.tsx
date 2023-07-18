@@ -11,6 +11,9 @@ import {
 import { Address } from 'fuels';
 import { useMemo } from 'react';
 
+import { ETH_SYMBOL, ethLogoSrc } from '../../eth';
+import { FUEL_UNITS } from '../utils';
+
 import { store } from '~/store';
 
 export const useFuelAccountConnection = () => {
@@ -22,6 +25,17 @@ export const useFuelAccountConnection = () => {
   const { disconnect } = useDisconnect();
   const { provider } = useProvider();
   const { wallet } = useWallet({ address: account || '' });
+
+  // TODO: replace here when we support multiple assets (ERC-20)
+  const asset = {
+    // TODO: replace with ETH_ASSET_ID from asset-list package after this task gets done
+    // https://linear.app/fuel-network/issue/FRO-144/make-asset-list-package-public-and-publish-in-npm
+    address:
+      '0x0000000000000000000000000000000000000000000000000000000000000000',
+    decimals: FUEL_UNITS,
+    symbol: ETH_SYMBOL,
+    image: ethLogoSrc,
+  };
 
   const address = useMemo(
     () => (account ? Address.fromString(account) : undefined),
@@ -53,5 +67,6 @@ export const useFuelAccountConnection = () => {
     provider,
     balance,
     wallet,
+    asset,
   };
 };

@@ -2,6 +2,7 @@ import { cssObj } from '@fuel-ui/css';
 import { Dialog } from '@fuel-ui/react';
 
 import {
+  EthAssetsDialog,
   FuelInstallDialog,
   TxEthToFuelDialog,
   TxFuelToEthDialog,
@@ -23,6 +24,7 @@ export function OverlayDialog() {
         {overlay.is('tx.fromEth.toFuel') && <TxEthToFuelDialog />}
         {overlay.is('tx.fromFuel.toEth') && <TxFuelToEthDialog />}
         {overlay.is('fuel.install') && <FuelInstallDialog />}
+        {overlay.is('eth.assets') && <EthAssetsDialog />}
       </Dialog.Content>
     </Dialog>
   );

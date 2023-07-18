@@ -43,5 +43,13 @@ export function overlayEvents(store: Store) {
         },
       });
     },
+    openEthAssetsDialog() {
+      store.send(Services.overlay, {
+        type: 'OPEN',
+        input: {
+          modal: 'eth.assets',
+        },
+      });
+    },
   };
 }

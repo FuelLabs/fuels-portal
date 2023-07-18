@@ -60,16 +60,33 @@ const selectors = {
     },
   isLoading: (state: BridgeMachineState) => state.matches('bridging'),
   assetAmount: (state: BridgeMachineState) => state.context?.assetAmount,
+  assetAddress: (state: BridgeMachineState) => state.context?.assetAddress,
 };
 
 export function useBridge() {
+  const fromNetwork = store.useSelector(Services.bridge, selectors.fromNetwork);
+  const toNetwork = store.useSelector(Services.bridge, selectors.toNetwork);
+  const isLoading = store.useSelector(Services.bridge, selectors.isLoading);
+  const assetAmount = store.useSelector(Services.bridge, selectors.assetAmount);
+  const assetAddress = store.useSelector(
+    Services.bridge,
+    selectors.assetAddress
+  );
+
   const {
     address: ethAddress,
     handlers: ethHandlers,
     isConnecting: ethIsConnecting,
     balance: ethBalance,
     walletClient: ethWalletClient,
-  } = useEthAccountConnection();
+    publicClient: ethPublicClient,
+    asset: ethAsset,
+  } = useEthAccountConnection({
+    erc20Address: assetAddress?.startsWith('0x')
+      ? (assetAddress as `0x${string}`)
+      : undefined,
+  });
+
   const {
     account: fuelAccount,
     address: fuelAddress,
@@ -77,11 +94,8 @@ export function useBridge() {
     isConnecting: fuelIsConnecting,
     balance: fuelBalance,
     wallet: fuelWallet,
+    asset: fuelAsset,
   } = useFuelAccountConnection();
-  const fromNetwork = store.useSelector(Services.bridge, selectors.fromNetwork);
-  const toNetwork = store.useSelector(Services.bridge, selectors.toNetwork);
-  const isLoading = store.useSelector(Services.bridge, selectors.isLoading);
-  const assetAmount = store.useSelector(Services.bridge, selectors.assetAmount);
 
   const isDeposit = isFuelChain(toNetwork);
   const isWithdraw = isFuelChain(fromNetwork);
@@ -111,18 +125,26 @@ export function useBridge() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const fromInput = queryParams.get('from');
-  const toInput = queryParams.get('to');
 
+  function getToInputNetwork() {
+    if (!fromInputNetwork) return undefined;
+
+    return isFuelChain(fromInputNetwork) ? ETH_CHAIN : FUEL_CHAIN;
+  }
+  const fromInputNetwork = getChainFromUrlParam(fromInput);
+  const toInputNetwork = getToInputNetwork();
+
+  // this effect is responsible to react to url changes (from/to params) and inform the machine that it changed
   useEffect(() => {
-    if (!fromInput || !toInput) {
+    if (!fromInputNetwork || !toInputNetwork) {
       goToDeposit();
     } else {
-      const fromNetwork = getChainFromUrlParam(fromInput) || ETH_CHAIN;
-      const toNetwork = isFuelChain(fromNetwork) ? ETH_CHAIN : FUEL_CHAIN;
-
-      store.changeNetworks({ fromNetwork, toNetwork });
+      store.changeNetworks({
+        fromNetwork: fromInputNetwork,
+        toNetwork: toInputNetwork,
+      });
     }
-  }, [fromInput, toInput]);
+  }, [fromInputNetwork, toInputNetwork]);
 
   function goToDeposit() {
     const searchParams = new URLSearchParams(location.search);
@@ -168,6 +190,30 @@ export function useBridge() {
     return false;
   }
 
+  function openAssetsDialog(network?: SupportedChain) {
+    if (isEthChain(network)) {
+      return store.openEthAssetsDialog();
+    }
+
+    if (isFuelChain(network)) {
+      // TODO: implement it when include withdraw from ERC-20 token
+    }
+
+    return undefined;
+  }
+
+  function getAsset(network?: SupportedChain) {
+    if (isEthChain(network)) {
+      return ethAsset;
+    }
+
+    if (isFuelChain(network)) {
+      return fuelAsset;
+    }
+
+    return undefined;
+  }
+
   return {
     handlers: {
       goToDeposit,
@@ -178,10 +224,15 @@ export function useBridge() {
           ethWalletClient,
           fuelWallet,
           ethAddress,
+          ethAsset,
+          fuelAsset,
+          ethPublicClient,
         }),
       connectFrom: () => connectNetwork(fromNetwork),
       connectTo: () => connectNetwork(toNetwork),
       changeAssetAmount: store.changeAssetAmount,
+      changeAssetAddress: store.changeAssetAddress,
+      openAssetsDialog: () => openAssetsDialog(fromNetwork),
     },
     fromNetwork,
     toNetwork,
@@ -193,5 +244,6 @@ export function useBridge() {
     status,
     assetAmount,
     assetBalance,
+    asset: getAsset(fromNetwork),
   };
 }
