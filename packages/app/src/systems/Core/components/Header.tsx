@@ -79,6 +79,7 @@ export function Header() {
 const styles = {
   root: cssObj({
     borderBottom: '1px solid $intentsBase5',
+    background: '$bodyBg',
     pl: '$14',
     zIndex: '$10',
     position: 'sticky',
