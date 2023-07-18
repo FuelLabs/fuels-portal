@@ -36,32 +36,5 @@ const styles = {
     minHeight: OVERLAY_HEIGHT,
     maxWidth: OVERLAY_WIDTH,
     maxHeight: 'none',
-    background: '$bodyColor',
-
-    '.fuel_dialog--heading, .fuel_dialog--footer': {
-      borderColor: '$gray2',
-    },
-    '.fuel_dialog--description': {
-      flex: 1,
-      overflowY: 'auto',
-      height: '100%',
-    },
-    '.fuel_dialog--heading': cssObj({
-      display: 'flex',
-      justifyContent: 'space-between',
-    }),
-    '.fuel_dialog--footer': cssObj({
-      button: {
-        width: '100%',
-      },
-    }),
-    form: cssObj({
-      display: 'flex',
-      flexDirection: 'column',
-      height: '100%',
-    }),
-    'button[data-action="closed"]': {
-      px: '$1',
-    },
   }),
 };
