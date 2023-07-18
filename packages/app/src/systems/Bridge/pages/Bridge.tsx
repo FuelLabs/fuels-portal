@@ -85,7 +85,7 @@ const styles = {
     p: '$7',
   }),
   divider: cssObj({
-    h: 1,
+    h: '1px',
     bg: '$border',
     mt: '$1',
     mb: '$5',

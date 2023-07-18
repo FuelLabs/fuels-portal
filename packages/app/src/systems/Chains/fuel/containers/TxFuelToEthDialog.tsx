@@ -64,7 +64,7 @@ const styles = {
     width: '$full',
   }),
   divider: cssObj({
-    h: 1,
+    h: '1px',
     bg: '$border',
     mt: '$5',
   }),

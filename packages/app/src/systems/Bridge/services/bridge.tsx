@@ -42,14 +42,13 @@ export class BridgeService {
       fuelWallet,
       ethAddress,
       ethAsset,
-      // fuelAsset,
     } = input;
 
     if (!fromNetwork || !toNetwork) {
       throw new Error('"Network From" and "Network To" are required');
     }
     if (!assetAmount || assetAmount.isZero()) {
-      throw new Error('Need to inform asset amount to be transfered');
+      throw new Error('Need to inform amount to be transfered');
     }
 
     if (isEthChain(fromNetwork) && isFuelChain(toNetwork)) {

@@ -14,7 +14,6 @@ export const useAssets = () => {
         address: VITE_ETH_ERC20_TOKEN_ADDRESS as `0x${string}`,
         decimals: ETH_UNITS,
         symbol: 'TKN',
-        // image: ethLogoSrc,
       },
     ],
   };

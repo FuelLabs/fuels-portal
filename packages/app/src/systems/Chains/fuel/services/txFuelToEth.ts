@@ -171,7 +171,6 @@ export class TxFuelToEthService {
     const fuelPortal = TxEthToFuelService.connectToFuelMessagePortal({
       walletClient: ethWalletClient,
     });
-
     const txHash = await fuelPortal.write.relayMessageFromFuelBlock([
       messageOutput,
       blockHeader,
