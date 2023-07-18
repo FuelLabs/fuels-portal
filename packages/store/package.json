@@ -42,7 +42,7 @@
     "xstate": "^4.37.0"
   },
   "devDependencies": {
-    "@fuel-ui/test-utils": "^0.16.1",
+    "@fuel-ui/test-utils": "^0.12.4",
     "@fuels-portal/config": "workspace:*",
     "@types/react": "^18.0.27",
     "@types/uuid": "^9.0.0",
