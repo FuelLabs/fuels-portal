@@ -1,4 +1,4 @@
-import { NativeAssetId, type BN } from 'fuels';
+import { type BN } from 'fuels';
 import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
 
@@ -54,7 +54,7 @@ export const bridgeMachine = createMachine(
     // eslint-disable-next-line @typescript-eslint/consistent-type-imports
     tsTypes: {} as import('./bridgeMachine.typegen').Typegen0,
     schema: {
-      context: { assetAddressList: [NativeAssetId] } as MachineContext,
+      context: {} as MachineContext,
       services: {} as MachineServices,
       events: {} as BridgeMachineEvents,
     },
