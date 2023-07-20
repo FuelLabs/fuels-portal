@@ -111,7 +111,7 @@ export const bridgeMachine = createMachine(
       })),
       assignAssetAmount: assign({
         assetAmount: (_, ev) => {
-          return ev.input.assetAmount?.eq(0) ? undefined : ev.input.assetAmount;
+          return ev.input.assetAmount;
         },
       }),
       clearAssetAmmount: assign({
