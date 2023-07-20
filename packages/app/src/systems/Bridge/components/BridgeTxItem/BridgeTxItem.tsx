@@ -33,7 +33,6 @@ export const BridgeTxItem = ({
         <Box css={bridgeTxListStyles.ageColumn}>
           <Text css={styles.ageText}>{calculateDateDiff(date)}</Text>
         </Box>
-        {/* <Box.Flex direction="row"> */}
         <Box.Flex
           css={{
             ...bridgeTxListStyles.directionColumn,
@@ -53,7 +52,6 @@ export const BridgeTxItem = ({
           <Text css={styles.infoText}>{asset.assetAmount}</Text>
           <Text css={styles.infoText}>{asset.assetSymbol}</Text>
         </Box.Flex>
-        {/* </Box.Flex> */}
         <Box css={bridgeTxListStyles.statusColumn}>{status}</Box>
       </Box.Flex>
     </CardList.Item>
@@ -63,13 +61,14 @@ export const BridgeTxItem = ({
 const styles = cssObj({
   listItem: cssObj({
     flexDirection: 'column',
+    border: '1px solid $intentsBase6 !important',
+    backgroundColor: '$intentsBase0',
+    width: '344px',
 
     '@md': {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      // px: '0px !important',
-      // py: '$1 !important',
       p: '$4 !important',
       width: '$full',
       border: '1px solid $intentsBase6 !important',
