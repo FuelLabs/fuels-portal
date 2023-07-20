@@ -262,7 +262,7 @@ importers:
         version: 7.0.7
       '@synthetixio/synpress':
         specifier: https://github.com/matt-user/synpress.git
-        version: github.com/matt-user/synpress/c49705f5abb8436b70ff5364d72131668af2bae9(@babel/core@7.21.8)(@babel/preset-env@7.22.5)(babel-loader@9.1.2)(react-dom@18.2.0)(react@18.2.0)(typescript@4.9.5)(webpack@5.88.0)
+        version: github.com/matt-user/synpress/9cee7ef2d083b35b26d8672add4c9959b3abdfae(@babel/core@7.21.8)(@babel/preset-env@7.22.5)(babel-loader@9.1.2)(react-dom@18.2.0)(react@18.2.0)(typescript@4.9.5)(webpack@5.88.0)
       '@types/node':
         specifier: ^18.13.0
         version: 18.13.0
@@ -6185,7 +6185,6 @@ packages:
   /@noble/hashes@1.3.1:
     resolution: {integrity: sha512-EbqwksQwz9xDRGfDST86whPBgM65E0OH/pCgqW0GBVzO22bNE+NuIbeTb714+IfSjU3aRk47EUvXIb5bTsenKA==}
     engines: {node: '>= 16'}
-    dev: false
 
   /@noble/secp256k1@1.7.1:
     resolution: {integrity: sha512-hOUk6AyBFmqVrv7k5WAw/LpszxVbj9gGN4JRkIX52fdFAj1UA61KXmZDvqVEm+pOyec3+fIeZB02LYa/pWOArw==}
@@ -9135,7 +9134,7 @@ packages:
     resolution: {integrity: sha512-bcKpo1oj54hGholplGLpqPHRbIsnbixFtc06nwuNM5/dwSXOq/AAYoIBRsBmnZJSdfeNW5rnff7NTAz3ZCqR9Q==}
     dependencies:
       '@noble/curves': 1.0.0
-      '@noble/hashes': 1.3.0
+      '@noble/hashes': 1.3.1
       '@scure/base': 1.1.1
 
   /@scure/bip39@1.1.1:
@@ -9148,7 +9147,7 @@ packages:
   /@scure/bip39@1.2.0:
     resolution: {integrity: sha512-SX/uKq52cuxm4YFXWFaVByaSHJh2w3BnokVSeUJVCv6K7WulT9u2BuNRBhuFl8vAuYnzx9bEu9WgpcNYTrYieg==}
     dependencies:
-      '@noble/hashes': 1.3.0
+      '@noble/hashes': 1.3.1
       '@scure/base': 1.1.1
 
   /@sentry/core@5.30.0:
@@ -27877,9 +27876,9 @@ packages:
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
 
-  github.com/matt-user/synpress/c49705f5abb8436b70ff5364d72131668af2bae9(@babel/core@7.21.8)(@babel/preset-env@7.22.5)(babel-loader@9.1.2)(react-dom@18.2.0)(react@18.2.0)(typescript@4.9.5)(webpack@5.88.0):
-    resolution: {tarball: https://codeload.github.com/matt-user/synpress/tar.gz/c49705f5abb8436b70ff5364d72131668af2bae9}
-    id: github.com/matt-user/synpress/c49705f5abb8436b70ff5364d72131668af2bae9
+  github.com/matt-user/synpress/9cee7ef2d083b35b26d8672add4c9959b3abdfae(@babel/core@7.21.8)(@babel/preset-env@7.22.5)(babel-loader@9.1.2)(react-dom@18.2.0)(react@18.2.0)(typescript@4.9.5)(webpack@5.88.0):
+    resolution: {tarball: https://codeload.github.com/matt-user/synpress/tar.gz/9cee7ef2d083b35b26d8672add4c9959b3abdfae}
+    id: github.com/matt-user/synpress/9cee7ef2d083b35b26d8672add4c9959b3abdfae
     name: '@synthetixio/synpress'
     version: 3.7.0
     engines: {node: '>=14'}
