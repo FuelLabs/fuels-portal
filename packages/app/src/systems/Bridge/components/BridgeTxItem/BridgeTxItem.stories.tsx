@@ -36,9 +36,36 @@ export const Usage = () => {
   );
 };
 
+export const Card = () => {
+  return (
+    <Box.Flex align="center" justify="center" css={styles.storybookCard}>
+      <BridgeTxItem
+        fromLogo={<Image width={18} height={18} src={ethLogoSrc} />}
+        toLogo={<FuelLogo size={17} />}
+        date={new Date()}
+        asset={{
+          assetAmount: '0.050',
+          assetSymbol: 'ETH',
+          assetImageSrc: <Image width={18} height={18} src={ethLogoSrc} />,
+        }}
+        onClick={() => {}}
+        status={
+          <Text fontSize="xs" color="intentsBase11">
+            Settled
+          </Text>
+        }
+      />
+    </Box.Flex>
+  );
+};
+
 const styles = {
   storybook: cssObj({
     margin: '20px',
     width: '386px',
+  }),
+  storybookCard: cssObj({
+    margin: '20px',
+    width: '328px',
   }),
 };

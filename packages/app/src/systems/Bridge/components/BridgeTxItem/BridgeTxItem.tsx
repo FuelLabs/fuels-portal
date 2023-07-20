@@ -29,10 +29,11 @@ export const BridgeTxItem = ({
 }: BridgeTxItemProps) => {
   return (
     <CardList.Item onClick={onClick} css={styles.listItem}>
-      <Box.Flex align="center" css={styles.wrapper}>
+      <Box.Flex css={styles.wrapper}>
         <Box css={bridgeTxListStyles.ageColumn}>
           <Text css={styles.ageText}>{calculateDateDiff(date)}</Text>
         </Box>
+        {/* <Box.Flex direction="row"> */}
         <Box.Flex
           css={{
             ...bridgeTxListStyles.directionColumn,
@@ -52,6 +53,7 @@ export const BridgeTxItem = ({
           <Text css={styles.infoText}>{asset.assetAmount}</Text>
           <Text css={styles.infoText}>{asset.assetSymbol}</Text>
         </Box.Flex>
+        {/* </Box.Flex> */}
         <Box css={bridgeTxListStyles.statusColumn}>{status}</Box>
       </Box.Flex>
     </CardList.Item>
@@ -60,14 +62,29 @@ export const BridgeTxItem = ({
 
 const styles = cssObj({
   listItem: cssObj({
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    px: '0px !important',
-    py: '$1 !important',
-    width: '$full',
+    flexDirection: 'column',
+
+    '@md': {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      // px: '0px !important',
+      // py: '$1 !important',
+      p: '$4 !important',
+      width: '$full',
+      border: '1px solid $intentsBase6 !important',
+      backgroundColor: '$intentsBase0',
+    },
   }),
   wrapper: cssObj({
-    width: '100%',
+    alignItems: 'start',
+    flexDirection: 'column',
+
+    '@md': {
+      flexDirection: 'row',
+      width: '100%',
+      alignItems: 'center',
+    },
   }),
   txItem: cssObj({
     gap: '$1',
