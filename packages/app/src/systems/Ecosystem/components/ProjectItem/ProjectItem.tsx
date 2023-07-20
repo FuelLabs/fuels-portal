@@ -44,7 +44,6 @@ export const ProjectItem: ProjectItemComponent = ({
   return (
     <MotionCard
       withDividers
-      css={styles.card}
       {...animations.slideInBottom({
         transition: { type: 'spring' },
       })}

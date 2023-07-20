@@ -2,7 +2,7 @@ import { cssObj } from '@fuel-ui/css';
 import { Card, Text, Image, Button, Box, IconButton } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
 
-import { coreStyles, shortAddress } from '~/systems/Core';
+import { shortAddress } from '~/systems/Core';
 
 type AccountConnectionInputProps = {
   networkName?: string;
@@ -28,7 +28,7 @@ export const AccountConnectionInput = ({
   onDisconnect,
 }: AccountConnectionInputProps) => {
   return (
-    <Card css={{ ...styles.root, ...coreStyles.card }}>
+    <Card css={styles.root}>
       <Card.Body css={styles.cardBody}>
         <Box.Stack gap="$1">
           <Box>
@@ -48,11 +48,13 @@ export const AccountConnectionInput = ({
                 onPress={onConnect}
                 isLoading={isConnecting}
                 css={styles.connectButton}
-                size="sm"
+                size="xs"
                 intent="primary"
                 aria-label={`${label} Connect wallet`}
               >
-                Connect wallet
+                <Text fontSize="sm" color="inherit">
+                  Connect wallet
+                </Text>
               </Button>
             ) : (
               <Button
@@ -71,10 +73,10 @@ export const AccountConnectionInput = ({
                 }
                 variant="outlined"
                 intent="base"
-                size="sm"
+                size="xs"
                 css={{ ...styles.connectButton, ...styles.connectedButton }}
               >
-                <Text fontSize="xs">
+                <Text fontSize="sm">
                   {shortAddress(account.alias, 16) ||
                     shortAddress(account.address)}
                 </Text>
@@ -90,24 +92,23 @@ export const AccountConnectionInput = ({
 const styles = {
   root: cssObj({
     minHeight: '$15',
-    borderRadius: '$md',
+    border: '1px solid $border',
+    overflowX: 'hidden',
   }),
   cardBody: cssObj({
     px: '$3',
     py: '$2',
   }),
   connectButton: cssObj({
-    borderRadius: '$md',
-    height: '22px',
-    width: '140px',
+    width: '$36',
   }),
   connectedButton: cssObj({
     justifyContent: 'space-between',
     gap: 0,
   }),
   circle: cssObj({
-    minWidth: 10,
-    height: 10,
+    minWidth: '$3',
+    height: '$3',
     backgroundColor: '$intentsError9',
     borderRadius: '$full',
   }),

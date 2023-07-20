@@ -28,21 +28,6 @@ export const scrollable = (
     },
   });
 
-export const buttonListItem = cssObj({
-  justifyContent: 'normal',
-  borderRadius: '$md',
-  fontWeight: '$medium',
-  fontSize: '$sm',
-  px: '$3',
-});
-
-const card = cssObj({
-  border: '1px solid $border',
-  overflowX: 'hidden',
-});
-
 export const coreStyles = {
   scrollable,
-  buttonListItem,
-  card,
 };

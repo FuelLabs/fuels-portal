@@ -5,7 +5,6 @@ import { ReceiptType, fromTai64ToUnix } from 'fuels';
 import { useEffect, useMemo } from 'react';
 
 import { useEthAccountConnection } from '../../eth';
-import { ActionBadge } from '../components';
 import type { TxFuelToEthMachineState } from '../machines';
 import { txFuelToEthMachine } from '../machines';
 import { FUEL_UNITS } from '../utils';
@@ -52,7 +51,7 @@ const selectors = {
     const status = selectors.status(state);
 
     function getConfirmStatusText() {
-      if (status.isWaitingEthWalletApproval) return <ActionBadge />;
+      if (status.isWaitingEthWalletApproval) return 'Action required';
       if (status.isConfirmTransactionDone) return 'Done!';
       return 'Action';
     }

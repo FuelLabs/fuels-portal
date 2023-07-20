@@ -16,7 +16,6 @@ import {
   isFuelChain,
   TxListItemFuelToEth,
 } from '~/systems/Chains';
-import { coreStyles } from '~/systems/Core';
 
 export const BridgeTxList = () => {
   const { isConnecting, handlers } = useFuelAccountConnection();
@@ -29,32 +28,32 @@ export const BridgeTxList = () => {
   } = useBridgeTxs();
 
   return (
-    <Card css={coreStyles.card}>
+    <Card>
       <Card.Header css={styles.header}>
         <Text
           fontSize="sm"
-          color="intentsBase10"
+          color="intentsBase9"
           css={bridgeTxListStyles.ageColumn}
         >
           Age
         </Text>
         <Text
           fontSize="sm"
-          color="intentsBase10"
+          color="intentsBase9"
           css={bridgeTxListStyles.directionColumn}
         >
           Direction
         </Text>
         <Text
           fontSize="sm"
-          color="intentsBase10"
+          color="intentsBase9"
           css={bridgeTxListStyles.assetColumn}
         >
           Asset
         </Text>
         <Text
           fontSize="sm"
-          color="intentsBase10"
+          color="intentsBase9"
           css={bridgeTxListStyles.statusColumn}
         >
           Status

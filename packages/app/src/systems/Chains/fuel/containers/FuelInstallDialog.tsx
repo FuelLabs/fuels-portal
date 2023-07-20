@@ -19,12 +19,8 @@ export const FuelInstallDialog = () => (
       </Box.Stack>
     </Dialog.Description>
     <Dialog.Footer>
-      <a
-        href="https://wallet.fuel.network/docs/install/"
-        target="_blank"
-        rel="noreferrer"
-      >
-        <Button>Install Fuel Wallet</Button>
+      <a href="https://wallet.fuel.network" target="_blank" rel="noreferrer">
+        <Button intent="primary">Get Fuel Wallet</Button>
       </a>
     </Dialog.Footer>
   </>

@@ -1,7 +1,7 @@
 import { cssObj } from '@fuel-ui/css';
 import { Badge } from '@fuel-ui/react';
 
-export const ActionBadge = () => {
+export const ActionRequiredBadge = () => {
   return (
     <Badge css={styles.actionBadge} intent="error">
       Action Required
