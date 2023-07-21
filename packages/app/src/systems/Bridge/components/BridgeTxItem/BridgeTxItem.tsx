@@ -34,23 +34,35 @@ export const BridgeTxItem = ({
           <Text css={styles.ageText}>{calculateDateDiff(date)}</Text>
         </Box>
         <Box.Flex
+          gap="$8"
           css={{
             ...bridgeTxListStyles.directionColumn,
-            ...styles.directionInfo,
           }}
         >
-          {fromLogo}
-          <Icon icon="ArrowNarrowRight" />
-          {toLogo}
-        </Box.Flex>
-        <Box.Flex css={{ ...bridgeTxListStyles.assetColumn, ...styles.txItem }}>
-          {typeof asset.assetImageSrc === 'string' ? (
-            <Image width={18} height={18} src={asset.assetImageSrc} />
-          ) : (
-            asset.assetImageSrc
-          )}
-          <Text css={styles.infoText}>{asset.assetAmount}</Text>
-          <Text css={styles.infoText}>{asset.assetSymbol}</Text>
+          <Box.Flex
+            css={{
+              // ...bridgeTxListStyles.directionColumn,
+              ...styles.directionInfo,
+            }}
+          >
+            {fromLogo}
+            <Icon icon="ArrowNarrowRight" />
+            {toLogo}
+          </Box.Flex>
+          <Box.Flex
+            css={{
+              // ...bridgeTxListStyles.assetColumn,
+              ...styles.txItem,
+            }}
+          >
+            {typeof asset.assetImageSrc === 'string' ? (
+              <Image width={18} height={18} src={asset.assetImageSrc} />
+            ) : (
+              asset.assetImageSrc
+            )}
+            <Text css={styles.infoText}>{asset.assetAmount}</Text>
+            <Text css={styles.infoText}>{asset.assetSymbol}</Text>
+          </Box.Flex>
         </Box.Flex>
         <Box css={bridgeTxListStyles.statusColumn}>{status}</Box>
       </Box.Flex>
