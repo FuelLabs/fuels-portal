@@ -1,16 +1,16 @@
 export const bridgeTxListStyles = {
   ageColumn: {
-    flex: '0 0 24px',
+    flex: '1 0 24px',
 
     '@md': {
-      flex: '0 0 80px',
+      flex: '1 0 100px',
     },
   },
   directionColumn: {
-    flex: '0 0 45px',
+    flex: '1 0 45px',
 
     '@md': {
-      flex: '0 0 90px',
+      flex: '1 0 90px',
     },
   },
   assetColumn: {
