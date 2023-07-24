@@ -33,28 +33,13 @@ export const BridgeTxItem = ({
         <Box css={bridgeTxListStyles.ageColumn}>
           <Text css={styles.ageText}>{calculateDateDiff(date)}</Text>
         </Box>
-        <Box.Flex
-          gap="$8"
-          css={{
-            ...bridgeTxListStyles.directionColumn,
-          }}
-        >
-          <Box.Flex
-            css={{
-              // ...bridgeTxListStyles.directionColumn,
-              ...styles.directionInfo,
-            }}
-          >
+        <Box.Flex gap="$8" css={bridgeTxListStyles.directionColumn}>
+          <Box.Flex css={styles.directionInfo}>
             {fromLogo}
             <Icon icon="ArrowNarrowRight" />
             {toLogo}
           </Box.Flex>
-          <Box.Flex
-            css={{
-              // ...bridgeTxListStyles.assetColumn,
-              ...styles.txItem,
-            }}
-          >
+          <Box.Flex css={styles.txItem}>
             {typeof asset.assetImageSrc === 'string' ? (
               <Image width={18} height={18} src={asset.assetImageSrc} />
             ) : (
