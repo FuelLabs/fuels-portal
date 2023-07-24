@@ -5,11 +5,13 @@ import { assign, createMachine } from 'xstate';
 import type { BridgeInputs, PossibleBridgeInputs } from '../services';
 import { BridgeService } from '../services';
 
+import { store } from '~/store';
 import type { FromToNetworks } from '~/systems/Chains';
 import { FetchMachine } from '~/systems/Core/machines';
 
 type MachineContext = {
   assetAmount?: BN;
+  assetAddress?: string;
 } & Partial<FromToNetworks>;
 
 type MachineServices = {
@@ -33,6 +35,10 @@ export type BridgeMachineEvents =
   | {
       type: 'CHANGE_NETWORKS';
       input: FromToNetworks;
+    }
+  | {
+      type: 'CHANGE_ASSET_ADDRESS';
+      input: { assetAddress?: string };
     }
   | {
       type: 'CHANGE_ASSET_AMOUNT';
@@ -64,6 +70,9 @@ export const bridgeMachine = createMachine(
           CHANGE_ASSET_AMOUNT: {
             actions: ['assignAssetAmount'],
           },
+          CHANGE_ASSET_ADDRESS: {
+            actions: ['assignAssetAddress', 'closeOverlay'],
+          },
           START_BRIDGING: {
             target: 'bridging',
           },
@@ -81,6 +90,7 @@ export const bridgeMachine = createMachine(
               toNetwork: ctx.toNetwork,
               assetAmount: ctx.assetAmount,
               fuelAddress: ev.input.fuelAddress,
+              ethAsset: ev.input.ethAsset,
               ethWalletClient: ev.input.ethWalletClient,
               ethPublicClient: ev.input.ethPublicClient,
               fuelWallet: ev.input.fuelWallet,
@@ -114,9 +124,15 @@ export const bridgeMachine = createMachine(
           return ev.input.assetAmount;
         },
       }),
+      assignAssetAddress: assign({
+        assetAddress: (_, ev) => ev.input.assetAddress,
+      }),
       clearAssetAmmount: assign({
         assetAmount: undefined,
       }),
+      closeOverlay: () => {
+        store.closeOverlay();
+      },
     },
     services: {
       bridge: FetchMachine.create<BridgeInputs['bridge'], void>({

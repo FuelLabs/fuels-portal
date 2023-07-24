@@ -2,7 +2,7 @@ import { Image, FuelLogo, Text, Box, Spinner } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
 
 import { ethLogoSrc } from '../../eth';
-import { ActionBadge } from '../components';
+import { ActionRequiredBadge } from '../components';
 import { useTxFuelToEth } from '../hooks';
 
 import { BridgeTxItem } from '~/systems/Bridge';
@@ -50,7 +50,7 @@ export const TxListItemFuelToEth = ({
     }
 
     if (bridgeTxStatus?.name === 'Confirm transaction') {
-      return <ActionBadge />;
+      return <ActionRequiredBadge />;
     }
 
     return '';

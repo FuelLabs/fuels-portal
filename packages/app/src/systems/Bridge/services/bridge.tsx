@@ -2,6 +2,8 @@ import { bn, DECIMAL_UNITS } from 'fuels';
 import type { Address as FuelAddress, BN } from 'fuels';
 import type { PublicClient, WalletClient } from 'wagmi';
 
+import type { BridgeAsset } from '../types';
+
 import { store } from '~/store';
 import type {
   FromToNetworks,
@@ -10,7 +12,6 @@ import type {
 } from '~/systems/Chains';
 import {
   TxFuelToEthService,
-  ETH_UNITS,
   isEthChain,
   isFuelChain,
   TxEthToFuelService,
@@ -21,7 +22,9 @@ export type PossibleBridgeInputs = {
   ethWalletClient?: WalletClient;
   ethPublicClient?: PublicClient;
   fuelAddress?: FuelAddress;
-} & Omit<TxEthToFuelInputs['create'], 'amount'> &
+  ethAsset?: BridgeAsset;
+  fuelAsset?: BridgeAsset;
+} & Omit<TxEthToFuelInputs['start'], 'amount'> &
   Omit<TxFuelToEthInputs['create'], 'amount'>;
 export type BridgeInputs = {
   bridge: FromToNetworks & PossibleBridgeInputs;
@@ -34,29 +37,36 @@ export class BridgeService {
       toNetwork,
       assetAmount,
       ethWalletClient,
+      ethPublicClient,
       fuelAddress,
       fuelWallet,
       ethAddress,
+      ethAsset,
     } = input;
 
     if (!fromNetwork || !toNetwork) {
       throw new Error('"Network From" and "Network To" are required');
     }
-
     if (!assetAmount || assetAmount.isZero()) {
-      throw new Error('Need to inform asset amount to be transfered');
+      throw new Error('Need to inform amount to be transfered');
     }
 
     if (isEthChain(fromNetwork) && isFuelChain(toNetwork)) {
+      if (!ethAsset) {
+        throw new Error('Need to inform asset to be transfered');
+      }
+
       const amountFormatted = assetAmount.format({
         precision: DECIMAL_UNITS,
         units: DECIMAL_UNITS,
       });
-      const amountEthUnits = bn.parseUnits(amountFormatted, ETH_UNITS);
-      const txId = await TxEthToFuelService.create({
+      const amountEthUnits = bn.parseUnits(amountFormatted, ethAsset.decimals);
+      const txId = await TxEthToFuelService.start({
         amount: amountEthUnits.toHex(),
         ethWalletClient,
         fuelAddress,
+        ethAsset,
+        ethPublicClient,
       });
 
       if (txId) {

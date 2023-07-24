@@ -26,8 +26,7 @@ export const useBridgeTxs = () => {
   return {
     txs,
     isLoading,
-    // need to check for strict equality bc we care if isConnected is not undefined
-    shouldShowNotConnected: isConnected === false && !isLoading,
+    shouldShowNotConnected: !isConnected && !isLoading,
     shouldShowEmpty: isConnected && !isLoading && txs.length === 0,
     shouldShowList: !isLoading && isConnected && txs.length > 0,
   };

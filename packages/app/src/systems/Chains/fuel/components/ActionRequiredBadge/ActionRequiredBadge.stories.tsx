@@ -1,11 +1,11 @@
 import { cssObj } from '@fuel-ui/css';
 import { Box } from '@fuel-ui/react';
 
-import { ActionBadge } from './ActionBadge';
+import { ActionRequiredBadge } from './ActionRequiredBadge';
 
 export default {
-  component: ActionBadge,
-  title: 'ActionBadge',
+  component: ActionRequiredBadge,
+  title: 'ActionRequiredBadge',
   parameters: {
     layout: 'fullscreen',
   },
@@ -14,7 +14,7 @@ export default {
 export const Usage = () => {
   return (
     <Box.Flex align="center" justify="center" css={styles.storybook}>
-      <ActionBadge />
+      <ActionRequiredBadge />
     </Box.Flex>
   );
 };
