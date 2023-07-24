@@ -110,9 +110,7 @@ export const bridgeMachine = createMachine(
         toNetwork: ev.input.toNetwork,
       })),
       assignAssetAmount: assign({
-        assetAmount: (_, ev) => {
-          return ev.input.assetAmount;
-        },
+        assetAmount: (_, ev) => ev.input.assetAmount,
       }),
       clearAssetAmmount: assign({
         assetAmount: undefined,
