@@ -2,7 +2,7 @@ import { cssObj } from '@fuel-ui/css';
 import { Box } from '@fuel-ui/react';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { SAMPLE_PROJECTS } from '../../data';
+import { PROJECTS } from '../../data';
 import type { Project } from '../../types';
 
 import { ProjectItem } from './ProjectItem';
@@ -12,14 +12,6 @@ const meta: Meta<typeof ProjectItem> = {
   title: 'Ecosystem / ProjectItem',
   parameters: {
     layout: 'fullscreen',
-  },
-  argTypes: {
-    status: {
-      options: ['live', 'testnet', 'in-development'],
-      control: {
-        type: 'select',
-      },
-    },
   },
 };
 
@@ -32,12 +24,16 @@ export const Usage: Story = {
       <ProjectItem {...args} />
     </Box.Flex>
   ),
-  args: SAMPLE_PROJECTS[0] as Project,
+  args: PROJECTS[0] as Project,
 };
 
 const styles = {
   storybook: cssObj({
     margin: '20px',
+    width: 465,
+    '.fuel_Card': {
+      flex: 1,
+    },
   }),
 };
 

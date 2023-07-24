@@ -90,6 +90,7 @@ export const bridgeMachine = createMachine(
               toNetwork: ctx.toNetwork,
               assetAmount: ctx.assetAmount,
               fuelAddress: ev.input.fuelAddress,
+              ethAsset: ev.input.ethAsset,
               ethWalletClient: ev.input.ethWalletClient,
               ethPublicClient: ev.input.ethPublicClient,
               fuelWallet: ev.input.fuelWallet,

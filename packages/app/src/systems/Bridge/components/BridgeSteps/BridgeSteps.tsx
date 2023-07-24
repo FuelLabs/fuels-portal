@@ -59,9 +59,8 @@ const styles = {
   stack: cssObj({
     gap: '$0',
     minWidth: '344px',
-    backgroundColor: '$intentsBase0',
     borderRadius: '$md',
-    border: '1px solid $intentsBase5',
+    border: '1px solid $border',
   }),
   item: cssObj({
     alignItems: 'center',
@@ -70,7 +69,7 @@ const styles = {
     py: '$2',
 
     '& ~ &': {
-      borderTop: '1px solid $intentsBase5',
+      borderTop: '1px solid $border',
     },
 
     '.circleDone': {
@@ -86,7 +85,7 @@ const styles = {
     lineHeight: '1.5rem',
   }),
   icon: cssObj({
-    color: '$black12',
+    color: '$blackA12',
   }),
   number: cssObj({
     display: 'flex',

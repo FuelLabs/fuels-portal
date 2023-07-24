@@ -1,6 +1,5 @@
 import { useModal } from 'connectkit';
 import { NativeAssetId } from 'fuels';
-import { useEffect } from 'react';
 import {
   useAccount,
   useBalance,
@@ -11,12 +10,9 @@ import {
   useWalletClient,
 } from 'wagmi';
 
-import { TxEthToFuelService } from '../services';
 import { parseEthAddressToFuel } from '../utils';
 
 import { useAsset } from './useAsset';
-
-let i = 0;
 
 export function useEthAccountConnection(props?: {
   erc20Address?: `0x${string}`;
@@ -38,31 +34,6 @@ export function useEthAccountConnection(props?: {
   const { open: isConnecting, setOpen } = useModal();
   const { disconnect } = useDisconnect();
   const paddedAddress = parseEthAddressToFuel(address);
-
-  // TODO: this is triggering many times, should do probably using machine
-  // useEffect(() => {
-  //   if (walletClient && asset?.address) {
-  //     walletClient.watchAsset({
-  //       type: 'ERC20',
-  //       options: asset,
-  //     });
-  //   }
-  // }, [walletClient, asset?.address]);
-
-  // TODO: should remove this useEffect when we have erc20 contracts in l1_chain
-  useEffect(() => {
-    if (walletClient && publicClient) {
-      if (i) return;
-
-      // eslint-disable-next-line no-plusplus
-      i++;
-
-      TxEthToFuelService.createErc20Contract({
-        ethWalletClient: walletClient,
-        ethPublicClient: publicClient,
-      });
-    }
-  }, [walletClient, publicClient]);
 
   return {
     handlers: {

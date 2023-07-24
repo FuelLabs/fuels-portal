@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Text, Box, ButtonLink } from '@fuel-ui/react';
+import { ButtonLink, Tabs, Heading } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -13,76 +13,48 @@ type BridgeHomeProps = {
 export const BridgeHome = ({ children }: BridgeHomeProps) => {
   const location = useLocation();
 
-  const getClassName = (pageUrl: string) => {
-    const isCurrentPage =
-      removeTrailingSlash(location.pathname) === removeTrailingSlash(pageUrl);
+  const isCurrentPage = (pageUrl: string) =>
+    removeTrailingSlash(location.pathname) === removeTrailingSlash(pageUrl);
 
-    return (isCurrentPage && 'header--navItemActive') || '';
-  };
+  const currentTab = isCurrentPage(Pages.bridge) ? 'bridge' : 'transactions';
 
   return (
     <Layout>
-      <Layout.Content>
-        <Text fontSize="2xl" css={styles.heading}>
+      <Layout.Content css={styles.content}>
+        <Heading as="h2" css={styles.heading}>
           Fuel Native Bridge
-        </Text>
-        <Box.Flex gap="$2" css={styles.buttonLinks}>
-          <ButtonLink
-            href={Pages.bridge}
-            className={getClassName(Pages.bridge)}
-          >
-            Bridge
-          </ButtonLink>
-          <ButtonLink
-            href={Pages.transactions}
-            className={getClassName(Pages.transactions)}
-          >
-            Transactions
-          </ButtonLink>
-        </Box.Flex>
-        {children}
+        </Heading>
+        <Tabs defaultValue={currentTab}>
+          <Tabs.List css={styles.tabs}>
+            <ButtonLink href={Pages.bridge} css={styles.buttonLink}>
+              <Tabs.Trigger value="bridge">Bridge</Tabs.Trigger>
+            </ButtonLink>
+            <ButtonLink href={Pages.transactions} css={styles.buttonLink}>
+              <Tabs.Trigger value="transactions">Transactions</Tabs.Trigger>
+            </ButtonLink>
+          </Tabs.List>
+          {children}
+        </Tabs>
       </Layout.Content>
     </Layout>
   );
 };
 
 const styles = {
-  heading: cssObj({
-    mt: '$16',
-    color: '$intentsBase12',
+  content: cssObj({
+    maxWidth: '$sm',
   }),
-  buttonLinks: cssObj({
-    mb: '$3',
-    a: {
-      my: '$4',
-      px: '0',
-      color: '$intentsBase10',
-      transition: 'all 0.3s',
-      borderRadius: 0,
-      borderBottom: '2px solid transparent !important',
-
-      '&:not([aria-disabled=true]):active, &:not([aria-disabled=true])[aria-pressed=true]':
-        {
-          transform: 'none',
-        },
-      '&:focus-visible': {
-        outline: 'none !important',
-        outlineOffset: 'unset !important',
-        borderRadius: 0,
-      },
-      '&:hover': {
-        color: '$intentsBase12 !important',
-      },
-    },
-
-    'a.active, a:hover': {
-      color: '$accent8',
+  heading: cssObj({
+    mt: 0,
+    mb: '$4',
+    ml: '$1',
+  }),
+  tabs: cssObj({
+    ml: 0,
+  }),
+  buttonLink: cssObj({
+    '&:hover': {
       textDecoration: 'none',
-    },
-
-    'a.header--navItemActive': {
-      color: '$intentsBase12',
-      borderBottom: '2px solid $intentsPrimary9 !important',
     },
   }),
 };

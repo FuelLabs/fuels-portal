@@ -1,3 +1,7 @@
-import SAMPLE_PROJECTS from './sample_projects.json';
+import type { Project } from '../types';
 
-export { SAMPLE_PROJECTS };
+import projects from './projects.json';
+
+const PROJECTS: Project[] = projects;
+
+export { PROJECTS };
