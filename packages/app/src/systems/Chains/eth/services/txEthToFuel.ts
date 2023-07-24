@@ -118,7 +118,7 @@ export class TxEthToFuelService {
           walletClient: ethWalletClient,
         });
         const erc20Token = TxEthToFuelService.connectToErc20({
-          address: ethAsset.address,
+          address: ethAsset.address as `0x${string}`,
           walletClient: ethWalletClient,
         });
 
