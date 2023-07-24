@@ -1,7 +1,7 @@
 import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
 
-import { SAMPLE_PROJECTS } from '../data';
+import { PROJECTS } from '../data';
 import type { Project } from '../types';
 
 import { FetchMachine } from '~/systems/Core';
@@ -113,14 +113,13 @@ export const ecosystemMachine = createMachine(
         showError: true,
         maxAttempts: 1,
         async fetch() {
-          const projects = SAMPLE_PROJECTS as Project[];
-          const tagsArray = projects.reduce(
+          const tagsArray = PROJECTS.reduce(
             (acc, project) => [...acc, ...project.tags],
             [] as string[]
           );
           const tags = new Set(tagsArray);
           return {
-            projects,
+            projects: PROJECTS,
             tags: Array.from(tags),
           };
         },

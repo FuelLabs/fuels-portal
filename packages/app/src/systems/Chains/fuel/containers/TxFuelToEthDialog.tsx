@@ -16,19 +16,14 @@ export function TxFuelToEthDialog() {
 
   return (
     <>
-      <Dialog.Heading css={styles.dialogHeading}>
-        <Box.Flex justify="space-between" css={styles.dialogHeadingContainer}>
-          <Text fontSize="sm" color="intentsBase12">
-            Transaction: {shortAddress(metadata.txId)}
-          </Text>
-          <Dialog.Close />
-        </Box.Flex>
+      <Dialog.Close />
+      <Dialog.Heading>
+        Transaction: {shortAddress(metadata.txId)}
+        <Box css={styles.divider} />
       </Dialog.Heading>
       <Dialog.Description>
         <Box.Stack gap="$2">
-          <Text fontSize="sm" color="intentsBase12">
-            Status
-          </Text>
+          <Text color="intentsBase12">Status</Text>
           <BridgeSteps steps={steps} />
           <Box css={styles.border} />
           <BridgeTxOverview
@@ -61,20 +56,16 @@ export function TxFuelToEthDialog() {
 }
 
 const styles = {
-  dialogHeading: cssObj({
-    borderBottom: '1px solid $intentsBase8',
-  }),
-  dialogHeadingContainer: cssObj({
-    paddingBottom: '$4',
-  }),
-  dialogHeadingIcon: cssObj({
-    color: '$intentsBase12 !important',
-  }),
   border: cssObj({
     my: '$4',
-    borderBottom: '1px solid $intentsBase8',
+    borderBottom: '1px solid $border',
   }),
   actionButton: cssObj({
     width: '$full',
+  }),
+  divider: cssObj({
+    h: '1px',
+    bg: '$border',
+    mt: '$5',
   }),
 };

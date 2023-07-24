@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { decodeEventLog } from 'viem';
 
 import { useFuelAccountConnection } from '../../fuel';
-import { AbiFuelMessagePortal } from '../services/abi';
+import { FUEL_MESSAGE_PORTAL } from '../contracts/FuelMessagePortal';
 
 import { useBlocks } from './useBlocks';
 import { useCachedBlocksDates } from './useCachedBlocksDates';
@@ -82,7 +82,7 @@ export const useEthDepositLogs = () => {
   const logs = useMemo(() => {
     return query.data?.map((log) => {
       const decodedEvent = decodeEventLog({
-        abi: AbiFuelMessagePortal,
+        abi: FUEL_MESSAGE_PORTAL.abi,
         data: log.data,
         topics: log.topics,
       });
