@@ -53,6 +53,7 @@ export class TxFuelToEthService {
     }
 
     const { amount, fuelWallet, ethAddress } = input;
+    // TODO: broken here
     const txFuel = await fuelWallet.withdrawToBaseLayer(
       Address.fromString(ethAddress),
       amount
@@ -86,7 +87,7 @@ export class TxFuelToEthService {
       return r.type === ReceiptType.MessageOut;
     }) as ReceiptMessageOut;
 
-    return message?.messageID;
+    return message?.messageId;
   }
 
   static async getMessageProof(input: TxFuelToEthInputs['getMessageProof']) {
@@ -102,6 +103,7 @@ export class TxFuelToEthService {
 
     const { fuelTxId, fuelProvider, messageId } = input;
 
+    // TODO: here should pass blockCommitId blockCommitHeight after we have new structure for bridge
     const withdrawMessageProof = await fuelProvider.getMessageProof(
       fuelTxId,
       messageId
@@ -153,19 +155,22 @@ export class TxFuelToEthService {
       nonce: messageProof.nonce,
       data: messageProof.data,
     };
+
+    // TODO: this BlockHeader in ETH side probably changed with new infra, check
     const blockHeader: BlockHeader = {
-      prevRoot: messageProof.header.prevRoot,
-      height: messageProof.header.height.toHex(),
-      timestamp: bn(messageProof.header.time).toHex(),
-      daHeight: messageProof.header.daHeight.toHex(),
-      txCount: messageProof.header.transactionsCount.toHex(),
-      outputMessagesCount: messageProof.header.outputMessagesCount.toHex(),
-      txRoot: messageProof.header.transactionsRoot,
-      outputMessagesRoot: messageProof.header.outputMessagesRoot,
+      prevRoot: messageProof.messageBlockHeader.prevRoot,
+      height: messageProof.messageBlockHeader.height.toHex(),
+      timestamp: bn(messageProof.messageBlockHeader.time).toHex(),
+      daHeight: messageProof.messageBlockHeader.daHeight.toHex(),
+      txCount: messageProof.messageBlockHeader.transactionsCount.toHex(),
+      outputMessagesCount:
+        messageProof.messageBlockHeader.messageReceiptCount.toHex(),
+      txRoot: messageProof.messageBlockHeader.transactionsRoot,
+      outputMessagesRoot: messageProof.messageBlockHeader.messageReceiptRoot,
     };
     const messageInBlockProof = {
-      key: Number(messageProof.proofIndex.toString()),
-      proof: messageProof.proofSet.slice(0, -1),
+      key: Number(messageProof.messageProof.proofIndex.toString()),
+      proof: messageProof.messageProof.proofSet.slice(0, -1),
     };
 
     const fuelPortal = TxEthToFuelService.connectToFuelMessagePortal({
@@ -175,7 +180,8 @@ export class TxFuelToEthService {
       messageOutput,
       blockHeader,
       messageInBlockProof,
-      messageProof.signature,
+      // TODO: what is the signature with new infra?
+      // messageProof.signature,
     ]);
 
     return txHash;

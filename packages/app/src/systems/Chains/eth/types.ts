@@ -1,3 +1,5 @@
+// TODO: this BlockHeader in ETH side probably changed with new infra, check
+
 // The BlockHeader structure.
 export interface BlockHeader {
   // Consensus
