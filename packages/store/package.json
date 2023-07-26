@@ -28,9 +28,9 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@fuel-ui/config": "^0.16.1",
-    "@fuel-ui/css": "^0.16.1",
-    "@fuel-ui/react": "^0.16.1",
+    "@fuel-ui/config": "0.16.2-dev-9e06773",
+    "@fuel-ui/css": "0.16.2-dev-9e06773",
+    "@fuel-ui/react": "0.16.2-dev-9e06773",
     "@fuels-portal/storage": "^0.0.1",
     "@xstate/inspect": "^0.7.1",
     "@xstate/react": "^3.1.1",
@@ -42,7 +42,7 @@
     "xstate": "^4.37.0"
   },
   "devDependencies": {
-    "@fuel-ui/test-utils": "^0.16.1",
+    "@fuel-ui/test-utils": "0.16.2-dev-9e06773",
     "@fuels-portal/config": "workspace:*",
     "@types/react": "^18.0.27",
     "@types/uuid": "^9.0.0",
