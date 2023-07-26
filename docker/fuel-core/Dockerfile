@@ -1,4 +1,4 @@
-FROM ghcr.io/fuellabs/fuel-core:v0.17.3
+FROM ghcr.io/fuellabs/fuel-core:v0.19.0
 
 ARG FUEL_IP=0.0.0.0
 ARG FUEL_PORT=4000
@@ -14,8 +14,11 @@ COPY chainConfig.json .
 # expose fuel node port
 ENV FUEL_IP="${FUEL_IP}"
 ENV FUEL_PORT="${FUEL_PORT}"
-EXPOSE ${FUEL_PORT}
+ENV CONSENSUS_KEY="${CONSENSUS_KEY}"
+ENV MIN_GAS_PRICE="${MIN_GAS_PRICE}"
 
 # copy over script and run
 COPY ./scripts/fuel_core.sh .
 CMD ["sh", "./fuel_core.sh"]
+
+EXPOSE ${FUEL_PORT}

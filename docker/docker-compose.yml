@@ -16,14 +16,14 @@ services:
     container_name: '${PROJECT:-fuel-node}_fuel-core'
     environment:
       # The minimum gas price required
-      GAS_PRICE: ${GAS_PRICE}
+      MIN_GAS_PRICE: ${MIN_GAS_PRICE}
       # Ethereum RPC URL
       L1_CHAIN_HTTP: http://l1_chain:8545
       # Data server that informs the contract id to use on fuel-core for L1
       DEPLOYMENTS_HTTP: http://l1_chain:8081/deployments.local.json
       # This is the private key of the consensus.PoA.signing_key in the chainConfig.json
       # this key is responsible for validating the transactions
-      CONSENSUS_KEY_SECRET: ${WALLET_SECRET}
+      CONSENSUS_KEY: ${WALLET_SECRET}
     build: ./fuel-core
     ports:
       - '${FUEL_CORE_PORT:-4000}:4000'
@@ -41,11 +41,11 @@ services:
     environment:
       # Other configurations can be found at;
       # https://github.com/FuelLabs/faucet#configuration
-      GAS_PRICE: ${GAS_PRICE}
+      MIN_GAS_PRICE: ${MIN_GAS_PRICE}
       WALLET_SECRET_KEY: ${WALLET_SECRET}
       DISPENSE_AMOUNT: ${DISPENSE_AMOUNT}
       FUEL_NODE_URL: http://${PROJECT:-fuel-node}_fuel-core:4000/graphql
-    image: ghcr.io/fuellabs/faucet:v0.5.0
+    image: ghcr.io/fuellabs/faucet:v0.5.4
     ports:
       - '${FUEL_FAUCET_PORT:-4040}:3000'
     links:

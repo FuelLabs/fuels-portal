@@ -55,8 +55,9 @@ exec /root/fuel-core run \
     --port $FUEL_PORT \
     --db-type in-memory \
     --utxo-validation \
+    --min-gas-price $MIN_GAS_PRICE \
+    --consensus-key $CONSENSUS_KEY \
     --vm-backtrace \
-    --consensus-key $CONSENSUS_KEY_SECRET \
     --relayer $L1_CHAIN_HTTP \
     --relayer-v2-listening-contracts $FUEL_MESSAGE_PORTAL_CONTRACT_ADDRESS \
     --relayer-da-finalization 0 \

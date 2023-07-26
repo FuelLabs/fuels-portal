@@ -64,14 +64,12 @@ export const Bridge = () => {
           <BridgeButton />
           <Alert status="warning">
             <Alert.Description>
-              <Text fontSize="sm">
-                Any assets deposited to Fuel takes 7 days to withdraw back to
-                Ethereum. Learn more about our architecture and security in
-                our&nbsp;
-                <Link href="https://fuel.sh/" isExternal>
-                  docs
-                </Link>
-              </Text>
+              Any assets deposited to Fuel takes 7 days to withdraw back to
+              Ethereum. Learn more about our architecture and security in
+              our&nbsp;
+              <Link href="https://fuel.sh/" isExternal>
+                docs
+              </Link>
             </Alert.Description>
           </Alert>
         </Box.Stack>
