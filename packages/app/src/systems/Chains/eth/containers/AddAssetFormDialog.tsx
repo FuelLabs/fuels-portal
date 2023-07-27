@@ -14,7 +14,6 @@ export function AddAssetFormDialog() {
 
   const [tokenSymbol, setTokenSymbol] = useState('');
   const [tokenDecimals, setTokenDecimals] = useState('');
-  const [tokenImageSource, setTokenImageSource] = useState('');
 
   return (
     <>
@@ -49,15 +48,6 @@ export function AddAssetFormDialog() {
               />
             </Input>
           </Form.Control>
-          <Form.Control>
-            <Form.Label css={styles.text}>Token image source</Form.Label>
-            <Input size="md" css={styles.text}>
-              <Input.Field
-                placeholder="Token image source"
-                onChange={(e) => setTokenImageSource(e.target.value)}
-              />
-            </Input>
-          </Form.Control>
         </Box.Stack>
       </Dialog.Description>
       <Dialog.Footer>
@@ -69,7 +59,7 @@ export function AddAssetFormDialog() {
             handlers.addAsset({
               asset: {
                 address: metadata.assetAddress,
-                image: tokenImageSource,
+                image: '',
                 decimals: Number(tokenDecimals),
                 symbol: tokenSymbol,
               },
