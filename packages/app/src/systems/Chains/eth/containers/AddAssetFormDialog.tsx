@@ -58,25 +58,29 @@ export function AddAssetFormDialog() {
               />
             </Input>
           </Form.Control>
-          <Button
-            size="sm"
-            isDisabled={!tokenDecimals.length || !tokenSymbol.length}
-            onPress={() => {
-              handlers.addAsset({
-                asset: {
-                  address: metadata.assetAddress,
-                  image: tokenImageSource,
-                  decimals: Number(tokenDecimals),
-                  symbol: tokenSymbol,
-                },
-              });
-              store.openManageAssetsDialog();
-            }}
-          >
-            Add token to list
-          </Button>
         </Box.Stack>
       </Dialog.Description>
+      <Dialog.Footer>
+        <Button
+          size="sm"
+          intent="primary"
+          isDisabled={!tokenDecimals.length || !tokenSymbol.length}
+          onPress={() => {
+            handlers.addAsset({
+              asset: {
+                address: metadata.assetAddress,
+                image: tokenImageSource,
+                decimals: Number(tokenDecimals),
+                symbol: tokenSymbol,
+              },
+            });
+            store.openManageAssetsDialog();
+          }}
+          css={{ width: '$full' }}
+        >
+          Add token to list
+        </Button>
+      </Dialog.Footer>
     </>
   );
 }
