@@ -14,4 +14,4 @@ contracts
 .changeset/**.md
 **/fuel-v2-contracts
 **/storybook-static
-scripts/brigde/fuel-bridge
+scripts/bridge/fuel-bridge
