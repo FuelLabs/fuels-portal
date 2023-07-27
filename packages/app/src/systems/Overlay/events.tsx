@@ -55,7 +55,7 @@ export function overlayEvents(store: Store) {
       store.send(Services.overlay, {
         type: 'OPEN',
         input: {
-          modal: 'eth.manage.assets',
+          modal: 'eth.assets.manage',
         },
       });
     },
@@ -63,7 +63,7 @@ export function overlayEvents(store: Store) {
       store.send(Services.overlay, {
         type: 'OPEN',
         input: {
-          modal: 'eth.add.assets',
+          modal: 'eth.assets.add',
           params: {
             assetAddress,
           },

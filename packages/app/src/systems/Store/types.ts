@@ -1,6 +1,6 @@
 import type { StoreClass } from '@fuels-portal/store';
 
-import type { AssetListMachine } from '../Chains';
+import type { EthAssetListMachine } from '../Chains';
 
 import type { BridgeMachine } from '~/systems/Bridge';
 import type { EcosystemMachine } from '~/systems/Ecosystem';
@@ -10,14 +10,14 @@ export enum Services {
   overlay = 'overlay',
   bridge = 'bridge',
   ecosystem = 'ecosystem',
-  assetList = 'assetList',
+  ethAssetList = 'ethAssetList',
 }
 
 export type StoreMachines = {
   overlay: OverlayMachine;
   bridge: BridgeMachine;
   ecosystem: EcosystemMachine;
-  assetList: AssetListMachine;
+  ethAssetList: EthAssetListMachine;
 };
 
 export type Store = StoreClass<StoreMachines>;

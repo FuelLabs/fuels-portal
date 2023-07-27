@@ -7,7 +7,7 @@ export class AssetService {
       const { address, ...updateData } = input.data;
       const asset = await db.assets.get({ address });
       if (asset) {
-        await db.assets.update(address, updateData);
+        await db.assets.update(address || '', updateData);
       } else {
         await db.assets.add(input.data);
       }
@@ -23,9 +23,9 @@ export class AssetService {
     });
   }
 
-  static async removeAsset({ address }: { address: string }) {
+  static async removeAsset({ address }: { address?: string }) {
     return db.transaction('rw', db.assets, async () => {
-      await db.assets.delete(address);
+      await db.assets.delete(address || '');
 
       return true;
     });

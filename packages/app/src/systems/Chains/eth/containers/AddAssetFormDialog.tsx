@@ -10,7 +10,7 @@ import { useOverlay } from '~/systems/Overlay';
 
 export function AddAssetFormDialog() {
   const { metadata } = useOverlay<{ assetAddress: string }>();
-  const { addAsset } = useAssets();
+  const { handlers } = useAssets();
 
   const [tokenSymbol, setTokenSymbol] = useState('');
   const [tokenDecimals, setTokenDecimals] = useState('');
@@ -35,7 +35,7 @@ export function AddAssetFormDialog() {
             <Form.Label css={styles.text}>Token symbol</Form.Label>
             <Input size="md" css={styles.text}>
               <Input.Field
-                placeholder="ETH"
+                placeholder="SYMBOL"
                 onChange={(e) => setTokenSymbol(e.target.value)}
               />
             </Input>
@@ -62,7 +62,7 @@ export function AddAssetFormDialog() {
             size="sm"
             isDisabled={!tokenDecimals.length || !tokenSymbol.length}
             onPress={() => {
-              addAsset({
+              handlers.addAsset({
                 asset: {
                   address: metadata.assetAddress,
                   image: tokenImageSource,

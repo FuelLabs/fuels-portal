@@ -1,21 +1,11 @@
 import type { StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
 
+import { AssetList } from '../constants';
 import { AssetService } from '../services';
-import { ethLogoSrc } from '../utils';
 
 import type { BridgeAsset } from '~/systems/Bridge';
 import { FetchMachine } from '~/systems/Core';
-
-export const AssetList = [
-  {
-    address:
-      '0x0000000000000000000000000000000000000000000000000000000000000000',
-    symbol: 'ETH',
-    image: ethLogoSrc,
-    decimals: 18,
-  },
-];
 
 type MachineContext = {
   assetList?: BridgeAsset[];
@@ -40,10 +30,10 @@ type AssetListMachineEvents =
     }
   | {
       type: 'REMOVE_ASSET';
-      input: { address: string };
+      input: { address?: string };
     };
 
-export const assetListMachine = createMachine(
+export const ethAssetListMachine = createMachine(
   {
     // eslint-disable-next-line @typescript-eslint/consistent-type-imports
     tsTypes: {} as import('./assetsMachine.typegen').Typegen0,
@@ -164,7 +154,7 @@ export const assetListMachine = createMachine(
       >({
         showError: true,
         async fetch({ input }) {
-          if (!input?.address) {
+          if (!input) {
             throw new Error('Missing data');
           }
 
@@ -176,5 +166,5 @@ export const assetListMachine = createMachine(
   }
 );
 
-export type AssetListMachine = typeof assetListMachine;
-export type AssetListMachineState = StateFrom<AssetListMachine>;
+export type EthAssetListMachine = typeof ethAssetListMachine;
+export type EthAssetListMachineState = StateFrom<EthAssetListMachine>;

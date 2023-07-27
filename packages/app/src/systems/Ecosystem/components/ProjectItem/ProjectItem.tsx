@@ -83,7 +83,7 @@ export const ProjectItem: ProjectItemComponent = ({
           </Box.Stack>
           <Box.Flex align="center" justify="space-between" wrap="wrap">
             <ButtonLink
-              variant="link"
+              as="a"
               css={styles.link}
               href={url}
               color="intentsBase10"

@@ -1,4 +1,4 @@
-import { type BN } from 'fuels';
+import type { BN } from 'fuels';
 import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
 
@@ -120,9 +120,7 @@ export const bridgeMachine = createMachine(
         toNetwork: ev.input.toNetwork,
       })),
       assignAssetAmount: assign({
-        assetAmount: (_, ev) => {
-          return ev.input.assetAmount?.eq(0) ? undefined : ev.input.assetAmount;
-        },
+        assetAmount: (_, ev) => ev.input.assetAmount,
       }),
       assignAssetAddress: assign({
         assetAddress: (_, ev) => ev.input.assetAddress,

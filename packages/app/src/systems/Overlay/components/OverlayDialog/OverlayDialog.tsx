@@ -27,8 +27,8 @@ export function OverlayDialog() {
         {overlay.is('tx.fromFuel.toEth') && <TxFuelToEthDialog />}
         {overlay.is('fuel.install') && <FuelInstallDialog />}
         {overlay.is('eth.assets') && <EthAssetsDialog />}
-        {overlay.is('eth.manage.assets') && <ManageEthAssetsDialog />}
-        {overlay.is('eth.add.assets') && <AddAssetFormDialog />}
+        {overlay.is('eth.assets.manage') && <ManageEthAssetsDialog />}
+        {overlay.is('eth.assets.add') && <AddAssetFormDialog />}
       </Dialog.Content>
     </Dialog>
   );

@@ -82,7 +82,9 @@ export function useBridge() {
     publicClient: ethPublicClient,
     asset: ethAsset,
   } = useEthAccountConnection({
-    erc20Address: assetAddress as `0x${string}`,
+    erc20Address: assetAddress?.startsWith('0x')
+      ? (assetAddress as `0x${string}`)
+      : undefined,
   });
 
   const {
