@@ -1,10 +1,10 @@
-import type { AbstractAddress, BigNumberish, Message, Provider } from 'fuels';
+import type { AbstractAddress, BN, Message, Provider } from 'fuels';
 import { setTimeout } from 'timers/promises';
 
 export async function waitForMessage(
   provider: Provider,
   recipient: AbstractAddress,
-  nonce: BigNumberish,
+  nonce: BN,
   timeout: number
 ): Promise<Message> {
   const startTime = new Date().getTime();
@@ -15,7 +15,7 @@ export async function waitForMessage(
     });
 
     const message = messages.find((message) => {
-      return message.nonce.toString() === nonce.toString();
+      return message.nonce.toString() === nonce.toHex(32).toString();
     });
 
     if (message) {
