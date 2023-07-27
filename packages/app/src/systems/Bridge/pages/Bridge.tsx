@@ -55,7 +55,7 @@ export const Bridge = () => {
                 }}
                 value={assetAmount}
                 onChange={(val) =>
-                  handlers.changeAssetAmount({ assetAmount: val })
+                  handlers.changeAssetAmount({ assetAmount: val || undefined })
                 }
                 onClickAsset={handlers.openAssetsDialog}
               />
