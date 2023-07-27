@@ -40,7 +40,7 @@
     "react-router-dom": "^6.8.2",
     "viem": "^0.3.36",
     "wagmi": "^1.0.6",
-    "xstate": "^4.37.0"
+    "xstate": "^4.37.2"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^2.16.5",
