@@ -3,7 +3,7 @@ import { Address } from 'fuels';
 // should import BN because of this error: https://github.com/FuelLabs/fuels-ts/issues/1054
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { BytesLike, BN } from 'fuels';
-import { useEffect, useRef } from 'react';
+// import { useEffect, useRef } from 'react';
 
 import { QUERY_KEYS } from '../utils';
 
@@ -17,7 +17,7 @@ export const useBalance = ({
   assetId?: BytesLike;
 }) => {
   const { provider } = useProvider();
-  const shouldListen = useRef(true);
+  // const shouldListen = useRef(true);
 
   const query = useQuery(
     [QUERY_KEYS.balance, address, assetId],
@@ -40,25 +40,25 @@ export const useBalance = ({
     }
   );
 
-  const listenerAccountFetcher = () => {
-    console.log('trying ');
-    query.refetch();
-  };
+  // const listenerAccountFetcher = () => {
+  //   console.log('trying ');
+  //   query.refetch();
+  // };
 
-  useEffect(() => {
-    console.log('useEffect');
-    if (shouldListen.current) {
-      shouldListen.current = false;
-      window.addEventListener('focus', listenerAccountFetcher);
-      console.log('added listener');
-      return () => {
-        console.log('removing listener');
-        window.removeEventListener('focus', listenerAccountFetcher);
-      };
-    }
+  // useEffect(() => {
+  //   console.log('useEffect');
+  //   if (shouldListen.current) {
+  //     shouldListen.current = false;
+  //     window.addEventListener('focus', listenerAccountFetcher);
+  //     console.log('added listener');
+  //     return () => {
+  //       console.log('removing listener');
+  //       window.removeEventListener('focus', listenerAccountFetcher);
+  //     };
+  //   }
 
-    return undefined;
-  }, []);
+  //   return undefined;
+  // }, []);
 
   return {
     balance: query.data || undefined,

@@ -62,17 +62,27 @@ export const FuelProvider = ({ children }: FuelProviderProps) => {
     fuelQueryClient.invalidateQueries([QUERY_KEYS.account]);
   }
 
+  function listenerAccountFetcher() {
+    console.log('invalidating balance');
+    fuelQueryClient.invalidateQueries([QUERY_KEYS.balance, '*']);
+    fuelQueryClient.refetchQueries([QUERY_KEYS.balance, '*']);
+  }
+
   useEffect(() => {
+    console.log('adding events');
     fuel?.on(fuel.events.currentAccount, onCurrentAccountChange);
     fuel?.on(fuel.events.connection, onConnectionChange);
     fuel?.on(fuel.events.accounts, onAccountsChange);
     fuel?.on(fuel.events.network, onNetworkChange);
+    window.addEventListener('focus', listenerAccountFetcher);
 
     return () => {
+      console.log('removing events');
       fuel?.off(fuel.events.currentAccount, onCurrentAccountChange);
       fuel?.off(fuel.events.connection, onConnectionChange);
       fuel?.off(fuel.events.accounts, onAccountsChange);
       fuel?.off(fuel.events.network, onNetworkChange);
+      window.removeEventListener('focus', listenerAccountFetcher);
     };
   }, [fuel]);
 
