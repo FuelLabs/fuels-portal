@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 import { removeTrailingSlash } from '../utils';
 
-import { IS_DEVELOPMENT } from '~/config';
+import { IS_DEVELOPMENT, VITE_IS_PUBLIC_PREVIEW } from '~/config';
 import { useTheme } from '~/systems/Settings';
 import { Pages } from '~/types';
 
@@ -27,7 +27,7 @@ export function Header() {
           </Link>
         </Box.Flex>
         <Box.Flex gap="$4" css={styles.desktop}>
-          {IS_DEVELOPMENT && (
+          {(IS_DEVELOPMENT || VITE_IS_PUBLIC_PREVIEW) && (
             <>
               <Box.Flex gap="$4" css={styles.menu}>
                 <ButtonLink
