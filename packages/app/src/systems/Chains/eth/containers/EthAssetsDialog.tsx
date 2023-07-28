@@ -7,6 +7,7 @@ import {
   Text,
   Image,
   Button,
+  Avatar,
 } from '@fuel-ui/react';
 
 import { useAssets } from '../hooks';
@@ -41,7 +42,17 @@ export function EthAssetsDialog() {
               variant="outlined"
               css={styles.cardListItem}
             >
-              <Image alt=" " src={asset.image} />
+              {asset.image ? (
+                <Image alt=" " src={asset.image} />
+              ) : (
+                <Avatar.Generated
+                  size="xsm"
+                  key={(asset.address || '') + (asset.symbol || '') + String(i)}
+                  hash={
+                    (asset.address || '') + (asset.symbol || '') + String(i)
+                  }
+                />
+              )}
               {asset.symbol}
             </CardList.Item>
           ))}

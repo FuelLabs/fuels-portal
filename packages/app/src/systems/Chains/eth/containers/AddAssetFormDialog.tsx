@@ -31,7 +31,7 @@ export function AddAssetFormDialog() {
   return (
     <>
       <Dialog.Heading>
-        <Box.Flex justify="space-between" css={styles.dialogHeadingContainer}>
+        <Box.Flex justify="space-between">
           <Icon icon="ArrowLeft" onClick={store.openManageAssetsDialog} />
           <Text color="intentsBase12" fontSize="sm">
             Add token {shortAddress(metadata.assetAddress)}
@@ -111,9 +111,6 @@ export function AddAssetFormDialog() {
 }
 
 const styles = {
-  dialogHeadingContainer: cssObj({
-    paddingBottom: '$4',
-  }),
   text: cssObj({
     fontSize: '$sm',
   }),

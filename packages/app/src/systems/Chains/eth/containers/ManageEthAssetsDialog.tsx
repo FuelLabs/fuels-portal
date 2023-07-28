@@ -9,6 +9,8 @@ import {
   Input,
   Text,
   Form,
+  IconButton,
+  Avatar,
 } from '@fuel-ui/react';
 import { NativeAssetId } from 'fuels';
 import { useState } from 'react';
@@ -33,7 +35,7 @@ export function ManageEthAssetsDialog() {
   return (
     <>
       <Dialog.Heading>
-        <Box.Flex justify="space-between" css={styles.dialogHeadingContainer}>
+        <Box.Flex justify="space-between">
           <Icon icon="ArrowLeft" onClick={store.openEthAssetsDialog} />
           <Text color="intentsBase12" fontSize="sm">
             Manage token list
@@ -99,13 +101,40 @@ export function ManageEthAssetsDialog() {
             >
               <Box.Flex justify="space-between" css={styles.actionButton}>
                 <Box.Flex gap="$2" align="center">
-                  <Image alt=" " src={asset.image} />
+                  {asset.image ? (
+                    <Image alt=" " src={asset.image} />
+                  ) : (
+                    <Avatar.Generated
+                      size="xsm"
+                      key={
+                        (asset.address || '') + (asset.symbol || '') + String(i)
+                      }
+                      hash={
+                        (asset.address || '') + (asset.symbol || '') + String(i)
+                      }
+                    />
+                  )}
+
                   {asset.symbol}
                 </Box.Flex>
-                {asset.address !== NativeAssetId && (
-                  <Icon
+                {asset.address !== NativeAssetId ? (
+                  <IconButton
+                    aria-label={(asset.address || '') + (asset.symbol || '')}
+                    variant="ghost"
                     icon="SquareRoundedX"
-                    onClick={() =>
+                    onPress={() =>
+                      handlers.removeAsset({ address: asset.address })
+                    }
+                    color="scalesRed10"
+                  />
+                ) : (
+                  <IconButton
+                    aria-label={(asset.address || '') + (asset.symbol || '')}
+                    isDisabled
+                    tooltip="ETH is the native asset. It can't be removed."
+                    variant="ghost"
+                    icon="SquareRoundedX"
+                    onPress={() =>
                       handlers.removeAsset({ address: asset.address })
                     }
                     color="scalesRed10"
@@ -121,14 +150,10 @@ export function ManageEthAssetsDialog() {
 }
 
 const styles = {
-  dialogHeadingContainer: cssObj({
-    // paddingBottom: '$4',
-  }),
   actionButton: cssObj({
     width: '100%',
   }),
   cardListItem: cssObj({
-    // border: '1px solid $intentsBase8',
     borderRadius: '10px',
   }),
   text: cssObj({
