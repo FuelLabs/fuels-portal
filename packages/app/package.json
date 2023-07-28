@@ -32,6 +32,7 @@
     "ethers": "^5",
     "framer-motion": "^10.12.16",
     "fuels": "0.44.1",
+    "graphql": "16.6.0",
     "graphql-request": "^5.1.0",
     "graphql-tag": "^2.12.6",
     "react": "^18.2.0",
