@@ -1,5 +1,6 @@
 import { cssObj } from '@fuel-ui/css';
 import { Box, Button, Dialog, Icon, Input, Text, Form } from '@fuel-ui/react';
+import { Controller } from 'react-hook-form';
 
 import { useAddAssetForm, useAssets } from '../hooks';
 
@@ -12,6 +13,7 @@ export function AddAssetFormDialog() {
   const { handlers } = useAssets();
 
   const form = useAddAssetForm();
+  const { control } = form;
 
   return (
     <>
@@ -28,49 +30,70 @@ export function AddAssetFormDialog() {
       </Dialog.Heading>
       <Dialog.Description>
         <Box.Stack>
-          <Form.Control isRequired>
-            <Form.Label css={styles.text}>Token symbol</Form.Label>
-            <Input size="md" css={styles.text}>
-              <Input.Field
-                placeholder="SYMBOL"
-                onChange={(e) => {
-                  form.setValue('symbol', e.target.value, {
-                    shouldValidate: true,
-                  });
-                }}
-              />
-            </Input>
-          </Form.Control>
-          <Form.Control isRequired>
-            <Form.Label css={styles.text}>Token decimals</Form.Label>
-            <Input size="md" css={styles.text}>
-              <Input.Number
-                placeholder="18"
-                onChange={() => {
-                  form.register('decimals');
-                }}
-              />
-            </Input>
-          </Form.Control>
+          <Controller
+            name="symbol"
+            control={control}
+            render={(props) => {
+              const isInvalid =
+                Boolean(form.formState.errors.symbol) ||
+                Boolean(props.fieldState.error);
+              return (
+                <Form.Control isRequired isInvalid={isInvalid}>
+                  <Form.Label css={styles.text}>Token symbol</Form.Label>
+                  <Input size="md" css={styles.text}>
+                    <Input.Field {...props.field} placeholder="SYMBOL" />
+                  </Input>
+                  {props.fieldState.error && (
+                    <Form.ErrorMessage aria-label="Error message">
+                      {props.fieldState.error.message}
+                    </Form.ErrorMessage>
+                  )}
+                </Form.Control>
+              );
+            }}
+          />
+
+          <Controller
+            name="decimals"
+            control={control}
+            render={(props) => {
+              const isInvalid =
+                Boolean(form.formState.errors.decimals) ||
+                Boolean(props.fieldState.error);
+              return (
+                <Form.Control isRequired isInvalid={isInvalid}>
+                  <Form.Label css={styles.text}>Token decimals</Form.Label>
+                  <Input size="md" css={styles.text}>
+                    <Input.Number {...props.field} placeholder="18" />
+                  </Input>
+                  {props.fieldState.error && (
+                    <Form.ErrorMessage aria-label="Error message">
+                      {props.fieldState.error.message}
+                    </Form.ErrorMessage>
+                  )}
+                </Form.Control>
+              );
+            }}
+          />
         </Box.Stack>
       </Dialog.Description>
       <Dialog.Footer>
         <Button
           size="sm"
           intent="primary"
-          isDisabled={
-            form.getValues('decimals') === 0 || !form.getValues('symbol').length
-          }
+          isDisabled={!form.formState.isValid}
           onPress={() => {
-            handlers.addAsset({
-              asset: {
-                address: metadata.assetAddress,
-                image: '',
-                decimals: form.getValues('decimals'),
-                symbol: form.getValues('symbol'),
-              },
+            form.handleSubmit(() => {
+              handlers.addAsset({
+                asset: {
+                  address: metadata.assetAddress,
+                  image: '',
+                  decimals: form.getValues('decimals'),
+                  symbol: form.getValues('symbol'),
+                },
+              });
+              store.openManageAssetsDialog();
             });
-            store.openManageAssetsDialog();
           }}
           css={{ width: '$full' }}
         >

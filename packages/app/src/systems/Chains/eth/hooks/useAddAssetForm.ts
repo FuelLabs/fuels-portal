@@ -4,12 +4,12 @@ import * as yup from 'yup';
 
 export type AddAssetFormValues = {
   symbol: string;
-  decimals: number;
+  decimals: string;
 };
 
 const DEFAULT_VALUES = {
   symbol: '',
-  decimals: 0,
+  decimals: '',
 };
 
 type UseAddAssetOpts = {
@@ -19,7 +19,14 @@ type UseAddAssetOpts = {
 export const useAddAssetForm = (opts: UseAddAssetOpts = {}) => {
   const schema = yup.object({
     symbol: yup.string().required('Symbol is required'),
-    decimals: yup.number().required('Decimals is required'),
+    decimals: yup
+      .string()
+      .required('Decimals is required')
+      .test(
+        'Number',
+        'Decimals must be greater than 0',
+        (val) => Number(val) > 0
+      ),
   });
 
   const form = useForm<AddAssetFormValues>({
