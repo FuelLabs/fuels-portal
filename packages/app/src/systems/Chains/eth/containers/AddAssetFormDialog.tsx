@@ -2,6 +2,7 @@ import { cssObj } from '@fuel-ui/css';
 import { Box, Button, Dialog, Icon, Input, Text, Form } from '@fuel-ui/react';
 import { Controller } from 'react-hook-form';
 
+import type { AddAssetFormValues } from '../hooks';
 import { useAddAssetForm, useAssets } from '../hooks';
 
 import { store } from '~/store';
@@ -14,6 +15,18 @@ export function AddAssetFormDialog() {
 
   const form = useAddAssetForm();
   const { control } = form;
+
+  const onSubmit = (data: AddAssetFormValues) => {
+    handlers.addAsset({
+      asset: {
+        address: metadata.assetAddress,
+        image: '',
+        decimals: Number(data.decimals),
+        symbol: data.symbol,
+      },
+    });
+    store.openManageAssetsDialog();
+  };
 
   return (
     <>
@@ -29,7 +42,11 @@ export function AddAssetFormDialog() {
         </Box.Flex>
       </Dialog.Heading>
       <Dialog.Description>
-        <Box.Stack>
+        <Box.Stack
+          as="form"
+          id="AddAssetForm"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
           <Controller
             name="symbol"
             control={control}
@@ -79,22 +96,11 @@ export function AddAssetFormDialog() {
       </Dialog.Description>
       <Dialog.Footer>
         <Button
+          type="submit"
           size="sm"
           intent="primary"
           isDisabled={!form.formState.isValid}
-          onPress={() => {
-            form.handleSubmit(() => {
-              handlers.addAsset({
-                asset: {
-                  address: metadata.assetAddress,
-                  image: '',
-                  decimals: form.getValues('decimals'),
-                  symbol: form.getValues('symbol'),
-                },
-              });
-              store.openManageAssetsDialog();
-            });
-          }}
+          form="AddAssetForm"
           css={{ width: '$full' }}
         >
           Add token to list

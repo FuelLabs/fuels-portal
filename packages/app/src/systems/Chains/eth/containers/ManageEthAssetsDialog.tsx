@@ -11,34 +11,24 @@ import {
   Form,
 } from '@fuel-ui/react';
 import { NativeAssetId } from 'fuels';
-import { useMemo, useState } from 'react';
-import { isAddress } from 'viem';
-import { useToken } from 'wagmi';
+import { useState } from 'react';
 
-import { useAssets } from '../hooks';
+import { useManageEthAssets } from '../hooks';
 
 import { store } from '~/store';
 
 export function ManageEthAssetsDialog() {
-  const { assets, handlers } = useAssets();
   const [newAssetAddress, setNewAssetAddress] = useState('');
 
-  const { data, isError } = useToken({
-    address: newAssetAddress as `0x${string}`,
-  });
-
-  const doesAssetExist = useMemo(() => {
-    return assets.find((asset) => asset.address === newAssetAddress);
-  }, [assets, newAssetAddress]);
-
-  const isValid = useMemo(() => {
-    return (
-      (newAssetAddress.length !== 0 &&
-        isAddress(newAssetAddress) &&
-        !doesAssetExist) ||
-      newAssetAddress.length === 0
-    );
-  }, [newAssetAddress, doesAssetExist]);
+  const {
+    assets,
+    handlers,
+    showCustomTokenButton,
+    showUseTokenButton,
+    isAddressValid,
+    doesAssetExist,
+    assetInfo,
+  } = useManageEthAssets(newAssetAddress);
 
   return (
     <>
@@ -55,7 +45,7 @@ export function ManageEthAssetsDialog() {
       </Dialog.Heading>
       <Dialog.Description>
         <Box.Stack css={{ pb: '$2' }}>
-          <Form.Control isInvalid={!isValid}>
+          <Form.Control isInvalid={!isAddressValid}>
             <Input size="md" css={styles.text}>
               <Input.Field
                 placeholder="Paste custom address"
@@ -69,15 +59,15 @@ export function ManageEthAssetsDialog() {
               }`}
             </Form.ErrorMessage>
           </Form.Control>
-          {!isError && !!data && isValid && (
+          {showUseTokenButton && (
             <Button
               size="sm"
               onPress={() => {
                 handlers.addAsset({
                   asset: {
-                    address: data?.address,
-                    decimals: data?.decimals,
-                    symbol: data?.symbol,
+                    address: assetInfo?.address,
+                    decimals: assetInfo?.decimals,
+                    symbol: assetInfo?.symbol,
                   },
                 });
                 store.openManageAssetsDialog();
@@ -87,7 +77,7 @@ export function ManageEthAssetsDialog() {
               Add token
             </Button>
           )}
-          {isError && !!newAssetAddress.length && isValid && (
+          {showCustomTokenButton && (
             <Button
               size="sm"
               onPress={() =>
