@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 import { removeTrailingSlash } from '../utils';
 
+import { IS_DEVELOPMENT } from '~/config';
 import { useTheme } from '~/systems/Settings';
 import { Pages } from '~/types';
 
@@ -24,43 +25,26 @@ export function Header() {
           <Link href="/" className="logo">
             <FuelLogo size={24} />
           </Link>
-          <ButtonLink
-            href={Pages.developers}
-            className={getClassName(Pages.developers)}
-          >
-            Developers
-          </ButtonLink>
-          <ButtonLink
-            href={Pages.community}
-            className={getClassName(Pages.community)}
-          >
-            Community
-          </ButtonLink>
-          <ButtonLink href={Pages.labs} className={getClassName(Pages.labs)}>
-            Labs
-          </ButtonLink>
         </Box.Flex>
         <Box.Flex gap="$4" css={styles.desktop}>
-          <Box.Flex gap="$4" css={styles.menu}>
-            <ButtonLink
-              href={Pages.bridge}
-              className={getClassName(Pages.bridge)}
-            >
-              Bridge
-            </ButtonLink>
-            <ButtonLink
-              href={Pages.explorer}
-              className={getClassName(Pages.explorer)}
-            >
-              Explorer
-            </ButtonLink>
-            <ButtonLink
-              href={Pages.ecosystem}
-              className={getClassName(Pages.ecosystem)}
-            >
-              Ecosystem
-            </ButtonLink>
-          </Box.Flex>
+          {IS_DEVELOPMENT && (
+            <>
+              <Box.Flex gap="$4" css={styles.menu}>
+                <ButtonLink
+                  href={Pages.bridge}
+                  className={getClassName(Pages.bridge)}
+                >
+                  Bridge
+                </ButtonLink>
+                <ButtonLink
+                  href={Pages.ecosystem}
+                  className={getClassName(Pages.ecosystem)}
+                >
+                  Ecosystem
+                </ButtonLink>
+              </Box.Flex>
+            </>
+          )}
           <Box.Flex gap="$1" css={styles.buttonContainer}>
             <IconButton
               icon="Moon"
