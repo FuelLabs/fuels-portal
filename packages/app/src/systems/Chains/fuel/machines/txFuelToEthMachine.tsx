@@ -115,7 +115,6 @@ export const txFuelToEthMachine = createMachine(
               onDone: [
                 {
                   cond: FetchMachine.hasError,
-                  target: 'waitingFuelTxResult',
                 },
                 {
                   actions: ['assignMessageId'],
@@ -148,7 +147,6 @@ export const txFuelToEthMachine = createMachine(
                   onDone: [
                     {
                       cond: FetchMachine.hasError,
-                      target: 'checkingMessageProof',
                     },
                     {
                       actions: ['assignMessageProof'],
