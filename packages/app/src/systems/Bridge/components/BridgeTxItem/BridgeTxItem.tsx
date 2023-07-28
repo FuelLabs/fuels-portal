@@ -28,12 +28,12 @@ export const BridgeTxItem = ({
   status,
 }: BridgeTxItemProps) => {
   return (
-    <CardList.Item onClick={onClick} css={styles.listItem}>
+    <CardList.Item onClick={onClick} css={styles.listItem} variant="outlined">
       <Box.Flex css={styles.wrapper}>
         <Box css={bridgeTxListStyles.ageColumn}>
           <Text css={styles.ageText}>{calculateDateDiff(date)}</Text>
         </Box>
-        <Box.Flex gap="$8" css={bridgeTxListStyles.directionColumn}>
+        <Box.Flex gap="$2" align="center">
           <Box.Flex css={styles.directionInfo}>
             {fromLogo}
             <Icon icon="ArrowNarrowRight" />
@@ -48,8 +48,8 @@ export const BridgeTxItem = ({
             <Text css={styles.infoText}>{asset.assetAmount}</Text>
             <Text css={styles.infoText}>{asset.assetSymbol}</Text>
           </Box.Flex>
+          <Box css={bridgeTxListStyles.statusColumn}>{status}</Box>
         </Box.Flex>
-        <Box css={bridgeTxListStyles.statusColumn}>{status}</Box>
       </Box.Flex>
     </CardList.Item>
   );
@@ -58,7 +58,6 @@ export const BridgeTxItem = ({
 const styles = cssObj({
   listItem: cssObj({
     flexDirection: 'column',
-    border: '1px solid $intentsBase6 !important',
     backgroundColor: '$intentsBase0',
     width: '344px',
 
@@ -68,7 +67,6 @@ const styles = cssObj({
       alignItems: 'center',
       p: '$4 !important',
       width: '$full',
-      border: '1px solid $intentsBase6 !important',
       backgroundColor: '$intentsBase0',
     },
   }),

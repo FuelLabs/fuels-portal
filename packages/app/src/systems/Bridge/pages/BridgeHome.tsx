@@ -42,7 +42,7 @@ export const BridgeHome = ({ children }: BridgeHomeProps) => {
 
 const styles = {
   content: cssObj({
-    maxWidth: '$xl',
+    maxWidth: '$sm',
   }),
   heading: cssObj({
     mt: 0,
