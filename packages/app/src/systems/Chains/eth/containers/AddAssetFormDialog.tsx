@@ -1,8 +1,7 @@
 import { cssObj } from '@fuel-ui/css';
 import { Box, Button, Dialog, Icon, Input, Text, Form } from '@fuel-ui/react';
-import { useState } from 'react';
 
-import { useAssets } from '../hooks';
+import { useAddAssetForm, useAssets } from '../hooks';
 
 import { store } from '~/store';
 import { shortAddress } from '~/systems/Core';
@@ -12,8 +11,7 @@ export function AddAssetFormDialog() {
   const { metadata } = useOverlay<{ assetAddress: string }>();
   const { handlers } = useAssets();
 
-  const [tokenSymbol, setTokenSymbol] = useState('');
-  const [tokenDecimals, setTokenDecimals] = useState('');
+  const form = useAddAssetForm();
 
   return (
     <>
@@ -35,7 +33,11 @@ export function AddAssetFormDialog() {
             <Input size="md" css={styles.text}>
               <Input.Field
                 placeholder="SYMBOL"
-                onChange={(e) => setTokenSymbol(e.target.value)}
+                onChange={(e) => {
+                  form.setValue('symbol', e.target.value, {
+                    shouldValidate: true,
+                  });
+                }}
               />
             </Input>
           </Form.Control>
@@ -44,7 +46,9 @@ export function AddAssetFormDialog() {
             <Input size="md" css={styles.text}>
               <Input.Number
                 placeholder="18"
-                onChange={(e) => setTokenDecimals(e.target.value)}
+                onChange={() => {
+                  form.register('decimals');
+                }}
               />
             </Input>
           </Form.Control>
@@ -54,14 +58,16 @@ export function AddAssetFormDialog() {
         <Button
           size="sm"
           intent="primary"
-          isDisabled={!tokenDecimals.length || !tokenSymbol.length}
+          isDisabled={
+            form.getValues('decimals') === 0 || !form.getValues('symbol').length
+          }
           onPress={() => {
             handlers.addAsset({
               asset: {
                 address: metadata.assetAddress,
                 image: '',
-                decimals: Number(tokenDecimals),
-                symbol: tokenSymbol,
+                decimals: form.getValues('decimals'),
+                symbol: form.getValues('symbol'),
               },
             });
             store.openManageAssetsDialog();
