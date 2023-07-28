@@ -22,7 +22,7 @@ export const Bridge = () => {
   if (!fromNetwork || !toNetwork) return null;
 
   return (
-    <Card>
+    <Card variant="outlined">
       <Card.Body css={styles.cardBody}>
         <BridgeTabs fromControls={fromControls} toControls={toControls} />
         <Box css={styles.divider} />
