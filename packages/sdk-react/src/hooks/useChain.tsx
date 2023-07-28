@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-// should import BN because of this error: https://github.com/FuelLabs/fuels-ts/issues/1054
+// should import ChainInfo because of this error: https://github.com/FuelLabs/fuels-ts/issues/1054
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type { BytesLike, BN } from 'fuels';
+import type { ChainInfo } from 'fuels';
 
 import { QUERY_KEYS } from '../utils';
 
