@@ -1,5 +1,6 @@
 export * from './useAccount';
 export * from './useBalance';
+export * from './useChain';
 export * from './useConnect';
 export * from './useDisconnect';
 export * from './useIsConnected';

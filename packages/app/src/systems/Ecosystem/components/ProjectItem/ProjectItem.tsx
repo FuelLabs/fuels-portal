@@ -48,6 +48,7 @@ export const ProjectItem: ProjectItemComponent = ({
         transition: { type: 'spring' },
       })}
       onClick={onCardPress}
+      variant="outlined"
     >
       <Card.Body css={styles.body}>
         {projectImage ? (
@@ -62,7 +63,7 @@ export const ProjectItem: ProjectItemComponent = ({
             css={styles.projectIcon}
           />
         )}
-        <Box.Stack gap="$1" justify="space-between" css={styles.details}>
+        <Box.Stack gap="$2" justify="space-between" css={styles.details}>
           <Box.Stack align="flex-start" gap="$1">
             <Box.Flex
               align="flex-start"
@@ -83,7 +84,7 @@ export const ProjectItem: ProjectItemComponent = ({
           </Box.Stack>
           <Box.Flex align="center" justify="space-between" wrap="wrap">
             <ButtonLink
-              variant="link"
+              as="a"
               css={styles.link}
               href={url}
               color="intentsBase10"
@@ -145,7 +146,6 @@ const styles = {
     width: '100%',
   }),
   body: cssObj({
-    height: '100%',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'flex-start',

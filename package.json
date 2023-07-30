@@ -40,9 +40,10 @@
     "xstate:typegen": "pnpm -r xstate:typegen"
   },
   "dependencies": {
-    "@fuel-ui/config": "0.15.1-dev-80e1a79",
-    "@fuel-ui/css": "0.15.1-dev-80e1a79",
-    "@fuel-ui/react": "0.15.1-dev-80e1a79"
+    "@fuel-ui/config": "0.16.2",
+    "@fuel-ui/css": "0.16.2",
+    "@fuel-ui/react": "0.16.2",
+    "@fuel-ui/test-utils": "0.16.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",
@@ -52,6 +53,7 @@
     "@types/node": "^18.13.0",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
+    "@xstate/cli": "^0.5.1",
     "dotenv": "^16.0.3",
     "eslint": "^8.33.0",
     "husky": "^8.0.3",
@@ -83,8 +85,7 @@
       "yaml@>=2.0.0-5 <2.2.2": ">=2.2.2",
       "vite@>=4.1.0 <4.1.5": ">=4.1.5",
       "semver@<7.5.2": ">=7.5.2",
-      "word-wrap": "npm:@aashutoshrathi/word-wrap",
-      "graphql@>=16.6.0": "16.6.0"
+      "word-wrap": "npm:@aashutoshrathi/word-wrap"
     }
   }
 }
