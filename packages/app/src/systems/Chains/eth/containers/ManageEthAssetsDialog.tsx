@@ -1,7 +1,6 @@
 import { cssObj } from '@fuel-ui/css';
 import {
   Box,
-  Button,
   CardList,
   Dialog,
   Icon,
@@ -15,6 +14,7 @@ import {
 import { NativeAssetId } from 'fuels';
 import { useState } from 'react';
 
+import { EthAssetCard } from '../components';
 import { useManageEthAssets } from '../hooks';
 
 import { store } from '~/store';
@@ -62,10 +62,19 @@ export function ManageEthAssetsDialog() {
               }`}
             </Form.ErrorMessage>
           </Form.Control>
+        </Box.Stack>
+        <CardList>
+          {/* TODO test that ust token works */}
           {showUseTokenButton && (
-            <Button
-              size="sm"
-              onPress={() => {
+            <EthAssetCard
+              icon={
+                <Avatar.Generated
+                  size="xsm"
+                  hash={(assetInfo?.address || '') + (assetInfo?.symbol || '')}
+                />
+              }
+              name={assetInfo?.symbol || ''}
+              onAdd={() => {
                 handlers.addAsset({
                   asset: {
                     address: assetInfo?.address,
@@ -76,72 +85,49 @@ export function ManageEthAssetsDialog() {
                 store.openManageAssetsDialog();
                 setNewAssetAddress('');
               }}
-            >
-              Add token
-            </Button>
+            />
           )}
-        </Box.Stack>
-        <CardList>
           {showCustomTokenButton && (
-            <CardList.Item variant="outlined" css={styles.cardListItem}>
-              <Box.Flex justify="space-between" css={styles.actionButton}>
-                <Box.Flex gap="$2" align="center">
-                  <Icon icon="HelpOctagon" />
-                  {shortAddress(newAssetAddress)}
-                </Box.Flex>
-                <IconButton
-                  aria-label={newAssetAddress}
-                  variant="ghost"
-                  icon="CirclePlus"
-                  onPress={() =>
-                    store.openAddAssetsDialog({
-                      assetAddress: newAssetAddress,
-                    })
-                  }
-                  color="scaleGreen10"
-                />
-              </Box.Flex>
-            </CardList.Item>
+            <EthAssetCard
+              icon={<Icon icon="HelpOctagon" />}
+              name={shortAddress(newAssetAddress)}
+              onAdd={() =>
+                store.openAddAssetsDialog({
+                  assetAddress: newAssetAddress,
+                })
+              }
+            />
           )}
-          {!showCustomTokenButton &&
-            !showUseTokenButton &&
+          {!(showCustomTokenButton || showUseTokenButton) &&
             assets.map((asset, i) => (
-              <CardList.Item
+              <EthAssetCard
                 key={(asset.address || '') + (asset.symbol || '') + String(i)}
-                variant="outlined"
-                css={styles.cardListItem}
-              >
-                <Box.Flex justify="space-between" css={styles.actionButton}>
-                  <Box.Flex gap="$2" align="center">
-                    {asset.image ? (
-                      <Image alt=" " src={asset.image} />
-                    ) : (
-                      <Avatar.Generated
-                        size="xsm"
-                        key={
-                          (asset.address || '') +
-                          (asset.symbol || '') +
-                          String(i)
-                        }
-                        hash={
-                          (asset.address || '') +
-                          (asset.symbol || '') +
-                          String(i)
-                        }
-                      />
-                    )}
-
-                    {asset.symbol}
-                  </Box.Flex>
-                  {asset.address !== NativeAssetId ? (
+                icon={
+                  asset.image ? (
+                    <Image alt=" " src={asset.image} />
+                  ) : (
+                    <Avatar.Generated
+                      size="xsm"
+                      key={
+                        (asset.address || '') + (asset.symbol || '') + String(i)
+                      }
+                      hash={
+                        (asset.address || '') + (asset.symbol || '') + String(i)
+                      }
+                    />
+                  )
+                }
+                name={asset.symbol || ''}
+                removeIconButton={
+                  asset.address !== NativeAssetId ? (
                     <IconButton
                       aria-label={(asset.address || '') + (asset.symbol || '')}
                       variant="ghost"
                       icon="SquareRoundedX"
+                      color="scalesRed10"
                       onPress={() =>
                         handlers.removeAsset({ address: asset.address })
                       }
-                      color="scalesRed10"
                     />
                   ) : (
                     <IconButton
@@ -150,14 +136,11 @@ export function ManageEthAssetsDialog() {
                       tooltip="ETH is the native asset. It can't be removed."
                       variant="ghost"
                       icon="SquareRoundedX"
-                      onPress={() =>
-                        handlers.removeAsset({ address: asset.address })
-                      }
                       color="scalesRed10"
                     />
-                  )}
-                </Box.Flex>
-              </CardList.Item>
+                  )
+                }
+              />
             ))}
         </CardList>
       </Dialog.Description>

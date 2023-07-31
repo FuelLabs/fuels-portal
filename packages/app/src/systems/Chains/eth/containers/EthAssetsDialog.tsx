@@ -10,6 +10,7 @@ import {
   Avatar,
 } from '@fuel-ui/react';
 
+import { EthAssetCard } from '../components';
 import { useAssets } from '../hooks';
 
 import { store } from '~/store';
@@ -32,29 +33,30 @@ export function EthAssetsDialog() {
       <Dialog.Description>
         <CardList isClickable>
           {assets.map((asset, i) => (
-            <CardList.Item
+            <EthAssetCard
               key={`${asset.address || ''}${asset.symbol || ''}${String(i)}`}
+              icon={
+                asset.image ? (
+                  <Image alt=" " src={asset.image} />
+                ) : (
+                  <Avatar.Generated
+                    size="xsm"
+                    key={
+                      (asset.address || '') + (asset.symbol || '') + String(i)
+                    }
+                    hash={
+                      (asset.address || '') + (asset.symbol || '') + String(i)
+                    }
+                  />
+                )
+              }
+              name={asset.symbol || ''}
               onPress={() => {
                 bridgeHandlers.changeAssetAddress({
                   assetAddress: asset.address,
                 });
               }}
-              variant="outlined"
-              css={styles.cardListItem}
-            >
-              {asset.image ? (
-                <Image alt=" " src={asset.image} />
-              ) : (
-                <Avatar.Generated
-                  size="xsm"
-                  key={(asset.address || '') + (asset.symbol || '') + String(i)}
-                  hash={
-                    (asset.address || '') + (asset.symbol || '') + String(i)
-                  }
-                />
-              )}
-              {asset.symbol}
-            </CardList.Item>
+            />
           ))}
         </CardList>
       </Dialog.Description>
