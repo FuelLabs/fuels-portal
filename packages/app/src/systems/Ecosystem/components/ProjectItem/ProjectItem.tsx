@@ -3,18 +3,16 @@ import {
   Box,
   ButtonLink,
   Card,
-  IconButton,
   Tag,
   Text,
   Icon,
-  Image,
   Tooltip,
 } from '@fuel-ui/react';
 import { motion } from 'framer-motion';
 import { type FC } from 'react';
 
-import { useProjectImage } from '../../hooks';
 import type { Project } from '../../types';
+import { ProjecImage } from '../ProjectImage';
 
 import { ProjectItemLoader } from './ProjectItemLoader';
 
@@ -38,7 +36,6 @@ export const ProjectItem: ProjectItemComponent = ({
   github,
   isLive,
 }: ProjectItemProps) => {
-  const projectImage = useProjectImage(image);
   const onCardPress = () => {
     window.open(url, '_blank');
   };
@@ -54,18 +51,7 @@ export const ProjectItem: ProjectItemComponent = ({
       css={styles.card}
     >
       <Card.Body css={styles.body}>
-        {projectImage ? (
-          <Image src={projectImage} alt={name} width={40} height={40} />
-        ) : (
-          <IconButton
-            intent="error"
-            variant="ghost"
-            icon="Bolt"
-            aria-label="project-icon"
-            iconSize={20}
-            css={styles.projectIcon}
-          />
-        )}
+        <ProjecImage name={name} image={image} />
         <Box.Stack gap="$2" justify="space-between" css={styles.details}>
           <Box.Stack align="flex-start" gap="$1">
             <Box.Flex
@@ -155,13 +141,6 @@ const styles = {
     borderRadius: '$sm',
     padding: '0 $1',
     backgroundColor: '$gray5',
-  }),
-  projectIcon: cssObj({
-    pointerEvents: 'none',
-    padding: '$3 $2',
-    '& svg': {
-      strokeWidth: '1.5px',
-    },
   }),
   title: cssObj({
     width: '100%',
