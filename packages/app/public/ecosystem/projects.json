@@ -5,7 +5,7 @@
     "url": "https://acumen.network/",
     "tags": ["DeFi", "Lending", "Real World Assets"],
     "description": "Bridging DeFi and Real-world assets on Fuel Network",
-    "github": "",
+    "github": "https://github.com/AcumenProtocol",
     "image": "acumen"
   },
   {
@@ -14,7 +14,7 @@
     "url": "https://www.aori.io/",
     "tags": ["DeFi", "Options"],
     "description": "Non-Custodial, high-performance order book trading infrastructure for decentralized options, spot trading, and OTC settlement.",
-    "github": "",
+    "github": "https://github.com/aori-io",
     "image": "aori"
   },
   {
@@ -32,7 +32,7 @@
     "url": "https://github.com/compolabs",
     "tags": ["DEX (Orderbook)", "DeFi", "Infrastructure Tooling or Platform"],
     "description": "Modularity maxis, building DeFi infrastructure on Fuel.",
-    "github": "",
+    "github": "https://github.com/compolabs",
     "image": "compolabs"
   },
   {
@@ -41,7 +41,7 @@
     "url": "https://allspark.gg/",
     "tags": ["DEX (Orderbook)", "DeFi", "Infrastructure Tooling or Platform"],
     "description": "AllSpark is a Predicate based central limit order book for Fuel.",
-    "github": "",
+    "github": "https://github.com/compolabs/spark",
     "image": "spark"
   },
   {
@@ -50,7 +50,7 @@
     "url": "swaylend.com",
     "tags": ["DEX (Orderbook)", "DeFi", "Infrastructure Tooling or Platform"],
     "description": "Swaylend is the first lending protocol on Fuel.",
-    "github": "",
+    "github": "https://github.com/compolabs/sway-lend",
     "image": "swaylend"
   },
   {
@@ -59,7 +59,7 @@
     "url": "https://elix.finance/",
     "tags": ["DEX (AMM)", "DeFi"],
     "description": "Hybrid automated market maker featuring automated concentrated liquidity ",
-    "github": "",
+    "github": "https://github.com/elixfinance",
     "image": "elix"
   },
   {
@@ -86,7 +86,7 @@
     "url": "https://fuelet.app/",
     "tags": ["Infrastructure Tooling or Platform", "Wallet"],
     "description": "Non-custodial wallet on Fuel.",
-    "github": "",
+    "github": "https://github.com/fuelet",
     "image": "fuelet"
   },
   {
@@ -104,7 +104,7 @@
     "url": "https://www.hyperlane.xyz/",
     "tags": ["Bridge", "Infrastructure Tooling or Platform"],
     "description": "The first interoperability layer that enables you to permissionlessly connect any blockchain, out-of-the-box.",
-    "github": "",
+    "github": "https://github.com/hyperlane-xyz",
     "image": "hyperlane"
   },
   {
@@ -149,7 +149,7 @@
     "url": "https://redstone.finance/",
     "tags": ["Infrastructure Tooling or Platform", "Oracle"],
     "description": "Modular Oracles delivering cost-efficient data for DeFi to EVM L1s&L2s",
-    "github": "",
+    "github": "https://github.com/redstone-finance",
     "image": "redstone"
   },
   {
@@ -158,8 +158,8 @@
     "url": "https://www.sail.exchange/",
     "tags": ["DEX (Orderbook)", "DeFi"],
     "description": "Order book DEX Powered by Fuel Network ",
-    "github": "",
-    "image": "sail"
+    "github": "https://github.com/Sail-Exchange",
+    "image": ""
   },
   {
     "isLive": false,
@@ -167,7 +167,7 @@
     "url": "https://smartmoneylabs.vercel.app/",
     "tags": ["DeFi", "Lending"],
     "description": "A truly decentralized Lending and Burrowing protocol, with no dependency on oracle and no liquidity risk during the loan maturity period, backed by collateral and therefore offering greater flexibility to end users.",
-    "github": "",
+    "github": "https://github.com/SmartMoney-Labs",
     "image": "smartmoney"
   },
   {
@@ -222,7 +222,7 @@
     "tags": ["DeFi", "Gaming", "NFTs"],
     "description": "",
     "github": "",
-    "image": "capitalistpigs"
+    "image": ""
   },
   {
     "isLive": false,
@@ -230,7 +230,7 @@
     "url": "https://wallet.fuel.network/docs/install/",
     "tags": ["Infrastructure Tooling or Platform", "Wallet"],
     "description": "With the Fuel Wallet, you can explore DApps on Fuel and manage your crypto assets, all in one place.",
-    "github": "",
+    "github": "https://github.com/fuellabs/fuels-wallet",
     "image": "fuelwallet"
   }
 ]
