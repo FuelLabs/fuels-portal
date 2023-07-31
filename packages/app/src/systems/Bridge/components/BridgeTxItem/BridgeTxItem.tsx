@@ -77,7 +77,6 @@ const styles = cssObj({
 
     '@md': {
       flexDirection: 'row',
-      // justifyContent: 'space-between',
       width: '100%',
       alignItems: 'center',
     },
