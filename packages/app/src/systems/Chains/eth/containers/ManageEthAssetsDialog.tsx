@@ -18,6 +18,7 @@ import { useState } from 'react';
 import { useManageEthAssets } from '../hooks';
 
 import { store } from '~/store';
+import { shortAddress } from '~/systems/Core';
 
 export function ManageEthAssetsDialog() {
   const [newAssetAddress, setNewAssetAddress] = useState('');
@@ -79,70 +80,85 @@ export function ManageEthAssetsDialog() {
               Add token
             </Button>
           )}
-          {showCustomTokenButton && (
-            <Button
-              size="sm"
-              onPress={() =>
-                store.openAddAssetsDialog({
-                  assetAddress: newAssetAddress,
-                })
-              }
-            >
-              Add token
-            </Button>
-          )}
         </Box.Stack>
         <CardList>
-          {assets.map((asset, i) => (
-            <CardList.Item
-              key={(asset.address || '') + (asset.symbol || '') + String(i)}
-              variant="outlined"
-              css={styles.cardListItem}
-            >
+          {showCustomTokenButton && (
+            <CardList.Item variant="outlined" css={styles.cardListItem}>
               <Box.Flex justify="space-between" css={styles.actionButton}>
                 <Box.Flex gap="$2" align="center">
-                  {asset.image ? (
-                    <Image alt=" " src={asset.image} />
-                  ) : (
-                    <Avatar.Generated
-                      size="xsm"
-                      key={
-                        (asset.address || '') + (asset.symbol || '') + String(i)
-                      }
-                      hash={
-                        (asset.address || '') + (asset.symbol || '') + String(i)
-                      }
-                    />
-                  )}
-
-                  {asset.symbol}
+                  <Icon icon="HelpOctagon" />
+                  {shortAddress(newAssetAddress)}
                 </Box.Flex>
-                {asset.address !== NativeAssetId ? (
-                  <IconButton
-                    aria-label={(asset.address || '') + (asset.symbol || '')}
-                    variant="ghost"
-                    icon="SquareRoundedX"
-                    onPress={() =>
-                      handlers.removeAsset({ address: asset.address })
-                    }
-                    color="scalesRed10"
-                  />
-                ) : (
-                  <IconButton
-                    aria-label={(asset.address || '') + (asset.symbol || '')}
-                    isDisabled
-                    tooltip="ETH is the native asset. It can't be removed."
-                    variant="ghost"
-                    icon="SquareRoundedX"
-                    onPress={() =>
-                      handlers.removeAsset({ address: asset.address })
-                    }
-                    color="scalesRed10"
-                  />
-                )}
+                <IconButton
+                  aria-label={newAssetAddress}
+                  variant="ghost"
+                  icon="CirclePlus"
+                  onPress={() =>
+                    store.openAddAssetsDialog({
+                      assetAddress: newAssetAddress,
+                    })
+                  }
+                  color="scaleGreen10"
+                />
               </Box.Flex>
             </CardList.Item>
-          ))}
+          )}
+          {!showCustomTokenButton &&
+            !showUseTokenButton &&
+            assets.map((asset, i) => (
+              <CardList.Item
+                key={(asset.address || '') + (asset.symbol || '') + String(i)}
+                variant="outlined"
+                css={styles.cardListItem}
+              >
+                <Box.Flex justify="space-between" css={styles.actionButton}>
+                  <Box.Flex gap="$2" align="center">
+                    {asset.image ? (
+                      <Image alt=" " src={asset.image} />
+                    ) : (
+                      <Avatar.Generated
+                        size="xsm"
+                        key={
+                          (asset.address || '') +
+                          (asset.symbol || '') +
+                          String(i)
+                        }
+                        hash={
+                          (asset.address || '') +
+                          (asset.symbol || '') +
+                          String(i)
+                        }
+                      />
+                    )}
+
+                    {asset.symbol}
+                  </Box.Flex>
+                  {asset.address !== NativeAssetId ? (
+                    <IconButton
+                      aria-label={(asset.address || '') + (asset.symbol || '')}
+                      variant="ghost"
+                      icon="SquareRoundedX"
+                      onPress={() =>
+                        handlers.removeAsset({ address: asset.address })
+                      }
+                      color="scalesRed10"
+                    />
+                  ) : (
+                    <IconButton
+                      aria-label={(asset.address || '') + (asset.symbol || '')}
+                      isDisabled
+                      tooltip="ETH is the native asset. It can't be removed."
+                      variant="ghost"
+                      icon="SquareRoundedX"
+                      onPress={() =>
+                        handlers.removeAsset({ address: asset.address })
+                      }
+                      color="scalesRed10"
+                    />
+                  )}
+                </Box.Flex>
+              </CardList.Item>
+            ))}
         </CardList>
       </Dialog.Description>
     </>
