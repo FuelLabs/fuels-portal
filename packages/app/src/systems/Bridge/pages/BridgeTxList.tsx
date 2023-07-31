@@ -1,3 +1,4 @@
+import { cssObj } from '@fuel-ui/css';
 import { CardList } from '@fuel-ui/react';
 
 import {
@@ -36,7 +37,7 @@ export const BridgeTxList = () => {
       )}
       {shouldShowEmpty && <BridgeListEmpty />}
       {shouldShowList && (
-        <CardList isClickable css={{ width: '95%' }}>
+        <CardList isClickable css={styles.cardList}>
           {bridgeTxs.map((txDatum, index) => {
             if (
               isEthChain(txDatum.fromNetwork) &&
@@ -72,4 +73,14 @@ export const BridgeTxList = () => {
       )}
     </>
   );
+};
+
+const styles = {
+  cardList: cssObj({
+    width: '328px',
+
+    '@md': {
+      width: '95%',
+    },
+  }),
 };

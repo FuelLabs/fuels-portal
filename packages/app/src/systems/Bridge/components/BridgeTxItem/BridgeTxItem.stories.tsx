@@ -39,6 +39,10 @@ export const Usage = () => {
 const styles = {
   storybook: cssObj({
     margin: '20px',
-    width: '95%',
+    width: '328px',
+
+    '@md': {
+      width: '$sm',
+    },
   }),
 };
