@@ -8,6 +8,7 @@ import {
   Text,
   Icon,
   Image,
+  Tooltip,
 } from '@fuel-ui/react';
 import { motion } from 'framer-motion';
 import { type FC } from 'react';
@@ -34,6 +35,7 @@ export const ProjectItem: ProjectItemComponent = ({
   description,
   image,
   url,
+  github,
   isLive,
 }: ProjectItemProps) => {
   const projectImage = useProjectImage(image);
@@ -44,11 +46,12 @@ export const ProjectItem: ProjectItemComponent = ({
   return (
     <MotionCard
       withDividers
-      {...animations.slideInBottom({
+      {...animations.appearIn({
         transition: { type: 'spring' },
       })}
       onClick={onCardPress}
       variant="outlined"
+      css={styles.card}
     >
       <Card.Body css={styles.body}>
         {projectImage ? (
@@ -73,12 +76,28 @@ export const ProjectItem: ProjectItemComponent = ({
               <Text fontSize="base" color="intentsBase12">
                 {name}
               </Text>
-              <Icon
-                icon="ArrowUpRight"
-                color="intentsBase8"
-                size={20}
-                stroke={1}
-              />
+              <Box.Flex>
+                {github && (
+                  <Tooltip content={github}>
+                    <ButtonLink
+                      as="a"
+                      href={github}
+                      color="intentsBase12"
+                      size="sm"
+                    >
+                      <Icon icon="BrandGithub" size={20} stroke={1} />
+                    </ButtonLink>
+                  </Tooltip>
+                )}
+                <Tooltip content={url}>
+                  <Icon
+                    icon="ArrowUpRight"
+                    color="intentsBase8"
+                    size={20}
+                    stroke={1}
+                  />
+                </Tooltip>
+              </Box.Flex>
             </Box.Flex>
             <Text fontSize="sm"> {description}</Text>
           </Box.Stack>
@@ -107,9 +126,11 @@ export const ProjectItem: ProjectItemComponent = ({
 
 const styles = {
   card: cssObj({
-    border: '1px solid $semanticOutlinedBaseBorder',
+    transition: 'transform 0.2s ease-in-out, border 0.2s ease-in-out',
     '&:hover': {
       cursor: 'pointer',
+      border: '1px solid $intentsBase12',
+      transform: 'scale(1.02)',
     },
   }),
   details: cssObj({
