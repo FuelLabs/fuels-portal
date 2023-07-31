@@ -12,16 +12,21 @@ import {
   Avatar,
 } from '@fuel-ui/react';
 import { NativeAssetId } from 'fuels';
-import { useState } from 'react';
+import { Controller, useWatch } from 'react-hook-form';
 
 import { EthAssetCard } from '../components';
-import { useManageEthAssets } from '../hooks';
+import type { SetAddressFormValues } from '../hooks';
+import { useManageEthAssets, useSetAddressForm } from '../hooks';
 
 import { store } from '~/store';
 import { shortAddress } from '~/systems/Core';
 
 export function ManageEthAssetsDialog() {
-  const [newAssetAddress, setNewAssetAddress] = useState('');
+  // const [newAssetAddress, setNewAssetAddress] = useState('');
+
+  const form = useSetAddressForm();
+
+  const newAssetAddress = useWatch({ name: 'address', control: form.control });
 
   const {
     assets,
@@ -32,6 +37,12 @@ export function ManageEthAssetsDialog() {
     doesAssetExist,
     assetInfo,
   } = useManageEthAssets(newAssetAddress);
+
+  const onSubmitCustomToken = (data: SetAddressFormValues) => {
+    store.openAddAssetsDialog({
+      assetAddress: data.address,
+    });
+  };
 
   return (
     <>
@@ -48,20 +59,29 @@ export function ManageEthAssetsDialog() {
       </Dialog.Heading>
       <Dialog.Description>
         <Box.Stack css={{ pb: '$2' }}>
-          <Form.Control isInvalid={!isAddressValid}>
-            <Input size="md" css={styles.text}>
-              <Input.Field
-                placeholder="Paste custom address"
-                onChange={(e) => setNewAssetAddress(e.target.value)}
-                value={newAssetAddress}
-              />
-            </Input>
-            <Form.ErrorMessage>
-              {`Please enter a valid address.${
-                doesAssetExist ? '  This address has already been added.' : ''
-              }`}
-            </Form.ErrorMessage>
-          </Form.Control>
+          <Controller
+            name="address"
+            control={form.control}
+            render={(props) => {
+              return (
+                <Form.Control isInvalid={!isAddressValid}>
+                  <Input size="md" css={styles.text}>
+                    <Input.Field
+                      {...props.field}
+                      placeholder="Paste custom address"
+                    />
+                  </Input>
+                  <Form.ErrorMessage>
+                    {`Please enter a valid address.${
+                      doesAssetExist
+                        ? '  This address has already been added.'
+                        : ''
+                    }`}
+                  </Form.ErrorMessage>
+                </Form.Control>
+              );
+            }}
+          />
         </Box.Stack>
         <CardList>
           {/* TODO test that ust token works */}
@@ -83,19 +103,14 @@ export function ManageEthAssetsDialog() {
                   },
                 });
                 store.openManageAssetsDialog();
-                setNewAssetAddress('');
               }}
             />
           )}
           {showCustomTokenButton && (
             <EthAssetCard
               icon={<Icon icon="HelpOctagon" />}
-              name={shortAddress(newAssetAddress)}
-              onAdd={() =>
-                store.openAddAssetsDialog({
-                  assetAddress: newAssetAddress,
-                })
-              }
+              name={shortAddress(form.getValues('address'))}
+              onAdd={form.handleSubmit(onSubmitCustomToken)}
             />
           )}
           {!(showCustomTokenButton || showUseTokenButton) &&

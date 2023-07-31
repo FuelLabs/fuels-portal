@@ -1,3 +1,5 @@
+import { isAddress } from 'viem';
+
 import type { BridgeAsset } from '~/systems/Bridge';
 import { db } from '~/systems/Core/utils/database';
 
@@ -24,6 +26,13 @@ export class AssetService {
   }
 
   static async removeAsset({ address }: { address?: string }) {
+    try {
+      if (!isAddress(address || '')) {
+        throw new Error('Invlalid address');
+      }
+    } catch (error: unknown) {
+      return false;
+    }
     return db.transaction('rw', db.assets, async () => {
       await db.assets.delete(address || '');
 

@@ -46,6 +46,6 @@ export const EthAssetCard = ({
 const styles = {
   cardListItem: cssObj({
     borderRadius: '10px',
-    width: '90%',
+    boxSizing: '$full',
   }),
 };

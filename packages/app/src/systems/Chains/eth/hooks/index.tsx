@@ -7,3 +7,4 @@ export * from './useEthDepositLogs';
 export * from './useCachedBlocksDates';
 export * from './useAddAssetForm';
 export * from './useManageEthAssets';
+export * from './useSetAssetAddressForm';
