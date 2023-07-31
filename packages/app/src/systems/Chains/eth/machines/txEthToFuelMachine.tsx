@@ -81,7 +81,6 @@ export const txEthToFuelMachine = createMachine(
               onDone: [
                 {
                   cond: FetchMachine.hasError,
-                  target: 'gettingNonce',
                 },
                 {
                   actions: ['assignEthTxNonce'],

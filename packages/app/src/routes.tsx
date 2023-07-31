@@ -9,7 +9,7 @@ export const routes = (
   <BrowserRouter>
     <Routes>
       <Route>
-        <Route path="*" element={<Navigate to={Pages.home} />} />
+        <Route path="*" element={<Navigate to={Pages.ecosystem} />} />
         {homeRoutes}
         {bridgeRoutes}
         {ecosystemRoutes}

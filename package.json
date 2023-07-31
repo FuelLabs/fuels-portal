@@ -85,8 +85,7 @@
       "yaml@>=2.0.0-5 <2.2.2": ">=2.2.2",
       "vite@>=4.1.0 <4.1.5": ">=4.1.5",
       "semver@<7.5.2": ">=7.5.2",
-      "word-wrap": "npm:@aashutoshrathi/word-wrap",
-      "graphql@>=16.6.0": "16.6.0"
+      "word-wrap": "npm:@aashutoshrathi/word-wrap"
     }
   }
 }
