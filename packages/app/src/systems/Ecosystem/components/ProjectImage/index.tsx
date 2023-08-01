@@ -12,14 +12,14 @@ export const ProjecImage = ({ name, image }: ProjecImageProps) => {
 
   return (
     <div>
-      {image && !imageFaulback ? (
+      {image && !imageFallback ? (
         <Image
           src={`/ecosystem/images/${image}.jpeg`}
           alt={name}
           width={40}
           height={40}
           onError={() => {
-            setImageFaultback(true);
+            setImageFallback(true);
           }}
         />
       ) : (
