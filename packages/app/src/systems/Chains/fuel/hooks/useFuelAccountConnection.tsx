@@ -54,7 +54,10 @@ export const useFuelAccountConnection = () => {
   return {
     handlers: {
       connect: handleConnect,
-      disconnect,
+      disconnect: () => {
+        disconnect();
+        localStorage.clear();
+      },
       openFuelInstall: store.openFuelInstall,
       closeDialog: store.closeOverlay,
     },
