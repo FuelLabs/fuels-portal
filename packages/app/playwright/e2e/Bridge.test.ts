@@ -163,6 +163,7 @@ test.describe('Bridge', () => {
 
     // Timeout needed until https://github.com/Synthetixio/synpress/issues/795 is fixed
     await page.waitForTimeout(10000);
+    // TODO Fix bug where we initially have to manually click "Proceed anyways"
     await metamask.confirmTransaction();
 
     const postWithdrawBalanceEth = await client.getBalance({
