@@ -40,7 +40,7 @@
     "name": "Spark",
     "url": "https://allspark.gg/",
     "tags": ["DEX (Orderbook)", "DeFi", "Infrastructure Tooling or Platform"],
-    "description": "AllSpark is a Predicate based central limit order book for Fuel.",
+    "description": "Spark is a Predicate based central limit order book for Fuel.",
     "github": "https://github.com/compolabs/spark",
     "image": "spark"
   },
@@ -232,5 +232,14 @@
     "description": "With the Fuel Wallet, you can explore DApps on Fuel and manage your crypto assets, all in one place.",
     "github": "https://github.com/fuellabs/fuels-wallet",
     "image": "fuelwallet"
+  },
+  {
+    "isLive": false,
+    "name": "Webgum2",
+    "url": "https://wallet.fuel.network/docs/install/",
+    "tags": ["File Marketplace", "Marketplace2"],
+    "description": "An online marketplace where you can buy and sell encrypted files on Fuel Network",
+    "github": "",
+    "image": "fuelwallet2"
   }
 ]
