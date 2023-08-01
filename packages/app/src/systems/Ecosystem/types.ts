@@ -4,5 +4,6 @@ export type Project = {
   tags: string[];
   image?: string;
   url: string;
+  github?: string;
   isLive?: boolean;
 };
