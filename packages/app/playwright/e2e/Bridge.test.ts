@@ -43,8 +43,8 @@ test.describe('Bridge', () => {
     expect(hasFuel).toBeTruthy();
 
     // Go to the bridge page
-    const goToBridge = getByAriaLabel(page, 'Bridge');
-    await goToBridge.click();
+    let bridgePage = page.locator('a').getByText('Bridge');
+    await bridgePage.click();
 
     // Connect metamask
     const connectKitButton = getByAriaLabel(page, 'From Connect wallet');
@@ -114,7 +114,7 @@ test.describe('Bridge', () => {
     );
 
     // Go to the bridge page
-    const bridgePage = page
+    bridgePage = page
       .locator('div')
       .filter({ hasText: 'BridgeTransactions' })
       .getByRole('link', { name: 'Bridge ' });

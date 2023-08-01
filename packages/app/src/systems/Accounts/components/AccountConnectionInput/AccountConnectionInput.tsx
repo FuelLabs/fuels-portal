@@ -28,7 +28,7 @@ export const AccountConnectionInput = ({
   onDisconnect,
 }: AccountConnectionInputProps) => {
   return (
-    <Card css={styles.root}>
+    <Card css={styles.root} variant="outlined">
       <Card.Body css={styles.cardBody}>
         <Box.Stack gap="$1">
           <Box>
@@ -92,7 +92,6 @@ export const AccountConnectionInput = ({
 const styles = {
   root: cssObj({
     minHeight: '$15',
-    border: '1px solid $border',
     overflowX: 'hidden',
   }),
   cardBody: cssObj({
