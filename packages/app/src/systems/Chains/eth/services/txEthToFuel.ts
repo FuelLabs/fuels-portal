@@ -227,19 +227,19 @@ export class TxEthToFuelService {
     if (!input?.fuelAddress) {
       throw new Error('No address for Fuel found');
     }
-    const { ethTxNonce, fuelProvider, fuelAddress } = input;
+    // const { ethTxNonce, fuelProvider, fuelAddress } = input;
 
-    // TODO: what happens when has more than 1000 messages ? should we do pagination or something?
-    const messages = await fuelProvider.getMessages(fuelAddress, {
-      first: 1000,
-    });
-    const message = messages.find(
-      (message) => message.nonce.toHex() === ethTxNonce.toHex()
-    );
+    // // TODO: what happens when has more than 1000 messages ? should we do pagination or something?
+    // const messages = await fuelProvider.getMessages(fuelAddress, {
+    //   first: 1000,
+    // });
+    // const message = messages.find(
+    //   (message) => message.nonce.toHex() === ethTxNonce.toHex()
+    // );
 
-    if (message) {
-      return message;
-    }
+    // if (message) {
+    //   return message;
+    // }
 
     return undefined;
   }

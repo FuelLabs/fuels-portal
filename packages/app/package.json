@@ -31,7 +31,7 @@
     "date-fns": "^2.30.0",
     "ethers": "^5",
     "framer-motion": "^10.12.16",
-    "fuels": "0.48.1",
+    "fuels": "0.49.0",
     "graphql": "16.6.0",
     "graphql-request": "^5.1.0",
     "graphql-tag": "^2.12.6",
