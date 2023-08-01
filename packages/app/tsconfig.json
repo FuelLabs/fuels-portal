@@ -12,6 +12,6 @@
     },
     "types": ["@fuel-wallet/sdk", "jest"]
   },
-  "include": ["./src"],
+  "include": ["./src", "public/ecosystem/images"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
