@@ -9,6 +9,7 @@ overrides:
   vite@>=4.1.0 <4.1.5: '>=4.1.5'
   semver@<7.5.2: '>=7.5.2'
   word-wrap: npm:@aashutoshrathi/word-wrap
+  pnpm@>=8.0.0 <8.6.8: '>=8.6.8'
 
 importers:
 
@@ -430,8 +431,8 @@ importers:
         specifier: ^2.1.0
         version: 2.1.0(react@18.2.0)
       pnpm:
-        specifier: ^8.6.0
-        version: 8.6.0
+        specifier: ^8.6.8
+        version: 8.6.8
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -22996,10 +22997,9 @@ packages:
       logalot: 2.1.0
     dev: true
 
-  /pnpm@8.6.0:
-    resolution: {integrity: sha512-uMaWGXlvG+m5NIJaR4JEEenChbg+1AP4zVpqs4PEcZg4uH+lXMTd/X/lirKZA+TC0w0d+++y3btINcwyKsuwAA==}
+  /pnpm@8.6.8:
+    resolution: {integrity: sha512-OtrCRUE7VqRyKly9E3gfExZHOAHtFDpmulyVFKrnl3v/n2xJckdueVumWJqUA5FHxcRP/T42r8P8CDr9duPP9w==}
     engines: {node: '>=16.14'}
-    deprecated: This version contains a regression. Upgrade to v8.6.2 or newer
     hasBin: true
     dev: false
 
