@@ -8,7 +8,7 @@ type ProjecImageProps = {
 };
 
 export const ProjecImage = ({ name, image }: ProjecImageProps) => {
-  const [imageFaulback, setImageFaultback] = useState(false);
+  const [imageFallback, setImageFallback] = useState(false);
 
   return (
     <div>
