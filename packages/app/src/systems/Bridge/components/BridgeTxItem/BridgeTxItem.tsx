@@ -49,7 +49,9 @@ export const BridgeTxItem = ({
           ) : (
             asset.assetImageSrc
           )}
-          <Text css={styles.infoText}>{asset.assetAmount}</Text>
+          <Text aria-label="Asset amount" css={styles.infoText}>
+            {asset.assetAmount}
+          </Text>
           <Text css={styles.infoText}>{asset.assetSymbol}</Text>
         </Box.Flex>
         <Box css={bridgeTxListStyles.statusColumn}>{status}</Box>
