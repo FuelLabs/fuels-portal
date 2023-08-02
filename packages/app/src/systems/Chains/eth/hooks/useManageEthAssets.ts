@@ -11,26 +11,35 @@ export const useManageEthAssets = (newAssetAddress: string) => {
     address: newAssetAddress as `0x${string}`,
   });
 
-  const doesAssetExist = useMemo(() => {
+  const doesAssetAddressExist = useMemo(() => {
     return assets.find((asset) => asset.address === newAssetAddress);
+  }, [assets, newAssetAddress]);
+
+  const filteredAssets = useMemo(() => {
+    const newAssetsArray = assets.filter(
+      (asset) => asset.symbol === newAssetAddress
+    );
+    if (!newAssetsArray.length) {
+      return assets;
+    }
+    return newAssetsArray;
   }, [assets, newAssetAddress]);
 
   const isValid = useMemo(() => {
     return (
       (newAssetAddress.length !== 0 &&
         isAddress(newAssetAddress) &&
-        !doesAssetExist) ||
+        !doesAssetAddressExist) ||
       newAssetAddress.length === 0
     );
-  }, [newAssetAddress, doesAssetExist]);
+  }, [newAssetAddress, doesAssetAddressExist]);
 
   return {
-    assets,
+    assets: filteredAssets,
     handlers,
     showUseTokenButton: isValid && !isError && !!data,
     showCustomTokenButton: isError && !!newAssetAddress.length && isValid,
-    isAddressValid: isValid,
-    doesAssetExist,
+    doesAssetExist: !!doesAssetAddressExist,
     assetInfo: data,
   };
 };

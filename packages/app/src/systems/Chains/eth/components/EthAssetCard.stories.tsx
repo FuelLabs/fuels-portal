@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, Image, IconButton, Avatar } from '@fuel-ui/react';
+import { Box, Image, Avatar } from '@fuel-ui/react';
 
 import { EthAssetCard } from './EthAssetCard';
 
@@ -15,7 +15,12 @@ export default {
 
 export const Usage = () => {
   return (
-    <Box.Flex align="center" justify="center" css={styles.storybook}>
+    <Box.Flex
+      direction="column"
+      align="center"
+      justify="center"
+      css={styles.storybook}
+    >
       <Box css={styles.container}>
         <EthAssetCard icon={<Image alt=" " src={ethLogoSrc} />} name="ETH" />
       </Box>
@@ -25,7 +30,12 @@ export const Usage = () => {
 
 export const AvatarUsage = () => {
   return (
-    <Box.Flex align="center" justify="center" css={styles.storybook}>
+    <Box.Flex
+      direction="column"
+      align="center"
+      justify="center"
+      css={styles.storybook}
+    >
       <Box css={styles.container}>
         <EthAssetCard
           icon={
@@ -44,7 +54,12 @@ export const AvatarUsage = () => {
 
 export const OnPress = () => {
   return (
-    <Box.Flex align="center" justify="center" css={styles.storybook}>
+    <Box.Flex
+      direction="column"
+      align="center"
+      justify="center"
+      css={styles.storybook}
+    >
       <Box css={styles.container}>
         <EthAssetCard
           icon={<Image alt=" " src={ethLogoSrc} />}
@@ -61,7 +76,12 @@ export const OnPress = () => {
 
 export const OnAdd = () => {
   return (
-    <Box.Flex align="center" justify="center" css={styles.storybook}>
+    <Box.Flex
+      direction="column"
+      align="center"
+      justify="center"
+      css={styles.storybook}
+    >
       <Box css={styles.container}>
         <EthAssetCard
           icon={<Image alt=" " src={ethLogoSrc} />}
@@ -78,24 +98,20 @@ export const OnAdd = () => {
 
 export const OnRemove = () => {
   return (
-    <Box.Flex align="center" justify="center" css={styles.storybook}>
+    <Box.Flex
+      direction="column"
+      align="center"
+      justify="center"
+      css={styles.storybook}
+    >
       <Box css={styles.container}>
         <EthAssetCard
           icon={<Image alt=" " src={ethLogoSrc} />}
           name="ETH"
-          removeIconButton={
-            <IconButton
-              aria-label={'RemoveEthAsset'}
-              variant="ghost"
-              icon="SquareRoundedX"
-              color="scalesRed10"
-              onPress={() => {
-                // eslint-disable-next-line no-console
-                console.log('remove');
-              }}
-              size="xs"
-            />
-          }
+          onRemove={() => {
+            // eslint-disable-next-line no-console
+            console.log('remove');
+          }}
         />
       </Box>
     </Box.Flex>

@@ -51,14 +51,6 @@ export function overlayEvents(store: Store) {
         },
       });
     },
-    openManageAssetsDialog() {
-      store.send(Services.overlay, {
-        type: 'OPEN',
-        input: {
-          modal: 'eth.assets.manage',
-        },
-      });
-    },
     openAddAssetsDialog({ assetAddress }: { assetAddress: string }) {
       store.send(Services.overlay, {
         type: 'OPEN',

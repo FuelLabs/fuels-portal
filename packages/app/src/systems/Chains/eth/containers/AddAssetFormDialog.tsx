@@ -1,5 +1,13 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, Button, Dialog, Icon, Input, Text, Form } from '@fuel-ui/react';
+import {
+  Box,
+  Button,
+  Dialog,
+  Input,
+  Text,
+  Form,
+  IconButton,
+} from '@fuel-ui/react';
 import { Controller } from 'react-hook-form';
 
 import type { AddAssetFormValues } from '../hooks';
@@ -25,20 +33,23 @@ export function AddAssetFormDialog() {
         symbol: data.symbol,
       },
     });
-    store.openManageAssetsDialog();
+    store.openEthAssetsDialog();
   };
 
   return (
     <>
+      <Dialog.Close />
       <Dialog.Heading>
-        <Box.Flex justify="space-between">
-          <Icon icon="ArrowLeft" onClick={store.openManageAssetsDialog} />
+        <Box.Flex gap="$4" justify="start">
+          <IconButton
+            aria-label="Open eth assets dialog"
+            variant="link"
+            icon="ArrowLeft"
+            onPress={store.openEthAssetsDialog}
+          />
           <Text color="intentsBase12" fontSize="sm">
             Add token {shortAddress(metadata.assetAddress)}
           </Text>
-          <Box>
-            <Dialog.Close />
-          </Box>
         </Box.Flex>
       </Dialog.Heading>
       <Dialog.Description>

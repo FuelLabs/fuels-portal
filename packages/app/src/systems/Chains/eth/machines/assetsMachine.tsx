@@ -44,19 +44,8 @@ export const ethAssetListMachine = createMachine(
     },
     predictableActionArguments: true,
     id: '(machine)',
-    initial: 'setListedAssets',
+    initial: 'fetchingAssets',
     states: {
-      setListedAssets: {
-        tags: ['loading'],
-        invoke: {
-          src: 'setListedAssets',
-          onDone: [
-            {
-              target: 'fetchingAssets',
-            },
-          ],
-        },
-      },
       fetchingAssets: {
         tags: ['loading'],
         invoke: {
@@ -114,25 +103,11 @@ export const ethAssetListMachine = createMachine(
       }),
     },
     services: {
-      setListedAssets: FetchMachine.create<null, void>({
-        showError: true,
-        async fetch() {
-          await Promise.all(
-            AssetList.map((asset) =>
-              AssetService.upsertAsset({
-                data: {
-                  ...asset,
-                  image: asset.image,
-                },
-              })
-            )
-          );
-        },
-      }),
       fetchAssets: FetchMachine.create<null, BridgeAsset[]>({
         showError: true,
         async fetch() {
-          return AssetService.getAssets();
+          const assets = await AssetService.getAssets();
+          return [...AssetList, ...assets];
         },
       }),
       addAsset: FetchMachine.create<{ asset: BridgeAsset }, boolean>({

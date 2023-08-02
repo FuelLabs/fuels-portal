@@ -7,7 +7,9 @@ type EthAssetCardProps = {
   name: string;
   onAdd?: () => void;
   onPress?: () => void;
-  removeIconButton?: ReactNode;
+  onRemove?: () => void;
+  isRemoveDisabled?: boolean;
+  removeToolTip?: string;
 };
 
 export const EthAssetCard = ({
@@ -15,7 +17,9 @@ export const EthAssetCard = ({
   name,
   onAdd,
   onPress,
-  removeIconButton,
+  onRemove,
+  isRemoveDisabled,
+  removeToolTip,
 }: EthAssetCardProps) => {
   return (
     <CardList.Item
@@ -31,14 +35,25 @@ export const EthAssetCard = ({
         {onAdd && (
           <IconButton
             aria-label="AddEthAsset"
-            variant="ghost"
+            variant="link"
             icon="CirclePlus"
             onPress={onAdd}
-            color="scalesGreen10"
+            intent="primary"
             size="xs"
           />
         )}
-        {removeIconButton}
+        {onRemove && (
+          <IconButton
+            aria-label="RemoveEthAsset"
+            isDisabled={isRemoveDisabled}
+            tooltip={removeToolTip}
+            variant="link"
+            icon="SquareRoundedX"
+            intent="error"
+            size="xs"
+            onPress={onRemove}
+          />
+        )}
       </Box.Flex>
     </CardList.Item>
   );
@@ -46,7 +61,6 @@ export const EthAssetCard = ({
 
 const styles = {
   cardListItem: cssObj({
-    borderRadius: '10px',
     alignSelf: 'stretch',
   }),
 };

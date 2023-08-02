@@ -1,9 +1,10 @@
 import { ethLogoSrc } from './utils';
 
-export const AssetList = [
+import type { BridgeAsset } from '~/systems/Bridge';
+
+export const AssetList: BridgeAsset[] = [
   {
-    address:
-      '0x0000000000000000000000000000000000000000000000000000000000000000',
+    address: undefined,
     symbol: 'ETH',
     image: ethLogoSrc,
     decimals: 18,
