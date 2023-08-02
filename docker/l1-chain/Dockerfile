@@ -31,7 +31,7 @@ COPY ./hardhat/hardhat.config.ts .
 FROM node:16-alpine
 
 ARG L1_IP=0.0.0.0
-ARG L1_PORT=9545
+ARG L1_PORT=8545
 ARG SERVE_PORT=8081
 
 # dependencies
