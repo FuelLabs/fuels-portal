@@ -33,7 +33,12 @@ export const BridgeTxItem = ({
         <Box css={bridgeTxListStyles.ageColumn}>
           <Text css={styles.ageText}>{calculateDateDiff(date)}</Text>
         </Box>
-        <Box.Flex gap="$2" align="center" css={{ minWidth: '264px' }}>
+        <Box.Flex
+          gap="$2"
+          align="center"
+          justify="space-between"
+          css={{ minWidth: '264px', alignSelf: 'stretch', width: '100%' }}
+        >
           <Box.Flex css={styles.directionInfo}>
             {fromLogo}
             <Icon icon="ArrowNarrowRight" />
@@ -63,19 +68,20 @@ const styles = cssObj({
   listItem: cssObj({
     flexDirection: 'column',
     backgroundColor: '$intentsBase0',
-    width: '$full',
+    alignSelf: 'stretch',
 
     '@md': {
       flexDirection: 'row',
       alignItems: 'center',
       p: '$4 !important',
-      width: '$full',
+      alignSelf: 'stretch',
       backgroundColor: '$intentsBase0',
     },
   }),
   wrapper: cssObj({
     alignItems: 'start',
     flexDirection: 'column',
+    width: '100%',
 
     '@md': {
       flexDirection: 'row',
@@ -86,6 +92,7 @@ const styles = cssObj({
   txItem: cssObj({
     gap: '$1',
     alignItems: 'center',
+    flexGrow: 1,
   }),
   ageText: cssObj({
     fontSize: '$xs',
@@ -98,5 +105,6 @@ const styles = cssObj({
   directionInfo: cssObj({
     gap: '$1',
     alignItems: 'center',
+    flexGrow: 1,
   }),
 });

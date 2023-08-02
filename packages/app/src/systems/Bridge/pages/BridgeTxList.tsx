@@ -77,10 +77,9 @@ export const BridgeTxList = () => {
 
 const styles = {
   cardList: cssObj({
-    width: '328px',
-
-    '@md': {
-      width: '95%',
-    },
+    // width: '328px',
+    // '@md': {
+    //   width: '95%',
+    // },
   }),
 };

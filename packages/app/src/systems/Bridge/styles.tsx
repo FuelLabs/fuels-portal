@@ -3,7 +3,7 @@ export const bridgeTxListStyles = {
     flex: '1 1 24px',
 
     '@md': {
-      flex: '1 1 100px',
+      flex: '0 1 100px',
     },
   },
   directionColumn: {
