@@ -10,5 +10,6 @@ export const {
   VITE_ETH_FUEL_ERC20_GATEWAY,
 } = import.meta.env;
 
+export const IS_PREVIEW = import.meta.env.VITE_IS_PUBLIC_PREVIEW === 'true';
 export const IS_DEVELOPMENT = process.env.NODE_ENV !== 'production';
 export const IS_TEST = process.env.NODE_ENV === 'test';

@@ -38,4 +38,10 @@ export const animations = {
     exit: { opacity: 0.4, y: factor },
     transition: { default: transition } as Transition,
   }),
+  appearIn: ({ transition = defaultTransition }: Opts = defaultTransition) => ({
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    exit: { opacity: 0 },
+    transition: { default: transition } as Transition,
+  }),
 };
