@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, Image, IconButton } from '@fuel-ui/react';
+import { Box, Image, IconButton, Avatar } from '@fuel-ui/react';
 
 import { EthAssetCard } from './EthAssetCard';
 
@@ -18,6 +18,25 @@ export const Usage = () => {
     <Box.Flex align="center" justify="center" css={styles.storybook}>
       <Box css={styles.container}>
         <EthAssetCard icon={<Image alt=" " src={ethLogoSrc} />} name="ETH" />
+      </Box>
+    </Box.Flex>
+  );
+};
+
+export const AvatarUsage = () => {
+  return (
+    <Box.Flex align="center" justify="center" css={styles.storybook}>
+      <Box css={styles.container}>
+        <EthAssetCard
+          icon={
+            <Avatar.Generated
+              height="20px"
+              width="20px"
+              hash="0x15db4a4d9e35fa8c0b5f92b13924d1610c5d618e"
+            />
+          }
+          name="ETH"
+        />
       </Box>
     </Box.Flex>
   );

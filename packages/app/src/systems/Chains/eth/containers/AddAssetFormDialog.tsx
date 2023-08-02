@@ -11,7 +11,7 @@ import { useOverlay } from '~/systems/Overlay';
 
 export function AddAssetFormDialog() {
   const { metadata } = useOverlay<{ assetAddress: string }>();
-  const { handlers } = useAssets();
+  const { handlers, isLoading } = useAssets();
 
   const form = useAddAssetForm();
   const { control } = form;
@@ -100,6 +100,7 @@ export function AddAssetFormDialog() {
           size="sm"
           intent="primary"
           isDisabled={!form.formState.isValid}
+          isLoading={isLoading}
           form="AddAssetForm"
           css={{ width: '$full' }}
         >

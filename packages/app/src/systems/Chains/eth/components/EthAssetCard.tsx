@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, CardList, IconButton } from '@fuel-ui/react';
+import { Box, CardList, IconButton, Text } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
 
 type EthAssetCardProps = {
@@ -26,7 +26,7 @@ export const EthAssetCard = ({
       <Box.Flex align="center" justify="space-between" css={{ width: '$full' }}>
         <Box.Flex gap="$2">
           {icon}
-          {name}
+          <Text color="intentsPrimary12">{name}</Text>
         </Box.Flex>
         {onAdd && (
           <IconButton
