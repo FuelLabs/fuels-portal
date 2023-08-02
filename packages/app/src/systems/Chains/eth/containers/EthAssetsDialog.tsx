@@ -12,7 +12,6 @@ import {
   Input,
   IconButton,
 } from '@fuel-ui/react';
-import { NativeAssetId } from 'fuels';
 import { useState } from 'react';
 import { Controller, useWatch } from 'react-hook-form';
 
@@ -109,7 +108,6 @@ export function EthAssetsDialog() {
                       symbol: assetInfo?.symbol,
                     },
                   });
-                  // store.openManageAssetsDialog();
                 }}
               />
             )}
@@ -157,9 +155,9 @@ export function EthAssetsDialog() {
                         }
                       : undefined
                   }
-                  isRemoveDisabled={asset.address === NativeAssetId}
+                  isRemoveDisabled={asset.address === undefined}
                   removeToolTip={
-                    asset.address === NativeAssetId
+                    asset.address === undefined
                       ? 'ETH is a native asset.  It can not be remove'
                       : undefined
                   }
