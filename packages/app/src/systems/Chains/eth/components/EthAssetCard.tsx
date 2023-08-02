@@ -35,6 +35,7 @@ export const EthAssetCard = ({
             icon="CirclePlus"
             onPress={onAdd}
             color="scalesGreen10"
+            size="xs"
           />
         )}
         {removeIconButton}

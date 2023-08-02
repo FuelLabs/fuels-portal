@@ -143,6 +143,7 @@ export function ManageEthAssetsDialog() {
                       onPress={() =>
                         handlers.removeAsset({ address: asset.address })
                       }
+                      size="xs"
                     />
                   ) : (
                     <IconButton
@@ -152,6 +153,7 @@ export function ManageEthAssetsDialog() {
                       variant="ghost"
                       icon="SquareRoundedX"
                       color="scalesRed10"
+                      size="xs"
                     />
                   )
                 }
