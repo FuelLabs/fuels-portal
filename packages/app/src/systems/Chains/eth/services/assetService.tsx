@@ -3,6 +3,11 @@ import { isAddress } from 'viem';
 import type { BridgeAsset } from '~/systems/Bridge';
 import { db } from '~/systems/Core/utils/database';
 
+export type AssetServiceInputs = {
+  addAsset: { asset: BridgeAsset };
+  removeAsset: { address?: string };
+};
+
 export class AssetService {
   static async upsertAsset(input: { data: BridgeAsset }) {
     return db.transaction('rw!', db.assets, async () => {
@@ -18,14 +23,14 @@ export class AssetService {
     });
   }
 
-  static async addAsset(input: { data: BridgeAsset }) {
+  static async addAsset(input: AssetServiceInputs['addAsset']) {
     return db.transaction('rw', db.assets, async () => {
-      await db.assets.add(input.data);
-      return db.assets.get({ address: input.data.address });
+      await db.assets.add(input.asset);
+      return db.assets.get({ address: input.asset.address });
     });
   }
 
-  static async removeAsset({ address }: { address?: string }) {
+  static async removeAsset({ address }: AssetServiceInputs['removeAsset']) {
     try {
       if (!isAddress(address || '')) {
         throw new Error('Invlalid address');

@@ -2,6 +2,7 @@ import type { StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
 
 import { AssetList } from '../constants';
+import type { AssetServiceInputs } from '../services';
 import { AssetService } from '../services';
 
 import type { BridgeAsset } from '~/systems/Bridge';
@@ -103,29 +104,33 @@ export const ethAssetListMachine = createMachine(
       }),
     },
     services: {
-      fetchAssets: FetchMachine.create<null, BridgeAsset[]>({
+      fetchAssets: FetchMachine.create<
+        null,
+        MachineServices['fetchAssets']['data']
+      >({
         showError: true,
         async fetch() {
           const assets = await AssetService.getAssets();
           return [...AssetList, ...assets];
         },
       }),
-      addAsset: FetchMachine.create<{ asset: BridgeAsset }, boolean>({
+      addAsset: FetchMachine.create<
+        AssetServiceInputs['addAsset'],
+        MachineServices['addAsset']['data']
+      >({
         showError: true,
         async fetch({ input }) {
           if (!input) {
             throw new Error('No input to add asset');
           }
 
-          await AssetService.addAsset({ data: input.asset });
+          await AssetService.addAsset({ asset: input.asset });
           return true;
         },
       }),
       removeAsset: FetchMachine.create<
-        {
-          address: string;
-        },
-        boolean
+        AssetServiceInputs['removeAsset'],
+        MachineServices['removeAsset']['data']
       >({
         showError: true,
         async fetch({ input }) {
