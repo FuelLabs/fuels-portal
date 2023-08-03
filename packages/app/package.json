@@ -41,7 +41,7 @@
     "react-router-dom": "^6.8.2",
     "viem": "^0.3.36",
     "wagmi": "^1.0.6",
-    "xstate": "^4.37.0"
+    "xstate": "^4.37.2"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^2.16.5",
@@ -68,12 +68,14 @@
     "@storybook/testing-library": "^0.1.0",
     "@storybook/theming": "^7.0.7",
     "@storybook/types": "^7.0.7",
+    "@synthetixio/synpress": "https://github.com/matt-user/synpress.git",
     "@types/node": "^18.13.0",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@types/react-helmet": "^6.1.6",
     "@vitejs/plugin-react": "^4.0.0",
     "@xstate/cli": "^0.4.2",
+    "adm-zip": "^0.5.10",
     "jdown": "^1.0.5",
     "prop-types": "^15.8.1",
     "storybook": "^7.0.7",

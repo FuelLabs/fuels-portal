@@ -1,0 +1,236 @@
+[
+  {
+    "isLive": false,
+    "name": "Acumen Microfinance",
+    "url": "https://acumen.network/",
+    "tags": ["DeFi", "Lending", "Real World Assets"],
+    "description": "Bridging DeFi and Real-world assets on Fuel Network",
+    "github": "https://github.com/AcumenProtocol",
+    "image": "acumen"
+  },
+  {
+    "isLive": false,
+    "name": "Aori",
+    "url": "https://www.aori.io/",
+    "tags": ["DeFi", "Options"],
+    "description": "Non-Custodial, high-performance order book trading infrastructure for decentralized options, spot trading, and OTC settlement.",
+    "github": "https://github.com/aori-io",
+    "image": "aori"
+  },
+  {
+    "isLive": false,
+    "name": "ArtDAO",
+    "url": "https://www.artdao.xyz/",
+    "tags": ["Marketplace", "NFTs"],
+    "description": "Scaling the possibilities of digital art on Ethereum - Artists helping artists",
+    "github": "",
+    "image": "artdao"
+  },
+  {
+    "isLive": false,
+    "name": "Composability Labs (Swaylend)",
+    "url": "https://github.com/compolabs",
+    "tags": ["DEX (Orderbook)", "DeFi", "Infrastructure Tooling or Platform"],
+    "description": "Modularity maxis, building DeFi infrastructure on Fuel.",
+    "github": "https://github.com/compolabs",
+    "image": "compolabs"
+  },
+  {
+    "isLive": false,
+    "name": "Spark",
+    "url": "https://allspark.gg/",
+    "tags": ["DEX (Orderbook)", "DeFi", "Infrastructure Tooling or Platform"],
+    "description": "AllSpark is a Predicate based central limit order book for Fuel.",
+    "github": "https://github.com/compolabs/spark",
+    "image": "spark"
+  },
+  {
+    "isLive": false,
+    "name": "Swaylend",
+    "url": "swaylend.com",
+    "tags": ["DEX (Orderbook)", "DeFi", "Infrastructure Tooling or Platform"],
+    "description": "Swaylend is the first lending protocol on Fuel.",
+    "github": "https://github.com/compolabs/sway-lend",
+    "image": "swaylend"
+  },
+  {
+    "isLive": false,
+    "name": "Elix Finance",
+    "url": "https://elix.finance/",
+    "tags": ["DEX (AMM)", "DeFi"],
+    "description": "Hybrid automated market maker featuring automated concentrated liquidity ",
+    "github": "https://github.com/elixfinance",
+    "image": "elix"
+  },
+  {
+    "isLive": false,
+    "name": "Fluid Protocol",
+    "url": "https://fluidprotocol.xyz/",
+    "tags": ["DeFi", "Stablecoin"],
+    "description": "The native decentralized stablecoin of Fuel",
+    "github": "",
+    "image": "fluid"
+  },
+  {
+    "isLive": false,
+    "name": "Fuel Nomen",
+    "url": "https://fuelnomen-testnet.netlify.app/",
+    "tags": ["Infrastructure Tooling or Platform", "Name Service"],
+    "description": "The name system of the world’s fastest modular execution layer, Fuel Network.",
+    "github": "",
+    "image": "fuelnomen"
+  },
+  {
+    "isLive": false,
+    "name": "Fuelet Wallet",
+    "url": "https://fuelet.app/",
+    "tags": ["Infrastructure Tooling or Platform", "Wallet"],
+    "description": "Non-custodial wallet on Fuel.",
+    "github": "https://github.com/fuelet",
+    "image": "fuelet"
+  },
+  {
+    "isLive": false,
+    "name": "Helixa TCG",
+    "url": "https://www.helixatcg.com/",
+    "tags": ["Gaming", "Marketplace", "NFTs"],
+    "description": "A trading card game that blends enthralling gameplay, rich lore, and unique mechanics for an engaging, interactive experience.",
+    "github": "",
+    "image": "helixa"
+  },
+  {
+    "isLive": false,
+    "name": "Hyperlane",
+    "url": "https://www.hyperlane.xyz/",
+    "tags": ["Bridge", "Infrastructure Tooling or Platform"],
+    "description": "The first interoperability layer that enables you to permissionlessly connect any blockchain, out-of-the-box.",
+    "github": "https://github.com/hyperlane-xyz",
+    "image": "hyperlane"
+  },
+  {
+    "isLive": false,
+    "name": "Microchain Systems",
+    "url": "https://microchain.systems/",
+    "tags": ["DEX (AMM)", "DeFi"],
+    "description": "A low-cost, easy-to-use token swapping terminal with two major benefits: versatility and simplicity",
+    "github": "",
+    "image": "microchain"
+  },
+  {
+    "isLive": false,
+    "name": "Pepa Network",
+    "url": "https://pepalabs.net/",
+    "tags": ["DEX (AMM)", "DeFi", "DeFi (Bonds)"],
+    "description": "A blockchain-based gaming platform that combines traditional arcade games with the benefits of decentralized finance (DeFi), non-fungible tokens (NFTs), and social features.",
+    "github": "",
+    "image": "pepamarket"
+  },
+  {
+    "isLive": false,
+    "name": "PlayEstates",
+    "url": "https://www.playestates.com/",
+    "tags": ["DeFi", "Gaming", "NFTs"],
+    "description": "Bringing real estate on-chain and making RWA ownership easy and affordable. ",
+    "github": "",
+    "image": "playestates"
+  },
+  {
+    "isLive": false,
+    "name": "PoolShark Protocol",
+    "url": "https://www.poolshark.fi/",
+    "tags": ["DEX (AMM)", "DeFi"],
+    "description": "A decentralized protocol for directional liquidity.",
+    "github": "",
+    "image": "poolshark"
+  },
+  {
+    "isLive": false,
+    "name": "RedStone Oracle",
+    "url": "https://redstone.finance/",
+    "tags": ["Infrastructure Tooling or Platform", "Oracle"],
+    "description": "Modular Oracles delivering cost-efficient data for DeFi to EVM L1s&L2s",
+    "github": "https://github.com/redstone-finance",
+    "image": "redstone"
+  },
+  {
+    "isLive": false,
+    "name": "Sail Exchange",
+    "url": "https://www.sail.exchange/",
+    "tags": ["DEX (Orderbook)", "DeFi"],
+    "description": "Order book DEX Powered by Fuel Network ",
+    "github": "https://github.com/Sail-Exchange",
+    "image": ""
+  },
+  {
+    "isLive": false,
+    "name": "Smart Money Labs",
+    "url": "https://smartmoneylabs.vercel.app/",
+    "tags": ["DeFi", "Lending"],
+    "description": "A truly decentralized Lending and Burrowing protocol, with no dependency on oracle and no liquidity risk during the loan maturity period, backed by collateral and therefore offering greater flexibility to end users.",
+    "github": "https://github.com/SmartMoney-Labs",
+    "image": "smartmoney"
+  },
+  {
+    "isLive": false,
+    "name": "Thunder",
+    "url": "https://beta.thundernft.market/",
+    "tags": ["Marketplace", "NFTs"],
+    "description": "Building the superior NFT experience on Fuel Network",
+    "github": "",
+    "image": "thunder"
+  },
+  {
+    "isLive": false,
+    "name": "Unic/Nufutu",
+    "url": "https://unic.io/",
+    "tags": ["Marketplace", "NFTs"],
+    "description": "RWA (Real World Asset) Bridge Solution that verifies assets in the digital and the physical world, using AI computer vision and blockchain.",
+    "github": "",
+    "image": "unic"
+  },
+  {
+    "isLive": false,
+    "name": "Yama Finance",
+    "url": "https://yama.finance/",
+    "tags": ["DeFi", "Stablecoin"],
+    "description": "A novel omnichain stablecoin that makes CDPs as efficient and powerful as possible.",
+    "github": "",
+    "image": "yama"
+  },
+  {
+    "isLive": false,
+    "name": "ORAO",
+    "url": "https://orao.network/",
+    "tags": ["Infrastructure Tooling or Platform", "Oracle"],
+    "description": "Next-gen network providing general data availability on Fuel ",
+    "github": "",
+    "image": "orao"
+  },
+  {
+    "isLive": false,
+    "name": "Bald Boyz NFT",
+    "url": "https://baldboyznft.com/",
+    "tags": ["NFTs"],
+    "description": "A positivity-fueled community on Fuel. Celebrating your true self.",
+    "github": "",
+    "image": "baldboyz"
+  },
+  {
+    "isLive": false,
+    "name": "Capitalist Pigs",
+    "url": "https://capitalistpi.gs/",
+    "tags": ["DeFi", "Gaming", "NFTs"],
+    "description": "",
+    "github": "",
+    "image": ""
+  },
+  {
+    "isLive": false,
+    "name": "Fuel Wallet",
+    "url": "https://wallet.fuel.network/docs/install/",
+    "tags": ["Infrastructure Tooling or Platform", "Wallet"],
+    "description": "With the Fuel Wallet, you can explore DApps on Fuel and manage your crypto assets, all in one place.",
+    "github": "https://github.com/fuellabs/fuels-wallet",
+    "image": "fuelwallet"
+  }
+]

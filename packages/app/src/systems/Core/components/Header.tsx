@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 import { removeTrailingSlash } from '../utils';
 
-import { IS_DEVELOPMENT, VITE_IS_PUBLIC_PREVIEW } from '~/config';
+import { IS_PREVIEW } from '~/config';
 import { useTheme } from '~/systems/Settings';
 import { Pages } from '~/types';
 
@@ -22,12 +22,15 @@ export function Header() {
     <Box.Flex as="header" css={styles.root} align="center" justify="center">
       <Box.Flex css={styles.wrapper} align="center" justify="space-between">
         <Box.Flex gap="$4" css={styles.menu}>
-          <Link href="/" className="logo">
+          <Link
+            href={IS_PREVIEW ? '/' : 'http://fuel.network'}
+            className="logo"
+          >
             <FuelLogo size={24} />
           </Link>
         </Box.Flex>
         <Box.Flex gap="$4" css={styles.desktop}>
-          {(IS_DEVELOPMENT || VITE_IS_PUBLIC_PREVIEW) && (
+          {IS_PREVIEW && (
             <>
               <Box.Flex gap="$4" css={styles.menu}>
                 <ButtonLink
