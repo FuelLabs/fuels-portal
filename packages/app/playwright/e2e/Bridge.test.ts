@@ -64,7 +64,7 @@ test.describe('Bridge', () => {
     });
 
     // Deposit asset
-    const depositAmount = '1.12345 ETH';
+    const depositAmount = '1.12345';
     const depositInput = page.locator('input');
     await depositInput.fill(depositAmount);
     const depositButton = getButtonByText(page, 'Bridge asset');
