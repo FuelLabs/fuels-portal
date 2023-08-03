@@ -19,6 +19,7 @@ export function OverlayDialog() {
     <Dialog
       isOpen={overlay.isDialogOpen}
       onOpenChange={(isOpen) => !isOpen && overlay.close()}
+      css={{ backdropFilter: 'blur(10px)' }}
     >
       <Dialog.Content css={styles.content}>
         {overlay.is('tx.fromEth.toFuel') && <TxEthToFuelDialog />}
