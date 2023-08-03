@@ -154,7 +154,7 @@ test.describe('Bridge', () => {
     transactionAssetAmount = getByAriaLabel(page, 'Asset amount');
     // Check the transaction is there
     expect((await transactionAssetAmount.first().innerHTML()).trim()).toBe(
-      withdrawAmount
+      `${withdrawAmount} ETH`
     );
 
     await transactionAssetAmount.first().click({ timeout: 10000 });
