@@ -1,7 +1,4 @@
-import type {
-  Provider as EthProvider,
-  TransactionResponse as EthTransactionResponse,
-} from '@ethersproject/providers';
+import type { TransactionResponse as EthTransactionResponse } from '@ethersproject/providers';
 import type {
   Address as FuelAddress,
   BN,
@@ -35,7 +32,6 @@ export type TxEthToFuelInputs = {
   };
   getDepositNonce: {
     ethTx?: EthTransactionResponse;
-    ethProvider?: EthProvider;
     ethPublicClient?: PublicClient;
   };
   getFuelMessage: {
@@ -227,20 +223,16 @@ export class TxEthToFuelService {
     if (!input?.fuelAddress) {
       throw new Error('No address for Fuel found');
     }
-    // const { ethTxNonce, fuelProvider, fuelAddress } = input;
+    const { ethTxNonce, fuelProvider, fuelAddress } = input;
 
-    // // TODO: what happens when has more than 1000 messages ? should we do pagination or something?
-    // const messages = await fuelProvider.getMessages(fuelAddress, {
-    //   first: 1000,
-    // });
-    // const message = messages.find(
-    //   (message) => message.nonce.toHex() === ethTxNonce.toHex()
-    // );
+    // TODO: what happens when has more than 1000 messages ? should we do pagination or something?
+    const messages = await fuelProvider.getMessages(fuelAddress, {
+      first: 1000,
+    });
+    const message = messages.find(
+      (message) => message.nonce.toString() === ethTxNonce.toHex(32).toString()
+    );
 
-    // if (message) {
-    //   return message;
-    // }
-
-    return undefined;
+    return message || undefined;
   }
 }

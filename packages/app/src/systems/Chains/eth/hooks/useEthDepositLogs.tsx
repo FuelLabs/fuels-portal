@@ -13,60 +13,32 @@ import { useEthAccountConnection } from './useEthAccountConnection';
 import { VITE_ETH_FUEL_MESSAGE_PORTAL } from '~/config';
 
 export const useEthDepositLogs = () => {
-  const { provider, paddedAddress: ethPaddedAddress } =
+  const { publicClient: ethPublicClient, paddedAddress: ethPaddedAddress } =
     useEthAccountConnection();
   const { address: fuelAddress } = useFuelAccountConnection();
 
   const { isFetching: isFetchingLogs, ...query } = useQuery(
     ['ethDepositLogs', ethPaddedAddress, fuelAddress],
     async () => {
-      const logs = await provider!.getLogs({
+      const abiMessageSent = FUEL_MESSAGE_PORTAL.abi.find(
+        ({ name, type }) => name === 'MessageSent' && type === 'event'
+      );
+      const logs = await ethPublicClient!.getLogs({
         address: VITE_ETH_FUEL_MESSAGE_PORTAL as `0x${string}`,
         event: {
           type: 'event',
-          name: 'SentMessage',
-          inputs: [
-            {
-              indexed: true,
-              internalType: 'bytes32',
-              name: 'sender',
-              type: 'bytes32',
-            },
-            {
-              indexed: true,
-              internalType: 'bytes32',
-              name: 'recipient',
-              type: 'bytes32',
-            },
-            {
-              indexed: false,
-              internalType: 'uint64',
-              name: 'nonce',
-              type: 'uint64',
-            },
-            {
-              indexed: false,
-              internalType: 'uint64',
-              name: 'amount',
-              type: 'uint64',
-            },
-            {
-              indexed: false,
-              internalType: 'bytes',
-              name: 'data',
-              type: 'bytes',
-            },
-          ],
+          name: 'MessageSent',
+          inputs: abiMessageSent?.inputs || [],
         },
-        args: {
-          recipient: fuelAddress?.toHexString() as `0x${string}`,
-        },
+        // args: {
+        //   recipient: fuelAddress?.toHexString() as `0x${string}`,
+        // },
         fromBlock: 'earliest',
       });
       return logs;
     },
     {
-      enabled: !!(provider && fuelAddress?.toHexString()),
+      enabled: !!(ethPublicClient && fuelAddress?.toHexString()),
     }
   );
 

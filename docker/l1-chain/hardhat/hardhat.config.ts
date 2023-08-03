@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import type { HardhatUserConfig } from 'hardhat/types';
 import '@nomiclabs/hardhat-etherscan';
 import '@openzeppelin/hardhat-upgrades';

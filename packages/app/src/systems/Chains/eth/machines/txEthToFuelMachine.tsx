@@ -1,7 +1,4 @@
-import type {
-  Provider as EthProvider,
-  TransactionResponse as EthTransactionResponse,
-} from '@ethersproject/providers';
+import type { TransactionResponse as EthTransactionResponse } from '@ethersproject/providers';
 import type {
   BN,
   Message,
@@ -20,7 +17,6 @@ import { FetchMachine } from '~/systems/Core';
 type MachineContext = {
   ethTx?: EthTransactionResponse;
   ethTxNonce?: BN;
-  ethProvider?: EthProvider;
   fuelAddress?: FuelAddress;
   fuelProvider?: FuelProvider;
   fuelMessage?: Message;
@@ -74,7 +70,6 @@ export const txEthToFuelMachine = createMachine(
               data: {
                 input: (ctx: MachineContext) => ({
                   ethTx: ctx.ethTx,
-                  ethProvider: ctx.ethProvider,
                   ethPublicClient: ctx.ethPublicClient,
                 }),
               },
@@ -145,7 +140,6 @@ export const txEthToFuelMachine = createMachine(
     actions: {
       assignAnalyzeTxInput: assign((_, ev) => ({
         ethTx: ev.input.ethTx,
-        ethProvider: ev.input.ethProvider,
         fuelAddress: ev.input.fuelAddress,
         fuelProvider: ev.input.fuelProvider,
         ethPublicClient: ev.input.ethPublicClient,

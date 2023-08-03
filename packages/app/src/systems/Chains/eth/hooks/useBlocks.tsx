@@ -5,14 +5,14 @@ import { useMemo } from 'react';
 import { useEthAccountConnection } from './useEthAccountConnection';
 
 export const useBlocks = (blockHashes?: `0x${string}`[]) => {
-  const { provider } = useEthAccountConnection();
+  const { publicClient } = useEthAccountConnection();
   const query = useQuery(
     ['block', blockHashes],
     async () => {
       if (!blockHashes?.length) return null;
       const blockPromises = blockHashes?.map((blockHash) => {
         if (blockHash) {
-          const blockPromise = provider.getBlock({ blockHash });
+          const blockPromise = publicClient.getBlock({ blockHash });
           return blockPromise;
         }
         return null;

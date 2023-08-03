@@ -81,8 +81,7 @@ export function useTxEthToFuel({
   id: string;
   skipAnalyzeTx?: boolean;
 }) {
-  const { provider: ethProvider, publicClient: ethPublicClient } =
-    useEthAccountConnection();
+  const { publicClient: ethPublicClient } = useEthAccountConnection();
   const { provider: fuelProvider, address: fuelAddress } =
     useFuelAccountConnection();
   const { data: ethTx } = useTransaction({
@@ -99,7 +98,6 @@ export function useTxEthToFuel({
   useEffect(() => {
     if (
       ethTx &&
-      ethProvider &&
       fuelProvider &&
       fuelAddress &&
       !skipAnalyzeTx &&
@@ -108,7 +106,6 @@ export function useTxEthToFuel({
       service.send('START_ANALYZE_TX', {
         input: {
           ethTx,
-          ethProvider,
           fuelProvider,
           fuelAddress,
           ethPublicClient,
@@ -117,7 +114,6 @@ export function useTxEthToFuel({
     }
   }, [
     ethTx,
-    ethProvider,
     fuelProvider,
     fuelAddress,
     service,
