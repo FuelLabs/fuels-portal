@@ -2,8 +2,6 @@ import { cssObj } from '@fuel-ui/css';
 import { Box, Text, Image, Icon, CardList } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
 
-import { bridgeTxListStyles } from '../../styles';
-
 import { calculateDateDiff } from '~/systems/Core';
 
 type BridgeTxItemProps = {
@@ -28,34 +26,32 @@ export const BridgeTxItem = ({
   status,
 }: BridgeTxItemProps) => {
   return (
-    <CardList.Item onClick={onClick} css={styles.listItem} variant="outlined">
+    <CardList.Item onClick={onClick} css={styles.root} variant="outlined">
       <Box.Flex css={styles.wrapper}>
-        <Box css={bridgeTxListStyles.ageColumn}>
+        <Box css={styles.ageColumn}>
           <Text css={styles.ageText}>{calculateDateDiff(date)}</Text>
         </Box>
-        <Box.Flex
-          gap="$2"
-          align="center"
-          justify="space-between"
-          css={{ minWidth: '264px', alignSelf: 'stretch', width: '100%' }}
-        >
-          <Box.Flex css={styles.directionInfo}>
+        <Box.Flex css={styles.txColumn}>
+          <Box.Flex>
             {fromLogo}
             <Icon icon="ArrowNarrowRight" />
             {toLogo}
           </Box.Flex>
-          <Box.Flex css={styles.txItem}>
+          <Box.Flex align="center" gap="$1">
             {typeof asset.assetImageSrc === 'string' ? (
               <Image width={18} height={18} src={asset.assetImageSrc} />
             ) : (
               asset.assetImageSrc
             )}
-            <Text aria-label="Asset amount" css={styles.infoText}>
-              {asset.assetAmount}
+            <Text
+              aria-label="Asset amount"
+              fontSize="sm"
+              css={styles.assetAmountText}
+            >
+              {asset.assetAmount} {asset.assetSymbol}
             </Text>
-            <Text css={styles.infoText}>{asset.assetSymbol}</Text>
           </Box.Flex>
-          <Box.Flex css={bridgeTxListStyles.statusColumn} justify="center">
+          <Box.Flex css={styles.statusColumn} align="center" justify="flex-end">
             {status}
           </Box.Flex>
         </Box.Flex>
@@ -65,46 +61,47 @@ export const BridgeTxItem = ({
 };
 
 const styles = cssObj({
-  listItem: cssObj({
-    flexDirection: 'column',
-    backgroundColor: '$intentsBase0',
-    alignSelf: 'stretch',
+  root: cssObj({
+    display: 'flex',
 
     '@md': {
-      flexDirection: 'row',
       alignItems: 'center',
       p: '$4 !important',
-      alignSelf: 'stretch',
-      backgroundColor: '$intentsBase0',
     },
   }),
   wrapper: cssObj({
-    alignItems: 'start',
-    flexDirection: 'column',
-    width: '100%',
-
+    gap: '$0',
+    alignItems: 'center',
+    flex: 1,
+    flexWrap: 'wrap',
     '@md': {
-      flexDirection: 'row',
-      width: '100%',
-      alignItems: 'center',
+      flexWrap: 'nowrap',
     },
   }),
-  txItem: cssObj({
-    gap: '$1',
-    alignItems: 'center',
-    flexGrow: 1,
-  }),
+  ageColumn: {
+    flex: '1 0 100%',
+
+    '@md': {
+      flex: '0 0 108px',
+    },
+  },
   ageText: cssObj({
     fontSize: '$xs',
     color: '$intentsBase12',
   }),
-  infoText: cssObj({
-    fontSize: '$sm',
-    color: '$intentsBase12',
+  txColumn: cssObj({
+    gap: '$2',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flex: 1,
   }),
   directionInfo: cssObj({
     gap: '$1',
-    alignItems: 'center',
-    flexGrow: 1,
+  }),
+  statusColumn: {
+    flex: '0 0 90px',
+  },
+  assetAmountText: cssObj({
+    color: '$intentsBase12',
   }),
 });
