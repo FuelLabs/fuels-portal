@@ -110,7 +110,7 @@ test.describe('Bridge', () => {
     // check the transaction is there
     let transactionAssetAmount = getByAriaLabel(page, 'Asset amount');
     expect((await transactionAssetAmount.first().innerHTML()).trim()).toBe(
-      depositAmount
+      `${depositAmount} ETH`
     );
 
     // Go to the bridge page
@@ -154,7 +154,7 @@ test.describe('Bridge', () => {
     transactionAssetAmount = getByAriaLabel(page, 'Asset amount');
     // Check the transaction is there
     expect((await transactionAssetAmount.first().innerHTML()).trim()).toBe(
-      withdrawAmount
+      `${withdrawAmount} ETH`
     );
 
     await transactionAssetAmount.first().click({ timeout: 10000 });
