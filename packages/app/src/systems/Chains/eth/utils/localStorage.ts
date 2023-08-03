@@ -1,37 +1,35 @@
 const BLOCK_DATE_KEY_SUBSTRING = 'ethBlockDate-';
 const HASH_DONE_KEY_SUBSTRING = 'ethToFuelTx';
 
-export const getBlockDate = (blockHash: string) => {
-  return localStorage.getItem(getBlockDateKeyString(blockHash));
+export const TxCache = {
+  getBlockDate: (blockHash: string) => {
+    return localStorage.getItem(generateBlockDateKey(blockHash));
+  },
+  setBlockDate: (blockHash: string, blockDate: string) => {
+    return localStorage.setItem(generateBlockDateKey(blockHash), blockDate);
+  },
+  getTxIsDone: (blockHash: string) => {
+    return localStorage.getItem(generateHashDoneKey(blockHash));
+  },
+  setTxIsDone: (blockHash: string, isDone: string) => {
+    return localStorage.setItem(generateHashDoneKey(blockHash), isDone);
+  },
+  clean: () => {
+    Object.keys(localStorage).forEach((key) => {
+      if (
+        key.includes(BLOCK_DATE_KEY_SUBSTRING) ||
+        key.includes(HASH_DONE_KEY_SUBSTRING)
+      ) {
+        localStorage.removeItem(key);
+      }
+    });
+  },
 };
 
-export const setBlockDate = (blockHash: string, blockDate: string) => {
-  return localStorage.setItem(getBlockDateKeyString(blockHash), blockDate);
-};
-
-const getBlockDateKeyString = (blockHash: string) => {
+const generateBlockDateKey = (blockHash: string) => {
   return `${BLOCK_DATE_KEY_SUBSTRING}${blockHash}`;
 };
 
-export const getHashDone = (blockHash: string) => {
-  return localStorage.getItem(getHashDoneKeyString(blockHash));
-};
-
-export const setHashDone = (blockHash: string, isDone: string) => {
-  return localStorage.setItem(getHashDoneKeyString(blockHash), isDone);
-};
-
-const getHashDoneKeyString = (blockhash: string) => {
+const generateHashDoneKey = (blockhash: string) => {
   return `${HASH_DONE_KEY_SUBSTRING}${blockhash}-done`;
-};
-
-export const cleanChainStorage = () => {
-  Object.keys(localStorage).forEach((key) => {
-    if (
-      key.includes(BLOCK_DATE_KEY_SUBSTRING) ||
-      key.includes(HASH_DONE_KEY_SUBSTRING)
-    ) {
-      localStorage.removeItem(key);
-    }
-  });
 };
