@@ -14,6 +14,7 @@ import { assign, createMachine } from 'xstate';
 
 import type { TxEthToFuelInputs } from '../services';
 import { TxEthToFuelService } from '../services';
+import { setHashDone } from '../utils';
 
 import { FetchMachine } from '~/systems/Core';
 
@@ -158,7 +159,7 @@ export const txEthToFuelMachine = createMachine(
       }),
       setEthToFuelTxDone: (ctx, ev) => {
         if (ctx.ethTx?.hash && ev.data) {
-          localStorage.setItem(`ethToFuelTx${ctx.ethTx.hash}-done`, 'true');
+          setHashDone(ctx.ethTx.hash, 'true');
         }
       },
     },

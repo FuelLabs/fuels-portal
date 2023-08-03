@@ -2,6 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 import { bn } from 'fuels';
 import { useMemo } from 'react';
 
+import { setBlockDate } from '../utils';
+
 import { useEthAccountConnection } from './useEthAccountConnection';
 
 export const useBlocks = (blockHashes?: `0x${string}`[]) => {
@@ -27,8 +29,8 @@ export const useBlocks = (blockHashes?: `0x${string}`[]) => {
 
   const blockData = useMemo(() => {
     return query.data?.map((block) => {
-      localStorage.setItem(
-        `ethBlockDate-${block?.hash}`,
+      setBlockDate(
+        block?.hash || '',
         bn(block?.timestamp.toString()).mul(1000).toString()
       );
       const date = block?.timestamp

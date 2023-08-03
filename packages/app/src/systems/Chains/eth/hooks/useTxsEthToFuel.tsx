@@ -9,6 +9,7 @@ import {
   FUEL_UNITS,
   ETH_CHAIN,
   FUEL_CHAIN,
+  getHashDone,
 } from '~/systems/Chains';
 
 export const useTxsEthToFuel = () => {
@@ -29,9 +30,7 @@ export const useTxsEthToFuel = () => {
         txHash: log.transactionHash || '0x',
         fromNetwork: ETH_CHAIN,
         toNetwork: FUEL_CHAIN,
-        isDone:
-          localStorage.getItem(`ethToFuelTx${log.transactionHash}-done`) ===
-          'true',
+        isDone: getHashDone(log.transactionHash || '') === 'true',
       };
       return txDatum;
     });

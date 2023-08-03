@@ -1,9 +1,11 @@
 import { useMemo } from 'react';
 
+import { getBlockDate } from '../utils';
+
 export const useCachedBlocksDates = (blockHashes?: `0x${string}`[]) => {
   const { blockDates, notCachedHashes } = useMemo(() => {
     const datesMap = blockHashes?.reduce((prev, blockHash) => {
-      const blockDate = localStorage.getItem(`ethBlockDate-${blockHash}`);
+      const blockDate = getBlockDate(blockHash);
       if (blockDate) {
         return {
           ...prev,
