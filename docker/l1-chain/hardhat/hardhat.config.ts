@@ -1,9 +1,9 @@
 import type { HardhatUserConfig } from 'hardhat/types';
-// import '@nomiclabs/hardhat-etherscan';
-// import '@openzeppelin/hardhat-upgrades';
-// import 'hardhat-typechain';
+import '@nomiclabs/hardhat-etherscan';
+import '@openzeppelin/hardhat-upgrades';
+import 'hardhat-typechain';
 
-// const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || '';
+const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || '';
 const LOCALHOST_HTTP = process.env.LOCALHOST_HTTP || '';
 
 const config: HardhatUserConfig = {
@@ -26,9 +26,9 @@ const config: HardhatUserConfig = {
       url: LOCALHOST_HTTP,
     },
   },
-  // etherscan: {
-  //   apiKey: ETHERSCAN_API_KEY,
-  // },
+  etherscan: {
+    apiKey: ETHERSCAN_API_KEY,
+  },
 };
 
 export default config;

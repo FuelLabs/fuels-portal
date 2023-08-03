@@ -21,5 +21,3 @@ EXPOSE ${FUEL_PORT}
 # copy over script and run
 COPY ./fuel_core.sh .
 CMD ["sh", "./fuel_core.sh"]
-
-EXPOSE ${FUEL_PORT}
