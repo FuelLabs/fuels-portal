@@ -94,6 +94,7 @@ export function EthAssetsDialog() {
               <EthAssetCard
                 icon={
                   <Avatar.Generated
+                    size={20}
                     hash={
                       (assetInfo?.address || '') + (assetInfo?.symbol || '')
                     }
@@ -133,7 +134,7 @@ export function EthAssetsDialog() {
                       <Image alt=" " src={asset.image} />
                     ) : (
                       <Avatar.Generated
-                        size="xsm"
+                        size={20}
                         hash={asset.address || asset.symbol || String(i)}
                       />
                     )
