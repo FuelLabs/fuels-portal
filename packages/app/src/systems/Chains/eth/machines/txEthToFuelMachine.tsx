@@ -159,7 +159,7 @@ export const txEthToFuelMachine = createMachine(
       }),
       setEthToFuelTxDone: (ctx, ev) => {
         if (ctx.ethTx?.hash && ev.data) {
-          TxCache.setTxIsDone(ctx.ethTx.hash, 'true');
+          TxCache.setTxIsDone(ctx.ethTx.hash);
         }
       },
     },

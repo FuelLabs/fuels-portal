@@ -11,8 +11,8 @@ export const TxCache = {
   getTxIsDone: (blockHash: string) => {
     return localStorage.getItem(generateHashDoneKey(blockHash));
   },
-  setTxIsDone: (blockHash: string, isDone: string) => {
-    return localStorage.setItem(generateHashDoneKey(blockHash), isDone);
+  setTxIsDone: (blockHash: string) => {
+    return localStorage.setItem(generateHashDoneKey(blockHash), 'true');
   },
   clean: () => {
     Object.keys(localStorage).forEach((key) => {
