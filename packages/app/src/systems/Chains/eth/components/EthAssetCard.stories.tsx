@@ -118,6 +118,29 @@ export const OnRemove = () => {
   );
 };
 
+export const OnRemoveDisabled = () => {
+  return (
+    <Box.Flex
+      direction="column"
+      align="center"
+      justify="center"
+      css={styles.storybook}
+    >
+      <Box css={styles.container}>
+        <EthAssetCard
+          icon={<Image alt=" " src={ethLogoSrc} />}
+          name="ETH"
+          onRemove={() => {
+            // eslint-disable-next-line no-console
+            console.log('remove');
+          }}
+          isRemoveDisabled
+        />
+      </Box>
+    </Box.Flex>
+  );
+};
+
 const styles = {
   storybook: cssObj({
     margin: '20px',

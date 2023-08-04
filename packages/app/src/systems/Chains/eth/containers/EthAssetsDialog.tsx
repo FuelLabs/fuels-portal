@@ -5,9 +5,7 @@ import {
   Dialog,
   Icon,
   Text,
-  Image,
   Button,
-  Avatar,
   Form,
   Input,
   IconButton,
@@ -96,9 +94,11 @@ export function EthAssetsDialog() {
                       </Input.ElementRight>
                     )}
                   </Input>
-                  {!doesAssetExist && (
-                    <Form.HelperText>{`No asset found for your search "${newAssetAddress}"`}</Form.HelperText>
-                  )}
+                  {!doesAssetExist &&
+                    !(showCustomTokenButton || showUseTokenButton) &&
+                    !isLoading && (
+                      <Form.HelperText>{`No asset found for your search "${newAssetAddress}"`}</Form.HelperText>
+                    )}
                 </Form.Control>
               );
             }}
@@ -109,14 +109,6 @@ export function EthAssetsDialog() {
           <>
             {showUseTokenButton && (
               <EthAssetCard
-                icon={
-                  <Avatar.Generated
-                    size={20}
-                    hash={
-                      (assetInfo?.address || '') + (assetInfo?.symbol || '')
-                    }
-                  />
-                }
                 name={assetInfo?.symbol || ''}
                 onAdd={form.handleSubmit(onSubmitToken)}
               />
@@ -125,7 +117,6 @@ export function EthAssetsDialog() {
           <>
             {showCustomTokenButton && (
               <EthAssetCard
-                icon={<Icon icon="HelpOctagon" />}
                 name={shortAddress(form.getValues('address'))}
                 onAdd={form.handleSubmit(onSubmitCustomToken)}
               />
@@ -138,16 +129,7 @@ export function EthAssetsDialog() {
                   key={`${asset.address || ''}${asset.symbol || ''}${String(
                     i
                   )}`}
-                  icon={
-                    asset.image ? (
-                      <Image alt=" " src={asset.image} />
-                    ) : (
-                      <Avatar.Generated
-                        size={20}
-                        hash={asset.address || asset.symbol || String(i)}
-                      />
-                    )
-                  }
+                  imageSrc={asset.image}
                   name={asset.symbol || ''}
                   onPress={
                     !editable

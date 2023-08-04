@@ -1,9 +1,8 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, CardList, IconButton, Text } from '@fuel-ui/react';
-import type { ReactNode } from 'react';
+import { Box, CardList, IconButton, Text, Image, Avatar } from '@fuel-ui/react';
 
 type EthAssetCardProps = {
-  icon: ReactNode;
+  imageSrc?: string;
   name: string;
   onAdd?: () => void;
   onPress?: () => void;
@@ -13,7 +12,7 @@ type EthAssetCardProps = {
 };
 
 export const EthAssetCard = ({
-  icon,
+  imageSrc,
   name,
   onAdd,
   onPress,
@@ -29,7 +28,11 @@ export const EthAssetCard = ({
     >
       <Box.Flex align="center" justify="space-between" css={{ width: '$full' }}>
         <Box.Flex gap="$2" align="center">
-          {icon}
+          {imageSrc ? (
+            <Image alt=" " src={imageSrc} />
+          ) : (
+            <Avatar.Generated size={20} hash={name} />
+          )}
           <Text color="intentsPrimary12">{name}</Text>
         </Box.Flex>
         {onAdd && (
@@ -49,7 +52,7 @@ export const EthAssetCard = ({
             tooltip={removeToolTip}
             variant="link"
             icon="SquareRoundedX"
-            intent="error"
+            intent={isRemoveDisabled ? 'base' : 'error'}
             size="xs"
             onPress={onRemove}
           />
