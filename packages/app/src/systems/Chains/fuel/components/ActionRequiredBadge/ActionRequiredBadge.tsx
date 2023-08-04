@@ -1,11 +1,13 @@
 import { cssObj } from '@fuel-ui/css';
-import { Badge } from '@fuel-ui/react';
+import { Badge, Text } from '@fuel-ui/react';
 
 export const ActionRequiredBadge = () => {
   return (
-    <Badge css={styles.actionBadge} intent="error">
-      Action Required
-    </Badge>
+    <Text>
+      <Badge css={styles.actionBadge} intent="error">
+        Action Required
+      </Badge>
+    </Text>
   );
 };
 
