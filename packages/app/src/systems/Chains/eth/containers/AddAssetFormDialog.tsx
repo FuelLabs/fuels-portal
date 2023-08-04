@@ -67,8 +67,8 @@ export function AddAssetFormDialog() {
                 Boolean(props.fieldState.error);
               return (
                 <Form.Control isRequired isInvalid={isInvalid}>
-                  <Form.Label css={styles.text}>Token symbol</Form.Label>
-                  <Input size="md" css={styles.text}>
+                  <Form.Label css={styles.fieldLabel}>Token symbol</Form.Label>
+                  <Input size="md" css={styles.fieldLabel}>
                     <Input.Field {...props.field} placeholder="SYMBOL" />
                   </Input>
                   {props.fieldState.error && (
@@ -90,8 +90,10 @@ export function AddAssetFormDialog() {
                 Boolean(props.fieldState.error);
               return (
                 <Form.Control isRequired isInvalid={isInvalid}>
-                  <Form.Label css={styles.text}>Token decimals</Form.Label>
-                  <Input size="md" css={styles.text}>
+                  <Form.Label css={styles.fieldLabel}>
+                    Token decimals
+                  </Form.Label>
+                  <Input size="md" css={styles.fieldLabel}>
                     <Input.Number {...props.field} placeholder="18" />
                   </Input>
                   {props.fieldState.error && (
@@ -113,7 +115,7 @@ export function AddAssetFormDialog() {
           isDisabled={!form.formState.isValid}
           isLoading={isLoading}
           form="AddAssetForm"
-          css={{ width: '$full' }}
+          css={styles.addTokenButton}
         >
           Add token to list
         </Button>
@@ -123,7 +125,10 @@ export function AddAssetFormDialog() {
 }
 
 const styles = {
-  text: cssObj({
+  fieldLabel: cssObj({
     fontSize: '$sm',
+  }),
+  addTokenButton: cssObj({
+    width: '$full',
   }),
 };

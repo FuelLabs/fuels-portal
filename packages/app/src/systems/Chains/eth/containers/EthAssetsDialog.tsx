@@ -105,7 +105,6 @@ export function EthAssetsDialog() {
           />
         </Box.Flex>
         <CardList isClickable={!editable}>
-          {/* TODO test that use token works */}
           <>
             {showUseTokenButton && (
               <EthAssetCard
@@ -158,14 +157,14 @@ export function EthAssetsDialog() {
           </>
         </CardList>
       </Dialog.Description>
-      <Dialog.Footer css={styles.dialogFooter}>
-        {!editable && (
+      {!editable && (
+        <Dialog.Footer css={styles.dialogFooter}>
           <Button variant="ghost" onPress={() => setEditable(true)}>
             <Icon icon="Edit" />
             <Text color="intentsBase10">Manage token list</Text>
           </Button>
-        )}
-      </Dialog.Footer>
+        </Dialog.Footer>
+      )}
     </>
   );
 }
@@ -175,7 +174,7 @@ const styles = {
     width: '100%',
   }),
   dialogFooter: cssObj({
-    borderTop: '1px solid $intentsBase8',
+    borderTop: '1px solid $border',
     justifyContent: 'center',
     paddingTop: '$2',
   }),

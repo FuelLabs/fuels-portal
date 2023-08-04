@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, Image, Avatar } from '@fuel-ui/react';
+import { Box } from '@fuel-ui/react';
 
 import { EthAssetCard } from './EthAssetCard';
 
@@ -22,7 +22,7 @@ export const Usage = () => {
       css={styles.storybook}
     >
       <Box css={styles.container}>
-        <EthAssetCard icon={<Image alt=" " src={ethLogoSrc} />} name="ETH" />
+        <EthAssetCard name="ETH" />
       </Box>
     </Box.Flex>
   );
@@ -37,16 +37,7 @@ export const AvatarUsage = () => {
       css={styles.storybook}
     >
       <Box css={styles.container}>
-        <EthAssetCard
-          icon={
-            <Avatar.Generated
-              height="20px"
-              width="20px"
-              hash="0x15db4a4d9e35fa8c0b5f92b13924d1610c5d618e"
-            />
-          }
-          name="ETH"
-        />
+        <EthAssetCard name="ETH" />
       </Box>
     </Box.Flex>
   );
@@ -62,7 +53,6 @@ export const OnPress = () => {
     >
       <Box css={styles.container}>
         <EthAssetCard
-          icon={<Image alt=" " src={ethLogoSrc} />}
           name="ETH"
           onPress={() => {
             // eslint-disable-next-line no-console
@@ -84,7 +74,6 @@ export const OnAdd = () => {
     >
       <Box css={styles.container}>
         <EthAssetCard
-          icon={<Image alt=" " src={ethLogoSrc} />}
           name="ETH"
           onAdd={() => {
             // eslint-disable-next-line no-console
@@ -106,7 +95,6 @@ export const OnRemove = () => {
     >
       <Box css={styles.container}>
         <EthAssetCard
-          icon={<Image alt=" " src={ethLogoSrc} />}
           name="ETH"
           onRemove={() => {
             // eslint-disable-next-line no-console
@@ -128,7 +116,7 @@ export const OnRemoveDisabled = () => {
     >
       <Box css={styles.container}>
         <EthAssetCard
-          icon={<Image alt=" " src={ethLogoSrc} />}
+          imageSrc={ethLogoSrc}
           name="ETH"
           onRemove={() => {
             // eslint-disable-next-line no-console
