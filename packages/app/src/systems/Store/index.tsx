@@ -1,5 +1,4 @@
 import { createStore } from '@fuels-portal/store';
-import { NativeAssetId } from 'fuels';
 
 import type { StoreMachines } from './types';
 import { Services } from './types';
@@ -17,9 +16,7 @@ export const store$ = createStore<StoreMachines>({
 
 export const store = store$
   .addMachine(Services.overlay, () => overlayMachine)
-  .addMachine(Services.bridge, () =>
-    bridgeMachine.withContext({ assetAddress: NativeAssetId })
-  )
+  .addMachine(Services.bridge, () => bridgeMachine)
   .addMachine(Services.ecosystem, () => ecosystemMachine)
   .addMachine(Services.ethAssetList, () => ethAssetListMachine)
   .addHandlers(overlayEvents)
