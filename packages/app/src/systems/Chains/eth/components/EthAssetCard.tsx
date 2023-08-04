@@ -28,7 +28,7 @@ export const EthAssetCard = ({
       css={styles.cardListItem}
     >
       <Box.Flex align="center" justify="space-between" css={{ width: '$full' }}>
-        <Box.Flex gap="$2">
+        <Box.Flex gap="$2" align="center">
           {icon}
           <Text color="intentsPrimary12">{name}</Text>
         </Box.Flex>

@@ -40,6 +40,17 @@ export function EthAssetsDialog() {
     assetInfo,
   } = useManageEthAssets(newAssetAddress);
 
+  const onSubmitToken = () => {
+    handlers.addAsset({
+      asset: {
+        address: assetInfo?.address,
+        decimals: assetInfo?.decimals,
+        symbol: assetInfo?.symbol,
+      },
+    });
+    form.resetField('address');
+  };
+
   const onSubmitCustomToken = (data: SetAddressFormValues) => {
     store.openAddAssetsDialog({
       assetAddress: data.address,
@@ -101,15 +112,7 @@ export function EthAssetsDialog() {
                   />
                 }
                 name={assetInfo?.symbol || ''}
-                onAdd={() => {
-                  handlers.addAsset({
-                    asset: {
-                      address: assetInfo?.address,
-                      decimals: assetInfo?.decimals,
-                      symbol: assetInfo?.symbol,
-                    },
-                  });
-                }}
+                onAdd={form.handleSubmit(onSubmitToken)}
               />
             )}
           </>
@@ -171,7 +174,7 @@ export function EthAssetsDialog() {
         {!editable && (
           <Button variant="ghost" onPress={() => setEditable(true)}>
             <Icon icon="Edit" />
-            <Text color="intentsBase12">Manage token list</Text>
+            <Text color="intentsBase10">Manage token list</Text>
           </Button>
         )}
       </Dialog.Footer>
