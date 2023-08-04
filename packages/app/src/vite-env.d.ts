@@ -6,6 +6,7 @@ interface ImportMetaEnv {
   readonly VITE_WALLETCONNECT_ID: string;
   readonly VITE_ETH_FUEL_MESSAGE_PORTAL: string;
   readonly VITE_ETH_FUEL_ERC20_GATEWAY: string;
+  readonly VITE_ETH_FUEL_CHAIN_STATE: string;
   readonly VITE_ETH_CHAIN: string;
   readonly VITE_FUEL_CHAIN: string;
   readonly VITE_IS_PUBLIC_PREVIEW: string;

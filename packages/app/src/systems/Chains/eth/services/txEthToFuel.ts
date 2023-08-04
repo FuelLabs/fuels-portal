@@ -5,14 +5,15 @@ import type {
   Provider as FuelProvider,
 } from 'fuels';
 import { bn } from 'fuels';
-import type { WalletClient } from 'viem';
+import type { WalletClient, PublicClient } from 'viem';
 import { decodeEventLog, getContract, isAddress } from 'viem';
-import type { PublicClient } from 'wagmi';
 
 import { ERC_20 } from '../contracts/Erc20';
+import { FUEL_CHAIN_STATE } from '../contracts/FuelChainState';
 import { FUEL_MESSAGE_PORTAL } from '../contracts/FuelMessagePortal';
 
 import {
+  VITE_ETH_FUEL_CHAIN_STATE,
   VITE_ETH_FUEL_ERC20_GATEWAY,
   VITE_ETH_FUEL_MESSAGE_PORTAL,
 } from '~/config';
@@ -84,6 +85,22 @@ export class TxEthToFuelService {
     const contract = getContract({
       abi: ERC_20.abi,
       address,
+      walletClient,
+      publicClient,
+    });
+
+    return contract;
+  }
+
+  static connectToFuelChainState(options: {
+    walletClient?: WalletClient;
+    publicClient?: PublicClient;
+  }) {
+    const { walletClient, publicClient } = options;
+
+    const contract = getContract({
+      abi: FUEL_CHAIN_STATE.abi,
+      address: VITE_ETH_FUEL_CHAIN_STATE as `0x${string}`,
       walletClient,
       publicClient,
     });

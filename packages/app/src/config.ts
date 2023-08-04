@@ -8,6 +8,7 @@ export const {
   NODE_ENV,
   VITE_ETH_ERC20_TOKEN_ADDRESS,
   VITE_ETH_FUEL_ERC20_GATEWAY,
+  VITE_ETH_FUEL_CHAIN_STATE,
 } = import.meta.env;
 
 export const IS_PREVIEW = import.meta.env.VITE_IS_PUBLIC_PREVIEW === 'true';

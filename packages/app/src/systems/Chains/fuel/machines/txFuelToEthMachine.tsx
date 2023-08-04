@@ -8,6 +8,7 @@ import type { PublicClient as EthPublicClient } from 'viem';
 import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
 
+import type { RelayMessageParams } from '../../eth/utils/relayMessage';
 import type { TxFuelToEthInputs } from '../services';
 import { TxFuelToEthService } from '../services';
 
@@ -20,6 +21,7 @@ type MachineContext = {
   fuelLastBlockId?: string;
   messageId?: string;
   messageProof?: MessageProof;
+  relayMessageParams?: RelayMessageParams;
   ethTxId?: string;
   ethPublicClient?: EthPublicClient;
 };
@@ -35,7 +37,18 @@ type MachineServices = {
     data: string | undefined;
   };
   getMessageProof: {
-    data: MessageProof | undefined | null;
+    data:
+      | {
+          withdrawMessageProof: MessageProof | undefined;
+          relayMessageParams: RelayMessageParams | undefined;
+        }
+      | undefined;
+  };
+  waitBlockCommit: {
+    data: boolean | undefined;
+  };
+  waitBlockFinalization: {
+    data: boolean | undefined;
   };
   getMessageRelayed: {
     data: string | undefined;
@@ -181,15 +194,70 @@ export const txFuelToEthMachine = createMachine(
                       cond: FetchMachine.hasError,
                     },
                     {
-                      actions: ['assignMessageProof'],
-                      cond: 'hasMessageProof',
-                      target: 'checkingRelayed',
+                      actions: [
+                        'assignMessageProof',
+                        'assignRelayMessageParams',
+                      ],
+                      cond: 'hasRelayMessageParams',
+                      target: 'waitingBlockCommit',
                     },
                   ],
                 },
                 after: {
                   10000: {
                     target: 'checkingMessageProof',
+                  },
+                },
+              },
+              waitingBlockCommit: {
+                tags: ['isSettlementLoading', 'isSettlementSelected'],
+                invoke: {
+                  src: 'waitBlockCommit',
+                  data: {
+                    input: (ctx: MachineContext) => ({
+                      rootBlockHeader: ctx.relayMessageParams?.rootBlockHeader,
+                      ethPublicClient: ctx.ethPublicClient,
+                    }),
+                  },
+                  onDone: [
+                    {
+                      cond: FetchMachine.hasError,
+                    },
+                    {
+                      cond: 'hasBlockCommited',
+                      target: 'waitingBlockFinalization',
+                    },
+                  ],
+                },
+                after: {
+                  10000: {
+                    target: 'waitingBlockCommit',
+                  },
+                },
+              },
+              waitingBlockFinalization: {
+                tags: ['isSettlementLoading', 'isSettlementSelected'],
+                invoke: {
+                  src: 'waitBlockFinalization',
+                  data: {
+                    input: (ctx: MachineContext) => ({
+                      rootBlockHeader: ctx.relayMessageParams?.rootBlockHeader,
+                      ethPublicClient: ctx.ethPublicClient,
+                    }),
+                  },
+                  onDone: [
+                    {
+                      cond: FetchMachine.hasError,
+                    },
+                    {
+                      cond: 'hasBlockFinalized',
+                      target: 'checkingRelayed',
+                    },
+                  ],
+                },
+                after: {
+                  10000: {
+                    target: 'waitingBlockFinalization',
                   },
                 },
               },
@@ -253,7 +321,7 @@ export const txFuelToEthMachine = createMachine(
                             { type: 'RELAY_TO_ETH' }
                           >
                         ) => ({
-                          messageProof: ctx.messageProof,
+                          relayMessageParams: ctx.relayMessageParams,
                           ethWalletClient: ev.input.ethWalletClient,
                         }),
                       },
@@ -302,7 +370,10 @@ export const txFuelToEthMachine = createMachine(
         messageId: (_, ev) => ev.data || undefined,
       }),
       assignMessageProof: assign({
-        messageProof: (_, ev) => ev.data || undefined,
+        messageProof: (_, ev) => ev.data?.withdrawMessageProof || undefined,
+      }),
+      assignRelayMessageParams: assign({
+        relayMessageParams: (_, ev) => ev.data?.relayMessageParams || undefined,
       }),
       assignFuelLastBlockId: assign({
         fuelLastBlockId: (_, ev) => ev.data || undefined,
@@ -311,8 +382,11 @@ export const txFuelToEthMachine = createMachine(
     guards: {
       hasFuelTxResult: (ctx, ev) => !!ctx.fuelTxResult || !!ev?.data,
       hasMessageId: (ctx, ev) => !!ctx.messageProof || !!ev?.data,
-      hasMessageProof: (ctx, ev) => !!ctx.messageProof || !!ev?.data,
+      hasRelayMessageParams: (ctx, ev) =>
+        !!ctx.relayMessageParams || !!ev?.data?.relayMessageParams,
       hasFuelLastBlockId: (ctx, ev) => !!ctx.fuelLastBlockId || !!ev?.data,
+      hasBlockCommited: (_, ev) => !!ev?.data,
+      hasBlockFinalized: (_, ev) => !!ev?.data,
     },
     services: {
       waitFuelTxResult: FetchMachine.create<
@@ -371,6 +445,34 @@ export const txFuelToEthMachine = createMachine(
           }
 
           return TxFuelToEthService.getMessageProof(input);
+        },
+      }),
+      waitBlockCommit: FetchMachine.create<
+        TxFuelToEthInputs['waitBlockCommit'],
+        MachineServices['waitBlockCommit']['data']
+      >({
+        showError: true,
+        maxAttempts: 1,
+        async fetch({ input }) {
+          if (!input) {
+            throw new Error('No input to wait block commit');
+          }
+
+          return TxFuelToEthService.waitBlockCommit(input);
+        },
+      }),
+      waitBlockFinalization: FetchMachine.create<
+        TxFuelToEthInputs['waitBlockFinalization'],
+        MachineServices['waitBlockFinalization']['data']
+      >({
+        showError: true,
+        maxAttempts: 1,
+        async fetch({ input }) {
+          if (!input) {
+            throw new Error('No input to wait block commit');
+          }
+
+          return TxFuelToEthService.waitBlockFinalization(input);
         },
       }),
       getMessageRelayed: FetchMachine.create<

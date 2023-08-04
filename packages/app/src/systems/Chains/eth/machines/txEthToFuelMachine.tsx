@@ -12,7 +12,7 @@ import { assign, createMachine } from 'xstate';
 import type { TxEthToFuelInputs } from '../services';
 import { TxEthToFuelService } from '../services';
 
-import { FetchMachine } from '~/systems/Core';
+import { FetchMachine } from '~/systems/Core/machines';
 
 type MachineContext = {
   ethTx?: EthTransactionResponse;

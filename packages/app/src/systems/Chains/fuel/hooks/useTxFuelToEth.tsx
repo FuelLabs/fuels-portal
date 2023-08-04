@@ -4,7 +4,7 @@ import type { ReceiptMessageOut } from 'fuels';
 import { ReceiptType, fromTai64ToUnix } from 'fuels';
 import { useEffect, useMemo } from 'react';
 
-import { useEthAccountConnection } from '../../eth';
+import { useEthAccountConnection } from '../../eth/hooks';
 import type { TxFuelToEthMachineState } from '../machines';
 import { txFuelToEthMachine } from '../machines';
 import { FUEL_UNITS } from '../utils';
