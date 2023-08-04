@@ -39,5 +39,6 @@ export const useManageEthAssets = (newAssetAddress: string) => {
       !doesAssetExist,
     assetInfo: data,
     isLoading: isLoading && isAddress(newAssetAddress) && !doesAssetExist,
+    doesAssetExist,
   };
 };

@@ -39,6 +39,7 @@ export function EthAssetsDialog() {
     showUseTokenButton,
     assetInfo,
     isLoading,
+    doesAssetExist,
   } = useManageEthAssets(newAssetAddress);
 
   const onSubmitToken = () => {
@@ -95,6 +96,9 @@ export function EthAssetsDialog() {
                       </Input.ElementRight>
                     )}
                   </Input>
+                  {!doesAssetExist && (
+                    <Form.HelperText>{`No asset found for your search "${newAssetAddress}"`}</Form.HelperText>
+                  )}
                 </Form.Control>
               );
             }}
