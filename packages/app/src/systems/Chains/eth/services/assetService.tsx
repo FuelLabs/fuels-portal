@@ -31,12 +31,8 @@ export class AssetService {
   }
 
   static async removeAsset({ address }: AssetServiceInputs['removeAsset']) {
-    try {
-      if (!isAddress(address || '')) {
-        throw new Error('Invlalid address');
-      }
-    } catch (error: unknown) {
-      return false;
+    if (!isAddress(address || '')) {
+      throw new Error('Invalid address');
     }
     return db.transaction('rw', db.assets, async () => {
       await db.assets.delete(address || '');

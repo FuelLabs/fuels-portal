@@ -75,15 +75,15 @@ export function EthAssetsDialog() {
           </Text>
         </Box.Flex>
       </Dialog.Heading>
-      <Dialog.Description css={{ pb: '$5' }}>
-        <Box.Flex align="center" css={{ pb: '$5' }}>
+      <Dialog.Description css={styles.dialogDescription}>
+        <Box.Flex align="center" css={styles.controllerWrapper}>
           <Controller
             name="address"
             control={form.control}
             render={(props) => {
               return (
                 <Form.Control css={{ width: '$full' }}>
-                  <Input size="md" css={styles.text}>
+                  <Input size="md" css={styles.headerInput}>
                     <Input.Field
                       {...props.field}
                       placeholder="Search or paste custom address"
@@ -173,12 +173,18 @@ const styles = {
   actionButton: cssObj({
     width: '100%',
   }),
+  dialogDescription: cssObj({
+    pb: '$5',
+  }),
+  controllerWrapper: cssObj({
+    pb: '$5',
+  }),
   dialogFooter: cssObj({
     borderTop: '1px solid $border',
     justifyContent: 'center',
     paddingTop: '$2',
   }),
-  text: cssObj({
+  headerInput: cssObj({
     fontSize: '$sm',
   }),
 };
