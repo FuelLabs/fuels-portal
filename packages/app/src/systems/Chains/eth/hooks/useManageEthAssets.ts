@@ -11,36 +11,33 @@ export const useManageEthAssets = (newAssetAddress: string) => {
     address: newAssetAddress as `0x${string}`,
   });
 
-  const doesAssetAddressExist = useMemo(() => {
-    return assets.find((asset) => asset.address === newAssetAddress);
-  }, [assets, newAssetAddress]);
-
-  const filteredAssets = useMemo(() => {
+  const { filteredAssets, doesAssetExist } = useMemo(() => {
+    const isValidAddress = isAddress(newAssetAddress);
+    if (isValidAddress) {
+      const filteredAssets = assets.filter(
+        (asset) => asset.address === newAssetAddress
+      );
+      return { filteredAssets, doesAssetExist: filteredAssets.length };
+    }
     const newAssetsArray = assets.filter((asset) =>
       asset.symbol?.toLowerCase().startsWith(newAssetAddress.toLowerCase())
     );
     if (!newAssetsArray.length) {
-      return assets;
+      return { filteredAssets: assets, doesAssetExist: false };
     }
-    return newAssetsArray;
+    return { filteredAssets: newAssetsArray, doesAssetExist: true };
   }, [assets, newAssetAddress]);
-
-  const isValid = useMemo(() => {
-    return (
-      (newAssetAddress.length !== 0 &&
-        isAddress(newAssetAddress) &&
-        !doesAssetAddressExist) ||
-      newAssetAddress.length === 0
-    );
-  }, [newAssetAddress, doesAssetAddressExist]);
 
   return {
     assets: filteredAssets,
     handlers,
-    showUseTokenButton: isValid && !isError && !!data,
-    showCustomTokenButton: isError && !!newAssetAddress.length && isValid,
-    doesAssetExist: !!doesAssetAddressExist,
+    showUseTokenButton: !isError && !!data && !doesAssetExist,
+    showCustomTokenButton:
+      isError &&
+      !!newAssetAddress.length &&
+      isAddress(newAssetAddress) &&
+      !doesAssetExist,
     assetInfo: data,
-    isLoading,
+    isLoading: isLoading && isAddress(newAssetAddress) && !doesAssetExist,
   };
 };

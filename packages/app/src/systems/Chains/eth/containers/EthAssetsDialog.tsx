@@ -37,12 +37,9 @@ export function EthAssetsDialog() {
     handlers,
     showCustomTokenButton,
     showUseTokenButton,
-    doesAssetExist,
     assetInfo,
     isLoading,
   } = useManageEthAssets(newAssetAddress);
-
-  console.log(`isLoading`, isLoading);
 
   const onSubmitToken = () => {
     handlers.addAsset({
@@ -86,10 +83,7 @@ export function EthAssetsDialog() {
             control={form.control}
             render={(props) => {
               return (
-                <Form.Control
-                  isInvalid={doesAssetExist}
-                  css={{ width: '$full' }}
-                >
+                <Form.Control css={{ width: '$full' }}>
                   <Input size="md" css={styles.text}>
                     <Input.Field
                       {...props.field}
@@ -101,10 +95,6 @@ export function EthAssetsDialog() {
                       </Input.ElementRight>
                     )}
                   </Input>
-                  <Form.ErrorMessage>
-                    {`Please enter a valid address. This address has already been added.
-                    `}
-                  </Form.ErrorMessage>
                 </Form.Control>
               );
             }}
