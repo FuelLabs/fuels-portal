@@ -73,8 +73,6 @@ export function useBridge() {
     selectors.assetAddress
   );
 
-  console.log(`assetAddress here`, assetAddress);
-
   const {
     address: ethAddress,
     handlers: ethHandlers,

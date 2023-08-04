@@ -25,9 +25,6 @@ export function useEthAccountConnection(props?: {
     address,
     token: erc20Address,
   });
-  console.log(`address`, address);
-  console.log(`erc20Address`, erc20Address);
-  console.log(`balance`, balance);
   const publicClient = usePublicClient();
   const { data: walletClient } = useWalletClient();
   const { asset } = useAsset({
