@@ -64,8 +64,8 @@ export function EthAssetsDialog() {
   return (
     <>
       <Dialog.Close />
-      <Dialog.Heading css={styles.dialogHeading}>
-        <Box.Flex gap="$4" justify="start" css={styles.dialogHeadingContainer}>
+      <Dialog.Heading>
+        <Box.Flex gap="$4" justify="start">
           {editable && (
             <IconButton
               aria-label="Set editable to false"
@@ -79,8 +79,8 @@ export function EthAssetsDialog() {
           </Text>
         </Box.Flex>
       </Dialog.Heading>
-      <Dialog.Description>
-        <Box.Flex align="center" css={{ pb: '$2' }}>
+      <Dialog.Description css={{ pb: '$5' }}>
+        <Box.Flex align="center" css={{ pb: '$5' }}>
           <Controller
             name="address"
             control={form.control}
@@ -95,6 +95,11 @@ export function EthAssetsDialog() {
                       {...props.field}
                       placeholder="Search or paste custom address"
                     />
+                    {isLoading && (
+                      <Input.ElementRight>
+                        <Spinner />
+                      </Input.ElementRight>
+                    )}
                   </Input>
                   <Form.ErrorMessage>
                     {`Please enter a valid address. This address has already been added.
@@ -104,7 +109,6 @@ export function EthAssetsDialog() {
               );
             }}
           />
-          {isLoading && <Spinner size={28} />}
         </Box.Flex>
         <CardList isClickable={!editable}>
           {/* TODO test that use token works */}
@@ -191,19 +195,13 @@ export function EthAssetsDialog() {
 }
 
 const styles = {
-  dialogHeading: cssObj({
-    borderBottom: '1px solid $intentsBase8',
-  }),
-  dialogHeadingContainer: cssObj({
-    paddingBottom: '$4',
-  }),
   actionButton: cssObj({
     width: '100%',
   }),
   dialogFooter: cssObj({
     borderTop: '1px solid $intentsBase8',
     justifyContent: 'center',
-    paddingTop: '$4',
+    paddingTop: '$2',
   }),
   text: cssObj({
     fontSize: '$sm',

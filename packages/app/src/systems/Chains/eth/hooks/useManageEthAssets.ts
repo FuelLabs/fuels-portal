@@ -16,8 +16,8 @@ export const useManageEthAssets = (newAssetAddress: string) => {
   }, [assets, newAssetAddress]);
 
   const filteredAssets = useMemo(() => {
-    const newAssetsArray = assets.filter(
-      (asset) => asset.symbol === newAssetAddress
+    const newAssetsArray = assets.filter((asset) =>
+      asset.symbol?.toLowerCase().startsWith(newAssetAddress.toLowerCase())
     );
     if (!newAssetsArray.length) {
       return assets;
