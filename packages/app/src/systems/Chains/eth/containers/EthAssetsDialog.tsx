@@ -11,6 +11,7 @@ import {
   Form,
   Input,
   IconButton,
+  Spinner,
 } from '@fuel-ui/react';
 import { useState } from 'react';
 import { Controller, useWatch } from 'react-hook-form';
@@ -38,7 +39,10 @@ export function EthAssetsDialog() {
     showUseTokenButton,
     doesAssetExist,
     assetInfo,
+    isLoading,
   } = useManageEthAssets(newAssetAddress);
+
+  console.log(`isLoading`, isLoading);
 
   const onSubmitToken = () => {
     handlers.addAsset({
@@ -76,13 +80,16 @@ export function EthAssetsDialog() {
         </Box.Flex>
       </Dialog.Heading>
       <Dialog.Description>
-        <Box.Stack css={{ pb: '$2' }}>
+        <Box.Flex align="center" css={{ pb: '$2' }}>
           <Controller
             name="address"
             control={form.control}
             render={(props) => {
               return (
-                <Form.Control isInvalid={doesAssetExist}>
+                <Form.Control
+                  isInvalid={doesAssetExist}
+                  css={{ width: '$full' }}
+                >
                   <Input size="md" css={styles.text}>
                     <Input.Field
                       {...props.field}
@@ -97,7 +104,8 @@ export function EthAssetsDialog() {
               );
             }}
           />
-        </Box.Stack>
+          {isLoading && <Spinner size={28} />}
+        </Box.Flex>
         <CardList isClickable={!editable}>
           {/* TODO test that use token works */}
           <>

@@ -7,7 +7,7 @@ import { useAssets } from './useAssets';
 export const useManageEthAssets = (newAssetAddress: string) => {
   const { assets, handlers } = useAssets();
 
-  const { data, isError } = useToken({
+  const { data, isError, isLoading } = useToken({
     address: newAssetAddress as `0x${string}`,
   });
 
@@ -41,5 +41,6 @@ export const useManageEthAssets = (newAssetAddress: string) => {
     showCustomTokenButton: isError && !!newAssetAddress.length && isValid,
     doesAssetExist: !!doesAssetAddressExist,
     assetInfo: data,
+    isLoading,
   };
 };
