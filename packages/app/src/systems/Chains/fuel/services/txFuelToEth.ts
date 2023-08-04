@@ -22,6 +22,10 @@ export type TxFuelToEthInputs = {
     fuelTxId: string;
     fuelProvider?: FuelProvider;
   };
+  waitNextBlock: {
+    fuelProvider?: FuelProvider;
+    blockId: string;
+  };
   getMessageId: {
     receipts: TransactionResultReceipt[];
   };
@@ -29,6 +33,7 @@ export type TxFuelToEthInputs = {
     fuelTxId: string;
     messageId: string;
     fuelProvider?: FuelProvider;
+    fuelLastBlockId?: string;
   };
   getMessageRelayed: {
     messageProof: MessageProof;
@@ -73,7 +78,29 @@ export class TxFuelToEthService {
     const { fuelTxId, fuelProvider } = input;
 
     const response = new TransactionResponse(fuelTxId || '', fuelProvider);
-    return response.waitForResult();
+    const result = await response.waitForResult();
+
+    return result;
+  }
+
+  static async waitNextBlock(input: TxFuelToEthInputs['waitNextBlock']) {
+    if (!input?.fuelProvider) {
+      throw new Error('Need to connect Fuel Provider');
+    }
+    if (!input?.blockId) {
+      throw new Error('Need block Id');
+    }
+
+    const { fuelProvider, blockId } = input;
+
+    const chain = await fuelProvider.getChain();
+    const currentBlock = await fuelProvider.getBlock(blockId);
+
+    if (chain.latestBlock.height.lte(bn(currentBlock?.height))) {
+      return undefined;
+    }
+
+    return chain.latestBlock.id;
   }
 
   static async getMessageId(input: TxFuelToEthInputs['getMessageId']) {
@@ -100,13 +127,17 @@ export class TxFuelToEthService {
     if (!input?.messageId) {
       throw new Error('Need message ID');
     }
+    if (!input?.fuelLastBlockId) {
+      throw new Error('Need last block ID');
+    }
 
-    const { fuelTxId, fuelProvider, messageId } = input;
+    const { fuelTxId, fuelProvider, messageId, fuelLastBlockId } = input;
 
     // TODO: here should pass blockCommitId blockCommitHeight after we have new structure for bridge
     const withdrawMessageProof = await fuelProvider.getMessageProof(
       fuelTxId,
-      messageId
+      messageId,
+      fuelLastBlockId
     );
 
     return withdrawMessageProof;

@@ -17,6 +17,7 @@ type MachineContext = {
   fuelProvider: FuelProvider;
   fuelTxId: string;
   fuelTxResult?: TransactionResult<any, void>;
+  fuelLastBlockId?: string;
   messageId?: string;
   messageProof?: MessageProof;
   ethTxId?: string;
@@ -26,6 +27,9 @@ type MachineContext = {
 type MachineServices = {
   waitFuelTxResult: {
     data: TransactionResult<any, void>;
+  };
+  waitNextBlock: {
+    data: string | undefined;
   };
   getMessageId: {
     data: string | undefined;
@@ -119,13 +123,40 @@ export const txFuelToEthMachine = createMachine(
                 {
                   actions: ['assignMessageId'],
                   cond: 'hasMessageId',
-                  target: 'checkingSettlement',
+                  target: 'waitingNextBlock',
                 },
               ],
             },
             after: {
               10000: {
                 target: 'waitingFuelTxResult',
+              },
+            },
+          },
+          waitingNextBlock: {
+            tags: ['isSubmitToBridgeLoading', 'isSubmitToBridgeSelected'],
+            invoke: {
+              src: 'waitNextBlock',
+              data: {
+                input: (ctx: MachineContext) => ({
+                  fuelProvider: ctx.fuelProvider,
+                  blockId: ctx.fuelTxResult?.blockId,
+                }),
+              },
+              onDone: [
+                {
+                  cond: FetchMachine.hasError,
+                },
+                {
+                  actions: ['assignFuelLastBlockId'],
+                  cond: 'hasFuelLastBlockId',
+                  target: 'checkingSettlement',
+                },
+              ],
+            },
+            after: {
+              5000: {
+                target: 'waitingNextBlock',
               },
             },
           },
@@ -142,6 +173,7 @@ export const txFuelToEthMachine = createMachine(
                       fuelTxId: ctx.fuelTxId,
                       messageId: ctx.messageId,
                       fuelProvider: ctx.fuelProvider,
+                      fuelLastBlockId: ctx.fuelLastBlockId,
                     }),
                   },
                   onDone: [
@@ -272,11 +304,15 @@ export const txFuelToEthMachine = createMachine(
       assignMessageProof: assign({
         messageProof: (_, ev) => ev.data || undefined,
       }),
+      assignFuelLastBlockId: assign({
+        fuelLastBlockId: (_, ev) => ev.data || undefined,
+      }),
     },
     guards: {
       hasFuelTxResult: (ctx, ev) => !!ctx.fuelTxResult || !!ev?.data,
       hasMessageId: (ctx, ev) => !!ctx.messageProof || !!ev?.data,
       hasMessageProof: (ctx, ev) => !!ctx.messageProof || !!ev?.data,
+      hasFuelLastBlockId: (ctx, ev) => !!ctx.fuelLastBlockId || !!ev?.data,
     },
     services: {
       waitFuelTxResult: FetchMachine.create<
@@ -307,6 +343,20 @@ export const txFuelToEthMachine = createMachine(
           }
 
           return TxFuelToEthService.getMessageId(input);
+        },
+      }),
+      waitNextBlock: FetchMachine.create<
+        TxFuelToEthInputs['waitNextBlock'],
+        MachineServices['waitNextBlock']['data']
+      >({
+        showError: true,
+        maxAttempts: 1,
+        async fetch({ input }) {
+          if (!input) {
+            throw new Error('No input to wait next block');
+          }
+
+          return TxFuelToEthService.waitNextBlock(input);
         },
       }),
       getMessageProof: FetchMachine.create<
