@@ -31,6 +31,8 @@ const selectors = {
     const isWaitingEthWalletApproval = state.hasTag(
       'isWaitingEthWalletApproval'
     );
+    const isReceiveLoading = state.hasTag('isReceiveLoading');
+    const isReceiveSelected = state.hasTag('isReceiveSelected');
     const isReceiveDone = state.hasTag('isReceiveDone');
 
     return {
@@ -44,6 +46,8 @@ const selectors = {
       isConfirmTransactionLoading,
       isConfirmTransactionDone,
       isWaitingEthWalletApproval,
+      isReceiveLoading,
+      isReceiveSelected,
       isReceiveDone,
     };
   },

@@ -13,7 +13,8 @@ import {
   Address,
   ZeroBytes32,
 } from 'fuels';
-import type { WalletClient, PublicClient as EthPublicClient } from 'viem';
+import type { WalletClient } from 'viem';
+import type { PublicClient as EthPublicClient } from 'wagmi';
 
 import { FUEL_MESSAGE_PORTAL } from '../../eth/contracts/FuelMessagePortal';
 import { TxEthToFuelService } from '../../eth/services';
@@ -58,10 +59,15 @@ export type TxFuelToEthInputs = {
   getMessageRelayed: {
     messageProof: MessageProof;
     ethPublicClient: EthPublicClient;
+    messageId: string;
   };
   relayMessageFromFuelBlock: {
     relayMessageParams: RelayMessageParams;
     ethWalletClient: WalletClient;
+  };
+  waitTxMessageRelayed: {
+    txHash: `0x${string}`;
+    ethPublicClient: EthPublicClient;
   };
 };
 
@@ -220,9 +226,11 @@ export class TxFuelToEthService {
     if (!input?.messageProof) {
       throw new Error('Need message proof to relay on ETH side');
     }
-
     if (!input?.ethPublicClient) {
       throw new Error('Need to connect ETH Wallet');
+    }
+    if (!input?.messageId) {
+      throw new Error('Need message ID');
     }
 
     const { ethPublicClient } = input;
@@ -230,6 +238,7 @@ export class TxFuelToEthService {
     const abiMessageRelayed = FUEL_MESSAGE_PORTAL.abi.find(
       ({ name, type }) => name === 'MessageRelayed' && type === 'event'
     );
+
     const logs = await ethPublicClient.getLogs({
       address: VITE_ETH_FUEL_MESSAGE_PORTAL as `0x${string}`,
       event: {
@@ -237,16 +246,14 @@ export class TxFuelToEthService {
         name: 'MessageRelayed',
         inputs: abiMessageRelayed?.inputs || [],
       },
-      // TODO: put right args
-      // args: {
-      //   recipient: fuelAddress?.toHexString() as `0x${string}`,
-      // },
+      args: {
+        messageId: input.messageId as `0x${string}`,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any,
       fromBlock: 'earliest',
     });
 
-    console.log(`logs`, logs);
-
-    return undefined;
+    return logs?.[0].transactionHash || undefined;
   }
 
   static async relayMessageFromFuelBlock(
@@ -266,20 +273,33 @@ export class TxFuelToEthService {
       walletClient: ethWalletClient,
     });
 
-    const txHash = await fuelPortal.write.relayMessage(
-      [
-        relayMessageParams.message,
-        relayMessageParams.rootBlockHeader,
-        relayMessageParams.blockHeader,
-        relayMessageParams.blockInHistoryProof,
-        relayMessageParams.messageInBlockProof,
-      ]
-      // {
-      //   value: BigInt(bn(10).toHex()),
-      //   account: ethWalletClient.account,
-      // }
-    );
+    const txHash = await fuelPortal.write.relayMessage([
+      relayMessageParams.message,
+      relayMessageParams.rootBlockHeader,
+      relayMessageParams.blockHeader,
+      relayMessageParams.blockInHistoryProof,
+      relayMessageParams.messageInBlockProof,
+    ]);
 
     return txHash;
+  }
+
+  static async waitTxMessageRelayed(
+    input: TxFuelToEthInputs['waitTxMessageRelayed']
+  ) {
+    if (!input?.ethPublicClient) {
+      throw new Error('Need to connect ETH Wallet');
+    }
+    if (!input?.txHash) {
+      throw new Error('Need transaction hash');
+    }
+
+    const { ethPublicClient, txHash } = input;
+
+    const txReceipts = await ethPublicClient.waitForTransactionReceipt({
+      hash: txHash,
+    });
+
+    return !!txReceipts;
   }
 }

@@ -30,9 +30,10 @@ export const useEthDepositLogs = () => {
           name: 'MessageSent',
           inputs: abiMessageSent?.inputs || [],
         },
-        // args: {
-        //   recipient: fuelAddress?.toHexString() as `0x${string}`,
-        // },
+        args: {
+          recipient: fuelAddress?.toHexString() as `0x${string}`,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any,
         fromBlock: 'earliest',
       });
       return logs;

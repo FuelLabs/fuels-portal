@@ -1,10 +1,11 @@
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import type { WalletUnlocked } from 'fuels';
-import { NativeAssetId, Wallet, bn } from 'fuels';
-import type { HDAccount, PublicClient } from 'viem';
+import { BaseAssetId, Wallet, bn } from 'fuels';
+import type { HDAccount } from 'viem';
 import { createPublicClient, http } from 'viem';
 import { mnemonicToAccount } from 'viem/accounts';
 import { foundry } from 'viem/chains';
+import type { PublicClient } from 'wagmi';
 
 import {
   getByAriaLabel,
@@ -58,7 +59,7 @@ test.describe('Bridge', () => {
     await connectFuel.click();
     await walletConnect(context);
 
-    const preDepositBalanceFuel = await fuelWallet.getBalance(NativeAssetId);
+    const preDepositBalanceFuel = await fuelWallet.getBalance(BaseAssetId);
     const prevDepositBalanceEth = await client.getBalance({
       address: account.address,
     });
@@ -95,7 +96,7 @@ test.describe('Bridge', () => {
     const closeEthPopup = getByAriaLabel(page, 'Close Transaction Dialog');
     await closeEthPopup.click();
 
-    const postDepositBalanceFuel = await fuelWallet.getBalance(NativeAssetId);
+    const postDepositBalanceFuel = await fuelWallet.getBalance(BaseAssetId);
 
     expect(
       postDepositBalanceFuel
@@ -124,7 +125,7 @@ test.describe('Bridge', () => {
     const withdrawPage = getButtonByText(page, 'Withdraw from Fuel');
     await withdrawPage.click();
 
-    const preWithdrawBalanceFuel = await fuelWallet.getBalance(NativeAssetId);
+    const preWithdrawBalanceFuel = await fuelWallet.getBalance(BaseAssetId);
     const prevWithdrawBalanceEth = await client.getBalance({
       address: account.address,
     });
@@ -169,7 +170,7 @@ test.describe('Bridge', () => {
     const postWithdrawBalanceEth = await client.getBalance({
       address: account.address,
     });
-    const postWithdrawBalanceFuel = await fuelWallet.getBalance(NativeAssetId);
+    const postWithdrawBalanceFuel = await fuelWallet.getBalance(BaseAssetId);
 
     // We only divide by 15 bc bigint does not support decimals
     expect(

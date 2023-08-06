@@ -5,8 +5,9 @@ import type {
   Provider as FuelProvider,
 } from 'fuels';
 import { bn } from 'fuels';
-import type { WalletClient, PublicClient } from 'viem';
+import type { WalletClient } from 'viem';
 import { decodeEventLog, getContract, isAddress } from 'viem';
+import type { PublicClient } from 'wagmi';
 
 import { ERC_20 } from '../contracts/Erc20';
 import { FUEL_CHAIN_STATE } from '../contracts/FuelChainState';

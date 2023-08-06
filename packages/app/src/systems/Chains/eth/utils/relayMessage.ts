@@ -1,5 +1,4 @@
 import type { MessageProof } from 'fuels';
-import { arrayify } from 'fuels';
 
 import type {
   CommitBlockHeader,
@@ -45,7 +44,7 @@ export function createRelayMessageParams(
   // Create the message proof object
   const messageInBlockProof: Proof = {
     key: messageProof.proofIndex.toString(),
-    proof: messageProofSet.map((p) => arrayify(p)),
+    proof: messageProofSet,
   };
 
   // construct data objects for relaying message on L1 (cont)
@@ -63,7 +62,7 @@ export function createRelayMessageParams(
   // Create the block proof object
   const blockInHistoryProof: Proof = {
     key: blockProof.proofIndex.toString(),
-    proof: proofSet.map((p) => arrayify(p)),
+    proof: proofSet,
   };
 
   return {

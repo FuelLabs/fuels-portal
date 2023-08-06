@@ -29,5 +29,5 @@ export type Message = {
 
 export type Proof = {
   key: string;
-  proof: Array<Uint8Array>;
+  proof: Array<string>;
 };
