@@ -84,7 +84,7 @@ export class TxFuelToEthService {
     }
 
     const { amount, fuelWallet, ethAddress } = input;
-    // TODO: broken here
+    // broken here in Sepolia only
     const txFuel = await fuelWallet.withdrawToBaseLayer(
       Address.fromString(ethAddress),
       amount
@@ -253,7 +253,7 @@ export class TxFuelToEthService {
       fromBlock: 'earliest',
     });
 
-    return logs?.[0].transactionHash || undefined;
+    return logs?.[0]?.transactionHash || undefined;
   }
 
   static async relayMessageFromFuelBlock(

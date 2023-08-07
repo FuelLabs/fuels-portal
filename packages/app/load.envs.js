@@ -30,9 +30,14 @@ function getEthFuelL1Contracts() {
     return body;
   }
 
-  if (process.env.VITE_ETH_CHAIN === 'goerli') {
+  if (process.env.VITE_ETH_CHAIN === 'sepolia') {
     return {
-      FuelMessagePortal: '0xE6B0E27F85abaCfC5149642c30F4BE9a878Aa4e9',
+      FuelChainState: '0x053cDdc8D065dEB051584a5ae4DB45348be285c9',
+      FuelMessagePortal: '0x457A5a9320d06118764c400163c441cb8551cfa2',
+      FuelERC20Gateway: '0x10530552f00079cfF07f3c6D541C651a667Cf41D',
+      FuelChainState_impl: '0x9fe3f180aa29Cd49a73e99129A988F36A5800ADa',
+      FuelMessagePortal_impl: '0xaf4EBaF4D853809D984d4ee3D6DAA8fa2367396A',
+      FuelERC20Gateway_impl: '0xea8BE566210aE54687bFA3b0BF8Ddc3e49767655',
     };
   }
 }

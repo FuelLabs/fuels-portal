@@ -14,15 +14,16 @@ const fuelDev: FuelChain = {
   providerUrl: 'http://localhost:4000/graphql',
 };
 
-const fuelBeta3: FuelChain = {
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const fuelBeta3_5: FuelChain = {
   id: 1002,
-  network: 'fuel_beta3',
-  name: 'Fuel Beta3',
+  network: 'fuel_beta3.5',
+  name: 'Fuel_Beta_3.5',
   testnet: true,
-  providerUrl: 'https://beta-3.fuel.network/graphql',
+  providerUrl: 'https://beta3-5-devv.swayswap.io/graphql',
 };
 
 export const FUEL_CHAINS = {
   fuelDev,
-  fuelBeta3,
+  fuelBeta3_5,
 };
