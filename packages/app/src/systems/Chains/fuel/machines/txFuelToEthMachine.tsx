@@ -11,6 +11,7 @@ import { assign, createMachine } from 'xstate';
 import type { RelayMessageParams } from '../../eth/utils/relayMessage';
 import type { TxFuelToEthInputs } from '../services';
 import { TxFuelToEthService } from '../services';
+import { FuelTxCache } from '../utils';
 
 import { FetchMachine } from '~/systems/Core/machines';
 
@@ -380,6 +381,7 @@ export const txFuelToEthMachine = createMachine(
                         },
                       },
                       done: {
+                        entry: ['setFuelToEthTxDone'],
                         tags: ['isReceiveDone'],
                         type: 'final',
                       },
@@ -419,6 +421,11 @@ export const txFuelToEthMachine = createMachine(
       assignTxHashMessageRelayed: assign({
         txHashMessageRelayed: (_, ev) => ev.data || undefined,
       }),
+      setFuelToEthTxDone: (ctx) => {
+        if (ctx.fuelTxId) {
+          FuelTxCache.setTxIsDone(ctx.fuelTxId);
+        }
+      },
     },
     guards: {
       hasFuelTxResult: (ctx, ev) => !!ctx.fuelTxResult || !!ev?.data,

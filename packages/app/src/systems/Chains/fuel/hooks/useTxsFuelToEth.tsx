@@ -15,6 +15,7 @@ import {
   ETH_SYMBOL,
   FUEL_CHAIN,
   FUEL_UNITS,
+  FuelTxCache,
   ethLogoSrc,
   useFuelAccountConnection,
 } from '~/systems/Chains';
@@ -85,8 +86,7 @@ export const useTxsFuelToEth = () => {
           txHash: txId,
           fromNetwork: FUEL_CHAIN,
           toNetwork: ETH_CHAIN,
-          // implement cache(localstorage) isDone after we have done state in txFuelToEthMachine
-          isDone: false,
+          isDone: FuelTxCache.getTxIsDone(txId || '') === 'true',
         });
       }
 

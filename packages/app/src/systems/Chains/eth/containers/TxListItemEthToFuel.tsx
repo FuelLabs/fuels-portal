@@ -23,6 +23,7 @@ export const TxListItemEthToFuel = ({
 }: TxListItemEthToFuelProps) => {
   const { steps, ethBlockDate, handlers, status } = useTxEthToFuel({
     id: txHash,
+    // TODO: can refact part of skipAnalyzeTx this could be done inside the machine and jump to done state
     skipAnalyzeTx: isDone,
   });
 

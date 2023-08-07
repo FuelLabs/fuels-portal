@@ -24,16 +24,15 @@ export const TxListItemFuelToEth = ({
   date,
   isDone,
 }: TxListItemFuelToEthProps) => {
-  const { steps, handlers } = useTxFuelToEth({
+  const { steps, handlers, status } = useTxFuelToEth({
     txId: txHash,
-    // TODO: add skip here when done status is implemented in FuelToEth bridge
-    // skipAnalyzeTx: isDone,
+    skipAnalyzeTx: isDone,
   });
 
   const bridgeTxStatus = steps?.find(({ isSelected }) => !!isSelected);
 
   function getStatusComponent() {
-    if (isDone)
+    if (isDone || status.isReceiveDone)
       return (
         <Text fontSize="xs" color="intentsBase11">
           Settled

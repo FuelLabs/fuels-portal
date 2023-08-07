@@ -110,7 +110,13 @@ const selectors = {
   },
 };
 
-export function useTxFuelToEth({ txId }: { txId: string }) {
+export function useTxFuelToEth({
+  txId,
+  skipAnalyzeTx,
+}: {
+  txId: string;
+  skipAnalyzeTx?: boolean;
+}) {
   const { walletClient: ethWalletClient, publicClient: ethPublicClient } =
     useEthAccountConnection();
   const { provider: fuelProvider } = useFuelAccountConnection();
@@ -131,7 +137,7 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
   const { transaction: fuelTx } = useTransaction(txId);
 
   useEffect(() => {
-    if (txId && fuelProvider) {
+    if (txId && !skipAnalyzeTx && fuelProvider) {
       service.send('START_ANALYZE_TX', {
         input: {
           fuelTxId: txId,
