@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box } from '@fuel-ui/react';
+import { CardList } from '@fuel-ui/react';
 
 import { EthAssetCard } from './EthAssetCard';
 
@@ -15,117 +15,78 @@ export default {
 
 export const Usage = () => {
   return (
-    <Box.Flex
-      direction="column"
-      align="center"
-      justify="center"
-      css={styles.storybook}
-    >
-      <Box css={styles.container}>
-        <EthAssetCard name="ETH" />
-      </Box>
-    </Box.Flex>
+    <CardList css={styles.storybook}>
+      <EthAssetCard imageSrc={ethLogoSrc} name="ETH" />
+    </CardList>
   );
 };
 
 export const AvatarUsage = () => {
   return (
-    <Box.Flex
-      direction="column"
-      align="center"
-      justify="center"
-      css={styles.storybook}
-    >
-      <Box css={styles.container}>
-        <EthAssetCard name="ETH" />
-      </Box>
-    </Box.Flex>
+    <CardList css={styles.storybook}>
+      <EthAssetCard name="ETH" />
+    </CardList>
   );
 };
 
 export const OnPress = () => {
   return (
-    <Box.Flex
-      direction="column"
-      align="center"
-      justify="center"
-      css={styles.storybook}
-    >
-      <Box css={styles.container}>
-        <EthAssetCard
-          name="ETH"
-          onPress={() => {
-            // eslint-disable-next-line no-console
-            console.log('press');
-          }}
-        />
-      </Box>
-    </Box.Flex>
+    <CardList css={styles.storybook}>
+      <EthAssetCard
+        imageSrc={ethLogoSrc}
+        name="ETH"
+        onPress={() => {
+          // eslint-disable-next-line no-console
+          console.log('press');
+        }}
+      />
+    </CardList>
   );
 };
 
 export const OnAdd = () => {
   return (
-    <Box.Flex
-      direction="column"
-      align="center"
-      justify="center"
-      css={styles.storybook}
-    >
-      <Box css={styles.container}>
-        <EthAssetCard
-          name="ETH"
-          onAdd={() => {
-            // eslint-disable-next-line no-console
-            console.log('add');
-          }}
-        />
-      </Box>
-    </Box.Flex>
+    <CardList css={styles.storybook}>
+      <EthAssetCard
+        imageSrc={ethLogoSrc}
+        name="ETH"
+        onAdd={() => {
+          // eslint-disable-next-line no-console
+          console.log('add');
+        }}
+      />
+    </CardList>
   );
 };
 
 export const OnRemove = () => {
   return (
-    <Box.Flex
-      direction="column"
-      align="center"
-      justify="center"
-      css={styles.storybook}
-    >
-      <Box css={styles.container}>
-        <EthAssetCard
-          name="ETH"
-          onRemove={() => {
-            // eslint-disable-next-line no-console
-            console.log('remove');
-          }}
-        />
-      </Box>
-    </Box.Flex>
+    <CardList css={styles.storybook}>
+      <EthAssetCard
+        imageSrc={ethLogoSrc}
+        name="ETH"
+        onRemove={() => {
+          // eslint-disable-next-line no-console
+          console.log('remove');
+        }}
+      />
+    </CardList>
   );
 };
 
 export const OnRemoveDisabled = () => {
   return (
-    <Box.Flex
-      direction="column"
-      align="center"
-      justify="center"
-      css={styles.storybook}
-    >
-      <Box css={styles.container}>
-        <EthAssetCard
-          imageSrc={ethLogoSrc}
-          name="ETH"
-          onRemove={() => {
-            // eslint-disable-next-line no-console
-            console.log('remove');
-          }}
-          isRemoveDisabled
-        />
-      </Box>
-    </Box.Flex>
+    <CardList css={styles.storybook}>
+      <EthAssetCard
+        imageSrc={ethLogoSrc}
+        name="ETH"
+        onRemove={() => {
+          // eslint-disable-next-line no-console
+          console.log('remove');
+        }}
+        isRemoveDisabled
+      />
+    </CardList>
   );
 };
 
@@ -133,8 +94,5 @@ const styles = {
   storybook: cssObj({
     margin: '20px',
     width: '386px',
-  }),
-  container: cssObj({
-    width: '$full',
   }),
 };

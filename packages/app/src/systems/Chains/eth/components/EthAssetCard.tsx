@@ -65,5 +65,6 @@ export const EthAssetCard = ({
 const styles = {
   cardListItem: cssObj({
     alignSelf: 'stretch',
+    flexDirection: 'row',
   }),
 };
