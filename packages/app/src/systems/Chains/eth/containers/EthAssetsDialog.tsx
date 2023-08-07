@@ -28,7 +28,7 @@ export function EthAssetsDialog() {
 
   const form = useSetAddressForm();
 
-  const newAssetAddress = useWatch({ name: 'address', control: form.control });
+  const assetQuery = useWatch({ name: 'address', control: form.control });
 
   const {
     assets,
@@ -38,7 +38,7 @@ export function EthAssetsDialog() {
     assetInfo,
     isLoading,
     doesAssetExist,
-  } = useManageEthAssets(newAssetAddress);
+  } = useManageEthAssets({ assetQuery });
 
   const onSubmitToken = () => {
     handlers.addAsset({
@@ -97,7 +97,7 @@ export function EthAssetsDialog() {
                   {!doesAssetExist &&
                     !(showCustomTokenButton || showUseTokenButton) &&
                     !isLoading && (
-                      <Form.HelperText>{`No asset found for your search "${newAssetAddress}"`}</Form.HelperText>
+                      <Form.HelperText>{`No asset found for your search "${assetQuery}"`}</Form.HelperText>
                     )}
                 </Form.Control>
               );

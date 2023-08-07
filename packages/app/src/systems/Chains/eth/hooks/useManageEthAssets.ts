@@ -4,29 +4,29 @@ import { useToken } from 'wagmi';
 
 import { useAssets } from './useAssets';
 
-export const useManageEthAssets = (newAssetAddress: string) => {
+export const useManageEthAssets = ({ assetQuery }: { assetQuery: string }) => {
   const { assets, handlers } = useAssets();
 
   const { data, isError, isLoading } = useToken({
-    address: newAssetAddress as `0x${string}`,
+    address: isAddress(assetQuery) ? (assetQuery as `0x${string}`) : undefined,
   });
 
   const { filteredAssets, doesAssetExist } = useMemo(() => {
-    const isValidAddress = isAddress(newAssetAddress);
+    const isValidAddress = isAddress(assetQuery);
     if (isValidAddress) {
       const filteredAssets = assets.filter(
-        (asset) => asset.address === newAssetAddress
+        (asset) => asset.address === assetQuery
       );
       return { filteredAssets, doesAssetExist: filteredAssets.length };
     }
-    const newAssetsArray = assets.filter((asset) =>
-      asset.symbol?.toLowerCase().startsWith(newAssetAddress.toLowerCase())
+    const queriedAssets = assets.filter((asset) =>
+      asset.symbol?.toLowerCase().startsWith(assetQuery.toLowerCase())
     );
-    if (!newAssetsArray.length) {
+    if (!queriedAssets.length) {
       return { filteredAssets: assets, doesAssetExist: false };
     }
-    return { filteredAssets: newAssetsArray, doesAssetExist: true };
-  }, [assets, newAssetAddress]);
+    return { filteredAssets: queriedAssets, doesAssetExist: true };
+  }, [assets, assetQuery]);
 
   return {
     assets: filteredAssets,
@@ -34,11 +34,11 @@ export const useManageEthAssets = (newAssetAddress: string) => {
     showUseTokenButton: !isError && !!data && !doesAssetExist,
     showCustomTokenButton:
       isError &&
-      !!newAssetAddress.length &&
-      isAddress(newAssetAddress) &&
+      !!assetQuery.length &&
+      isAddress(assetQuery) &&
       !doesAssetExist,
     assetInfo: data,
-    isLoading: isLoading && isAddress(newAssetAddress) && !doesAssetExist,
+    isLoading,
     doesAssetExist,
   };
 };

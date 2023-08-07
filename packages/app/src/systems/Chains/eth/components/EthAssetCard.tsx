@@ -43,6 +43,7 @@ export const EthAssetCard = ({
             onPress={onAdd}
             intent="primary"
             size="xs"
+            css={styles.cardAction}
           />
         )}
         {onRemove && (
@@ -55,6 +56,7 @@ export const EthAssetCard = ({
             intent={isRemoveDisabled ? 'base' : 'error'}
             size="xs"
             onPress={onRemove}
+            css={styles.cardAction}
           />
         )}
       </Box.Flex>
@@ -66,5 +68,8 @@ const styles = {
   cardListItem: cssObj({
     alignSelf: 'stretch',
     flexDirection: 'row',
+  }),
+  cardAction: cssObj({
+    p: '0px',
   }),
 };
