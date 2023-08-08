@@ -73,7 +73,7 @@ export const AccountConnectionInput = ({
                 variant="outlined"
                 intent="base"
                 size="xs"
-                css={{ ...styles.connectedButton }}
+                css={{ ...styles.connectButton, ...styles.connectedButton }}
               >
                 <Text fontSize="sm">
                   {shortAddress(account.alias, 16) ||
@@ -97,9 +97,12 @@ const styles = {
     px: '$3',
     py: '$2',
   }),
+  connectButton: cssObj({
+    width: '$36',
+  }),
   connectedButton: cssObj({
     justifyContent: 'space-between',
-    gap: '$1',
+    gap: 0,
   }),
   circle: cssObj({
     minWidth: '$3',
