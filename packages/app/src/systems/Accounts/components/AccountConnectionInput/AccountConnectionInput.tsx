@@ -28,7 +28,7 @@ export const AccountConnectionInput = ({
   onDisconnect,
 }: AccountConnectionInputProps) => {
   return (
-    <Card css={styles.root} variant="outlined">
+    <Card css={styles.root}>
       <Card.Body css={styles.cardBody}>
         <Box.Stack gap="$1">
           <Box>
@@ -68,13 +68,12 @@ export const AccountConnectionInput = ({
                     onPress={onDisconnect}
                     aria-label="Disconnect account"
                     iconSize={12}
-                    css={styles.disconnectButton}
                   />
                 }
                 variant="outlined"
                 intent="base"
                 size="xs"
-                css={{ ...styles.connectButton, ...styles.connectedButton }}
+                css={{ ...styles.connectedButton }}
               >
                 <Text fontSize="sm">
                   {shortAddress(account.alias, 16) ||
@@ -98,12 +97,9 @@ const styles = {
     px: '$3',
     py: '$2',
   }),
-  connectButton: cssObj({
-    width: '$36',
-  }),
   connectedButton: cssObj({
     justifyContent: 'space-between',
-    gap: 0,
+    gap: '$1',
   }),
   circle: cssObj({
     minWidth: '$3',
@@ -112,6 +108,6 @@ const styles = {
     borderRadius: '$full',
   }),
   disconnectButton: cssObj({
-    p: '$0',
+    // p: '$0',
   }),
 };
