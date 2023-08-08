@@ -15,14 +15,14 @@ import {
 } from '../commons';
 import { ETH_MNEMONIC, FUEL_MNEMONIC } from '../mocks';
 
-import { test } from './fixtures';
+import { test, expect } from './fixtures';
 
 test.describe('Bridge', () => {
   let client: PublicClient;
   let account: HDAccount;
   let fuelWallet: WalletUnlocked;
 
-  test.beforeAll(async ({ context, extensionId, page }) => {
+  test.beforeEach(async ({ context, extensionId, page }) => {
     await walletSetup(context, extensionId, page);
     client = createPublicClient({
       chain: foundry,
@@ -30,9 +30,6 @@ test.describe('Bridge', () => {
     });
     account = mnemonicToAccount(ETH_MNEMONIC);
     fuelWallet = Wallet.fromMnemonic(FUEL_MNEMONIC);
-  });
-
-  test.beforeEach(async ({ page }) => {
     await page.goto('/');
   });
 
