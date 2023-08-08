@@ -158,7 +158,8 @@ test.describe('Bridge', () => {
       `${withdrawAmount} ETH`
     );
 
-    await transactionAssetAmount.first().click({ timeout: 10000 });
+    await transactionAssetAmount.first().click();
+    await page.waitForTimeout(20000);
     const confirmButton = getButtonByText(page, 'Confirm Transaction');
     await confirmButton.click();
 
