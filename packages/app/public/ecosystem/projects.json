@@ -4,7 +4,7 @@
     "name": "Acumen Microfinance",
     "url": "https://acumen.network/",
     "tags": ["DeFi", "Lending", "Real World Assets"],
-    "description": "Bridging DeFi and Real-world assets on Fuel Network",
+    "description": "Bridging DeFi and Real-world assets.",
     "github": "https://github.com/AcumenProtocol",
     "image": "acumen"
   },
@@ -22,7 +22,7 @@
     "name": "ArtDAO",
     "url": "https://www.artdao.xyz/",
     "tags": ["Marketplace", "NFTs"],
-    "description": "Scaling the possibilities of digital art on Ethereum - Artists helping artists",
+    "description": "Scaling the possibilities of digital art on Ethereum - Artists helping artists.",
     "github": "",
     "image": "artdao"
   },
@@ -31,7 +31,7 @@
     "name": "Composability Labs (Swaylend)",
     "url": "https://github.com/compolabs",
     "tags": ["DEX (Orderbook)", "DeFi", "Infrastructure Tooling or Platform"],
-    "description": "Modularity maxis, building DeFi infrastructure on Fuel.",
+    "description": "Modularity maxis, building DeFi infrastructure.",
     "github": "https://github.com/compolabs",
     "image": "compolabs"
   },
@@ -40,7 +40,7 @@
     "name": "Spark",
     "url": "https://allspark.gg/",
     "tags": ["DEX (Orderbook)", "DeFi", "Infrastructure Tooling or Platform"],
-    "description": "AllSpark is a Predicate based central limit order book for Fuel.",
+    "description": "Spark is a Predicate-based central limit order book.",
     "github": "https://github.com/compolabs/spark",
     "image": "spark"
   },
@@ -49,7 +49,7 @@
     "name": "Swaylend",
     "url": "swaylend.com",
     "tags": ["DEX (Orderbook)", "DeFi", "Infrastructure Tooling or Platform"],
-    "description": "Swaylend is the first lending protocol on Fuel.",
+    "description": "Swaylend is the first lending protocol.",
     "github": "https://github.com/compolabs/sway-lend",
     "image": "swaylend"
   },
@@ -58,7 +58,7 @@
     "name": "Elix Finance",
     "url": "https://elix.finance/",
     "tags": ["DEX (AMM)", "DeFi"],
-    "description": "Hybrid automated market maker featuring automated concentrated liquidity ",
+    "description": "Hybrid automated market maker featuring automated concentrated liquidity.",
     "github": "https://github.com/elixfinance",
     "image": "elix"
   },
@@ -67,16 +67,16 @@
     "name": "Fluid Protocol",
     "url": "https://fluidprotocol.xyz/",
     "tags": ["DeFi", "Stablecoin"],
-    "description": "The native decentralized stablecoin of Fuel",
+    "description": "The native decentralized stablecoin.",
     "github": "",
     "image": "fluid"
   },
   {
     "isLive": false,
-    "name": "Fuel Nomen",
+    "name": "Nomen",
     "url": "https://fuelnomen-testnet.netlify.app/",
     "tags": ["Infrastructure Tooling or Platform", "Name Service"],
-    "description": "The name system of the world’s fastest modular execution layer, Fuel Network.",
+    "description": "The name system of the world’s fastest modular execution layer.",
     "github": "",
     "image": "fuelnomen"
   },
@@ -85,7 +85,7 @@
     "name": "Fuelet Wallet",
     "url": "https://fuelet.app/",
     "tags": ["Infrastructure Tooling or Platform", "Wallet"],
-    "description": "Non-custodial wallet on Fuel.",
+    "description": "Non-custodial wallet.",
     "github": "https://github.com/fuelet",
     "image": "fuelet"
   },
@@ -112,7 +112,7 @@
     "name": "Microchain Systems",
     "url": "https://microchain.systems/",
     "tags": ["DEX (AMM)", "DeFi"],
-    "description": "A low-cost, easy-to-use token swapping terminal with two major benefits: versatility and simplicity",
+    "description": "A low-cost, easy-to-use token swapping terminal with two major benefits: versatility and simplicity.",
     "github": "",
     "image": "microchain"
   },
@@ -130,7 +130,7 @@
     "name": "PlayEstates",
     "url": "https://www.playestates.com/",
     "tags": ["DeFi", "Gaming", "NFTs"],
-    "description": "Bringing real estate on-chain and making RWA ownership easy and affordable. ",
+    "description": "Bringing real estate on-chain and making RWA ownership easy and affordable.",
     "github": "",
     "image": "playestates"
   },
@@ -148,7 +148,7 @@
     "name": "RedStone Oracle",
     "url": "https://redstone.finance/",
     "tags": ["Infrastructure Tooling or Platform", "Oracle"],
-    "description": "Modular Oracles delivering cost-efficient data for DeFi to EVM L1s&L2s",
+    "description": "Modular Oracles delivering cost-efficient data for DeFi to EVM L1s&L2s.",
     "github": "https://github.com/redstone-finance",
     "image": "redstone"
   },
@@ -157,7 +157,7 @@
     "name": "Sail Exchange",
     "url": "https://www.sail.exchange/",
     "tags": ["DEX (Orderbook)", "DeFi"],
-    "description": "Order book DEX Powered by Fuel Network ",
+    "description": "Order book DEX Powered.",
     "github": "https://github.com/Sail-Exchange",
     "image": ""
   },
@@ -166,7 +166,7 @@
     "name": "Smart Money Labs",
     "url": "https://smartmoneylabs.vercel.app/",
     "tags": ["DeFi", "Lending"],
-    "description": "A truly decentralized Lending and Burrowing protocol, with no dependency on oracle and no liquidity risk during the loan maturity period, backed by collateral and therefore offering greater flexibility to end users.",
+    "description": "A truly decentralized Lending and Borrowing protocol, with no dependency on oracle and no liquidity risk during the loan maturity period, backed by collateral and therefore offering greater flexibility to end users.",
     "github": "https://github.com/SmartMoney-Labs",
     "image": "smartmoney"
   },
@@ -175,7 +175,7 @@
     "name": "Thunder",
     "url": "https://beta.thundernft.market/",
     "tags": ["Marketplace", "NFTs"],
-    "description": "Building the superior NFT experience on Fuel Network",
+    "description": "Building the superior NFT experience.",
     "github": "",
     "image": "thunder"
   },
@@ -202,7 +202,7 @@
     "name": "ORAO",
     "url": "https://orao.network/",
     "tags": ["Infrastructure Tooling or Platform", "Oracle"],
-    "description": "Next-gen network providing general data availability on Fuel ",
+    "description": "Next-gen network providing general data availability.",
     "github": "",
     "image": "orao"
   },
@@ -211,7 +211,7 @@
     "name": "Bald Boyz NFT",
     "url": "https://baldboyznft.com/",
     "tags": ["NFTs"],
-    "description": "A positivity-fueled community on Fuel. Celebrating your true self.",
+    "description": "A positivity-fueled community. Celebrating your true self.",
     "github": "",
     "image": "baldboyz"
   },
@@ -226,10 +226,10 @@
   },
   {
     "isLive": false,
-    "name": "Fuel Wallet",
+    "name": "Wallet",
     "url": "https://wallet.fuel.network/docs/install/",
     "tags": ["Infrastructure Tooling or Platform", "Wallet"],
-    "description": "With the Fuel Wallet, you can explore DApps on Fuel and manage your crypto assets, all in one place.",
+    "description": "With the Wallet, you can explore DApps and manage your crypto assets, all in one place.",
     "github": "https://github.com/fuellabs/fuels-wallet",
     "image": "fuelwallet"
   }
