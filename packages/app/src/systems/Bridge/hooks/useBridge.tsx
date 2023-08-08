@@ -124,7 +124,7 @@ export function useBridge() {
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  // TODO: for now we don't need to compute "to" param, because we only support eth/fuel
+  // TODO: add "to" param when we add support to other chain than eth/fuel
   const fromInput = queryParams.get('from');
 
   function getToInputNetwork() {

@@ -159,7 +159,6 @@ export class TxFuelToEthService {
 
     const { fuelTxId, fuelProvider, messageId, fuelLastBlockId } = input;
 
-    // TODO: here should pass blockCommitId blockCommitHeight after we have new structure for bridge
     const withdrawMessageProof = await fuelProvider.getMessageProof(
       fuelTxId,
       messageId,

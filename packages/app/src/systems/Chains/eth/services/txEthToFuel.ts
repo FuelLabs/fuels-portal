@@ -128,6 +128,7 @@ export class TxEthToFuelService {
 
     try {
       // only tokens will have address, as eth is native
+      // TODO: when continuing deposit of erc20, should refactor split this part in 2 to be able to redo it in case if failed (status !== success) for both transactions
       if (ethAsset.address && isAddress(ethAsset.address)) {
         const fuelErc20Gateway = TxEthToFuelService.connectToFuelErc20Gateway({
           walletClient: ethWalletClient,
@@ -151,11 +152,6 @@ export class TxEthToFuelService {
           throw new Error('Failed to approve Token for transfer');
         }
 
-        //
-        // TODO: need to split this part in 2 to be able to redo it in case if failed (status !== success) for both transactions
-        //
-
-        // TODO: fix token in side fuel? how can we know it?
         const fuelTokenId = 'fuel';
         const depositTxHash = await fuelErc20Gateway.write.deposit(
           [
