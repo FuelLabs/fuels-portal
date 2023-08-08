@@ -68,6 +68,7 @@ export const AccountConnectionInput = ({
                     onPress={onDisconnect}
                     aria-label="Disconnect account"
                     iconSize={12}
+                    css={styles.disconnectButton}
                   />
                 }
                 variant="outlined"
@@ -111,6 +112,6 @@ const styles = {
     borderRadius: '$full',
   }),
   disconnectButton: cssObj({
-    // p: '$0',
+    p: '$0',
   }),
 };
