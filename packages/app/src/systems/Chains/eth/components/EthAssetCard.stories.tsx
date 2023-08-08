@@ -24,7 +24,10 @@ export const Usage = () => {
 export const AvatarUsage = () => {
   return (
     <CardList css={styles.storybook}>
-      <EthAssetCard name="ETH" />
+      <EthAssetCard
+        name="ETH"
+        hash="0x15db4a4d9e35fa8c0b5f92b13924d1610c5d618e"
+      />
     </CardList>
   );
 };

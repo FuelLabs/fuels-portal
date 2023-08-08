@@ -62,5 +62,16 @@ export function overlayEvents(store: Store) {
         },
       });
     },
+    openRemoveAssetsDialog({ assetSymbol }: { assetSymbol?: string }) {
+      store.send(Services.overlay, {
+        type: 'OPEN',
+        input: {
+          modal: 'eth.assets.remove',
+          params: {
+            assetSymbol,
+          },
+        },
+      });
+    },
   };
 }

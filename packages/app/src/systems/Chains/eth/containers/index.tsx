@@ -3,3 +3,4 @@ export * from './TxEthToFuelDialog';
 export * from './TxListItemEthToFuel';
 export * from './EthAssetsDialog';
 export * from './AddAssetFormDialog';
+export * from './RemoveAssetDialog';

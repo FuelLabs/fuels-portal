@@ -1,9 +1,12 @@
 import { cssObj } from '@fuel-ui/css';
 import { Box, CardList, IconButton, Text, Image, Avatar } from '@fuel-ui/react';
 
+import { RemoveAssetDialog } from '../containers';
+
 type EthAssetCardProps = {
   imageSrc?: string;
   name: string;
+  hash?: string;
   onAdd?: () => void;
   onPress?: () => void;
   onRemove?: () => void;
@@ -14,6 +17,7 @@ type EthAssetCardProps = {
 export const EthAssetCard = ({
   imageSrc,
   name,
+  hash,
   onAdd,
   onPress,
   onRemove,
@@ -29,9 +33,9 @@ export const EthAssetCard = ({
       <Box.Flex align="center" justify="space-between" css={{ width: '$full' }}>
         <Box.Flex gap="$2" align="center">
           {imageSrc ? (
-            <Image alt=" " src={imageSrc} />
+            <Image src={imageSrc} />
           ) : (
-            <Avatar.Generated size={20} hash={name} />
+            <Avatar.Generated size={20} hash={hash || ''} />
           )}
           <Text color="intentsPrimary12">{name}</Text>
         </Box.Flex>
@@ -42,22 +46,23 @@ export const EthAssetCard = ({
             icon="CirclePlus"
             onPress={onAdd}
             intent="primary"
-            size="xs"
+            size="lg"
             css={styles.cardAction}
           />
         )}
         {onRemove && (
-          <IconButton
-            aria-label="RemoveEthAsset"
-            isDisabled={isRemoveDisabled}
-            tooltip={removeToolTip}
-            variant="link"
-            icon="SquareRoundedX"
-            intent={isRemoveDisabled ? 'base' : 'error'}
-            size="xs"
-            onPress={onRemove}
-            css={styles.cardAction}
-          />
+          <RemoveAssetDialog assetSymbol={name} onConfirm={onRemove}>
+            <IconButton
+              aria-label="RemoveEthAsset"
+              isDisabled={isRemoveDisabled}
+              tooltip={removeToolTip}
+              variant="link"
+              icon="SquareRoundedX"
+              intent={isRemoveDisabled ? 'base' : 'error'}
+              size="lg"
+              css={styles.cardAction}
+            />
+          </RemoveAssetDialog>
         )}
       </Box.Flex>
     </CardList.Item>

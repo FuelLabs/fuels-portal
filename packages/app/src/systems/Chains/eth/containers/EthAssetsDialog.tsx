@@ -110,6 +110,7 @@ export function EthAssetsDialog() {
               <EthAssetCard
                 name={assetInfo?.symbol || ''}
                 onAdd={form.handleSubmit(onSubmitToken)}
+                hash={assetInfo?.address}
               />
             )}
           </>
@@ -118,6 +119,7 @@ export function EthAssetsDialog() {
               <EthAssetCard
                 name={shortAddress(form.getValues('address'))}
                 onAdd={form.handleSubmit(onSubmitCustomToken)}
+                hash={assetQuery}
               />
             )}
           </>
@@ -129,6 +131,7 @@ export function EthAssetsDialog() {
                     i
                   )}`}
                   imageSrc={asset.image}
+                  hash={asset.address}
                   name={asset.symbol || ''}
                   onPress={
                     !editable
@@ -159,7 +162,7 @@ export function EthAssetsDialog() {
       </Dialog.Description>
       {!editable && (
         <Dialog.Footer css={styles.dialogFooter}>
-          <Button variant="ghost" onPress={() => setEditable(true)}>
+          <Button variant="link" onPress={() => setEditable(true)}>
             <Icon icon="Edit" />
             <Text color="intentsBase10">Manage token list</Text>
           </Button>
