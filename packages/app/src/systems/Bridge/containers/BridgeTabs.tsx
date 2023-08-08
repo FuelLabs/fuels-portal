@@ -17,7 +17,11 @@ export const BridgeTabs = ({ fromControls, toControls }: BridgeTabsProps) => {
     zIndex: number = 1
   ) => {
     control.set({ y: factor, zIndex });
-    await control.start({ y: 0, transition: { duration: 0.3 } });
+    await control.start({
+      y: 0,
+      zIndex: 'auto',
+      transition: { duration: 0.3 },
+    });
   };
   const handleDepositAnimation = async () => {
     moveVertically(fromControls, 78);

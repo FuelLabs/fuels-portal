@@ -50,6 +50,7 @@ export const AccountConnectionInput = ({
                 css={styles.connectButton}
                 size="xs"
                 intent="primary"
+                aria-label={`${label} Connect wallet`}
               >
                 <Text fontSize="sm" color="inherit">
                   Connect wallet
