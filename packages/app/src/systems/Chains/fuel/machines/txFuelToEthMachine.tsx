@@ -451,11 +451,9 @@ export const txFuelToEthMachine = createMachine(
             throw new Error('No input to wait tx result');
           }
 
-          console.log('before waitFuelTxResult');
+          console.log('waitFuelTxResult');
 
           const result = await TxFuelToEthService.waitTxResult(input);
-
-          console.log('after waitFuelTxResult');
 
           return result;
         },
@@ -470,10 +468,9 @@ export const txFuelToEthMachine = createMachine(
           if (!input) {
             throw new Error('No input to get fuel message');
           }
-          console.log('before getMessageId');
+          console.log('getMessageId');
 
           const result = await TxFuelToEthService.getMessageId(input);
-          console.log('after getMessageId');
 
           return result;
         },
@@ -488,10 +485,9 @@ export const txFuelToEthMachine = createMachine(
           if (!input) {
             throw new Error('No input to wait next block');
           }
-          console.log('before waitNextBlock');
+          console.log('waitNextBlock');
 
           const result = await TxFuelToEthService.waitNextBlock(input);
-          console.log('after waitNextBlock');
 
           return result;
         },
@@ -507,9 +503,8 @@ export const txFuelToEthMachine = createMachine(
             throw new Error('No input to get fuel message');
           }
 
-          console.log('before getMessageProof');
+          console.log('getMessageProof');
           const result = await TxFuelToEthService.getMessageProof(input);
-          console.log('after getMessageProof');
           return result;
         },
       }),
@@ -524,9 +519,8 @@ export const txFuelToEthMachine = createMachine(
             throw new Error('No input to wait block commit');
           }
 
-          console.log('before waitBlockCommit');
+          console.log('waitBlockCommit');
           const result = await TxFuelToEthService.waitBlockCommit(input);
-          console.log('after waitBlockCommit');
           return result;
         },
       }),
@@ -541,9 +535,8 @@ export const txFuelToEthMachine = createMachine(
             throw new Error('No input to wait block commit');
           }
 
-          console.log('before waitBlockFinalization');
+          console.log('waitBlockFinalization');
           const result = TxFuelToEthService.waitBlockFinalization(input);
-          console.log('after waitBlockFinalization');
           return result;
         },
       }),
@@ -558,10 +551,9 @@ export const txFuelToEthMachine = createMachine(
             throw new Error('No input to get message relayed');
           }
 
-          console.log('before getMessageRelayed');
+          console.log('getMessageRelayed');
           const txHashMessageRelayed =
             await TxFuelToEthService.getMessageRelayed(input);
-          console.log('after getMessageRelayed');
           return txHashMessageRelayed;
         },
       }),
@@ -576,11 +568,10 @@ export const txFuelToEthMachine = createMachine(
             throw new Error('No input to get fuel message');
           }
 
-          console.log('before relayMessageFromFuelBlock');
+          console.log('relayMessageFromFuelBlock');
           const resp = await TxFuelToEthService.relayMessageFromFuelBlock(
             input
           );
-          console.log('after relayMessageFromFuelBlock');
 
           return resp;
         },
@@ -596,9 +587,8 @@ export const txFuelToEthMachine = createMachine(
             throw new Error('No input to wait tx message relayed');
           }
 
-          console.log('before waitTxMessageRelayed');
+          console.log('waitTxMessageRelayed');
           const resp = await TxFuelToEthService.waitTxMessageRelayed(input);
-          console.log('after waitTxMessageRelayed');
 
           return resp;
         },
