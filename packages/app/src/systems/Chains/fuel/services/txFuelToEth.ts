@@ -87,7 +87,11 @@ export class TxFuelToEthService {
     // broken here in Sepolia only
     const txFuel = await fuelWallet.withdrawToBaseLayer(
       Address.fromString(ethAddress),
-      amount
+      amount,
+      // TODO: remove this once fuel-core is fixed (max_gas considering metered_bytes as well)
+      {
+        gasLimit: 100000000 - 10_000,
+      }
     );
 
     return txFuel.id;

@@ -5,7 +5,7 @@
       "signing_key": "0xc8e615a4089466174459ef19cfd257d2e17adfabff3b8f219dbb5fb4eca87c50"
     }
   },
-  "block_gas_limit": 10000000000000,
+  "block_gas_limit": 100000000,
   "initial_state": {
     "coins": [
       {
@@ -115,7 +115,7 @@
     "max_inputs": 255,
     "max_outputs": 255,
     "max_witnesses": 255,
-    "max_gas_per_tx": 1000000000000,
+    "max_gas_per_tx": 100000000,
     "max_script_length": 1048576,
     "max_script_data_length": 1048576,
     "max_static_contracts": 255,
