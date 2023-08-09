@@ -21,6 +21,7 @@
   ],
   "scripts": {
     "dev": "turbo run dev",
+    "dev:notification": "pnpm --filter=notification-service start:dev",
     "build": "turbo run build",
     "build:preview": "turbo run build:preview",
     "codegen:app": "pnpm run --filter=@fuels-portal/bridge codegen",
