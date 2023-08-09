@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "keyofStringsOnly": true,
+    "allowJs": true,
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "rootDir": ".",
+    "module": "CommonJS",
+    "paths": {
+      "~public/*": ["./public/*"],
+      "~/*": ["./src/*"]
+    }
+  },
+  "include": ["./src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
