@@ -6,7 +6,7 @@ import type { AssetServiceInputs } from '../services';
 import { AssetService } from '../services';
 
 import type { BridgeAsset } from '~/systems/Bridge';
-import { FetchMachine } from '~/systems/Core';
+import { FetchMachine } from '~/systems/Core/machines';
 
 type MachineContext = {
   assetList?: BridgeAsset[];
