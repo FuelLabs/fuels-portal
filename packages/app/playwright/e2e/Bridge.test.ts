@@ -15,14 +15,14 @@ import {
 } from '../commons';
 import { ETH_MNEMONIC, FUEL_MNEMONIC } from '../mocks';
 
-import { test } from './fixtures';
+import { test, expect } from './fixtures';
 
 test.describe('Bridge', () => {
   let client: PublicClient;
   let account: HDAccount;
   let fuelWallet: WalletUnlocked;
 
-  test.beforeAll(async ({ context, extensionId, page }) => {
+  test.beforeEach(async ({ context, extensionId, page }) => {
     await walletSetup(context, extensionId, page);
     client = createPublicClient({
       chain: foundry,
@@ -30,9 +30,6 @@ test.describe('Bridge', () => {
     });
     account = mnemonicToAccount(ETH_MNEMONIC);
     fuelWallet = Wallet.fromMnemonic(FUEL_MNEMONIC);
-  });
-
-  test.beforeEach(async ({ page }) => {
     await page.goto('/');
   });
 
@@ -161,9 +158,28 @@ test.describe('Bridge', () => {
     const confirmButton = getButtonByText(page, 'Confirm Transaction');
     await confirmButton.click();
 
+    // For some reason we need this even if we wait for load state on the metamask notification page
+    await page.waitForTimeout(3000);
+
+    let metamaskNotificationPage = context
+      .pages()
+      .find((p) => p.url().includes('notification'));
+    if (!metamaskNotificationPage) {
+      metamaskNotificationPage = await context.waitForEvent('page', {
+        predicate: (page) => page.url().includes('notification'),
+      });
+    }
+    await metamaskNotificationPage.waitForLoadState();
+    const proceedAnyways = metamaskNotificationPage.getByText(
+      'I want to proceed anyway'
+    );
+    const count = await proceedAnyways.count();
+    if (count) {
+      await proceedAnyways.click();
+    }
+
     // Timeout needed until https://github.com/Synthetixio/synpress/issues/795 is fixed
     await page.waitForTimeout(10000);
-    // TODO Fix bug where we initially have to manually click "Proceed anyways"
     await metamask.confirmTransaction();
 
     const postWithdrawBalanceEth = await client.getBalance({
