@@ -35,8 +35,8 @@ importers:
         specifier: 29.4.2
         version: 29.4.2
       '@playwright/test':
-        specifier: ^1.31.1
-        version: 1.31.1
+        specifier: ^1.36.2
+        version: 1.36.2
       '@types/jest':
         specifier: ^29.4.0
         version: 29.4.0
@@ -76,9 +76,6 @@ importers:
       npm-run-all:
         specifier: ^4.1.5
         version: 4.1.5
-      playwright:
-        specifier: ^1.31.1
-        version: 1.31.1
       prettier:
         specifier: ^2.8.4
         version: 2.8.4
@@ -222,8 +219,8 @@ importers:
         specifier: ^3.3.7
         version: 3.3.7(graphql-tag@2.12.6)(graphql@16.6.0)
       '@playwright/test':
-        specifier: ^1.31.1
-        version: 1.31.1
+        specifier: ^1.36.2
+        version: 1.36.2
       '@storybook/addon-a11y':
         specifier: ^7.0.7
         version: 7.0.7(react-dom@18.2.0)(react@18.2.0)
@@ -270,8 +267,8 @@ importers:
         specifier: ^7.0.7
         version: 7.0.7
       '@synthetixio/synpress':
-        specifier: https://github.com/matt-user/synpress.git
-        version: github.com/matt-user/synpress/2af8dd0b0be74bf6b4e815b3fa8a0ea70c9adf77(@babel/core@7.21.8)(@babel/preset-env@7.22.5)(babel-loader@9.1.2)(react-dom@18.2.0)(react@18.2.0)(typescript@4.9.5)(webpack@5.88.0)
+        specifier: 3.7.2-beta.1
+        version: 3.7.2-beta.1(@babel/core@7.21.8)(@babel/preset-env@7.22.5)(babel-loader@9.1.2)(react-dom@18.2.0)(react@18.2.0)(typescript@4.9.5)(webpack@5.88.0)
       '@types/node':
         specifier: ^18.13.0
         version: 18.13.0
@@ -3275,14 +3272,14 @@ packages:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
 
-  /@cypress/code-coverage@3.11.0(@babel/core@7.21.8)(@babel/preset-env@7.22.5)(babel-loader@9.1.2)(cypress@12.17.1)(webpack@5.88.0):
+  /@cypress/code-coverage@3.11.0(@babel/core@7.21.8)(@babel/preset-env@7.22.5)(babel-loader@9.1.2)(cypress@12.17.3)(webpack@5.88.0):
     resolution: {integrity: sha512-ihSO1s03gmLRE224oIjrbdG1ey63vw/UY+VSqQ5m/TKkAvyz6GIiniq6juk3AV/+0vQC1Eb4UWFu8ndtji4M1g==}
     peerDependencies:
       cypress: '*'
     dependencies:
       '@cypress/webpack-preprocessor': 5.17.1(@babel/core@7.21.8)(@babel/preset-env@7.22.5)(babel-loader@9.1.2)(webpack@5.88.0)
       chalk: 4.1.2
-      cypress: 12.17.1
+      cypress: 12.17.3
       dayjs: 1.11.9
       debug: 4.3.4(supports-color@5.5.0)
       execa: 4.1.0
@@ -3322,8 +3319,8 @@ packages:
       uuid: 8.3.2
     dev: true
 
-  /@cypress/webpack-dev-server@3.5.0(debug@4.3.4)(webpack@5.88.0):
-    resolution: {integrity: sha512-fFgXJL//tqPkDyZXL/Wwl/LEf/mkvf8LlbOzvPhm0ACChpYGwq6a1i9/mp/gdx/0n+Sk39NwXWfTS2knYm9Dyw==}
+  /@cypress/webpack-dev-server@3.5.2(debug@4.3.4)(webpack@5.88.0):
+    resolution: {integrity: sha512-g2nkWgTWFWqYCfG/3K1C2W8p1WyvcdYNG9eqsmRhkifroJDsm5q5aBI9lA9dHhL8qoRARaPzEaeef3PqBTjNUg==}
     dependencies:
       find-up: 6.3.0
       fs-extra: 9.1.0
@@ -4584,7 +4581,7 @@ packages:
       eslint-config-airbnb-typescript: 17.0.0(@typescript-eslint/eslint-plugin@5.62.0)(@typescript-eslint/parser@5.62.0)(eslint-plugin-import@2.27.5)(eslint@8.43.0)
       eslint-config-prettier: 8.8.0(eslint@8.43.0)
       eslint-plugin-eslint-comments: 3.2.0(eslint@8.43.0)
-      eslint-plugin-import: 2.27.5(@typescript-eslint/parser@5.62.0)(eslint@8.33.0)
+      eslint-plugin-import: 2.27.5(@typescript-eslint/parser@5.62.0)(eslint@8.43.0)
       eslint-plugin-jest-dom: 5.0.1(@testing-library/dom@9.3.1)(eslint@8.43.0)
       eslint-plugin-jsx-a11y: 6.7.1(eslint@8.43.0)
       eslint-plugin-prettier: 4.2.1(eslint-config-prettier@8.8.0)(eslint@8.43.0)(prettier@2.8.8)
@@ -6342,24 +6339,13 @@ packages:
     dev: false
     optional: true
 
-  /@playwright/test@1.31.1:
-    resolution: {integrity: sha512-IsytVZ+0QLDh1Hj83XatGp/GsI1CDJWbyDaBGbainsh0p2zC7F4toUocqowmjS6sQff2NGT3D9WbDj/3K2CJiA==}
-    engines: {node: '>=14'}
-    hasBin: true
-    dependencies:
-      '@types/node': 18.13.0
-      playwright-core: 1.31.1
-    optionalDependencies:
-      fsevents: 2.3.2
-    dev: true
-
-  /@playwright/test@1.36.1:
-    resolution: {integrity: sha512-YK7yGWK0N3C2QInPU6iaf/L3N95dlGdbsezLya4n0ZCh3IL7VgPGxC6Gnznh9ApWdOmkJeleT2kMTcWPRZvzqg==}
+  /@playwright/test@1.36.2:
+    resolution: {integrity: sha512-2rVZeyPRjxfPH6J0oGJqE8YxiM1IBRyM8hyrXYK7eSiAqmbNhxwcLa7dZ7fy9Kj26V7FYia5fh9XJRq4Dqme+g==}
     engines: {node: '>=16'}
     hasBin: true
     dependencies:
       '@types/node': 18.15.13
-      playwright-core: 1.36.1
+      playwright-core: 1.36.2
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
@@ -10569,6 +10555,59 @@ packages:
       tslib: 2.5.3
     dev: false
 
+  /@synthetixio/synpress@3.7.2-beta.1(@babel/core@7.21.8)(@babel/preset-env@7.22.5)(babel-loader@9.1.2)(react-dom@18.2.0)(react@18.2.0)(typescript@4.9.5)(webpack@5.88.0):
+    resolution: {integrity: sha512-8wSrxP+tObgbPcPIVOxfBKEMHlK48SjwWuRN9niGNL/d/lmJ6ehtSlhMpEpEBFJzQcFfU1bthYHApA3CCKHRtQ==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dependencies:
+      '@cypress/code-coverage': 3.11.0(@babel/core@7.21.8)(@babel/preset-env@7.22.5)(babel-loader@9.1.2)(cypress@12.17.3)(webpack@5.88.0)
+      '@cypress/webpack-dev-server': 3.5.2(debug@4.3.4)(webpack@5.88.0)
+      '@drptbl/gremlins.js': 2.2.1
+      '@foundry-rs/easy-foundryup': 0.1.3
+      '@playwright/test': 1.36.2
+      '@testing-library/cypress': 9.0.0(cypress@12.17.3)
+      '@testing-library/react': 14.0.0(react-dom@18.2.0)(react@18.2.0)
+      '@types/testing-library__cypress': 5.0.9
+      '@viem/anvil': 0.0.6(debug@4.3.4)
+      app-root-path: 3.1.0
+      axios: 1.4.0(debug@4.3.4)
+      babel-plugin-istanbul: 6.1.1
+      babel-plugin-react-generate-property: 1.1.2
+      babel-plugin-react-remove-properties: 0.3.0
+      babel-plugin-transform-react-qa-classes: 1.6.0
+      babel-plugin-transform-react-styled-components-qa: 2.1.0
+      bytes32: 0.0.3
+      commander: 11.0.0
+      cypress: 12.17.3
+      cypress-wait-until: 2.0.1
+      debug: 4.3.4(supports-color@5.5.0)
+      dotenv: 16.3.1
+      dotenv-parse-variables: 2.0.0
+      download: 8.0.0
+      ethers: 6.7.0
+      etherscan-api: 10.3.0(debug@4.3.4)
+      find-config: 1.0.0
+      get-port: 7.0.0
+      node-fetch: 2.6.11
+      underscore: 1.13.6
+      viem: 1.5.4(typescript@4.9.5)
+      wait-on: 7.0.1(debug@4.3.4)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@babel/preset-env'
+      - babel-loader
+      - bufferutil
+      - encoding
+      - react
+      - react-dom
+      - supports-color
+      - typescript
+      - utf-8-validate
+      - webpack
+      - webpack-cli
+      - zod
+    dev: true
+
   /@tabler/icons@2.30.0:
     resolution: {integrity: sha512-tvtmkI4ALjKThVVORh++sB9JnkFY7eGInKxNy+Df7WVQiF7T85tlvGADzlgX4Ic+CK5MIUzZ0jhOlQ/RRlgXpg==}
     dev: false
@@ -10622,7 +10661,7 @@ packages:
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
 
-  /@testing-library/cypress@9.0.0(cypress@12.17.1):
+  /@testing-library/cypress@9.0.0(cypress@12.17.3):
     resolution: {integrity: sha512-c1XiCGeHGGTWn0LAU12sFUfoX3qfId5gcSE2yHode+vsyHDWraxDPALjVnHd4/Fa3j4KBcc5k++Ccy6A9qnkMA==}
     engines: {node: '>=12', npm: '>=6'}
     peerDependencies:
@@ -10630,7 +10669,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.22.5
       '@testing-library/dom': 8.20.1
-      cypress: 12.17.1
+      cypress: 12.17.3
     dev: true
 
   /@testing-library/dom@7.31.2:
@@ -11070,12 +11109,12 @@ packages:
     resolution: {integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==}
     dev: false
 
-  /@types/node@14.18.53:
-    resolution: {integrity: sha512-soGmOpVBUq+gaBMwom1M+krC/NNbWlosh4AtGA03SyWNDiqSKtwp7OulO1M6+mg8YkHMvJ/y0AkCeO8d1hNb7A==}
-    dev: true
-
   /@types/node@16.18.36:
     resolution: {integrity: sha512-8egDX8dE50XyXWH6C6PRCNkTP106DuUrvdrednFouDSmCi7IOvrqr0frznfZaHifHH/3aq/7a7v9N4wdXMqhBQ==}
+    dev: true
+
+  /@types/node@16.18.40:
+    resolution: {integrity: sha512-+yno3ItTEwGxXiS/75Q/aHaa5srkpnJaH+kdkTVJ3DtJEwv92itpKbxU+FjPoh2m/5G9zmUQfrL4A4C13c+iGA==}
     dev: true
 
   /@types/node@18.13.0:
@@ -11235,7 +11274,7 @@ packages:
     resolution: {integrity: sha512-WTiIZhZKWDnV+Tgo42pxff8YfHdmaNFQz/bFoTlmfw2vbXcstCcb39VRaRi5yFHj/lb7t3K47btKYEbR1fci+Q==}
     dependencies:
       '@testing-library/dom': 7.31.2
-      cypress: 12.17.1
+      cypress: 12.17.3
     dev: true
 
   /@types/testing-library__jest-dom@5.14.6:
@@ -11665,8 +11704,8 @@ packages:
       eslint-visitor-keys: 3.4.1
     dev: false
 
-  /@viem/anvil@0.0.5(debug@4.3.4):
-    resolution: {integrity: sha512-aGgbwBNmCcxp08WcYwyL+n01HLLFYuhIczQLy6BPcomQ2CG4ngfTed8K73EOpsBTmvCxAcek0APcVS7UUWNALw==}
+  /@viem/anvil@0.0.6(debug@4.3.4):
+    resolution: {integrity: sha512-OjKR/+FVwzuygXYFqP8MBal1SXG8bT2gbZwqqB0XuLw81LNBBvmE/Repm6+5kkBh4IUj0PhYdrqOsnayS14Gtg==}
     dependencies:
       execa: 7.1.1
       get-port: 6.1.2
@@ -11718,6 +11757,7 @@ packages:
         optional: true
     dependencies:
       typescript: 4.9.5
+    dev: false
 
   /@wagmi/chains@0.2.25(typescript@4.9.5):
     resolution: {integrity: sha512-Gah0bgR+14navwxi7xTL2oFB8YgK4qoBPye1b8ucccIwF3Z8Zg1u2gVTDFAyPT4lyB+ZVqwYKs3Y/IkFNG5O4Q==}
@@ -11729,6 +11769,17 @@ packages:
     dependencies:
       typescript: 4.9.5
     dev: false
+
+  /@wagmi/chains@1.6.0(typescript@4.9.5):
+    resolution: {integrity: sha512-5FRlVxse5P4ZaHG3GTvxwVANSmYJas1eQrTBHhjxVtqXoorm0aLmCHbhmN8Xo1yu09PaWKlleEvfE98yH4AgIw==}
+    peerDependencies:
+      typescript: '>=5.0.4'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      typescript: 4.9.5
+    dev: true
 
   /@wagmi/connectors@1.0.5(@wagmi/chains@0.2.25)(react@18.2.0)(typescript@4.9.5)(viem@0.3.36):
     resolution: {integrity: sha512-fsnaeRv1/9Ec0n2J2W0JVUV3dvv9FoiCPCiY0I1MVJxadPn9x9h9/x69NyVsx+kUdhohKUNCbPlD3lrGg5c/Fg==}
@@ -12544,6 +12595,21 @@ packages:
         optional: true
     dependencies:
       typescript: 4.9.5
+    dev: false
+
+  /abitype@0.9.3(typescript@4.9.5):
+    resolution: {integrity: sha512-dz4qCQLurx97FQhnb/EIYTk/ldQ+oafEDUqC0VVIeQS1Q48/YWt/9YNfMmp9SLFqN41ktxny3c8aYxHjmFIB/w==}
+    peerDependencies:
+      typescript: '>=5.0.4'
+      zod: ^3 >=3.19.1
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+      zod:
+        optional: true
+    dependencies:
+      typescript: 4.9.5
+    dev: true
 
   /abort-controller@3.0.0:
     resolution: {integrity: sha512-h8lQ8tacZYnR3vNQTgibj+tODHI5/+l06Au2Pcriv/Gmet0eaj4TwWH41sO9wnHDiQsEj19q0drzdWdeAHtweg==}
@@ -14542,9 +14608,9 @@ packages:
       typical: 2.6.1
     dev: false
 
-  /commander@10.0.1:
-    resolution: {integrity: sha512-y4Mg2tXshplEbSGzx7amzPwKKOCGuoSRP/CjEdwwk0FOGlUbq6lKuoyDZTNZkmxHdJtp54hdfY/JUrdL7Xfdug==}
-    engines: {node: '>=14'}
+  /commander@11.0.0:
+    resolution: {integrity: sha512-9HMlXtt/BNoYr8ooyjjNRdIilOTkVJXB+GhxMTtOKwk0R4j4lS4NpjuqmRxroBfnfTSHQIHQB7wryHhXarNjmQ==}
+    engines: {node: '>=16'}
     dev: true
 
   /commander@2.20.3:
@@ -15034,19 +15100,19 @@ packages:
       logalot: 2.1.0
     dev: true
 
-  /cypress-wait-until@1.7.2:
-    resolution: {integrity: sha512-uZ+M8/MqRcpf+FII/UZrU7g1qYZ4aVlHcgyVopnladyoBrpoaMJ4PKZDrdOJ05H5RHbr7s9Tid635X3E+ZLU/Q==}
+  /cypress-wait-until@2.0.1:
+    resolution: {integrity: sha512-+IyVnYNiaX1+C+V/LazrJWAi/CqiwfNoRSrFviECQEyolW1gDRy765PZosL2alSSGK8V10Y7BGfOQyZUDgmnjQ==}
     dev: true
 
-  /cypress@12.17.1:
-    resolution: {integrity: sha512-eKfBgO6t8waEyhegL4gxD7tcI6uTCGttu+ZU7y9Hq8BlpMztd7iLeIF4AJFAnbZH1xjX+wwgg4cRKFNSvv3VWQ==}
+  /cypress@12.17.3:
+    resolution: {integrity: sha512-/R4+xdIDjUSLYkiQfwJd630S81KIgicmQOLXotFxVXkl+eTeVO+3bHXxdi5KBh/OgC33HWN33kHX+0tQR/ZWpg==}
     engines: {node: ^14.0.0 || ^16.0.0 || >=18.0.0}
     hasBin: true
     requiresBuild: true
     dependencies:
       '@cypress/request': 2.88.11
       '@cypress/xvfb': 1.2.4(supports-color@8.1.1)
-      '@types/node': 14.18.53
+      '@types/node': 16.18.40
       '@types/sinonjs__fake-timers': 8.1.1
       '@types/sizzle': 2.3.3
       arch: 2.2.0
@@ -15617,6 +15683,11 @@ packages:
 
   /dotenv@16.0.3:
     resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
+    engines: {node: '>=12'}
+    dev: true
+
+  /dotenv@16.3.1:
+    resolution: {integrity: sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==}
     engines: {node: '>=12'}
     dev: true
 
@@ -16281,7 +16352,7 @@ packages:
     dependencies:
       confusing-browser-globals: 1.0.11
       eslint: 8.43.0
-      eslint-plugin-import: 2.27.5(@typescript-eslint/parser@5.62.0)(eslint@8.33.0)
+      eslint-plugin-import: 2.27.5(@typescript-eslint/parser@5.62.0)(eslint@8.43.0)
       object.assign: 4.1.4
       object.entries: 1.1.6
       semver: 7.5.3
@@ -16314,7 +16385,7 @@ packages:
       '@typescript-eslint/parser': 5.62.0(eslint@8.33.0)(typescript@4.9.5)
       eslint: 8.43.0
       eslint-config-airbnb-base: 15.0.0(eslint-plugin-import@2.27.5)(eslint@8.43.0)
-      eslint-plugin-import: 2.27.5(@typescript-eslint/parser@5.62.0)(eslint@8.33.0)
+      eslint-plugin-import: 2.27.5(@typescript-eslint/parser@5.62.0)(eslint@8.43.0)
     dev: false
 
   /eslint-config-prettier@8.6.0(eslint@8.33.0):
@@ -16374,7 +16445,7 @@ packages:
       - supports-color
     dev: false
 
-  /eslint-module-utils@2.8.0(@typescript-eslint/parser@5.62.0)(eslint-import-resolver-node@0.3.7)(eslint@8.33.0):
+  /eslint-module-utils@2.8.0(@typescript-eslint/parser@5.62.0)(eslint-import-resolver-node@0.3.7)(eslint@8.43.0):
     resolution: {integrity: sha512-aWajIYfsqCKRDgUfjEXNN/JlrzauMuSEy5sbd7WXbtW3EH6A6MpwEh42c7qD+MqQo9QMJ6fWLAeIJynx0g6OAw==}
     engines: {node: '>=4'}
     peerDependencies:
@@ -16397,7 +16468,7 @@ packages:
     dependencies:
       '@typescript-eslint/parser': 5.62.0(eslint@8.33.0)(typescript@4.9.5)
       debug: 3.2.7(supports-color@8.1.1)
-      eslint: 8.33.0
+      eslint: 8.43.0
       eslint-import-resolver-node: 0.3.7
     transitivePeerDependencies:
       - supports-color
@@ -16458,7 +16529,7 @@ packages:
       - supports-color
     dev: false
 
-  /eslint-plugin-import@2.27.5(@typescript-eslint/parser@5.62.0)(eslint@8.33.0):
+  /eslint-plugin-import@2.27.5(@typescript-eslint/parser@5.62.0)(eslint@8.43.0):
     resolution: {integrity: sha512-LmEt3GVofgiGuiE+ORpnvP+kAm3h6MLZJ4Q5HCyHADofsb4VzXFsRiWj3c0OFiV+3DWFh0qg3v9gcPlfc3zRow==}
     engines: {node: '>=4'}
     peerDependencies:
@@ -16474,9 +16545,9 @@ packages:
       array.prototype.flatmap: 1.3.1
       debug: 3.2.7(supports-color@8.1.1)
       doctrine: 2.1.0
-      eslint: 8.33.0
+      eslint: 8.43.0
       eslint-import-resolver-node: 0.3.7
-      eslint-module-utils: 2.8.0(@typescript-eslint/parser@5.62.0)(eslint-import-resolver-node@0.3.7)(eslint@8.33.0)
+      eslint-module-utils: 2.8.0(@typescript-eslint/parser@5.62.0)(eslint-import-resolver-node@0.3.7)(eslint@8.43.0)
       has: 1.0.3
       is-core-module: 2.12.1
       is-glob: 4.0.3
@@ -17045,8 +17116,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /ethers@6.6.4:
-    resolution: {integrity: sha512-r3myN2hEnydmu23iiIj5kjWnCh5JNzlqrE/z+Kw5UqH173F+JOWzU6qkFB4HVC50epgxzKSL2Hq1oNXA877vwQ==}
+  /ethers@6.7.0:
+    resolution: {integrity: sha512-pxt5hK82RNwcTX2gOZP81t6qVPVspnkpeivwEgQuK9XUvbNtghBnT8GNIb/gPh+WnVSfi8cXC9XlfT8sqc6D6w==}
     engines: {node: '>=14.0.0'}
     dependencies:
       '@adraffy/ens-normalize': 1.9.2
@@ -18163,6 +18234,11 @@ packages:
   /get-port@6.1.2:
     resolution: {integrity: sha512-BrGGraKm2uPqurfGVj/z97/zv8dPleC6x9JBNRTrDNtCkkRF4rPwrQXFgL7+I+q8QSdU4ntLQX2D7KIxSy8nGw==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dev: true
+
+  /get-port@7.0.0:
+    resolution: {integrity: sha512-mDHFgApoQd+azgMdwylJrv2DX47ywGq1i5VFJE7fZ0dttNq3iQMfsU4IvEgBHojA3KqEudyu7Vq+oN8kNaNkWw==}
+    engines: {node: '>=16'}
     dev: true
 
   /get-proxy@2.1.0:
@@ -20398,7 +20474,7 @@ packages:
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     dependencies:
       '@jest/types': 27.5.1
-      '@types/node': 18.13.0
+      '@types/node': 18.15.13
     dev: true
 
   /jest-mock@29.5.0:
@@ -22902,25 +22978,10 @@ packages:
       find-up: 5.0.0
     dev: true
 
-  /playwright-core@1.31.1:
-    resolution: {integrity: sha512-JTyX4kV3/LXsvpHkLzL2I36aCdml4zeE35x+G5aPc4bkLsiRiQshU5lWeVpHFAuC8xAcbI6FDcw/8z3q2xtJSQ==}
-    engines: {node: '>=14'}
-    hasBin: true
-    dev: true
-
-  /playwright-core@1.36.1:
-    resolution: {integrity: sha512-7+tmPuMcEW4xeCL9cp9KxmYpQYHKkyjwoXRnoeTowaeNat8PoBMk/HwCYhqkH2fRkshfKEOiVus/IhID2Pg8kg==}
+  /playwright-core@1.36.2:
+    resolution: {integrity: sha512-sQYZt31dwkqxOrP7xy2ggDfEzUxM1lodjhsQ3NMMv5uGTRDsLxU0e4xf4wwMkF2gplIxf17QMBCodSFgm6bFVQ==}
     engines: {node: '>=16'}
     hasBin: true
-    dev: true
-
-  /playwright@1.31.1:
-    resolution: {integrity: sha512-zKJabsIA2rvOwJ12lGTqWv4HVJzlfw2JtUvO4hAr7J8UXQZ1qEPpX20E1vcz/9fotnTkwgqp3CVdIBwptBN3Fg==}
-    engines: {node: '>=14'}
-    hasBin: true
-    requiresBuild: true
-    dependencies:
-      playwright-core: 1.31.1
     dev: true
 
   /pngjs@5.0.0:
@@ -26812,6 +26873,32 @@ packages:
       - typescript
       - utf-8-validate
       - zod
+    dev: false
+
+  /viem@1.5.4(typescript@4.9.5):
+    resolution: {integrity: sha512-/B2KbAiTqiPd6fzJgz4pgS879IXbHfO44RP/0nsRvBEuFJvHQlekNIAHTa4d3LPlsHWAM8GcH4m2P5ZvtEHVxA==}
+    peerDependencies:
+      typescript: '>=5.0.4'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@adraffy/ens-normalize': 1.9.0
+      '@noble/curves': 1.0.0
+      '@noble/hashes': 1.3.0
+      '@scure/bip32': 1.3.0
+      '@scure/bip39': 1.2.0
+      '@types/ws': 8.5.5
+      '@wagmi/chains': 1.6.0(typescript@4.9.5)
+      abitype: 0.9.3(typescript@4.9.5)
+      isomorphic-ws: 5.0.0(ws@8.12.0)
+      typescript: 4.9.5
+      ws: 8.12.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+      - zod
+    dev: true
 
   /vite-tsconfig-paths@4.0.5(typescript@4.9.5):
     resolution: {integrity: sha512-/L/eHwySFYjwxoYt1WRJniuK/jPv+WGwgRGBYx3leciR5wBeqntQpUE6Js6+TJemChc+ter7fDBKieyEWDx4yQ==}
@@ -27535,59 +27622,3 @@ packages:
       react: 18.2.0
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
-
-  github.com/matt-user/synpress/2af8dd0b0be74bf6b4e815b3fa8a0ea70c9adf77(@babel/core@7.21.8)(@babel/preset-env@7.22.5)(babel-loader@9.1.2)(react-dom@18.2.0)(react@18.2.0)(typescript@4.9.5)(webpack@5.88.0):
-    resolution: {tarball: https://codeload.github.com/matt-user/synpress/tar.gz/2af8dd0b0be74bf6b4e815b3fa8a0ea70c9adf77}
-    id: github.com/matt-user/synpress/2af8dd0b0be74bf6b4e815b3fa8a0ea70c9adf77
-    name: '@synthetixio/synpress'
-    version: 3.7.0
-    engines: {node: '>=14'}
-    hasBin: true
-    dependencies:
-      '@cypress/code-coverage': 3.11.0(@babel/core@7.21.8)(@babel/preset-env@7.22.5)(babel-loader@9.1.2)(cypress@12.17.1)(webpack@5.88.0)
-      '@cypress/webpack-dev-server': 3.5.0(debug@4.3.4)(webpack@5.88.0)
-      '@drptbl/gremlins.js': 2.2.1
-      '@foundry-rs/easy-foundryup': 0.1.3
-      '@playwright/test': 1.36.1
-      '@testing-library/cypress': 9.0.0(cypress@12.17.1)
-      '@testing-library/react': 14.0.0(react-dom@18.2.0)(react@18.2.0)
-      '@types/testing-library__cypress': 5.0.9
-      '@viem/anvil': 0.0.5(debug@4.3.4)
-      app-root-path: 3.1.0
-      axios: 1.4.0(debug@4.3.4)
-      babel-plugin-istanbul: 6.1.1
-      babel-plugin-react-generate-property: 1.1.2
-      babel-plugin-react-remove-properties: 0.3.0
-      babel-plugin-transform-react-qa-classes: 1.6.0
-      babel-plugin-transform-react-styled-components-qa: 2.1.0
-      bytes32: 0.0.3
-      commander: 10.0.1
-      cypress: 12.17.1
-      cypress-wait-until: 1.7.2
-      debug: 4.3.4(supports-color@5.5.0)
-      dotenv: 16.0.3
-      dotenv-parse-variables: 2.0.0
-      download: 8.0.0
-      ethers: 6.6.4
-      etherscan-api: 10.3.0(debug@4.3.4)
-      find-config: 1.0.0
-      get-port: 6.1.2
-      node-fetch: 2.6.11
-      underscore: 1.13.6
-      viem: 0.3.36(typescript@4.9.5)
-      wait-on: 7.0.1(debug@4.3.4)
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@babel/preset-env'
-      - babel-loader
-      - bufferutil
-      - encoding
-      - react
-      - react-dom
-      - supports-color
-      - typescript
-      - utf-8-validate
-      - webpack
-      - webpack-cli
-      - zod
-    dev: true
