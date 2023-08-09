@@ -382,9 +382,9 @@ importers:
         specifier: ^10.9.1
         version: 10.9.1(@types/node@18.15.13)(typescript@5.1.6)
     devDependencies:
-      '@fuels-portal/config':
-        specifier: workspace:*
-        version: link:../config
+      '@fuels/ts-config':
+        specifier: ^0.0.3
+        version: 0.0.3(typescript@5.1.6)
       '@types/express':
         specifier: ^4.17.17
         version: 4.17.17
@@ -4987,6 +4987,14 @@ packages:
     transitivePeerDependencies:
       - dexie
     dev: false
+
+  /@fuels/ts-config@0.0.3(typescript@5.1.6):
+    resolution: {integrity: sha512-Nz97bCahij/lKYDtb/+UyJ8hHcr8Vv/hXZR4H6AgSejpjWUz+/tq1AB1HbXsHUG+zA7b0mRO1iR3Y2jNkTv1WQ==}
+    peerDependencies:
+      typescript: 5.1.6
+    dependencies:
+      typescript: 5.1.6
+    dev: true
 
   /@graphql-codegen/add@3.2.3(graphql@16.6.0):
     resolution: {integrity: sha512-sQOnWpMko4JLeykwyjFTxnhqjd/3NOG2OyMuvK76Wnnwh8DRrNf2VEs2kmSvLl7MndMlOj7Kh5U154dVcvhmKQ==}
