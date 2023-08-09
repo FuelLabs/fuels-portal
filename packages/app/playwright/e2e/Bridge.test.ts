@@ -158,9 +158,28 @@ test.describe('Bridge', () => {
     const confirmButton = getButtonByText(page, 'Confirm Transaction');
     await confirmButton.click();
 
+    // For some reason we need this even if we wait for load state on the metamask notification page
+    await page.waitForTimeout(3000);
+
+    let metamaskNotificationPage = context
+      .pages()
+      .find((p) => p.url().includes('notification'));
+    if (!metamaskNotificationPage) {
+      metamaskNotificationPage = await context.waitForEvent('page', {
+        predicate: (page) => page.url().includes('notification'),
+      });
+    }
+    await metamaskNotificationPage.waitForLoadState();
+    const proceedAnyways = metamaskNotificationPage.getByText(
+      'I want to proceed anyway'
+    );
+    const count = await proceedAnyways.count();
+    if (count) {
+      await proceedAnyways.click();
+    }
+
     // Timeout needed until https://github.com/Synthetixio/synpress/issues/795 is fixed
     await page.waitForTimeout(10000);
-    // TODO Fix bug where we initially have to manually click "Proceed anyways"
     await metamask.confirmTransaction();
 
     const postWithdrawBalanceEth = await client.getBalance({
