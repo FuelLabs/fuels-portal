@@ -20,6 +20,7 @@ export function OverlayDialog() {
     <Dialog
       isOpen={overlay.isDialogOpen}
       onOpenChange={(isOpen) => !isOpen && overlay.close()}
+      css={styles.dialog}
     >
       <Dialog.Content css={styles.content}>
         {overlay.is('tx.fromEth.toFuel') && <TxEthToFuelDialog />}
@@ -33,6 +34,9 @@ export function OverlayDialog() {
 }
 
 const styles = {
+  dialog: cssObj({
+    backdropFilter: 'blur(10px)',
+  }),
   content: cssObj({
     width: OVERLAY_WIDTH,
     minHeight: OVERLAY_HEIGHT,
