@@ -30,7 +30,7 @@ export function AddAssetFormDialog() {
         address: metadata.assetAddress,
         image: '',
         decimals: Number(data.decimals),
-        symbol: data.symbol,
+        symbol: data.symbol.toUpperCase(),
       },
     });
     store.openEthAssetsDialog();
