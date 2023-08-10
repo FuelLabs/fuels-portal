@@ -1,7 +1,7 @@
 import { cssObj } from '@fuel-ui/css';
 import { Box, CardList, IconButton, Text, Image, Avatar } from '@fuel-ui/react';
 
-// import { RemoveAssetDialog } from '../RemoveAssetDialog';
+import { RemoveAssetDialog } from '../RemoveAssetDialog';
 
 type EthAssetCardProps = {
   imageSrc?: string;
@@ -51,18 +51,18 @@ export const EthAssetCard = ({
           />
         )}
         {onRemove && (
-          // <RemoveAssetDialog assetSymbol={name} onConfirm={onRemove}>
-          <IconButton
-            aria-label="RemoveEthAsset"
-            isDisabled={isRemoveDisabled}
-            tooltip={removeToolTip}
-            variant="link"
-            icon="SquareRoundedX"
-            intent={isRemoveDisabled ? 'base' : 'error'}
-            size="lg"
-            css={styles.cardAction}
-          />
-          // </RemoveAssetDialog>
+          <RemoveAssetDialog assetSymbol={name} onConfirm={onRemove}>
+            <IconButton
+              aria-label="RemoveEthAsset"
+              isDisabled={isRemoveDisabled}
+              tooltip={removeToolTip}
+              variant="link"
+              icon="SquareRoundedX"
+              intent={isRemoveDisabled ? 'base' : 'error'}
+              size="lg"
+              css={styles.cardAction}
+            />
+          </RemoveAssetDialog>
         )}
       </Box.Flex>
     </CardList.Item>
