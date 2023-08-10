@@ -28,11 +28,6 @@ jobs:
       - name: Start Test Node
         run: pnpm node:start
 
-      - name: Build Application
-        run: pnpm build:test
-        env:
-          NODE_ENV: test
-
       # E2E tests running with Playwright
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps chromium
