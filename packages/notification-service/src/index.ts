@@ -9,5 +9,6 @@ notificationServer.get('/', (req: Request, res: Response) => {
 });
 
 notificationServer.listen(port, () => {
+  // eslint-disable-next-line no-console
   console.log(`Notification server running at http://localhost:${port}`);
 });
