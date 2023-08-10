@@ -28,12 +28,17 @@ jobs:
       - name: Start Test Node
         run: pnpm node:start
 
+      - name: Build Application
+        run: pnpm build:test
+        env:
+          NODE_ENV: test
+
       # E2E tests running with Playwright
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps chromium
 
       - name: Run E2E Tests
-        run: xvfb-run --auto-servernum -- pnpm test:all
+        run: xvfb-run --auto-servernum -- pnpm test:e2e
         env:
           NODE_ENV: test
 
