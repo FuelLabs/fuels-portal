@@ -33,7 +33,7 @@ jobs:
         run: pnpm exec playwright install --with-deps chromium
 
       - name: Run E2E Tests
-        run: xvfb-run --auto-servernum -- pnpm test:e2e
+        run: pnpm test:e2e
         env:
           NODE_ENV: test
 

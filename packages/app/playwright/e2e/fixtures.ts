@@ -59,7 +59,7 @@ export const test = base.extend<{
       `--disable-extensions-except=${metamaskPath},${pathToExtension}`,
       `--load-extension=${metamaskPath},${pathToExtension}`,
       '--remote-debugging-port=9222',
-      '--headless=new', // the new headless arg for chrome v109+. Use '--headless=chrome' as arg for browsers v94-108.
+      // '--headless=new', // the new headless arg for chrome v109+. Use '--headless=chrome' as arg for browsers v94-108.
     ];
     // if (process.env.CI) {
     //   browserArgs.push('--disable-gpu');
