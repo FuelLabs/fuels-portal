@@ -169,7 +169,7 @@ test.describe('Bridge', () => {
         predicate: (page) => page.url().includes('notification'),
       });
     }
-    await metamaskNotificationPage.waitForLoadState();
+    // await metamaskNotificationPage.waitForLoadState();
     const proceedAnyways = metamaskNotificationPage.getByText(
       'I want to proceed anyway'
     );
