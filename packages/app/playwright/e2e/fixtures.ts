@@ -59,6 +59,7 @@ export const test = base.extend<{
       `--disable-extensions-except=${metamaskPath},${pathToExtension}`,
       `--load-extension=${metamaskPath},${pathToExtension}`,
       '--remote-debugging-port=9222',
+      '--headless=new',
     ];
     if (process.env.CI) {
       browserArgs.push('--disable-gpu');
