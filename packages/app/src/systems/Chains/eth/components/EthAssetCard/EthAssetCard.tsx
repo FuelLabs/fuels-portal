@@ -1,7 +1,7 @@
 import { cssObj } from '@fuel-ui/css';
 import { Box, CardList, IconButton, Text, Image, Avatar } from '@fuel-ui/react';
 
-import { RemoveAssetDialog } from '../containers';
+import { RemoveAssetDialog } from '../RemoveAssetDialog';
 
 type EthAssetCardProps = {
   imageSrc?: string;
