@@ -65,4 +65,5 @@ if (ethFuelContracts && ethFuelContracts.FuelMessagePortal) {
   process.env.VITE_ETH_FUEL_MESSAGE_PORTAL = ethFuelContracts.FuelMessagePortal;
   process.env.VITE_ETH_FUEL_ERC20_GATEWAY = ethFuelContracts.FuelERC20Gateway;
   process.env.VITE_ETH_FUEL_CHAIN_STATE = ethFuelContracts.FuelChainState;
+  process.env.VITE_ETH_ERC20 = ethFuelContracts.ERC20;
 }

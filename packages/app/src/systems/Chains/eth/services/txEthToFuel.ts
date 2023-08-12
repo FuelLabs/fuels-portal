@@ -21,13 +21,15 @@ import {
 import type { BridgeAsset } from '~/systems/Bridge';
 
 export type TxEthToFuelInputs = {
-  start: {
+  startEth: {
     amount: string;
     ethWalletClient?: WalletClient;
     fuelAddress?: FuelAddress;
-    ethAsset?: BridgeAsset;
     ethPublicClient?: PublicClient;
   };
+  startErc20: {
+    ethAsset?: BridgeAsset;
+  } & TxEthToFuelInputs['startEth'];
   createErc20Contract: {
     ethWalletClient?: WalletClient;
     ethPublicClient?: PublicClient;
@@ -109,7 +111,7 @@ export class TxEthToFuelService {
     return contract;
   }
 
-  static async start(input: TxEthToFuelInputs['start']) {
+  static assertStartEth(input: TxEthToFuelInputs['startEth']) {
     if (!input?.ethWalletClient?.account || !input?.ethPublicClient) {
       throw new Error('Need to connect ETH Wallet');
     }
@@ -119,57 +121,35 @@ export class TxEthToFuelService {
     if (!input?.fuelAddress) {
       throw new Error('Need fuel address to send');
     }
+  }
+
+  static assertStartErc20(input: TxEthToFuelInputs['startErc20']) {
+    TxEthToFuelService.assertStartEth(input);
     if (!input?.ethAsset) {
       throw new Error('Need ETH asset');
     }
+    if (
+      !input?.ethAsset?.address?.startsWith('0x') ||
+      !isAddress(input.ethAsset.address)
+    ) {
+      throw new Error('Not valid ETH asset');
+    }
+  }
 
-    const { ethWalletClient, fuelAddress, amount, ethAsset, ethPublicClient } =
-      input;
+  static async start(input: TxEthToFuelInputs['startErc20']) {
+    if (input?.ethAsset?.address && isAddress(input.ethAsset.address)) {
+      return TxEthToFuelService.startErc20(input);
+    }
+
+    return TxEthToFuelService.startEth(input);
+  }
+
+  static async startEth(input: TxEthToFuelInputs['startEth']) {
+    TxEthToFuelService.assertStartEth(input);
 
     try {
-      // only tokens will have address, as eth is native
-      // TODO: when continuing deposit of erc20, should refactor split this part in 2 to be able to redo it in case if failed (status !== success) for both transactions
-      if (ethAsset.address && isAddress(ethAsset.address)) {
-        const fuelErc20Gateway = TxEthToFuelService.connectToFuelErc20Gateway({
-          walletClient: ethWalletClient,
-        });
-        const erc20Token = TxEthToFuelService.connectToErc20({
-          address: ethAsset.address,
-          walletClient: ethWalletClient,
-        });
-
-        const approveTxHash = await erc20Token.write.approve(
-          [VITE_ETH_FUEL_ERC20_GATEWAY as `0x${string}`],
-          {
-            value: BigInt(amount),
-            account: ethWalletClient.account,
-          }
-        );
-
-        const approveTxHashReceipt =
-          await ethPublicClient.getTransactionReceipt({ hash: approveTxHash });
-        if (approveTxHashReceipt.status !== 'success') {
-          throw new Error('Failed to approve Token for transfer');
-        }
-
-        const fuelTokenId = 'fuel';
-        const depositTxHash = await fuelErc20Gateway.write.deposit(
-          [
-            fuelAddress.toB256() as `0x${string}`,
-            ethAsset.address,
-            fuelTokenId,
-          ],
-          {
-            value: BigInt(amount),
-            account: ethWalletClient.account,
-          }
-        );
-        const depositTxHashReceipt =
-          await ethPublicClient.getTransactionReceipt({ hash: depositTxHash });
-        if (depositTxHashReceipt.status !== 'success') {
-          throw new Error('Failed to deposit Token');
-        }
-      } else {
+      const { ethWalletClient, fuelAddress, amount } = input;
+      if (fuelAddress && ethWalletClient) {
         const fuelPortal = TxEthToFuelService.connectToFuelMessagePortal({
           walletClient: ethWalletClient,
         });
@@ -187,12 +167,82 @@ export class TxEthToFuelService {
     } catch (e) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if ((e as any)?.code === 'ACTION_REJECTED') {
-        throw new Error('Transaction not approved by wallet owner');
+        throw new Error('Wallet owner rejected this transaction.');
       }
 
       throw e;
     }
-    return '0x';
+
+    return undefined;
+  }
+
+  static async startErc20(input: TxEthToFuelInputs['startErc20']) {
+    TxEthToFuelService.assertStartErc20(input);
+
+    try {
+      const {
+        ethWalletClient,
+        fuelAddress,
+        amount,
+        ethAsset,
+        ethPublicClient,
+      } = input;
+
+      if (
+        ethAsset?.address &&
+        ethWalletClient &&
+        fuelAddress &&
+        ethPublicClient
+      ) {
+        const fuelErc20Gateway = TxEthToFuelService.connectToFuelErc20Gateway({
+          walletClient: ethWalletClient,
+        });
+        const erc20Token = TxEthToFuelService.connectToErc20({
+          address: ethAsset.address as `0x${string}`,
+          walletClient: ethWalletClient,
+        });
+
+        const approveTxHash = await erc20Token.write.approve([
+          VITE_ETH_FUEL_ERC20_GATEWAY as `0x${string}`,
+          amount,
+        ]);
+
+        const approveTxHashReceipt =
+          await ethPublicClient.getTransactionReceipt({ hash: approveTxHash });
+
+        if (approveTxHashReceipt.status !== 'success') {
+          throw new Error('Failed to approve Token for transfer');
+        }
+
+        // TODO: continue here
+        const fuelTokenId = 'fuel';
+        const depositTxHash = await fuelErc20Gateway.write.deposit(
+          [
+            fuelAddress.toB256() as `0x${string}`,
+            ethAsset.address,
+            fuelTokenId,
+          ],
+          {
+            value: BigInt(amount),
+            account: ethWalletClient.account,
+          }
+        );
+        const depositTxHashReceipt =
+          await ethPublicClient.getTransactionReceipt({ hash: depositTxHash });
+        if (depositTxHashReceipt.status !== 'success') {
+          throw new Error('Failed to deposit Token');
+        }
+      }
+    } catch (e) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if ((e as any)?.code === 'ACTION_REJECTED') {
+        throw new Error('Wallet owner rejected this transaction.');
+      }
+
+      throw e;
+    }
+
+    return undefined;
   }
 
   static async getDepositNonce(input: TxEthToFuelInputs['getDepositNonce']) {

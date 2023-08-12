@@ -1,6 +1,6 @@
 import { ETH_UNITS, ethLogoSrc } from '../utils';
 
-import { VITE_ETH_ERC20_TOKEN_ADDRESS } from '~/config';
+import { VITE_ETH_ERC20 } from '~/config';
 
 export const useAssets = () => {
   return {
@@ -11,7 +11,7 @@ export const useAssets = () => {
         image: ethLogoSrc,
       },
       {
-        address: VITE_ETH_ERC20_TOKEN_ADDRESS as `0x${string}`,
+        address: VITE_ETH_ERC20 as `0x${string}`,
         decimals: ETH_UNITS,
         symbol: 'TKN',
       },
