@@ -39,7 +39,7 @@ importers:
         version: 3.1.7(hardhat@2.13.0)
       '@openzeppelin/hardhat-upgrades':
         specifier: ^2.1.0
-        version: 2.1.0(@nomicfoundation/hardhat-ethers@3.0.4)(ethers@6.6.4)(hardhat@2.13.0)
+        version: 2.1.0(@nomicfoundation/hardhat-ethers@3.0.4)(ethers@6.7.0)(hardhat@2.13.0)
       '@playwright/test':
         specifier: ^1.36.2
         version: 1.36.2
@@ -375,12 +375,30 @@ importers:
 
   packages/notification-service:
     dependencies:
+      dotenv:
+        specifier: ^16.3.1
+        version: 16.3.1
       express:
         specifier: ^4.18.2
         version: 4.18.2
+      fuels:
+        specifier: 0.49.0
+        version: 0.49.0
+      graphql:
+        specifier: 16.6.0
+        version: 16.6.0
+      graphql-request:
+        specifier: ^5.1.0
+        version: 5.1.0(graphql@16.6.0)
+      graphql-tag:
+        specifier: ^2.12.6
+        version: 2.12.6(graphql@16.6.0)
       ts-node:
         specifier: ^10.9.1
         version: 10.9.1(@types/node@18.15.3)(typescript@5.1.6)
+      viem:
+        specifier: ^0.3.36
+        version: 0.3.36(typescript@5.1.6)
     devDependencies:
       '@fuels/ts-config':
         specifier: ^0.0.3
@@ -391,6 +409,9 @@ importers:
       '@types/node':
         specifier: ^18.13.0
         version: 18.15.3
+      prisma:
+        specifier: ^5.1.1
+        version: 5.1.1
       ts-node-dev:
         specifier: ^2.0.0
         version: 2.0.0(@types/node@18.15.3)(typescript@5.1.6)
@@ -4826,7 +4847,7 @@ packages:
       eslint-config-airbnb-typescript: 17.0.0(@typescript-eslint/eslint-plugin@5.62.0)(@typescript-eslint/parser@5.62.0)(eslint-plugin-import@2.27.5)(eslint@8.43.0)
       eslint-config-prettier: 8.8.0(eslint@8.43.0)
       eslint-plugin-eslint-comments: 3.2.0(eslint@8.43.0)
-      eslint-plugin-import: 2.27.5(@typescript-eslint/parser@5.62.0)(eslint@8.43.0)
+      eslint-plugin-import: 2.27.5(@typescript-eslint/parser@5.62.0)(eslint@8.33.0)
       eslint-plugin-jest-dom: 5.0.1(@testing-library/dom@9.3.1)(eslint@8.43.0)
       eslint-plugin-jsx-a11y: 6.7.1(eslint@8.43.0)
       eslint-plugin-prettier: 4.2.1(eslint-config-prettier@8.8.0)(eslint@8.43.0)(prettier@2.8.8)
@@ -5529,7 +5550,7 @@ packages:
       '@whatwg-node/fetch': 0.8.8
       chalk: 4.1.2
       debug: 4.3.4(supports-color@5.5.0)
-      dotenv: 16.0.3
+      dotenv: 16.3.1
       graphql: 16.6.0
       graphql-request: 6.1.0(graphql@16.6.0)
       http-proxy-agent: 6.1.1
@@ -5607,7 +5628,7 @@ packages:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
       graphql: 16.6.0
-      tslib: 2.4.1
+      tslib: 2.5.3
     dev: true
 
   /@graphql-tools/utils@9.2.1(graphql@16.6.0):
@@ -6368,14 +6389,14 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /@nomicfoundation/hardhat-ethers@3.0.4(ethers@6.6.4)(hardhat@2.13.0):
+  /@nomicfoundation/hardhat-ethers@3.0.4(ethers@6.7.0)(hardhat@2.13.0):
     resolution: {integrity: sha512-k9qbLoY7qn6C6Y1LI0gk2kyHXil2Tauj4kGzQ8pgxYXIGw8lWn8tuuL72E11CrlKaXRUvOgF0EXrv/msPI2SbA==}
     peerDependencies:
       ethers: ^6.1.0
       hardhat: ^2.0.0
     dependencies:
       debug: 4.3.4(supports-color@5.5.0)
-      ethers: 6.6.4
+      ethers: 6.7.0
       hardhat: 2.13.0(ts-node@10.9.1)(typescript@4.9.5)
       lodash.isequal: 4.5.0
     transitivePeerDependencies:
@@ -6510,7 +6531,7 @@ packages:
       - encoding
     dev: true
 
-  /@openzeppelin/hardhat-upgrades@2.1.0(@nomicfoundation/hardhat-ethers@3.0.4)(ethers@6.6.4)(hardhat@2.13.0):
+  /@openzeppelin/hardhat-upgrades@2.1.0(@nomicfoundation/hardhat-ethers@3.0.4)(ethers@6.7.0)(hardhat@2.13.0):
     resolution: {integrity: sha512-cHwWbm5YeRde9y37Tcx9o0xc+hE7t+CrxDAdHt+USELW5agi6IaVECpgtVjPhhpfLR8UDJvSggzaP4HAqQhZtQ==}
     hasBin: true
     peerDependencies:
@@ -6522,13 +6543,13 @@ packages:
       '@nomicfoundation/hardhat-verify':
         optional: true
     dependencies:
-      '@nomicfoundation/hardhat-ethers': 3.0.4(ethers@6.6.4)(hardhat@2.13.0)
+      '@nomicfoundation/hardhat-ethers': 3.0.4(ethers@6.7.0)(hardhat@2.13.0)
       '@openzeppelin/defender-base-client': 1.47.1(debug@4.3.4)
       '@openzeppelin/platform-deploy-client': 0.9.0(debug@4.3.4)
       '@openzeppelin/upgrades-core': 1.27.1
       chalk: 4.1.2
       debug: 4.3.4(supports-color@5.5.0)
-      ethers: 6.6.4
+      ethers: 6.7.0
       hardhat: 2.13.0(ts-node@10.9.1)(typescript@4.9.5)
       proper-lockfile: 4.1.2
       undici: 5.22.1
@@ -6651,6 +6672,11 @@ packages:
       schema-utils: 3.3.0
       source-map: 0.7.4
       webpack: 5.88.0(esbuild@0.17.19)
+    dev: true
+
+  /@prisma/engines@5.1.1:
+    resolution: {integrity: sha512-NV/4nVNWFZSJCCIA3HIFJbbDKO/NARc9ej0tX5S9k2EVbkrFJC4Xt9b0u4rNZWL4V+F5LAjvta8vzEUw0rw+HA==}
+    requiresBuild: true
     dev: true
 
   /@radix-ui/colors@1.0.1:
@@ -10214,7 +10240,7 @@ packages:
       '@storybook/telemetry': 7.0.7
       '@storybook/types': 7.0.7
       '@types/detect-port': 1.3.3
-      '@types/node': 16.18.36
+      '@types/node': 16.18.40
       '@types/node-fetch': 2.6.4
       '@types/pretty-hrtime': 1.0.1
       '@types/semver': 7.5.0
@@ -10254,7 +10280,7 @@ packages:
       '@storybook/core-common': 7.0.7
       '@storybook/node-logger': 7.0.7
       '@storybook/types': 7.0.7
-      '@types/node': 16.18.36
+      '@types/node': 16.18.40
       ts-dedent: 2.2.0
     transitivePeerDependencies:
       - supports-color
@@ -12028,6 +12054,17 @@ packages:
       typescript: 4.9.5
     dev: false
 
+  /@wagmi/chains@0.2.16(typescript@5.1.6):
+    resolution: {integrity: sha512-rkWaI2PxCnbD8G07ZZff5QXftnSkYL0h5f4DkHCG3fGYYr/ZDvmCL4bMae7j7A9sAif1csPPBmbCzHp3R5ogCQ==}
+    peerDependencies:
+      typescript: '>=4.9.4'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      typescript: 5.1.6
+    dev: false
+
   /@wagmi/chains@0.2.25(typescript@4.9.5):
     resolution: {integrity: sha512-Gah0bgR+14navwxi7xTL2oFB8YgK4qoBPye1b8ucccIwF3Z8Zg1u2gVTDFAyPT4lyB+ZVqwYKs3Y/IkFNG5O4Q==}
     peerDependencies:
@@ -12864,6 +12901,18 @@ packages:
         optional: true
     dependencies:
       typescript: 4.9.5
+    dev: false
+
+  /abitype@0.8.2(typescript@5.1.6):
+    resolution: {integrity: sha512-B1ViNMGpfx/qjVQi0RTc2HEFHuR9uoCoTEkwELT5Y7pBPtBbctYijz9BK6+Kd0hQ3S70FhYTO2dWWk0QNUEXMA==}
+    peerDependencies:
+      typescript: '>=5.0.4'
+      zod: ^3 >=3.19.1
+    peerDependenciesMeta:
+      zod:
+        optional: true
+    dependencies:
+      typescript: 5.1.6
     dev: false
 
   /abitype@0.9.3(typescript@4.9.5):
@@ -15958,7 +16007,6 @@ packages:
   /dotenv@16.3.1:
     resolution: {integrity: sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==}
     engines: {node: '>=12'}
-    dev: true
 
   /download@6.2.5:
     resolution: {integrity: sha512-DpO9K1sXAST8Cpzb7kmEhogJxymyVUd5qz/vCOSyvwtp2Klj2XcDt5YUuasgxka44SxF0q5RriKIwJmQHG2AuA==}
@@ -16652,7 +16700,7 @@ packages:
     dependencies:
       confusing-browser-globals: 1.0.11
       eslint: 8.43.0
-      eslint-plugin-import: 2.27.5(@typescript-eslint/parser@5.62.0)(eslint@8.43.0)
+      eslint-plugin-import: 2.27.5(@typescript-eslint/parser@5.62.0)(eslint@8.33.0)
       object.assign: 4.1.4
       object.entries: 1.1.6
       semver: 7.5.3
@@ -16685,7 +16733,7 @@ packages:
       '@typescript-eslint/parser': 5.62.0(eslint@8.33.0)(typescript@4.9.5)
       eslint: 8.43.0
       eslint-config-airbnb-base: 15.0.0(eslint-plugin-import@2.27.5)(eslint@8.43.0)
-      eslint-plugin-import: 2.27.5(@typescript-eslint/parser@5.62.0)(eslint@8.43.0)
+      eslint-plugin-import: 2.27.5(@typescript-eslint/parser@5.62.0)(eslint@8.33.0)
     dev: false
 
   /eslint-config-prettier@8.6.0(eslint@8.33.0):
@@ -16745,7 +16793,7 @@ packages:
       - supports-color
     dev: false
 
-  /eslint-module-utils@2.8.0(@typescript-eslint/parser@5.62.0)(eslint-import-resolver-node@0.3.7)(eslint@8.43.0):
+  /eslint-module-utils@2.8.0(@typescript-eslint/parser@5.62.0)(eslint-import-resolver-node@0.3.7)(eslint@8.33.0):
     resolution: {integrity: sha512-aWajIYfsqCKRDgUfjEXNN/JlrzauMuSEy5sbd7WXbtW3EH6A6MpwEh42c7qD+MqQo9QMJ6fWLAeIJynx0g6OAw==}
     engines: {node: '>=4'}
     peerDependencies:
@@ -16768,7 +16816,7 @@ packages:
     dependencies:
       '@typescript-eslint/parser': 5.62.0(eslint@8.33.0)(typescript@4.9.5)
       debug: 3.2.7(supports-color@8.1.1)
-      eslint: 8.43.0
+      eslint: 8.33.0
       eslint-import-resolver-node: 0.3.7
     transitivePeerDependencies:
       - supports-color
@@ -16829,7 +16877,7 @@ packages:
       - supports-color
     dev: false
 
-  /eslint-plugin-import@2.27.5(@typescript-eslint/parser@5.62.0)(eslint@8.43.0):
+  /eslint-plugin-import@2.27.5(@typescript-eslint/parser@5.62.0)(eslint@8.33.0):
     resolution: {integrity: sha512-LmEt3GVofgiGuiE+ORpnvP+kAm3h6MLZJ4Q5HCyHADofsb4VzXFsRiWj3c0OFiV+3DWFh0qg3v9gcPlfc3zRow==}
     engines: {node: '>=4'}
     peerDependencies:
@@ -16845,9 +16893,9 @@ packages:
       array.prototype.flatmap: 1.3.1
       debug: 3.2.7(supports-color@8.1.1)
       doctrine: 2.1.0
-      eslint: 8.43.0
+      eslint: 8.33.0
       eslint-import-resolver-node: 0.3.7
-      eslint-module-utils: 2.8.0(@typescript-eslint/parser@5.62.0)(eslint-import-resolver-node@0.3.7)(eslint@8.43.0)
+      eslint-module-utils: 2.8.0(@typescript-eslint/parser@5.62.0)(eslint-import-resolver-node@0.3.7)(eslint@8.33.0)
       has: 1.0.3
       is-core-module: 2.12.1
       is-glob: 4.0.3
@@ -17373,22 +17421,6 @@ packages:
       - bufferutil
       - utf-8-validate
     dev: false
-
-  /ethers@6.6.4:
-    resolution: {integrity: sha512-r3myN2hEnydmu23iiIj5kjWnCh5JNzlqrE/z+Kw5UqH173F+JOWzU6qkFB4HVC50epgxzKSL2Hq1oNXA877vwQ==}
-    engines: {node: '>=14.0.0'}
-    dependencies:
-      '@adraffy/ens-normalize': 1.9.2
-      '@noble/hashes': 1.1.2
-      '@noble/secp256k1': 1.7.1
-      '@types/node': 18.15.13
-      aes-js: 4.0.0-beta.5
-      tslib: 2.4.0
-      ws: 8.5.0
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-    dev: true
 
   /ethers@6.7.0:
     resolution: {integrity: sha512-pxt5hK82RNwcTX2gOZP81t6qVPVspnkpeivwEgQuK9XUvbNtghBnT8GNIb/gPh+WnVSfi8cXC9XlfT8sqc6D6w==}
@@ -21299,7 +21331,7 @@ packages:
     engines: {node: '>=14.0.0'}
     dependencies:
       app-root-dir: 1.0.2
-      dotenv: 16.0.3
+      dotenv: 16.3.1
       dotenv-expand: 10.0.0
     dev: true
 
@@ -23404,6 +23436,15 @@ packages:
   /pretty-hrtime@1.0.3:
     resolution: {integrity: sha512-66hKPCr+72mlfiSjlEB1+45IjXSqvVAIy6mocupoww4tBFE9R9IhwwUGoI4G++Tc9Aq+2rxOt0RFU6gPcrte0A==}
     engines: {node: '>= 0.8'}
+    dev: true
+
+  /prisma@5.1.1:
+    resolution: {integrity: sha512-WJFG/U7sMmcc6TjJTTifTfpI6Wjoh55xl4AzopVwAdyK68L9/ogNo8QQ2cxuUjJf/Wa82z/uhyh3wMzvRIBphg==}
+    engines: {node: '>=16.13'}
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      '@prisma/engines': 5.1.1
     dev: true
 
   /prismjs@1.27.0:
@@ -27197,6 +27238,25 @@ packages:
       '@scure/bip39': 1.2.0
       '@wagmi/chains': 0.2.16(typescript@4.9.5)
       abitype: 0.8.2(typescript@4.9.5)
+      isomorphic-ws: 5.0.0(ws@8.12.0)
+      ws: 8.12.0
+    transitivePeerDependencies:
+      - bufferutil
+      - typescript
+      - utf-8-validate
+      - zod
+    dev: false
+
+  /viem@0.3.36(typescript@5.1.6):
+    resolution: {integrity: sha512-8wgZyG+Zty6b9ztM5+/1xBZBl/z1/YFtQJZqrvSOUnbrIL7u786XeZXDPyoY6zbR0HTt14k5ATsEPnXnCyDhtg==}
+    dependencies:
+      '@adraffy/ens-normalize': 1.9.0
+      '@noble/curves': 1.0.0
+      '@noble/hashes': 1.3.0
+      '@scure/bip32': 1.3.0
+      '@scure/bip39': 1.2.0
+      '@wagmi/chains': 0.2.16(typescript@5.1.6)
+      abitype: 0.8.2(typescript@5.1.6)
       isomorphic-ws: 5.0.0(ws@8.12.0)
       ws: 8.12.0
     transitivePeerDependencies:
