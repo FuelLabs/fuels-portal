@@ -1,8 +1,12 @@
 import * as dotenv from 'dotenv';
 import type { Request, Response } from 'express';
 import express from 'express';
-import { Provider, Address } from 'fuels';
+import type { ReceiptMessageOut } from 'fuels';
+import { ReceiptType, Provider, Address, ReceiptCoder, arrayify } from 'fuels';
+import { createPublicClient, http } from 'viem';
+import { foundry } from 'viem/chains';
 
+import { FUEL_MESSAGE_PORTAL } from './contracts/FuelMessagePortal';
 import { getGraphqlClient } from './utils/graphql';
 
 dotenv.config();
@@ -14,6 +18,10 @@ const fuelTestAddress = new Address(
 );
 
 const fuelProvider = new Provider(process.env.FUEL_PROVIDER_URL || '');
+const ethPublicClient = createPublicClient({
+  chain: foundry,
+  transport: http(),
+});
 
 const getWithdrawTransactions = async (
   address: string,
@@ -26,7 +34,44 @@ const getWithdrawTransactions = async (
     owner: address,
     first: numberOfTransactions,
   });
-  return transactionsByOwner;
+
+  const abiMessageRelayed = FUEL_MESSAGE_PORTAL.abi.find(
+    ({ name, type }) => name === 'MessageRelayed' && type === 'event'
+  );
+
+  const pendingWithdrawTransactions = transactionsByOwner.edges.filter(
+    async (edge) => {
+      const decodedReceipts = (edge.node.receipts || []).map(
+        ({ rawPayload }) => {
+          const [decoded] = new ReceiptCoder().decode(arrayify(rawPayload), 0);
+
+          return decoded;
+        }
+      );
+
+      const messageOutReceipt = decodedReceipts.find(
+        ({ type }) => type === ReceiptType.MessageOut
+      ) as ReceiptMessageOut;
+
+      const logs = await ethPublicClient.getLogs({
+        address: process.env.ETH_FUEL_MESSAGE_PORTAL as `0x${string}`,
+        event: {
+          type: 'event',
+          name: 'MessageRelayed',
+          inputs: abiMessageRelayed?.inputs || [],
+        },
+        args: {
+          messageId: messageOutReceipt?.messageId as `0x${string}`,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any,
+        fromBlock: 'earliest',
+      });
+      console.log(`logs`, logs);
+      return !logs.length;
+    }
+  );
+  console.log(`pendingWithdrawTransactions`, pendingWithdrawTransactions);
+  return pendingWithdrawTransactions;
 };
 
 notificationServer.get('/', (req: Request, res: Response) => {
