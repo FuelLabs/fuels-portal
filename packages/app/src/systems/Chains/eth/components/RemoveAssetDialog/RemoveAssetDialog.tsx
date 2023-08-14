@@ -30,7 +30,7 @@ export const RemoveAssetDialog = ({
       <AlertDialog.Content>
         <AlertDialog.Heading>Are you sure?</AlertDialog.Heading>
         <AlertDialog.Description>
-          This action cannot be undone. {assetSymbol} will be permanantly
+          This action cannot be undone. {assetSymbol} will be permanently
           deleted from your asset list.
         </AlertDialog.Description>
         <AlertDialog.Footer>

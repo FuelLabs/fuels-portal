@@ -124,7 +124,8 @@ export function EthAssetsDialog() {
             )}
           </>
           <>
-            {!(showCustomTokenButton || showUseTokenButton) &&
+            {doesAssetExist &&
+              !(showCustomTokenButton || showUseTokenButton) &&
               assets.map((asset, i) => (
                 <EthAssetCard
                   key={`${asset.address || ''}${asset.symbol || ''}${String(
@@ -152,7 +153,7 @@ export function EthAssetsDialog() {
                   isRemoveDisabled={asset.address === undefined}
                   removeToolTip={
                     asset.address === undefined
-                      ? 'ETH is a native asset.  It can not be remove'
+                      ? 'ETH is a native asset.  It can not be removed'
                       : undefined
                   }
                 />
