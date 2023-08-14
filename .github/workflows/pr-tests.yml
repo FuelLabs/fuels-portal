@@ -25,9 +25,6 @@ jobs:
         with:
           password: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Install Dependencies
-        run: pnpm install
-      
       - name: Start Test Node
         run: pnpm node:start
 
