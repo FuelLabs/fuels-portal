@@ -38,9 +38,8 @@ const getWithdrawTransactions = async (
   const abiMessageRelayed = FUEL_MESSAGE_PORTAL.abi.find(
     ({ name, type }) => name === 'MessageRelayed' && type === 'event'
   );
-
-  const pendingWithdrawTransactions = transactionsByOwner.edges.filter(
-    async (edge) => {
+  const hasLogs = await Promise.all(
+    transactionsByOwner.edges.map(async (edge) => {
       const decodedReceipts = (edge.node.receipts || []).map(
         ({ rawPayload }) => {
           const [decoded] = new ReceiptCoder().decode(arrayify(rawPayload), 0);
@@ -66,11 +65,14 @@ const getWithdrawTransactions = async (
         } as any,
         fromBlock: 'earliest',
       });
-      console.log(`logs`, logs);
-      return !logs.length;
+      return logs;
+    })
+  );
+  const pendingWithdrawTransactions = transactionsByOwner.edges.filter(
+    (edge, index) => {
+      return !hasLogs[index].length;
     }
   );
-  console.log(`pendingWithdrawTransactions`, pendingWithdrawTransactions);
   return pendingWithdrawTransactions;
 };
 
