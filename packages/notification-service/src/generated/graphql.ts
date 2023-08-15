@@ -1,6 +1,7 @@
 import type { GraphQLClient } from 'graphql-request';
 import type * as Dom from 'graphql-request/src/types.dom';
 import gql from 'graphql-tag';
+import type { DocumentNode } from 'graphql';
 
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -874,7 +875,7 @@ export const gqlOperations = {
   },
 };
 
-export const AddressTransactionsDocument = gql`
+export const AddressTransactionsDocument: DocumentNode = gql`
   query AddressTransactions($first: Int, $owner: Address!) {
     transactionsByOwner(first: $first, owner: $owner) {
       edges {
