@@ -1,10 +1,13 @@
+import { PrismaClient } from '@prisma/client';
 import * as dotenv from 'dotenv';
 import type { Request, Response } from 'express';
 import express from 'express';
 import type { ReceiptMessageOut } from 'fuels';
-import { ReceiptType, Provider, Address, ReceiptCoder, arrayify } from 'fuels';
+import { ReceiptType, Provider, ReceiptCoder, arrayify } from 'fuels';
 import { createPublicClient, http } from 'viem';
 import { foundry } from 'viem/chains';
+
+import { fuelTestEmail } from '../prisma/script';
 
 import { FUEL_MESSAGE_PORTAL } from './contracts/FuelMessagePortal';
 import { getGraphqlClient } from './utils/graphql';
@@ -13,15 +16,15 @@ dotenv.config();
 
 const notificationServer = express();
 const port = 3005;
-const fuelTestAddress = new Address(
-  'fuel1jraekwq3e2f8fn7ldypjvvy3zqgzgf99supvcylzhxqvrr0mx3nqdnzpvw'
-);
 
 const fuelProvider = new Provider(process.env.FUEL_PROVIDER_URL || '');
+
 const ethPublicClient = createPublicClient({
   chain: foundry,
   transport: http(),
 });
+
+const prisma = new PrismaClient();
 
 const getWithdrawTransactions = async (
   address: string,
@@ -83,9 +86,21 @@ notificationServer.get('/', (req: Request, res: Response) => {
 notificationServer.listen(port, async () => {
   // eslint-disable-next-line no-console
   console.log(`Notification server running at http://localhost:${port}`);
-  const transactions = await getWithdrawTransactions(
-    fuelTestAddress.toB256(),
-    fuelProvider.url
-  );
-  console.log(`transactions`, JSON.stringify(transactions, null, 4));
+
+  const data = await prisma.user.findUnique({
+    where: {
+      email: fuelTestEmail,
+    },
+    include: {
+      addresses: true,
+    },
+  });
+
+  if (data) {
+    const transactions = await getWithdrawTransactions(
+      data.addresses[0].address,
+      fuelProvider.url
+    );
+    console.log(`transactions`, JSON.stringify(transactions, null, 4));
+  }
 });
