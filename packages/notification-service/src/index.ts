@@ -2,15 +2,13 @@ import { PrismaClient } from '@prisma/client';
 import * as dotenv from 'dotenv';
 import type { Request, Response } from 'express';
 import express from 'express';
-import type { ReceiptMessageOut } from 'fuels';
-import { ReceiptType, Provider, ReceiptCoder, arrayify } from 'fuels';
+import { Provider } from 'fuels';
 import { createPublicClient, http } from 'viem';
 import { foundry } from 'viem/chains';
 
 import { fuelTestEmail } from '../prisma/script';
 
-import { FUEL_MESSAGE_PORTAL } from './contracts/FuelMessagePortal';
-import { getGraphqlClient } from './utils/graphql';
+import { getWithdrawTransactions } from '~/utils';
 
 dotenv.config();
 
@@ -25,59 +23,6 @@ const ethPublicClient = createPublicClient({
 });
 
 const prisma = new PrismaClient();
-
-const getWithdrawTransactions = async (
-  address: string,
-  providerUrl: string,
-  numberOfTransactions = 1000
-) => {
-  const { transactionsByOwner } = await getGraphqlClient(
-    providerUrl
-  ).AddressTransactions({
-    owner: address,
-    first: numberOfTransactions,
-  });
-
-  const abiMessageRelayed = FUEL_MESSAGE_PORTAL.abi.find(
-    ({ name, type }) => name === 'MessageRelayed' && type === 'event'
-  );
-  const hasLogs = await Promise.all(
-    transactionsByOwner.edges.map(async (edge) => {
-      const decodedReceipts = (edge.node.receipts || []).map(
-        ({ rawPayload }) => {
-          const [decoded] = new ReceiptCoder().decode(arrayify(rawPayload), 0);
-
-          return decoded;
-        }
-      );
-
-      const messageOutReceipt = decodedReceipts.find(
-        ({ type }) => type === ReceiptType.MessageOut
-      ) as ReceiptMessageOut;
-
-      const logs = await ethPublicClient.getLogs({
-        address: process.env.ETH_FUEL_MESSAGE_PORTAL as `0x${string}`,
-        event: {
-          type: 'event',
-          name: 'MessageRelayed',
-          inputs: abiMessageRelayed?.inputs || [],
-        },
-        args: {
-          messageId: messageOutReceipt?.messageId as `0x${string}`,
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } as any,
-        fromBlock: 'earliest',
-      });
-      return logs;
-    })
-  );
-  const pendingWithdrawTransactions = transactionsByOwner.edges.filter(
-    (edge, index) => {
-      return !hasLogs[index].length;
-    }
-  );
-  return pendingWithdrawTransactions;
-};
 
 notificationServer.get('/', (req: Request, res: Response) => {
   res.send('hello');
@@ -99,8 +44,31 @@ notificationServer.listen(port, async () => {
   if (data) {
     const transactions = await getWithdrawTransactions(
       data.addresses[0].address,
-      fuelProvider.url
+      fuelProvider.url,
+      ethPublicClient
     );
-    console.log(`transactions`, JSON.stringify(transactions, null, 4));
+    const dbTransactions = await Promise.all(
+      transactions.map((transaction) => {
+        return prisma.transaction.upsert({
+          where: {
+            transactionId: transaction.node.id,
+          },
+          update: {
+            status: transaction.node.status?.type || '',
+          },
+          create: {
+            transactionId: transaction.node.id,
+            status: transaction.node.status?.type || '',
+            addressId: data.addresses[0].address,
+          },
+        });
+      })
+    );
+    console.log(`temp`, dbTransactions);
+    dbTransactions.forEach((transaction) => {
+      if (transaction.status === 'SuccessStatus') {
+        console.log('TODO: send email and remove from db');
+      }
+    });
   }
 });
