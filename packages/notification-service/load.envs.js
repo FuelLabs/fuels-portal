@@ -22,7 +22,7 @@ function getEnvName() {
 }
 
 function getEthFuelL1Contracts() {
-  if (process.env.VITE_ETH_CHAIN === 'foundry') {
+  if (process.env.ETH_CHAIN === 'foundry') {
     const { body } = retus('http://localhost:8080/deployments.local.json', {
       json: true,
     });

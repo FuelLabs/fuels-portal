@@ -9,7 +9,7 @@ export const fuelTestAddress = new Address(
 ).toB256();
 
 async function main() {
-  const testUser = await prisma.user.upsert({
+  await prisma.user.upsert({
     where: {
       email: fuelTestEmail,
     },
@@ -23,13 +23,6 @@ async function main() {
       },
     },
   });
-  console.log(`testUser`, testUser);
-  const userWithAddress = await prisma.user.findMany({
-    include: {
-      addresses: true,
-    },
-  });
-  console.dir(userWithAddress, { depth: null });
 }
 
 main()
