@@ -51,5 +51,16 @@ export function overlayEvents(store: Store) {
         },
       });
     },
+    openAddAssetsDialog({ assetAddress }: { assetAddress: string }) {
+      store.send(Services.overlay, {
+        type: 'OPEN',
+        input: {
+          modal: 'eth.assets.add',
+          params: {
+            assetAddress,
+          },
+        },
+      });
+    },
   };
 }

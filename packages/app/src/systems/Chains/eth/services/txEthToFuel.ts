@@ -32,6 +32,7 @@ export type TxEthToFuelInputs = {
   createErc20Contract: {
     ethWalletClient?: WalletClient;
     ethPublicClient?: PublicClient;
+    ethAsset?: BridgeAsset;
   };
   getDepositNonce: {
     ethTx?: EthTransactionResponse;
@@ -51,7 +52,6 @@ export class TxEthToFuelService {
     publicClient?: PublicClient;
   }) {
     const { walletClient, publicClient } = options;
-
     const contract = getContract({
       abi: ERC_20.abi,
       address: VITE_ETH_FUEL_ERC20_GATEWAY as `0x${string}`,
@@ -67,7 +67,6 @@ export class TxEthToFuelService {
     publicClient?: PublicClient;
   }) {
     const { walletClient, publicClient } = options;
-
     const contract = getContract({
       abi: FUEL_MESSAGE_PORTAL.abi,
       address: VITE_ETH_FUEL_MESSAGE_PORTAL as `0x${string}`,
@@ -119,7 +118,7 @@ export class TxEthToFuelService {
           walletClient: ethWalletClient,
         });
         const erc20Token = TxEthToFuelService.connectToErc20({
-          address: ethAsset.address,
+          address: ethAsset.address as `0x${string}`,
           walletClient: ethWalletClient,
         });
 

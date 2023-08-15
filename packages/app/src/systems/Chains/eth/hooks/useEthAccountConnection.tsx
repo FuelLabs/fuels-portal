@@ -21,7 +21,10 @@ export function useEthAccountConnection(props?: {
   const { address, isConnected } = useAccount();
   const { data: ensName } = useEnsName({ address });
   const { data: ensAvatar } = useEnsAvatar({ name: address });
-  const { data: balance } = useBalance({ address, token: erc20Address });
+  const { data: balance } = useBalance({
+    address,
+    token: erc20Address,
+  });
   const publicClient = usePublicClient();
   const { data: walletClient } = useWalletClient();
   const { asset } = useAsset({
