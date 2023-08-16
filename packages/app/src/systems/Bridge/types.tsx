@@ -1,12 +1,9 @@
-import type { ReactNode } from 'react';
-
 import type { SupportedChain } from '../Chains';
 
 export type BridgeTx = {
   asset: {
-    assetAmount: string;
-    assetImageSrc: ReactNode | string;
-    assetSymbol: string;
+    address?: string;
+    amount: string;
   };
   date?: Date;
   txHash: string;
@@ -20,4 +17,5 @@ export type BridgeAsset = {
   decimals?: number;
   symbol?: string;
   image?: string;
+  amount?: string;
 };

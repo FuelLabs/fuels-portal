@@ -5,6 +5,7 @@ import { useTransaction } from 'wagmi';
 import { useFuelAccountConnection } from '../../fuel';
 import type { TxEthToFuelMachineState } from '../machines';
 import { txEthToFuelMachine } from '../machines';
+import { isErc20Address } from '../utils';
 
 import { useBlocks } from './useBlocks';
 import { useCachedBlocksDates } from './useCachedBlocksDates';
@@ -24,6 +25,9 @@ const selectors = {
       'isConfirmTransactionSelected'
     );
     const isReceiveDone = state.hasTag('isReceiveDone');
+    const isWaitingFuelWalletApproval = state.hasTag(
+      'isWaitingFuelWalletApproval'
+    );
 
     return {
       isSettlementLoading,
@@ -32,13 +36,18 @@ const selectors = {
       isConfirmTransactionLoading,
       isConfirmTransactionSelected,
       isReceiveDone,
+      isWaitingFuelWalletApproval,
     };
   },
   steps: (state: TxEthToFuelMachineState) => {
     const status = selectors.status(state);
-    const { ethTx } = state.context;
+    const { ethTx, erc20Token } = state.context;
 
     if (!ethTx) return undefined;
+
+    const confirmTransactionText = isErc20Address(erc20Token?.address)
+      ? 'Action'
+      : 'Automatic';
 
     const steps = [
       {
@@ -56,7 +65,7 @@ const selectors = {
       },
       {
         name: 'Confirm transaction',
-        status: status.isReceiveDone ? 'Done!' : 'Automatic',
+        status: status.isReceiveDone ? 'Done!' : confirmTransactionText,
         isLoading: status.isConfirmTransactionLoading,
         isDone: status.isReceiveDone,
         isSelected: status.isConfirmTransactionSelected,
@@ -72,6 +81,10 @@ const selectors = {
 
     return steps;
   },
+  ercToken: (state: TxEthToFuelMachineState) => {
+    const { erc20Token } = state.context;
+    return erc20Token;
+  },
 };
 
 export function useTxEthToFuel({
@@ -82,8 +95,11 @@ export function useTxEthToFuel({
   skipAnalyzeTx?: boolean;
 }) {
   const { publicClient: ethPublicClient } = useEthAccountConnection();
-  const { provider: fuelProvider, address: fuelAddress } =
-    useFuelAccountConnection();
+  const {
+    provider: fuelProvider,
+    address: fuelAddress,
+    wallet: fuelWallet,
+  } = useFuelAccountConnection();
   const { data: ethTx } = useTransaction({
     hash: id.startsWith('0x') ? (id as `0x${string}`) : undefined,
   });
@@ -95,6 +111,8 @@ export function useTxEthToFuel({
   const service = useInterpret(txEthToFuelMachine);
   const steps = useSelector(service, selectors.steps);
   const status = useSelector(service, selectors.status);
+  const erc20Token = useSelector(service, selectors.ercToken);
+
   useEffect(() => {
     if (
       ethTx &&
@@ -121,19 +139,32 @@ export function useTxEthToFuel({
     skipAnalyzeTx,
   ]);
 
+  function relayMessageToFuel() {
+    service.send('RELAY_MESSAGE_ON_FUEL', {
+      input: {
+        fuelWallet,
+      },
+    });
+  }
+
   const ethBlockDate = ethTx?.blockHash
     ? blockDates?.[ethTx.blockHash] ||
       blocks?.find((block) => block.hash === ethTx.blockHash)?.date
     : undefined;
+  const shouldShowConfirmButton =
+    isErc20Address(erc20Token?.address) &&
+    (status.isWaitingFuelWalletApproval || status.isConfirmTransactionLoading);
 
   return {
     handlers: {
       close: store.closeOverlay,
       openTxEthToFuel: store.openTxEthToFuel,
+      relayMessageToFuel,
     },
     ethTx,
     ethBlockDate,
     steps,
     status,
+    shouldShowConfirmButton,
   };
 }

@@ -1,7 +1,6 @@
 import { Image, FuelLogo, Text, Box, Spinner } from '@fuel-ui/react';
-import type { ReactNode } from 'react';
 
-import { ethLogoSrc } from '../../eth';
+import { ETH_SYMBOL, ethLogoSrc } from '../../eth';
 import { ActionRequiredBadge } from '../components';
 import { useTxFuelToEth } from '../hooks';
 
@@ -9,9 +8,8 @@ import { BridgeTxItem } from '~/systems/Bridge';
 
 type TxListItemFuelToEthProps = {
   asset: {
-    assetImageSrc: ReactNode | string;
-    assetAmount: string;
-    assetSymbol: string;
+    address?: string;
+    amount: string;
   };
   txHash: string;
   date?: Date;
@@ -19,7 +17,7 @@ type TxListItemFuelToEthProps = {
 };
 
 export const TxListItemFuelToEth = ({
-  asset,
+  asset: { address, amount },
   txHash,
   date,
   isDone,
@@ -29,6 +27,12 @@ export const TxListItemFuelToEth = ({
     skipAnalyzeTx: isDone,
   });
 
+  const asset = {
+    address,
+    amount,
+    symbol: ETH_SYMBOL,
+    image: ethLogoSrc,
+  };
   const bridgeTxStatus = steps?.find(({ isSelected }) => !!isSelected);
 
   function getStatusComponent() {

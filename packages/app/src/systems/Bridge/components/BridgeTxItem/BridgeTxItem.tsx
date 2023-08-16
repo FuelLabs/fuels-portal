@@ -1,6 +1,8 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, Text, Image, Icon, CardList } from '@fuel-ui/react';
+import { Box, Text, Image, Icon, CardList, Avatar } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
+
+import type { BridgeAsset } from '../../types';
 
 import { calculateDateDiff } from '~/systems/Core';
 
@@ -8,11 +10,7 @@ type BridgeTxItemProps = {
   date?: Date;
   fromLogo: ReactNode;
   toLogo: ReactNode;
-  asset: {
-    assetImageSrc: ReactNode | string;
-    assetAmount: string;
-    assetSymbol: string;
-  };
+  asset: BridgeAsset;
   onClick: () => void;
   status: ReactNode;
 };
@@ -38,17 +36,17 @@ export const BridgeTxItem = ({
             {toLogo}
           </Box.Flex>
           <Box.Flex align="center" gap="$1">
-            {typeof asset.assetImageSrc === 'string' ? (
-              <Image width={18} height={18} src={asset.assetImageSrc} />
+            {typeof asset.image === 'string' && asset.image ? (
+              <Image width={18} height={18} src={asset.image} />
             ) : (
-              asset.assetImageSrc
+              <Avatar.Generated size="xsm" hash={asset.address || ''} />
             )}
             <Text
               aria-label="Asset amount"
               fontSize="sm"
               css={styles.assetAmountText}
             >
-              {asset.assetAmount} {asset.assetSymbol}
+              {asset.amount} {asset.symbol}
             </Text>
           </Box.Flex>
           <Box.Flex css={styles.statusColumn} align="center" justify="flex-end">

@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, Dialog, Text } from '@fuel-ui/react';
+import { Box, Button, Dialog, Text } from '@fuel-ui/react';
 import { bn } from 'fuels';
 
 import { useTxEthToFuel } from '../hooks';
@@ -11,7 +11,14 @@ import { useOverlay } from '~/systems/Overlay';
 
 export function TxEthToFuelDialog() {
   const { metadata } = useOverlay<{ txId: string }>();
-  const { steps, ethTx, ethBlockDate } = useTxEthToFuel({
+  const {
+    steps,
+    ethTx,
+    ethBlockDate,
+    status,
+    handlers,
+    shouldShowConfirmButton,
+  } = useTxEthToFuel({
     id: metadata.txId,
   });
 
@@ -42,6 +49,18 @@ export function TxEthToFuelDialog() {
           />
         </Box.Stack>
       </Dialog.Description>
+      {shouldShowConfirmButton && (
+        <Dialog.Footer>
+          <Button
+            onPress={handlers.relayMessageToFuel}
+            intent="primary"
+            css={styles.actionButton}
+            isLoading={status.isConfirmTransactionLoading}
+          >
+            Confirm Transaction
+          </Button>
+        </Dialog.Footer>
+      )}
     </>
   );
 }

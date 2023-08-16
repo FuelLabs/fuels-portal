@@ -1,23 +1,22 @@
 import { Image, FuelLogo, Text, Box, Spinner } from '@fuel-ui/react';
-import type { ReactNode } from 'react';
 
 import { useTxEthToFuel } from '../hooks';
+import { useAsset } from '../hooks/useAsset';
 import { ethLogoSrc } from '../utils';
 
 import { BridgeTxItem } from '~/systems/Bridge';
 
 type TxListItemEthToFuelProps = {
   asset: {
-    assetImageSrc: ReactNode | string;
-    assetAmount: string;
-    assetSymbol: string;
+    address?: string;
+    amount: string;
   };
   txHash: string;
   isDone?: boolean;
 };
 
 export const TxListItemEthToFuel = ({
-  asset,
+  asset: { address, amount },
   txHash,
   isDone,
 }: TxListItemEthToFuelProps) => {
@@ -27,6 +26,7 @@ export const TxListItemEthToFuel = ({
     skipAnalyzeTx: isDone,
   });
 
+  const asset = useAsset({ address });
   const bridgeTxStatus = steps?.find(({ isSelected }) => !!isSelected);
 
   function getStatusComponent() {
@@ -52,7 +52,7 @@ export const TxListItemEthToFuel = ({
       fromLogo={<Image width={18} height={18} src={ethLogoSrc} />}
       toLogo={<FuelLogo size={17} />}
       date={ethBlockDate}
-      asset={asset}
+      asset={{ ...asset, amount }}
       onClick={() => handlers.openTxEthToFuel({ txId: txHash })}
       status={getStatusComponent()}
     />

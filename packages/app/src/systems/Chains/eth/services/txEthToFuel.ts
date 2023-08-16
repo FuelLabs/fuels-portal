@@ -1,30 +1,39 @@
 import type { TransactionResponse as EthTransactionResponse } from '@ethersproject/providers';
 import type {
-  Address as FuelAddress,
   BN,
   Provider as FuelProvider,
+  Message,
+  TransactionRequestLike,
+  WalletUnlocked as FuelWallet,
 } from 'fuels';
-import { bn } from 'fuels';
+import { Address as FuelAddress, bn } from 'fuels';
 import type { WalletClient } from 'viem';
-import { decodeEventLog, getContract, isAddress } from 'viem';
+import { decodeEventLog } from 'viem';
 import type { PublicClient } from 'wagmi';
+import type { FetchTokenResult } from 'wagmi/actions';
+import { fetchToken } from 'wagmi/actions';
 
-import { ERC_20 } from '../contracts/Erc20';
-import { FUEL_CHAIN_STATE } from '../contracts/FuelChainState';
+import { FUEL_UNITS } from '../../fuel/utils/chain';
+import { relayCommonMessage } from '../../fuel/utils/relayMessage';
+import type { FuelERC20GatewayArgs } from '../contracts/FuelErc20Gateway';
+import { FUEL_ERC_20_GATEWAY } from '../contracts/FuelErc20Gateway';
+import type { FuelMessagePortalArgs } from '../contracts/FuelMessagePortal';
 import { FUEL_MESSAGE_PORTAL } from '../contracts/FuelMessagePortal';
+import { isErc20Address } from '../utils';
+
+import { EthConnectorService } from './connectors';
 
 import {
-  VITE_ETH_FUEL_CHAIN_STATE,
   VITE_ETH_FUEL_ERC20_GATEWAY,
-  VITE_ETH_FUEL_MESSAGE_PORTAL,
+  VITE_FUEL_TOKEN_CONTRACT_ID,
 } from '~/config';
 import type { BridgeAsset } from '~/systems/Bridge';
 
 export type TxEthToFuelInputs = {
   startEth: {
     amount: string;
-    ethWalletClient?: WalletClient;
     fuelAddress?: FuelAddress;
+    ethWalletClient?: WalletClient;
     ethPublicClient?: PublicClient;
   };
   startErc20: {
@@ -34,83 +43,34 @@ export type TxEthToFuelInputs = {
     ethWalletClient?: WalletClient;
     ethPublicClient?: PublicClient;
   };
-  getDepositNonce: {
+  getReceiptsInfo: {
     ethTx?: EthTransactionResponse;
     ethPublicClient?: PublicClient;
   };
   getFuelMessage: {
     ethTxNonce?: BN;
     fuelProvider?: FuelProvider;
-    fuelAddress?: FuelAddress;
+    fuelRecipient?: FuelAddress;
+  };
+  relayMessageOnFuel: {
+    fuelWallet?: FuelWallet;
+    fuelMessage?: Message;
+    txParams?: Pick<
+      TransactionRequestLike,
+      'gasLimit' | 'gasPrice' | 'maturity'
+    >;
   };
 };
 
+export type GetReceiptsInfoReturn = {
+  erc20Token?: FetchTokenResult;
+  amount?: string;
+  sender?: string;
+  recipient?: FuelAddress;
+  nonce?: BN;
+};
+
 export class TxEthToFuelService {
-  static connectToFuelErc20Gateway(options: {
-    walletClient?: WalletClient;
-    publicClient?: PublicClient;
-  }) {
-    const { walletClient, publicClient } = options;
-
-    const contract = getContract({
-      abi: ERC_20.abi,
-      address: VITE_ETH_FUEL_ERC20_GATEWAY as `0x${string}`,
-      walletClient,
-      publicClient,
-    });
-
-    return contract;
-  }
-
-  static connectToFuelMessagePortal(options: {
-    walletClient?: WalletClient;
-    publicClient?: PublicClient;
-  }) {
-    const { walletClient, publicClient } = options;
-
-    const contract = getContract({
-      abi: FUEL_MESSAGE_PORTAL.abi,
-      address: VITE_ETH_FUEL_MESSAGE_PORTAL as `0x${string}`,
-      walletClient,
-      publicClient,
-    });
-
-    return contract;
-  }
-
-  static connectToErc20(options: {
-    walletClient?: WalletClient;
-    publicClient?: PublicClient;
-    address: `0x${string}`;
-  }) {
-    const { walletClient, publicClient, address } = options;
-
-    const contract = getContract({
-      abi: ERC_20.abi,
-      address,
-      walletClient,
-      publicClient,
-    });
-
-    return contract;
-  }
-
-  static connectToFuelChainState(options: {
-    walletClient?: WalletClient;
-    publicClient?: PublicClient;
-  }) {
-    const { walletClient, publicClient } = options;
-
-    const contract = getContract({
-      abi: FUEL_CHAIN_STATE.abi,
-      address: VITE_ETH_FUEL_CHAIN_STATE as `0x${string}`,
-      walletClient,
-      publicClient,
-    });
-
-    return contract;
-  }
-
   static assertStartEth(input: TxEthToFuelInputs['startEth']) {
     if (!input?.ethWalletClient?.account || !input?.ethPublicClient) {
       throw new Error('Need to connect ETH Wallet');
@@ -130,14 +90,14 @@ export class TxEthToFuelService {
     }
     if (
       !input?.ethAsset?.address?.startsWith('0x') ||
-      !isAddress(input.ethAsset.address)
+      !isErc20Address(input.ethAsset.address)
     ) {
       throw new Error('Not valid ETH asset');
     }
   }
 
   static async start(input: TxEthToFuelInputs['startErc20']) {
-    if (input?.ethAsset?.address && isAddress(input.ethAsset.address)) {
+    if (isErc20Address(input?.ethAsset?.address)) {
       return TxEthToFuelService.startErc20(input);
     }
 
@@ -150,7 +110,7 @@ export class TxEthToFuelService {
     try {
       const { ethWalletClient, fuelAddress, amount } = input;
       if (fuelAddress && ethWalletClient) {
-        const fuelPortal = TxEthToFuelService.connectToFuelMessagePortal({
+        const fuelPortal = EthConnectorService.connectToFuelMessagePortal({
           walletClient: ethWalletClient,
         });
 
@@ -189,21 +149,21 @@ export class TxEthToFuelService {
       } = input;
 
       if (
-        ethAsset?.address &&
+        isErc20Address(ethAsset?.address) &&
         ethWalletClient &&
         fuelAddress &&
         ethPublicClient
       ) {
-        const fuelErc20Gateway = TxEthToFuelService.connectToFuelErc20Gateway({
+        const fuelErc20Gateway = EthConnectorService.connectToFuelErc20Gateway({
           walletClient: ethWalletClient,
         });
-        const erc20Token = TxEthToFuelService.connectToErc20({
-          address: ethAsset.address as `0x${string}`,
+        const erc20Token = EthConnectorService.connectToErc20({
+          address: ethAsset?.address as `0x${string}`,
           walletClient: ethWalletClient,
         });
 
         const approveTxHash = await erc20Token.write.approve([
-          VITE_ETH_FUEL_ERC20_GATEWAY as `0x${string}`,
+          VITE_ETH_FUEL_ERC20_GATEWAY,
           amount,
         ]);
 
@@ -214,24 +174,14 @@ export class TxEthToFuelService {
           throw new Error('Failed to approve Token for transfer');
         }
 
-        // TODO: continue here
-        const fuelTokenId = 'fuel';
-        const depositTxHash = await fuelErc20Gateway.write.deposit(
-          [
-            fuelAddress.toB256() as `0x${string}`,
-            ethAsset.address,
-            fuelTokenId,
-          ],
-          {
-            value: BigInt(amount),
-            account: ethWalletClient.account,
-          }
-        );
-        const depositTxHashReceipt =
-          await ethPublicClient.getTransactionReceipt({ hash: depositTxHash });
-        if (depositTxHashReceipt.status !== 'success') {
-          throw new Error('Failed to deposit Token');
-        }
+        const depositTxHash = await fuelErc20Gateway.write.deposit([
+          fuelAddress.toB256() as `0x${string}`,
+          ethAsset?.address,
+          FuelAddress.fromString(VITE_FUEL_TOKEN_CONTRACT_ID).toB256(),
+          amount,
+        ]);
+
+        return depositTxHash;
       }
     } catch (e) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -245,7 +195,9 @@ export class TxEthToFuelService {
     return undefined;
   }
 
-  static async getDepositNonce(input: TxEthToFuelInputs['getDepositNonce']) {
+  static async getReceiptsInfo(
+    input: TxEthToFuelInputs['getReceiptsInfo']
+  ): Promise<GetReceiptsInfoReturn> {
     if (!input?.ethTx) {
       throw new Error('No eth TX');
     }
@@ -267,14 +219,67 @@ export class TxEthToFuelService {
       });
     }
 
-    const decodedEvent = decodeEventLog({
-      abi: FUEL_MESSAGE_PORTAL.abi,
-      data: receipt.logs[0].data,
-      topics: receipt.logs[0].topics,
-    }) as unknown as { args: { nonce: number } };
-    const depositNonce = bn(decodedEvent.args.nonce);
+    if (receipt.status !== 'success') {
+      throw new Error('Failed to deposit Token');
+    }
 
-    return depositNonce;
+    let receiptsInfo: GetReceiptsInfoReturn = {};
+
+    // try to get messageSent event from logs, for deposit ETH operation
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < receipt.logs.length; i++) {
+      try {
+        const messageSentEvent = decodeEventLog({
+          abi: FUEL_MESSAGE_PORTAL.abi,
+          data: receipt.logs[i].data,
+          topics: receipt.logs[i].topics,
+        }) as unknown as { args: FuelMessagePortalArgs['MessageSent'] };
+
+        const { amount, sender, nonce, recipient } = messageSentEvent.args;
+        receiptsInfo = {
+          ...receiptsInfo,
+          nonce: bn(nonce.toString()),
+          amount: bn(amount.toString()).format({ precision: FUEL_UNITS }),
+          sender,
+          recipient: FuelAddress.fromB256(recipient),
+        };
+      } catch (_) {
+        /* empty */
+      }
+    }
+
+    // try to get depositSent event from logs, for deposit ERC-20 operation
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < receipt.logs.length; i++) {
+      try {
+        const depositEvent = decodeEventLog({
+          abi: FUEL_ERC_20_GATEWAY.abi,
+          data: receipt.logs[i].data,
+          topics: receipt.logs[i].topics,
+        }) as unknown as { args: FuelERC20GatewayArgs['Deposit'] };
+
+        if (isErc20Address(depositEvent.args.tokenId)) {
+          const { amount, sender, tokenId } = depositEvent.args;
+          const erc20Token = await fetchToken({
+            address: tokenId,
+          });
+
+          receiptsInfo = {
+            ...receiptsInfo,
+            erc20Token,
+            amount: bn(amount.toString()).format({
+              units: erc20Token.decimals,
+              precision: FUEL_UNITS,
+            }),
+            sender,
+          };
+        }
+      } catch (_) {
+        /* empty */
+      }
+    }
+
+    return receiptsInfo;
   }
 
   static async getFuelMessage(input: TxEthToFuelInputs['getFuelMessage']) {
@@ -284,17 +289,51 @@ export class TxEthToFuelService {
     if (!input?.fuelProvider) {
       throw new Error('No provider for Fuel found');
     }
-    if (!input?.fuelAddress) {
-      throw new Error('No address for Fuel found');
+    if (!input?.fuelRecipient) {
+      throw new Error('No fuel recipient found');
     }
-    const { ethTxNonce, fuelProvider, fuelAddress } = input;
+    const { ethTxNonce, fuelProvider, fuelRecipient } = input;
 
     // TODO: what happens when has more than 1000 messages ? should we do pagination or something?
-    const messages = await fuelProvider.getMessages(fuelAddress);
+    const messages = await fuelProvider.getMessages(fuelRecipient, {
+      first: 1000,
+    });
+
     const message = messages.find(
       (message) => message.nonce.toString() === ethTxNonce.toHex(32).toString()
     );
 
     return message || undefined;
+  }
+
+  static async relayMessageOnFuel(
+    input: TxEthToFuelInputs['relayMessageOnFuel']
+  ) {
+    if (!input?.fuelWallet) {
+      throw new Error('No fuel wallet found');
+    }
+    if (!input?.fuelMessage) {
+      throw new Error('No fuel message found');
+    }
+    const { fuelWallet, fuelMessage, txParams } = input;
+
+    const txMessageRelayed = await relayCommonMessage({
+      relayer: fuelWallet,
+      message: fuelMessage,
+      txParams,
+    });
+
+    // TODO: put this status check in a separate step after figure out how to get txHash
+    const txMessageRelayedResult = await txMessageRelayed.waitForResult();
+
+    if (txMessageRelayedResult.status.type !== 'success') {
+      console.log(txMessageRelayedResult.status.reason);
+      console.log(txMessageRelayedResult);
+      console.log(txMessageRelayedResult.transaction.inputs);
+      console.log(txMessageRelayedResult.transaction.outputs);
+      throw new Error('failed to relay message from gateway');
+    }
+
+    return txMessageRelayed;
   }
 }

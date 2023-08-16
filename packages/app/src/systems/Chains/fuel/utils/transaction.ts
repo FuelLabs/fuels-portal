@@ -1,0 +1,21 @@
+import type { Coin, Resource, TransactionRequestInput } from 'fuels';
+import { InputType, ZeroBytes32, isCoin } from 'fuels';
+
+export function resourcesToInputs(resources: Array<Resource>) {
+  const coinResources: Coin[] = resources.filter((r) =>
+    isCoin(r)
+  ) as unknown as Coin[];
+
+  const inputs: Array<TransactionRequestInput> = coinResources.map(
+    (r: Coin) => ({
+      type: InputType.Coin,
+      id: r.id,
+      owner: r.owner.toB256(),
+      amount: r.amount.toHex(),
+      assetId: r.assetId,
+      txPointer: ZeroBytes32,
+      witnessIndex: 0,
+    })
+  );
+  return inputs;
+}

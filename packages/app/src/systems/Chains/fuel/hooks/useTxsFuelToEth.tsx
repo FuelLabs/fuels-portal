@@ -12,11 +12,9 @@ import { useMemo } from 'react';
 import type { BridgeTx } from '~/systems/Bridge';
 import {
   ETH_CHAIN,
-  ETH_SYMBOL,
   FUEL_CHAIN,
   FUEL_UNITS,
   FuelTxCache,
-  ethLogoSrc,
   useFuelAccountConnection,
 } from '~/systems/Chains';
 import { getGraphqlClient } from '~/systems/Core';
@@ -73,14 +71,16 @@ export const useTxsFuelToEth = () => {
           }
         }
 
+        /*
+        // TODO: we should refactor this to remove maximum data as possible from here.
+        // We should only inform the txHash, fromNetwork and toNetwork, and the rest should be got from machine.
+        */
         prev.push({
           asset: {
-            assetAmount: bn(messageOutReceipt.amount).format({
+            amount: bn(messageOutReceipt.amount).format({
               precision: 9,
               units: FUEL_UNITS,
             }),
-            assetImageSrc: ethLogoSrc,
-            assetSymbol: ETH_SYMBOL,
           },
           date,
           txHash: txId,

@@ -4,41 +4,56 @@ import type {
   Message,
   Address as FuelAddress,
   Provider as FuelProvider,
+  WalletUnlocked as FuelWallet,
+  TransactionResponse,
 } from 'fuels';
 import type { PublicClient } from 'wagmi';
+import type { FetchTokenResult } from 'wagmi/actions';
 import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
 
-import type { TxEthToFuelInputs } from '../services';
+import type { GetReceiptsInfoReturn, TxEthToFuelInputs } from '../services';
 import { TxEthToFuelService } from '../services';
-import { EthTxCache } from '../utils';
 
 import { FetchMachine } from '~/systems/Core/machines';
 
 type MachineContext = {
+  ethPublicClient?: PublicClient;
   ethTx?: EthTransactionResponse;
   ethTxNonce?: BN;
-  fuelAddress?: FuelAddress;
+  ethSender?: string;
   fuelProvider?: FuelProvider;
   fuelMessage?: Message;
-  ethPublicClient?: PublicClient;
+  erc20Token: FetchTokenResult;
+  amount?: string;
+  fuelRecipient?: FuelAddress;
 };
 
 type MachineServices = {
-  getDepositNonce: {
-    data: BN;
+  getReceiptsInfo: {
+    data: GetReceiptsInfoReturn | undefined;
   };
   getFuelMessage: {
     data: Message | undefined;
   };
+  relayMessageOnFuel: {
+    data: TransactionResponse | undefined;
+  };
 };
 
-type AnalyzeInputs = TxEthToFuelInputs['getDepositNonce'] &
+type AnalyzeInputs = TxEthToFuelInputs['getReceiptsInfo'] &
   TxEthToFuelInputs['getFuelMessage'];
-export type TxEthToFuelMachineEvents = {
-  type: 'START_ANALYZE_TX';
-  input: Omit<AnalyzeInputs, 'ethTxNonce'>;
-};
+export type TxEthToFuelMachineEvents =
+  | {
+      type: 'START_ANALYZE_TX';
+      input: Omit<AnalyzeInputs, 'ethTxNonce'>;
+    }
+  | {
+      type: 'RELAY_MESSAGE_ON_FUEL';
+      input: {
+        fuelWallet: FuelWallet;
+      };
+    };
 
 export const txEthToFuelMachine = createMachine(
   {
@@ -62,12 +77,12 @@ export const txEthToFuelMachine = createMachine(
         },
       },
       checkingSettlement: {
-        initial: 'gettingNonce',
+        initial: 'gettingReceiptsInfo',
         states: {
-          gettingNonce: {
+          gettingReceiptsInfo: {
             tags: ['isSettlementLoading', 'isSettlementSelected'],
             invoke: {
-              src: 'getDepositNonce',
+              src: 'getReceiptsInfo',
               data: {
                 input: (ctx: MachineContext) => ({
                   ethTx: ctx.ethTx,
@@ -79,7 +94,7 @@ export const txEthToFuelMachine = createMachine(
                   cond: FetchMachine.hasError,
                 },
                 {
-                  actions: ['assignEthTxNonce'],
+                  actions: ['assignReceiptsInfo'],
                   cond: 'hasEthTxNonce',
                   target: 'checkingFuelTx',
                 },
@@ -87,7 +102,7 @@ export const txEthToFuelMachine = createMachine(
             },
             after: {
               10000: {
-                target: 'gettingNonce',
+                target: 'gettingReceiptsInfo',
               },
             },
           },
@@ -105,7 +120,7 @@ export const txEthToFuelMachine = createMachine(
                   data: {
                     input: (ctx: MachineContext) => ({
                       ethTxNonce: ctx.ethTxNonce,
-                      fuelAddress: ctx.fuelAddress,
+                      fuelRecipient: ctx.fuelRecipient,
                       fuelProvider: ctx.fuelProvider,
                     }),
                   },
@@ -114,9 +129,9 @@ export const txEthToFuelMachine = createMachine(
                       cond: FetchMachine.hasError,
                     },
                     {
-                      actions: ['assignFuelMessage', 'setEthToFuelTxDone'],
+                      actions: ['assignFuelMessage'],
                       cond: 'hasFuelMessage',
-                      target: 'done',
+                      target: 'decidingRelayAction',
                     },
                   ],
                 },
@@ -126,7 +141,64 @@ export const txEthToFuelMachine = createMachine(
                   },
                 },
               },
+              decidingRelayAction: {
+                tags: [
+                  'isConfirmTransactionLoading',
+                  'isConfirmTransactionSelected',
+                ],
+                always: [
+                  {
+                    cond: 'hasErc20Token',
+                    // TODO: change here to new state that check if relay message already happened
+                    target: 'waitingRelayMessage',
+                  },
+                  {
+                    target: 'done',
+                  },
+                ],
+              },
+              // TODO: implement here new state check if relay message already happened
+              waitingRelayMessage: {
+                tags: [
+                  'isConfirmTransactionSelected',
+                  'isWaitingFuelWalletApproval',
+                ],
+                on: {
+                  RELAY_MESSAGE_ON_FUEL: {
+                    target: 'relayingMessageOnFuel',
+                  },
+                },
+              },
+              relayingMessageOnFuel: {
+                tags: ['isConfirmTransactionSelected'],
+                invoke: {
+                  src: 'relayMessageOnFuel',
+                  data: {
+                    input: (
+                      ctx: MachineContext,
+                      ev: Extract<
+                        TxEthToFuelMachineEvents,
+                        { type: 'RELAY_MESSAGE_ON_FUEL' }
+                      >
+                    ) => ({
+                      fuelWallet: ev.input.fuelWallet,
+                      fuelMessage: ctx.fuelMessage,
+                    }),
+                  },
+                  onDone: [
+                    {
+                      cond: FetchMachine.hasError,
+                      // TODO: change here to check if relay message already happened
+                      target: 'gettingFuelMessage',
+                    },
+                    {
+                      target: 'done',
+                    },
+                  ],
+                },
+              },
               done: {
+                entry: ['setEthToFuelTxDone'],
                 tags: ['isReceiveDone'],
                 type: 'final',
               },
@@ -141,30 +213,36 @@ export const txEthToFuelMachine = createMachine(
     actions: {
       assignAnalyzeTxInput: assign((_, ev) => ({
         ethTx: ev.input.ethTx,
-        fuelAddress: ev.input.fuelAddress,
         fuelProvider: ev.input.fuelProvider,
         ethPublicClient: ev.input.ethPublicClient,
       })),
-      assignEthTxNonce: assign({
-        ethTxNonce: (_, ev) => ev.data,
+      assignReceiptsInfo: assign((_, ev) => {
+        return {
+          erc20Token: ev.data?.erc20Token,
+          ethTxNonce: ev.data?.nonce,
+          ethSender: ev.data?.sender,
+          amount: ev.data?.amount,
+          fuelRecipient: ev.data?.recipient,
+        };
       }),
       assignFuelMessage: assign({
         fuelMessage: (_, ev) => ev.data,
       }),
-      setEthToFuelTxDone: (ctx, ev) => {
-        if (ctx.ethTx?.hash && ev.data) {
-          EthTxCache.setTxIsDone(ctx.ethTx.hash);
+      setEthToFuelTxDone: (ctx) => {
+        if (ctx.ethTx?.hash) {
+          // EthTxCache.setTxIsDone(ctx.ethTx.hash);
         }
       },
     },
     guards: {
       hasFuelMessage: (ctx, ev) => !!ctx.fuelMessage || !!ev?.data,
       hasEthTxNonce: (ctx, ev) => !!ctx.ethTxNonce || !!ev?.data,
+      hasErc20Token: (ctx) => !!ctx.erc20Token,
     },
     services: {
-      getDepositNonce: FetchMachine.create<
-        TxEthToFuelInputs['getDepositNonce'],
-        MachineServices['getDepositNonce']['data']
+      getReceiptsInfo: FetchMachine.create<
+        TxEthToFuelInputs['getReceiptsInfo'],
+        MachineServices['getReceiptsInfo']['data']
       >({
         showError: true,
         async fetch({ input }) {
@@ -172,7 +250,7 @@ export const txEthToFuelMachine = createMachine(
             throw new Error('No input to getNonce');
           }
 
-          return TxEthToFuelService.getDepositNonce(input);
+          return TxEthToFuelService.getReceiptsInfo(input);
         },
       }),
       getFuelMessage: FetchMachine.create<
@@ -187,6 +265,20 @@ export const txEthToFuelMachine = createMachine(
           }
 
           return TxEthToFuelService.getFuelMessage(input);
+        },
+      }),
+      relayMessageOnFuel: FetchMachine.create<
+        TxEthToFuelInputs['relayMessageOnFuel'],
+        MachineServices['relayMessageOnFuel']['data']
+      >({
+        showError: true,
+        maxAttempts: 1,
+        async fetch({ input }) {
+          if (!input) {
+            throw new Error('No input to relay message on fuel');
+          }
+
+          return TxEthToFuelService.relayMessageOnFuel(input);
         },
       }),
     },

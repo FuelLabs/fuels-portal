@@ -21,25 +21,27 @@ function getEnvName() {
   }
 }
 
+function getFuelContracts() {
+  const { body } = retus('http://localhost:8081/deployments.json', {
+    json: true,
+  });
+
+  return body;
+}
+
 function getEthFuelL1Contracts() {
-  if (process.env.VITE_ETH_CHAIN === 'foundry') {
-    const { body } = retus('http://localhost:8080/deployments.local.json', {
+  const networkName =
+    process.env.VITE_ETH_CHAIN === 'foundry'
+      ? 'local'
+      : process.env.VITE_ETH_CHAIN;
+  const { body } = retus(
+    `http://localhost:8080/deployments.${networkName}.json`,
+    {
       json: true,
-    });
+    }
+  );
 
-    return body;
-  }
-
-  if (process.env.VITE_ETH_CHAIN === 'sepolia') {
-    return {
-      FuelChainState: '0x053cDdc8D065dEB051584a5ae4DB45348be285c9',
-      FuelMessagePortal: '0x457A5a9320d06118764c400163c441cb8551cfa2',
-      FuelERC20Gateway: '0x10530552f00079cfF07f3c6D541C651a667Cf41D',
-      FuelChainState_impl: '0x9fe3f180aa29Cd49a73e99129A988F36A5800ADa',
-      FuelMessagePortal_impl: '0xaf4EBaF4D853809D984d4ee3D6DAA8fa2367396A',
-      FuelERC20Gateway_impl: '0xea8BE566210aE54687bFA3b0BF8Ddc3e49767655',
-    };
-  }
+  return body;
 }
 
 // Load from more specific env file to generic ->
@@ -61,9 +63,13 @@ process.env.VITE_APP_VERSION = versions.version;
 
 // Export ETH Fuel contracts addresses
 const ethFuelContracts = getEthFuelL1Contracts();
+const fuelContracts = getFuelContracts();
 if (ethFuelContracts && ethFuelContracts.FuelMessagePortal) {
   process.env.VITE_ETH_FUEL_MESSAGE_PORTAL = ethFuelContracts.FuelMessagePortal;
   process.env.VITE_ETH_FUEL_ERC20_GATEWAY = ethFuelContracts.FuelERC20Gateway;
   process.env.VITE_ETH_FUEL_CHAIN_STATE = ethFuelContracts.FuelChainState;
   process.env.VITE_ETH_ERC20 = ethFuelContracts.ERC20;
+}
+if (fuelContracts) {
+  process.env.VITE_FUEL_TOKEN_CONTRACT_ID = fuelContracts.fuelTokenContractId;
 }
