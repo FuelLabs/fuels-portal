@@ -3,7 +3,7 @@ import type { Request, Response } from 'express';
 import express from 'express';
 import { Provider } from 'fuels';
 import { createPublicClient, http } from 'viem';
-import { foundry } from 'viem/chains';
+import { foundry, sepolia } from 'viem/chains';
 
 import { transactionPolling } from '~/utils';
 import '../load.envs.js';
@@ -14,7 +14,7 @@ const port = 3005;
 const fuelProvider = new Provider(process.env.FUEL_PROVIDER_URL || '');
 
 const ethPublicClient = createPublicClient({
-  chain: foundry,
+  chain: process.env.ETH_CHAIN === 'foundry' ? foundry : sepolia,
   transport: http(),
 });
 
