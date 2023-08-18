@@ -50,11 +50,11 @@ test.describe('Token List', () => {
 
     await addTokenButton.click();
 
-    const bnbToken = page.getByText('BNB');
-    await bnbToken.click();
-
     // Test search
     await addressInput.fill('BNB');
+
+    const bnbToken = page.getByText('BNB');
+    await bnbToken.click();
 
     // Check that we switched assets on the bridge page
     await hasText(page, 'BNB');
