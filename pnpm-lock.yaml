@@ -19,11 +19,11 @@ importers:
         specifier: 0.17.0
         version: 0.17.0(@testing-library/dom@9.3.1)(typescript@4.9.5)
       '@fuel-ui/css':
-        specifier: 0.18.1
-        version: 0.18.1
+        specifier: 0.18.2-pr-302-eec91cb
+        version: 0.18.2-pr-302-eec91cb
       '@fuel-ui/react':
-        specifier: 0.18.1
-        version: 0.18.1(@types/react-dom@18.0.10)(@types/react@18.0.27)(csstype@3.1.2)
+        specifier: 0.18.2-pr-302-eec91cb
+        version: 0.18.2-pr-302-eec91cb(@types/react-dom@18.0.10)(@types/react@18.0.27)(csstype@3.1.2)
       '@fuel-ui/test-utils':
         specifier: 0.17.0
         version: 0.17.0(@babel/core@7.20.12)(@jest/types@29.4.2)(@types/node@18.13.0)(ts-node@10.9.1)(typescript@4.9.5)
@@ -125,11 +125,11 @@ importers:
         specifier: ^5.7.2
         version: 5.7.2
       '@fuel-ui/css':
-        specifier: 0.18.1
-        version: 0.18.1
+        specifier: 0.18.2-pr-302-eec91cb
+        version: 0.18.2-pr-302-eec91cb
       '@fuel-ui/react':
-        specifier: 0.18.1
-        version: 0.18.1(@types/react-dom@18.0.10)(@types/react@18.0.27)(csstype@3.1.2)
+        specifier: 0.18.2-pr-302-eec91cb
+        version: 0.18.2-pr-302-eec91cb(@types/react-dom@18.0.10)(@types/react@18.0.27)(csstype@3.1.2)
       '@fuel-wallet/sdk':
         specifier: 0.11.0
         version: 0.11.0(dexie@3.2.4)(fuels@0.44.1)
@@ -4840,39 +4840,39 @@ packages:
       - typescript
     dev: false
 
-  /@fuel-ui/css@0.18.1:
-    resolution: {integrity: sha512-7harVUwwR7tXT6Lj+xexX9lJkTQn16TaoOhdMA54YvOATHBLaJ4FERqTByrUZzksKcCTvqphEaeOF1u5hMor6w==}
+  /@fuel-ui/css@0.18.2-pr-302-eec91cb:
+    resolution: {integrity: sha512-+70Jb11vsh632p9uzQ+WJ/Pcj7R5mQpa5jdPw0FHZwe3C0JZ85S3kv5wZNeZeAmH7pEkjY8zC001Gv53hXYySg==}
     dependencies:
-      '@fuel-ui/design-tokens': 0.18.1
-      '@radix-ui/colors': 1.0.1
+      '@fuel-ui/design-tokens': 0.18.2-pr-302-eec91cb
+      '@radix-ui/colors': 2.1.0
       classnames: 2.3.2
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@fuel-ui/design-tokens@0.18.1:
-    resolution: {integrity: sha512-tiAKZWfMk7d/bCyaRl2AdxpQBKtSP0l2N0BgpWLEmyy7wPQNUDsKQIvrjmUBVJErvGei+1w/z4UsCNdCcNlreQ==}
+  /@fuel-ui/design-tokens@0.18.2-pr-302-eec91cb:
+    resolution: {integrity: sha512-Ghy5FzZJgYiceQDQJjavVtZhiycqaG6InraK2P7AqYyCWzEgfzjnZlSF2LR2A4ayqzITFOzOd7NOXSkFUXK3BQ==}
     dependencies:
-      '@radix-ui/colors': 1.0.1
+      '@radix-ui/colors': 2.1.0
       chroma-js: 2.4.2
       copy-to-clipboard: 3.3.3
       lodash: 4.17.21
     dev: false
 
-  /@fuel-ui/icons@0.18.1:
-    resolution: {integrity: sha512-DnQAY2YSPkixiARQEnrxDNCJTzwWMRO1cX0uzIVxVWxE3m+pN3KhJRQX2X0bkDU1R52TGtxL9iiIfHxbICMyLw==}
+  /@fuel-ui/icons@0.18.2-pr-302-eec91cb:
+    resolution: {integrity: sha512-P9tHSwytLIBiTtq45D1bSubIPfs+rnKZFk4hadzkn3wJ57jXUIfGcUXgcVj9tGUUCshnhlfkT1zO6Yn136YKvA==}
     dependencies:
       '@tabler/icons': 2.30.0
       prettier: 3.0.1
       svgo: 3.0.2
     dev: false
 
-  /@fuel-ui/react@0.18.1(@types/react-dom@18.0.10)(@types/react@18.0.27)(csstype@3.1.2):
-    resolution: {integrity: sha512-TiqUN1mz/6QtD0ik4wwTXlSaOQweOF7QWO/Ke/icO8VqSUlCPbbPfBePry0dwFPv1Doaml99r7kizgoyWrpJpA==}
+  /@fuel-ui/react@0.18.2-pr-302-eec91cb(@types/react-dom@18.0.10)(@types/react@18.0.27)(csstype@3.1.2):
+    resolution: {integrity: sha512-Nkix19d3tetdx5ZXhFb0JHE2r9DChmFNJyZAq5Fu7GBbm1Z2aIewR1Wui7Dp3/gkptIpGPcJYROdQeee4WZmWA==}
     dependencies:
       '@fuel-ts/math': 0.49.1
-      '@fuel-ui/css': 0.18.1
-      '@fuel-ui/icons': 0.18.1
+      '@fuel-ui/css': 0.18.2-pr-302-eec91cb
+      '@fuel-ui/icons': 0.18.2-pr-302-eec91cb
       '@radix-ui/react-accordion': 1.1.2(@types/react-dom@18.0.10)(@types/react@18.0.27)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-alert-dialog': 1.0.4(@types/react-dom@18.0.10)(@types/react@18.0.27)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-aspect-ratio': 1.0.3(@types/react-dom@18.0.10)(@types/react@18.0.27)(react-dom@18.2.0)(react@18.2.0)
@@ -6646,8 +6646,8 @@ packages:
       webpack: 5.88.0(esbuild@0.17.19)
     dev: true
 
-  /@radix-ui/colors@1.0.1:
-    resolution: {integrity: sha512-xySw8f0ZVsAEP+e7iLl3EvcBXX7gsIlC1Zso/sPBW9gIWerBTgz6axrjU+MZ39wD+WFi5h5zdWpsg3+hwt2Qsg==}
+  /@radix-ui/colors@2.1.0:
+    resolution: {integrity: sha512-gcBnxjS2u2c6thQz/9K1+Pt2ZYcm5WKU4SLi0emYkRmYbVUw+37rlc5wgLtYOsSsRP9nxVtbJJYj6WVO7UUmZg==}
     dev: false
 
   /@radix-ui/primitive@1.0.1:
