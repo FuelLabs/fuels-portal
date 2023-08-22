@@ -1,16 +1,11 @@
-import {
-  ThemeProvider,
-  darkTheme,
-  lightTheme,
-  useFuelTheme,
-} from '@fuel-ui/react';
-import { useDarkMode } from 'storybook-dark-mode';
+import React, { useEffect } from 'react';
+import { darkTheme, lightTheme } from '@fuel-ui/react';
 import { themes } from '@storybook/theming';
 
-import { StoreProvider } from '../src/store';
-import { useEffect } from 'react';
-
 import theme from './theme';
+import { useFuelTheme, ThemeProvider } from '@fuel-ui/react';
+import { useDarkMode } from 'storybook-dark-mode';
+import { StoreProvider } from '../src/systems/Store';
 
 export const parameters = {
   actions: {
@@ -44,7 +39,7 @@ export const parameters = {
   },
 };
 
-function ThemeWrapper(props) {
+function ThemeWrapper(props: any) {
   const isDark = useDarkMode();
   const { setTheme } = useFuelTheme();
 
@@ -56,7 +51,7 @@ function ThemeWrapper(props) {
 }
 
 export const decorators = [
-  (Story) => (
+  (Story: any) => (
     <StoreProvider>
       <ThemeWrapper>
         <Story />
