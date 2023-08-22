@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-empty-pattern */
 // Use a test fixture to set the context so tests have access to the wallet extension.
 import type { BrowserContext } from '@playwright/test';
@@ -67,11 +68,10 @@ export const test = base.extend<{
 
     await downloadFile(extensionUrl);
 
-    // eslint-disable-next-line no-console
     console.log('Download Completed extracting zip...');
     const zip = new admZip(zipFile); // eslint-disable-line new-cap
     zip.extractAllTo('./packages/app/playwright/e2e/dist-crx', true);
-    // eslint-disable-next-line no-console
+
     console.log('zip extracted');
 
     // download metamask

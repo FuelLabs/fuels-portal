@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-console */
 import type {
   Provider as FuelProvider,
   MessageProof,
@@ -18,7 +18,7 @@ import { FetchMachine } from '~/systems/Core/machines';
 type MachineContext = {
   fuelProvider: FuelProvider;
   fuelTxId: string;
-  fuelTxResult?: TransactionResult<any, void>;
+  fuelTxResult?: TransactionResult;
   fuelLastBlockId?: string;
   messageId?: string;
   messageProof?: MessageProof;
@@ -30,7 +30,7 @@ type MachineContext = {
 
 type MachineServices = {
   waitFuelTxResult: {
-    data: TransactionResult<any, void>;
+    data: TransactionResult;
   };
   waitNextBlock: {
     data: string | undefined;
@@ -338,16 +338,12 @@ export const txFuelToEthMachine = createMachine(
                       onDone: [
                         {
                           cond: FetchMachine.hasError,
+                          target: 'waitingEthWalletApproval',
                         },
                         {
                           target: 'checkingHasRelayedInEth',
                         },
                       ],
-                    },
-                    after: {
-                      10000: {
-                        target: 'relayingMessageFromFuelBlock',
-                      },
                     },
                   },
                   waitingReceive: {

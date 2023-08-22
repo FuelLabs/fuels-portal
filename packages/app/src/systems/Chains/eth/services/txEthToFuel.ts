@@ -1,4 +1,3 @@
-import type { TransactionResponse as EthTransactionResponse } from '@ethersproject/providers';
 import type {
   Address as FuelAddress,
   BN,
@@ -34,7 +33,7 @@ export type TxEthToFuelInputs = {
     ethAsset?: BridgeAsset;
   };
   getDepositNonce: {
-    ethTx?: EthTransactionResponse;
+    ethTxId?: `0x${string}`;
     ethPublicClient?: PublicClient;
   };
   getFuelMessage: {
@@ -195,24 +194,24 @@ export class TxEthToFuelService {
   }
 
   static async getDepositNonce(input: TxEthToFuelInputs['getDepositNonce']) {
-    if (!input?.ethTx) {
-      throw new Error('No eth TX');
+    if (!input?.ethTxId) {
+      throw new Error('No eth TX id');
     }
     if (!input?.ethPublicClient) {
       throw new Error('No eth Provider');
     }
 
-    const { ethTx, ethPublicClient } = input;
+    const { ethTxId, ethPublicClient } = input;
 
     let receipt;
     try {
       receipt = await ethPublicClient.getTransactionReceipt({
-        hash: ethTx.hash as `0x${string}`,
+        hash: ethTxId,
       });
     } catch (err: unknown) {
       // workaround in place because waitForTransactionReceipt stop working after first time using it
       receipt = await ethPublicClient.waitForTransactionReceipt({
-        hash: ethTx.hash as `0x${string}`,
+        hash: ethTxId,
       });
     }
 
@@ -220,10 +219,11 @@ export class TxEthToFuelService {
       abi: FUEL_MESSAGE_PORTAL.abi,
       data: receipt.logs[0].data,
       topics: receipt.logs[0].topics,
-    }) as unknown as { args: { nonce: number } };
+    }) as unknown as { args: { nonce: number; amount: bigint } };
     const depositNonce = bn(decodedEvent.args.nonce);
+    const amount = bn(decodedEvent.args.amount.toString()).format();
 
-    return depositNonce;
+    return { depositNonce, amount };
   }
 
   static async getFuelMessage(input: TxEthToFuelInputs['getFuelMessage']) {

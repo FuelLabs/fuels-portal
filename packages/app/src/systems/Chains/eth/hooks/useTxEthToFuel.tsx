@@ -36,9 +36,9 @@ const selectors = {
   },
   steps: (state: TxEthToFuelMachineState) => {
     const status = selectors.status(state);
-    const { ethTx } = state.context;
+    const { ethTxId } = state.context;
 
-    if (!ethTx) return undefined;
+    if (!ethTxId) return undefined;
 
     const steps = [
       {
@@ -72,6 +72,11 @@ const selectors = {
 
     return steps;
   },
+  amount: (state: TxEthToFuelMachineState) => {
+    const { amount } = state.context;
+
+    return amount;
+  },
 };
 
 export function useTxEthToFuel({
@@ -81,11 +86,12 @@ export function useTxEthToFuel({
   id: string;
   skipAnalyzeTx?: boolean;
 }) {
+  const txId = id.startsWith('0x') ? (id as `0x${string}`) : undefined;
   const { publicClient: ethPublicClient } = useEthAccountConnection();
   const { provider: fuelProvider, address: fuelAddress } =
     useFuelAccountConnection();
   const { data: ethTx } = useTransaction({
-    hash: id.startsWith('0x') ? (id as `0x${string}`) : undefined,
+    hash: txId,
   });
 
   const { blockDates, notCachedHashes } = useCachedBlocksDates(
@@ -95,9 +101,10 @@ export function useTxEthToFuel({
   const service = useInterpret(txEthToFuelMachine);
   const steps = useSelector(service, selectors.steps);
   const status = useSelector(service, selectors.status);
+  const amount = useSelector(service, selectors.amount);
   useEffect(() => {
     if (
-      ethTx &&
+      txId &&
       fuelProvider &&
       fuelAddress &&
       !skipAnalyzeTx &&
@@ -105,7 +112,7 @@ export function useTxEthToFuel({
     ) {
       service.send('START_ANALYZE_TX', {
         input: {
-          ethTx,
+          ethTxId: txId,
           fuelProvider,
           fuelAddress,
           ethPublicClient,
@@ -113,7 +120,7 @@ export function useTxEthToFuel({
       });
     }
   }, [
-    ethTx,
+    txId,
     fuelProvider,
     fuelAddress,
     service,
@@ -131,9 +138,9 @@ export function useTxEthToFuel({
       close: store.closeOverlay,
       openTxEthToFuel: store.openTxEthToFuel,
     },
-    ethTx,
     ethBlockDate,
     steps,
     status,
+    amount,
   };
 }

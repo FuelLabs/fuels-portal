@@ -1,4 +1,3 @@
-import type { TransactionResponse as EthTransactionResponse } from '@ethersproject/providers';
 import type {
   BN,
   Message,
@@ -16,17 +15,21 @@ import { EthTxCache } from '../utils';
 import { FetchMachine } from '~/systems/Core/machines';
 
 type MachineContext = {
-  ethTx?: EthTransactionResponse;
+  ethTxId?: `0x${string}`;
   ethTxNonce?: BN;
   fuelAddress?: FuelAddress;
   fuelProvider?: FuelProvider;
   fuelMessage?: Message;
   ethPublicClient?: PublicClient;
+  amount?: string;
 };
 
 type MachineServices = {
   getDepositNonce: {
-    data: BN;
+    data: {
+      depositNonce: BN;
+      amount: string;
+    };
   };
   getFuelMessage: {
     data: Message | undefined;
@@ -70,7 +73,7 @@ export const txEthToFuelMachine = createMachine(
               src: 'getDepositNonce',
               data: {
                 input: (ctx: MachineContext) => ({
-                  ethTx: ctx.ethTx,
+                  ethTxId: ctx.ethTxId,
                   ethPublicClient: ctx.ethPublicClient,
                 }),
               },
@@ -79,7 +82,7 @@ export const txEthToFuelMachine = createMachine(
                   cond: FetchMachine.hasError,
                 },
                 {
-                  actions: ['assignEthTxNonce'],
+                  actions: ['assignReceiptsInfo'],
                   cond: 'hasEthTxNonce',
                   target: 'checkingFuelTx',
                 },
@@ -140,20 +143,21 @@ export const txEthToFuelMachine = createMachine(
   {
     actions: {
       assignAnalyzeTxInput: assign((_, ev) => ({
-        ethTx: ev.input.ethTx,
+        ethTxId: ev.input.ethTxId,
         fuelAddress: ev.input.fuelAddress,
         fuelProvider: ev.input.fuelProvider,
         ethPublicClient: ev.input.ethPublicClient,
       })),
-      assignEthTxNonce: assign({
-        ethTxNonce: (_, ev) => ev.data,
-      }),
+      assignReceiptsInfo: assign((_, ev) => ({
+        ethTxNonce: ev.data.depositNonce,
+        amount: ev.data.amount,
+      })),
       assignFuelMessage: assign({
         fuelMessage: (_, ev) => ev.data,
       }),
       setEthToFuelTxDone: (ctx, ev) => {
-        if (ctx.ethTx?.hash && ev.data) {
-          EthTxCache.setTxIsDone(ctx.ethTx.hash);
+        if (ctx.ethTxId && ev.data) {
+          EthTxCache.setTxIsDone(ctx.ethTxId);
         }
       },
     },
