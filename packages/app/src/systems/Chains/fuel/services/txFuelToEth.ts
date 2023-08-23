@@ -195,7 +195,6 @@ export class TxFuelToEthService {
       publicClient: ethPublicClient,
     });
 
-    console.log(`fuel block height`, rootBlockHeight.toNumber());
     // TODO: remove this when FuelChainState.blockHashAtCommit handle this calculation. for now forcing it here to bypass
     const blocksPerCommitInterval =
       (await fuelChainState.read.BLOCKS_PER_COMMIT_INTERVAL()) as bigint;
@@ -203,25 +202,17 @@ export class TxFuelToEthService {
       Number(blocksPerCommitInterval)
     );
 
-    console.log(`blocksPerCommitInterval`, blocksPerCommitInterval);
-    console.log(`rootBlockHeight.toNumber()`, rootBlockHeight.toNumber());
-    console.log(`workaroundHeight`, workaroundHeight.toNumber());
-
     const blockHashAtFuel = await fuelChainState.read.blockHashAtCommit([
       workaroundHeight,
     ]);
     const isCommited = blockHashAtFuel !== ZeroBytes32;
-    console.log(`isCommited`, isCommited);
 
     if (!isCommited) return undefined;
 
-    console.log(`blockHashAtFuel`, blockHashAtFuel);
     const blockCommited = await getBlock({
       blockHash: blockHashAtFuel as string,
       providerUrl: fuelProvider.url,
     });
-
-    console.log(`blockCommited`, blockCommited);
 
     return blockCommited;
   }
@@ -241,12 +232,6 @@ export class TxFuelToEthService {
     const fuelChainState = TxEthToFuelService.connectToFuelChainState({
       publicClient: ethPublicClient,
     });
-
-    console.log(`fuelBlockCommited.id`, fuelBlockCommited.id);
-    console.log(
-      `fuelBlockCommited.header.height`,
-      fuelBlockCommited.header.height
-    );
 
     const isFinalized = await fuelChainState.read.finalized([
       fuelBlockCommited.id,
