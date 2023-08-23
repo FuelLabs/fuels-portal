@@ -239,7 +239,9 @@ export class TxEthToFuelService {
     const { ethTxNonce, fuelProvider, fuelAddress } = input;
 
     // TODO: what happens when has more than 1000 messages ? should we do pagination or something?
-    const messages = await fuelProvider.getMessages(fuelAddress);
+    const messages = await fuelProvider.getMessages(fuelAddress, {
+      first: 1000,
+    });
     const message = messages.find(
       (message) => message.nonce.toString() === ethTxNonce.toHex(32).toString()
     );
