@@ -21,6 +21,27 @@ export function OverlayDialog() {
       isOpen={overlay.isDialogOpen}
       onOpenChange={(isOpen) => !isOpen && overlay.close()}
       css={styles.dialog}
+      shouldCloseOnInteractOutside={(element) => {
+        console.log(`element.id`, element.id);
+        console.log(`element.parentElement?.id`, element.parentElement?.id);
+        console.log(
+          `element.parentElement?.parentElement?.id`,
+          element.parentElement?.parentElement?.id
+        );
+        console.log(
+          `element.parentElement?.parentElement?.parentElement?.id`,
+          element.parentElement?.parentElement?.parentElement?.id
+        );
+        const temp =
+          element.id !== 'Remove asset alert dialog' &&
+          element.parentElement?.id !== 'Remove asset alert dialog' &&
+          element.parentElement?.parentElement?.id !==
+            'Remove asset alert dialog' &&
+          element.parentElement?.parentElement?.parentElement?.id !==
+            'Remove asset alert dialog';
+        console.log(`temp`, temp);
+        return temp;
+      }}
     >
       <Dialog.Content css={styles.content}>
         {overlay.is('tx.fromEth.toFuel') && <TxEthToFuelDialog />}

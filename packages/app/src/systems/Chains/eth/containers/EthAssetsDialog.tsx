@@ -146,6 +146,7 @@ export function EthAssetsDialog() {
                   onRemove={
                     editable
                       ? () => {
+                          console.log('two');
                           handlers.removeAsset({ address: asset.address });
                         }
                       : undefined

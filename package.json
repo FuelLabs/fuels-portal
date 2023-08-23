@@ -44,8 +44,8 @@
   },
   "dependencies": {
     "@fuel-ui/config": "0.17.0",
-    "@fuel-ui/css": "0.18.2",
-    "@fuel-ui/react": "0.18.2",
+    "@fuel-ui/css": "0.18.3-pr-305-fa03f9d",
+    "@fuel-ui/react": "0.18.3-pr-305-fa03f9d",
     "@fuel-ui/test-utils": "0.17.0"
   },
   "devDependencies": {

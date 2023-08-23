@@ -27,19 +27,17 @@ export const RemoveAssetDialog = ({
   return (
     <AlertDialog open={opened} onOpenChange={setOpened}>
       <AlertDialog.Trigger>{children}</AlertDialog.Trigger>
-      <AlertDialog.Content>
+      <AlertDialog.Content id="Remove asset alert dialog">
         <AlertDialog.Heading>Are you sure?</AlertDialog.Heading>
         <AlertDialog.Description>
           This action cannot be undone. {assetSymbol} will be permanently
           deleted from your asset list.
         </AlertDialog.Description>
         <AlertDialog.Footer>
-          <AlertDialog.Cancel>
-            <Button variant="outlined" onPress={handleCancel}>
-              Cancel
-            </Button>
+          <AlertDialog.Cancel onClick={handleCancel}>
+            <Button variant="outlined">Cancel</Button>
           </AlertDialog.Cancel>
-          <AlertDialog.Action>
+          <AlertDialog.Action onClick={handleConfirm}>
             <Button variant="ghost" intent="error" onPress={handleConfirm}>
               Confirm
             </Button>

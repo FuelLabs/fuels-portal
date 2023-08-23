@@ -38,6 +38,7 @@ test.describe('Token List', () => {
     const addAssetButton = getByAriaLabel(page, 'AddEthAsset');
     await addAssetButton.click();
 
+    // Test add asset
     await hasText(page, 'Add token 0xB8c7...DD52');
 
     const addTokenButton = getButtonByText(page, 'Add token to list');
@@ -59,6 +60,15 @@ test.describe('Token List', () => {
     // Check that we switched assets on the bridge page
     await hasText(page, 'BNB');
 
-    // TODO test remove token once AssetDialog component is fixed
+    // Test remove asset
+    await tokenListButton.click();
+    await manageTokenListButton.click();
+
+    const removeAssetButton = getByAriaLabel(page, 'Icon SquareRoundedX');
+    await removeAssetButton.click();
+
+    await hasText(page, 'Are you sure?');
+    const confirmButton = getButtonByText(page, 'Confirm');
+    await confirmButton.click();
   });
 });
