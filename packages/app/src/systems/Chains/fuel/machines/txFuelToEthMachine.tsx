@@ -8,9 +8,9 @@ import type { PublicClient as EthPublicClient } from 'wagmi';
 import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
 
-import type { RelayMessageParams } from '../../eth/utils/relayMessage';
 import type { TxFuelToEthInputs } from '../services';
 import { TxFuelToEthService } from '../services';
+import type { Block } from '../utils';
 import { FuelTxCache } from '../utils';
 
 import { FetchMachine } from '~/systems/Core/machines';
@@ -22,7 +22,7 @@ type MachineContext = {
   fuelLastBlockId?: string;
   messageId?: string;
   messageProof?: MessageProof;
-  relayMessageParams?: RelayMessageParams;
+  fuelBlockCommited?: Block;
   ethTxId?: string;
   ethPublicClient?: EthPublicClient;
   txHashMessageRelayed?: string;
@@ -39,15 +39,10 @@ type MachineServices = {
     data: string | undefined;
   };
   getMessageProof: {
-    data:
-      | {
-          withdrawMessageProof: MessageProof | undefined;
-          relayMessageParams: RelayMessageParams | undefined;
-        }
-      | undefined;
+    data: MessageProof | undefined;
   };
   waitBlockCommit: {
-    data: boolean | undefined;
+    data: Block | undefined;
   };
   waitBlockFinalization: {
     data: boolean | undefined;
@@ -129,6 +124,7 @@ export const txFuelToEthMachine = createMachine(
               },
             },
           },
+          // TODO: remove this state, we don't need a extra step to get receipts anymore
           gettingFuelMessageId: {
             tags: ['isSubmitToBridgeLoading', 'isSubmitToBridgeSelected'],
             invoke: {
@@ -203,11 +199,8 @@ export const txFuelToEthMachine = createMachine(
                       cond: FetchMachine.hasError,
                     },
                     {
-                      actions: [
-                        'assignMessageProof',
-                        'assignRelayMessageParams',
-                      ],
-                      cond: 'hasRelayMessageParams',
+                      actions: ['assignMessageProof'],
+                      cond: 'hasMessageProof',
                       target: 'waitingBlockCommit',
                     },
                   ],
@@ -224,8 +217,10 @@ export const txFuelToEthMachine = createMachine(
                   src: 'waitBlockCommit',
                   data: {
                     input: (ctx: MachineContext) => ({
-                      rootBlockHeader: ctx.relayMessageParams?.rootBlockHeader,
+                      rootBlockHeight:
+                        ctx.messageProof?.commitBlockHeader?.height,
                       ethPublicClient: ctx.ethPublicClient,
+                      fuelProvider: ctx.fuelProvider,
                     }),
                   },
                   onDone: [
@@ -233,6 +228,7 @@ export const txFuelToEthMachine = createMachine(
                       cond: FetchMachine.hasError,
                     },
                     {
+                      actions: ['assignFuelBlockCommited'],
                       cond: 'hasBlockCommited',
                       target: 'waitingBlockFinalization',
                     },
@@ -250,7 +246,7 @@ export const txFuelToEthMachine = createMachine(
                   src: 'waitBlockFinalization',
                   data: {
                     input: (ctx: MachineContext) => ({
-                      rootBlockHeader: ctx.relayMessageParams?.rootBlockHeader,
+                      fuelBlockCommited: ctx.fuelBlockCommited,
                       ethPublicClient: ctx.ethPublicClient,
                     }),
                   },
@@ -331,7 +327,8 @@ export const txFuelToEthMachine = createMachine(
                             { type: 'RELAY_TO_ETH' }
                           >
                         ) => ({
-                          relayMessageParams: ctx.relayMessageParams,
+                          messageProof: ctx.messageProof,
+                          fuelBlockCommited: ctx.fuelBlockCommited,
                           ethWalletClient: ev.input.ethWalletClient,
                         }),
                       },
@@ -403,19 +400,19 @@ export const txFuelToEthMachine = createMachine(
         fuelTxResult: (_, ev) => ev.data || undefined,
       }),
       assignMessageId: assign({
-        messageId: (_, ev) => ev.data || undefined,
+        messageId: (_, ev) => ev.data,
       }),
       assignMessageProof: assign({
-        messageProof: (_, ev) => ev.data?.withdrawMessageProof || undefined,
-      }),
-      assignRelayMessageParams: assign({
-        relayMessageParams: (_, ev) => ev.data?.relayMessageParams || undefined,
+        messageProof: (_, ev) => ev.data,
       }),
       assignFuelLastBlockId: assign({
-        fuelLastBlockId: (_, ev) => ev.data || undefined,
+        fuelLastBlockId: (_, ev) => ev.data,
       }),
       assignTxHashMessageRelayed: assign({
-        txHashMessageRelayed: (_, ev) => ev.data || undefined,
+        txHashMessageRelayed: (_, ev) => ev.data,
+      }),
+      assignFuelBlockCommited: assign({
+        fuelBlockCommited: (_, ev) => ev.data,
       }),
       setFuelToEthTxDone: (ctx) => {
         if (ctx.fuelTxId) {
@@ -425,11 +422,10 @@ export const txFuelToEthMachine = createMachine(
     },
     guards: {
       hasFuelTxResult: (ctx, ev) => !!ctx.fuelTxResult || !!ev?.data,
-      hasMessageId: (ctx, ev) => !!ctx.messageProof || !!ev?.data,
-      hasRelayMessageParams: (ctx, ev) =>
-        !!ctx.relayMessageParams || !!ev?.data?.relayMessageParams,
+      hasMessageId: (ctx, ev) => !!ctx.messageId || !!ev?.data,
+      hasMessageProof: (ctx, ev) => !!ctx.messageProof || !!ev?.data,
       hasFuelLastBlockId: (ctx, ev) => !!ctx.fuelLastBlockId || !!ev?.data,
-      hasBlockCommited: (_, ev) => !!ev?.data,
+      hasBlockCommited: (ctx, ev) => !!ctx.fuelBlockCommited || !!ev?.data,
       hasBlockFinalized: (_, ev) => !!ev?.data,
       hasTxHashMessageRelayed: (ctx, ev) =>
         !!ctx.txHashMessageRelayed || !!ev?.data,

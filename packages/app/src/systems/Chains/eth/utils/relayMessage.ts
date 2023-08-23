@@ -1,5 +1,6 @@
 import type { MessageProof } from 'fuels';
 
+import type { Block } from '../../fuel/utils/getBlock';
 import type {
   CommitBlockHeader,
   Message,
@@ -15,9 +16,13 @@ export type RelayMessageParams = {
   rootBlockHeader: CommitBlockHeader;
 };
 
-export function createRelayMessageParams(
-  withdrawMessageProof: MessageProof
-): RelayMessageParams {
+export async function createRelayMessageParams({
+  withdrawMessageProof,
+  fuelBlockCommited,
+}: {
+  withdrawMessageProof: MessageProof;
+  fuelBlockCommited: Block;
+}): Promise<RelayMessageParams> {
   // construct data objects for relaying message on L1
   const message: Message = {
     sender: withdrawMessageProof.sender.toHexString(),
@@ -38,9 +43,6 @@ export function createRelayMessageParams(
     outputMessagesCount: header.messageReceiptCount.toString(),
   };
   const messageProof = withdrawMessageProof.messageProof;
-  // const messageProofSet = messageProof.proofSet;
-  // TODO: update this when fuel-core remove the first proof from the set
-  // messageProofSet.shift();
   // Create the message proof object
   const messageInBlockProof: Proof = {
     key: messageProof.proofIndex.toString(),
@@ -48,7 +50,7 @@ export function createRelayMessageParams(
   };
 
   // construct data objects for relaying message on L1 (cont)
-  const rootHeader = withdrawMessageProof.commitBlockHeader;
+  const rootHeader = fuelBlockCommited.header;
   const rootBlockHeader: CommitBlockHeader = {
     prevRoot: rootHeader.prevRoot,
     height: rootHeader.height.toString(),
@@ -56,9 +58,6 @@ export function createRelayMessageParams(
     applicationHash: rootHeader.applicationHash,
   };
   const blockProof = withdrawMessageProof.blockProof;
-  // const proofSet = blockProof.proofSet;
-  // // TODO: update this when fuel-core remove the first proof from the set
-  // proofSet.shift();
   // Create the block proof object
   const blockInHistoryProof: Proof = {
     key: blockProof.proofIndex.toString(),
