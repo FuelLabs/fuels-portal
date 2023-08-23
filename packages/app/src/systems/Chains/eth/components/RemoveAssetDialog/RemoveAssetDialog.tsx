@@ -1,5 +1,4 @@
 import { Button, AlertDialog } from '@fuel-ui/react';
-import { useState } from 'react';
 import type { ReactNode } from 'react';
 
 type RemoveAssetDialogProps = {
@@ -13,19 +12,12 @@ export const RemoveAssetDialog = ({
   assetSymbol,
   onConfirm,
 }: RemoveAssetDialogProps) => {
-  const [opened, setOpened] = useState(false);
-
-  function handleCancel() {
-    setOpened(false);
-  }
-
   function handleConfirm() {
     onConfirm();
-    setOpened(false);
   }
 
   return (
-    <AlertDialog open={opened} onOpenChange={setOpened}>
+    <AlertDialog>
       <AlertDialog.Trigger>{children}</AlertDialog.Trigger>
       <AlertDialog.Content id="Remove asset alert dialog">
         <AlertDialog.Heading>Are you sure?</AlertDialog.Heading>
@@ -34,7 +26,7 @@ export const RemoveAssetDialog = ({
           deleted from your asset list.
         </AlertDialog.Description>
         <AlertDialog.Footer>
-          <AlertDialog.Cancel onClick={handleCancel}>
+          <AlertDialog.Cancel>
             <Button variant="outlined">Cancel</Button>
           </AlertDialog.Cancel>
           <AlertDialog.Action onClick={handleConfirm}>

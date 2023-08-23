@@ -22,25 +22,12 @@ export function OverlayDialog() {
       onOpenChange={(isOpen) => !isOpen && overlay.close()}
       css={styles.dialog}
       shouldCloseOnInteractOutside={(element) => {
-        console.log(`element.id`, element.id);
-        console.log(`element.parentElement?.id`, element.parentElement?.id);
-        console.log(
-          `element.parentElement?.parentElement?.id`,
-          element.parentElement?.parentElement?.id
-        );
-        console.log(
-          `element.parentElement?.parentElement?.parentElement?.id`,
-          element.parentElement?.parentElement?.parentElement?.id
-        );
-        const temp =
+        return (
           element.id !== 'Remove asset alert dialog' &&
           element.parentElement?.id !== 'Remove asset alert dialog' &&
           element.parentElement?.parentElement?.id !==
-            'Remove asset alert dialog' &&
-          element.parentElement?.parentElement?.parentElement?.id !==
-            'Remove asset alert dialog';
-        console.log(`temp`, temp);
-        return temp;
+            'Remove asset alert dialog'
+        );
       }}
     >
       <Dialog.Content css={styles.content}>
@@ -56,7 +43,7 @@ export function OverlayDialog() {
 
 const styles = {
   dialog: cssObj({
-    backdropFilter: 'blur(10px)',
+    backdropFilter: 'blur(4px)',
   }),
   content: cssObj({
     width: OVERLAY_WIDTH,

@@ -7,7 +7,6 @@ export function assetListEvents(store: Store) {
       store.send(Services.ethAssetList, { type: 'ADD_ASSET', input });
     },
     removeAsset(input: { address?: string }) {
-      console.log(`input`, input);
       store.send(Services.ethAssetList, { type: 'REMOVE_ASSET', input });
     },
   };
