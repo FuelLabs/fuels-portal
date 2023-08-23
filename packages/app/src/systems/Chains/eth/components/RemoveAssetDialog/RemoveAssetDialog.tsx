@@ -12,10 +12,6 @@ export const RemoveAssetDialog = ({
   assetSymbol,
   onConfirm,
 }: RemoveAssetDialogProps) => {
-  function handleConfirm() {
-    onConfirm();
-  }
-
   return (
     <AlertDialog>
       <AlertDialog.Trigger>{children}</AlertDialog.Trigger>
@@ -29,8 +25,8 @@ export const RemoveAssetDialog = ({
           <AlertDialog.Cancel>
             <Button variant="outlined">Cancel</Button>
           </AlertDialog.Cancel>
-          <AlertDialog.Action onClick={handleConfirm}>
-            <Button variant="ghost" intent="error" onPress={handleConfirm}>
+          <AlertDialog.Action onClick={onConfirm}>
+            <Button variant="ghost" intent="error">
               Confirm
             </Button>
           </AlertDialog.Action>
