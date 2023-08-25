@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/dot-notation */
 // TODO: this file should be completely removed once the fuel sdk start returning whole header data
 
-const blockQuery = `query blockQuery($id: String!) {
-  block(id: $id) {
+const blockQuery = `query blockQuery($id: BlockId, $height: U64) {
+  block(id: $id, height: $height) {
     id
     header {
       id
@@ -39,16 +40,25 @@ export interface Header {
 export async function getBlock({
   blockHash,
   providerUrl,
+  height,
 }: {
-  blockHash: string;
+  blockHash?: string;
   providerUrl: string;
+  height?: string;
 }): Promise<Block> {
+  const variables = {};
+  if (height) {
+    variables['height'] = height;
+  } else {
+    variables['id'] = blockHash;
+  }
   const response = await fetch(providerUrl, {
     method: 'POST',
     body: JSON.stringify({
       query: blockQuery,
       variables: {
         id: blockHash,
+        height,
       },
     }),
     headers: {

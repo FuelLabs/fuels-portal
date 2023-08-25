@@ -10,7 +10,7 @@
     "@ethersproject/abi": "^5.7.0",
     "@ethersproject/bytes": "^5.7.0",
     "@ethersproject/providers": "^5.7.2",
-    "fuels": "0.52.0"
+    "fuels": "0.53.0"
   },
   "devDependencies": {
     "@types/node": "^18.13.0",

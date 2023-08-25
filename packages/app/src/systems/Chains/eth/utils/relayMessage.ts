@@ -1,6 +1,5 @@
 import type { MessageProof } from 'fuels';
 
-import type { Block } from '../../fuel/utils/getBlock';
 import type {
   CommitBlockHeader,
   Message,
@@ -18,10 +17,8 @@ export type RelayMessageParams = {
 
 export async function createRelayMessageParams({
   withdrawMessageProof,
-  fuelBlockCommited,
 }: {
   withdrawMessageProof: MessageProof;
-  fuelBlockCommited: Block;
 }): Promise<RelayMessageParams> {
   // construct data objects for relaying message on L1
   const message: Message = {
@@ -50,7 +47,7 @@ export async function createRelayMessageParams({
   };
 
   // construct data objects for relaying message on L1 (cont)
-  const rootHeader = fuelBlockCommited.header;
+  const rootHeader = withdrawMessageProof.commitBlockHeader;
   const rootBlockHeader: CommitBlockHeader = {
     prevRoot: rootHeader.prevRoot,
     height: rootHeader.height.toString(),

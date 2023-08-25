@@ -8,6 +8,7 @@ import type { WalletClient } from 'viem';
 import { decodeEventLog, getContract, isAddress } from 'viem';
 import type { PublicClient } from 'wagmi';
 
+import { getBlock } from '../../fuel/utils/getBlock';
 import { ERC_20 } from '../contracts/Erc20';
 import { FUEL_CHAIN_STATE } from '../contracts/FuelChainState';
 import { FUEL_MESSAGE_PORTAL } from '../contracts/FuelMessagePortal';
@@ -38,6 +39,7 @@ export type TxEthToFuelInputs = {
   };
   getFuelMessage: {
     ethTxNonce?: BN;
+    ethDepositBlockHeight?: string;
     fuelProvider?: FuelProvider;
     fuelAddress?: FuelAddress;
   };
@@ -223,29 +225,44 @@ export class TxEthToFuelService {
     const depositNonce = bn(decodedEvent.args.nonce);
     const amount = bn(decodedEvent.args.amount.toString()).format();
 
-    return { depositNonce, amount };
+    const ethDepositBlockHeight = receipt.blockNumber;
+
+    return {
+      depositNonce,
+      amount,
+      ethDepositBlockHeight: ethDepositBlockHeight.toString(),
+    };
   }
 
   static async getFuelMessage(input: TxEthToFuelInputs['getFuelMessage']) {
+    // we keep input?.ethTxNonce and input?.fuelAddress as they'll be needed when fixing below comments
     if (!input?.ethTxNonce) {
       throw new Error('No nonce found');
-    }
-    if (!input?.fuelProvider) {
-      throw new Error('No provider for Fuel found');
     }
     if (!input?.fuelAddress) {
       throw new Error('No address for Fuel found');
     }
-    const { ethTxNonce, fuelProvider, fuelAddress } = input;
+    if (!input?.fuelProvider) {
+      throw new Error('No provider for Fuel found');
+    }
+    if (!input?.ethDepositBlockHeight) {
+      throw new Error('No block height found');
+    }
 
-    // TODO: what happens when has more than 1000 messages ? should we do pagination or something?
-    const messages = await fuelProvider.getMessages(fuelAddress, {
-      first: 1000,
+    const { fuelProvider, ethDepositBlockHeight } = input;
+
+    // TODO: this method of checking DAheight with ethDepositBlockHeight should be replaced
+    // when this issue is done: https://github.com/FuelLabs/fuel-core/issues/1323
+    // this is the issue to track this work: https://github.com/FuelLabs/fuels-portal/issues/96
+    const blocks = await fuelProvider.getBlocks({ last: 1 });
+    const latestBlockId = blocks[0]?.id;
+    // TODO: replace this logic when SDK return blocks more complete, with header etc...
+    const fuelLatestBlock = await getBlock({
+      blockHash: latestBlockId,
+      providerUrl: fuelProvider.url,
     });
-    const message = messages.find(
-      (message) => message.nonce.toString() === ethTxNonce.toHex(32).toString()
-    );
+    const fuelLatestDAHeight = fuelLatestBlock.header.daHeight;
 
-    return message || undefined;
+    return bn(fuelLatestDAHeight).gte(ethDepositBlockHeight);
   }
 }

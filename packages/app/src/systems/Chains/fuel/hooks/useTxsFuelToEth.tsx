@@ -4,7 +4,7 @@ import {
   bn,
   getTransactionsSummaries,
   getReceiptsMessageOut,
-  SimplifiedTransactionStatusNameEnum,
+  TransactionStatus,
 } from 'fuels';
 import { useMemo } from 'react';
 
@@ -28,9 +28,12 @@ export const useTxsFuelToEth = () => {
     async () => {
       if (!provider || !address) return undefined;
 
-      const txSummaries = await getTransactionsSummaries(provider, {
-        owner: address?.toB256(),
-        first: 1000,
+      const txSummaries = await getTransactionsSummaries({
+        provider,
+        filters: {
+          owner: address?.toB256(),
+          first: 1000,
+        },
       });
 
       return txSummaries;
@@ -46,9 +49,9 @@ export const useTxsFuelToEth = () => {
       if (messageOutReceipt) {
         let date;
         switch (txSummary.status) {
-          case SimplifiedTransactionStatusNameEnum.submitted:
-          case SimplifiedTransactionStatusNameEnum.failure:
-          case SimplifiedTransactionStatusNameEnum.success: {
+          case TransactionStatus.submitted:
+          case TransactionStatus.failure:
+          case TransactionStatus.success: {
             date = txSummary.time
               ? new Date(fromTai64ToUnix(txSummary.time) * 1000)
               : undefined;

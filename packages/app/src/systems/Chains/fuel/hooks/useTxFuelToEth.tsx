@@ -86,9 +86,9 @@ const selectors = {
       {
         name: 'Receive on ETH',
         status: status.isReceiveDone ? 'Done!' : 'Automatic',
-        isLoading: false,
+        isLoading: status.isReceiveLoading,
         isDone: status.isReceiveDone,
-        isSelected: false,
+        isSelected: status.isReceiveSelected,
       },
     ];
     return steps;
