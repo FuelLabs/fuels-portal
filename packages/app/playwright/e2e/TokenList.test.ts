@@ -74,6 +74,31 @@ test.describe('Token List', () => {
     await hasText(page, 'BNB');
   });
 
+  test('should be able to add known token', async () => {
+    // Go to the bridge page
+    const bridgePage = page.locator('a').getByText('Bridge');
+    await bridgePage.click();
+
+    const tokenListButton = getByAriaLabel(page, 'Coin Selector');
+    await tokenListButton.click();
+
+    const manageTokenListButton = getButtonByText(page, 'Manage token list');
+    await manageTokenListButton.click();
+
+    const addressInput = page.getByPlaceholder(
+      'Search or paste custom address'
+    );
+    await addressInput.fill('0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48');
+
+    await hasText(page, 'USDC');
+
+    const addAssetButton = getByAriaLabel(page, 'AddEthAsset');
+    await addAssetButton.click();
+
+    await hasText(page, 'USDC');
+    await hasText(page, 'Manage token list');
+  });
+
   test('should be able to search for token', async () => {
     const bridgePage = page.locator('a').getByText('Bridge');
     await bridgePage.click();
