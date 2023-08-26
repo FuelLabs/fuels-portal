@@ -94,5 +94,8 @@ const styles = {
       py: '$2',
       backgroundColor: 'transparent',
     },
+    '& button': {
+      borderColor: '$border',
+    },
   }),
 };
