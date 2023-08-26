@@ -255,7 +255,7 @@ export class TxEthToFuelService {
     // when this issue is done: https://github.com/FuelLabs/fuel-core/issues/1323
     // this is the issue to track this work: https://github.com/FuelLabs/fuels-portal/issues/96
     const blocks = await fuelProvider.getBlocks({ last: 1 });
-    const latestBlockId = blocks[0]?.id;
+    const latestBlockId = blocks?.[0]?.id;
     // TODO: replace this logic when SDK return blocks more complete, with header etc...
     const fuelLatestBlock = await getBlock({
       blockHash: latestBlockId,

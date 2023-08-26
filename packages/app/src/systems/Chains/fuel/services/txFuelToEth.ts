@@ -144,7 +144,14 @@ export class TxFuelToEthService {
     const commitHashAtL1 = await fuelChainState.read.blockHashAtCommit([
       commitHeight.toString(),
     ]);
-    const isCommited = commitHashAtL1 !== ZeroBytes32;
+    const isBlock = commitHashAtL1 !== ZeroBytes32;
+    if (!isBlock) return undefined;
+
+    const block = await getBlock({
+      providerUrl: fuelProvider.url,
+      blockHash: commitHashAtL1 as string,
+    });
+    const isCommited = bn(block?.header.height).gte(nextBlockHeight);
 
     return isCommited ? (commitHashAtL1 as string) : undefined;
   }
