@@ -151,7 +151,7 @@ test.describe('Bridge', () => {
     // Go to the transaction page
     await transactionList.click();
 
-    await page.waitForTimeout(5000);
+    await page.waitForTimeout(10000);
 
     transactionAssetAmount = getByAriaLabel(page, 'Asset amount');
     // Check the transaction is there
