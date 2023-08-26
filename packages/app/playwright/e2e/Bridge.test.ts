@@ -40,7 +40,7 @@ test.describe('Bridge', () => {
     });
     expect(hasFuel).toBeTruthy();
 
-    // await page.bringToFront();
+    await page.bringToFront();
 
     // Go to the bridge page
     let bridgePage = page.locator('a').getByText('Bridge');
