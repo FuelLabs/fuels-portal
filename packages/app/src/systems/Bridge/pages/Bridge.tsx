@@ -57,7 +57,8 @@ export const Bridge = () => {
                 onChange={(val) =>
                   handlers.changeAssetAmount({ assetAmount: val || undefined })
                 }
-                onClickAsset={handlers.openAssetsDialog}
+                // TODO: enable this when we include erc-20 deposit
+                // onClickAsset={handlers.openAssetsDialog}
               />
             </Box>
           </Box.Stack>
