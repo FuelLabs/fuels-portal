@@ -40,6 +40,8 @@ test.describe('Bridge', () => {
     });
     expect(hasFuel).toBeTruthy();
 
+    await page.bringToFront();
+
     // Go to the bridge page
     let bridgePage = page.locator('a').getByText('Bridge');
     await bridgePage.click();
@@ -144,10 +146,12 @@ test.describe('Bridge', () => {
       page,
       'Close Transaction Dialog'
     );
-    await closeEthPopupWithdraw.click();
+    await closeEthPopupWithdraw.click(); // SELEC TTAB ?
 
     // Go to the transaction page
     await transactionList.click();
+
+    await page.waitForTimeout(5000);
 
     transactionAssetAmount = getByAriaLabel(page, 'Asset amount');
     // Check the transaction is there
@@ -156,7 +160,7 @@ test.describe('Bridge', () => {
     );
 
     await transactionAssetAmount.first().click();
-    await page.waitForTimeout(20000);
+    await page.waitForTimeout(5000);
     const confirmButton = getButtonByText(page, 'Confirm Transaction');
     await confirmButton.click();
 
