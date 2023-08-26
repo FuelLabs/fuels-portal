@@ -146,11 +146,12 @@ test.describe('Bridge', () => {
       page,
       'Close Transaction Dialog'
     );
-    await closeEthPopupWithdraw.click(); // SELEC TTAB ?
+    await closeEthPopupWithdraw.click();
 
     // Go to the transaction page
     await transactionList.click();
 
+    // Wait for transactions to get fetched and sorted
     await page.waitForTimeout(10000);
 
     transactionAssetAmount = getByAriaLabel(page, 'Asset amount');
