@@ -145,7 +145,7 @@ export function useTxFuelToEth({
         },
       });
     }
-  }, [txId, fuelProvider, ethPublicClient]);
+  }, [txId, fuelProvider, ethPublicClient, skipAnalyzeTx]);
 
   function relayToEth() {
     service.send('RELAY_TO_ETH', {
