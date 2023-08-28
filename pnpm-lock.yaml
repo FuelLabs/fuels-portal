@@ -19,11 +19,11 @@ importers:
         specifier: 0.17.0
         version: 0.17.0(@testing-library/dom@9.3.1)(typescript@4.9.5)
       '@fuel-ui/css':
-        specifier: 0.18.2
-        version: 0.18.2
+        specifier: 0.18.3
+        version: 0.18.3
       '@fuel-ui/react':
-        specifier: 0.18.2
-        version: 0.18.2(@types/react-dom@18.0.10)(@types/react@18.2.7)(csstype@3.1.2)
+        specifier: 0.18.3
+        version: 0.18.3(@types/react-dom@18.0.10)(@types/react@18.2.7)(csstype@3.1.2)
       '@fuel-ui/test-utils':
         specifier: 0.17.0
         version: 0.17.0(@babel/core@7.20.12)(@jest/types@29.4.2)(@types/node@18.15.3)(ts-node@10.9.1)(typescript@4.9.5)
@@ -128,11 +128,11 @@ importers:
         specifier: ^5.7.0
         version: 5.7.0
       '@fuel-ui/css':
-        specifier: 0.18.3-pr-305-fa03f9d
-        version: 0.18.3-pr-305-fa03f9d
+        specifier: 0.18.3
+        version: 0.18.3
       '@fuel-ui/react':
-        specifier: 0.18.3-pr-305-fa03f9d
-        version: 0.18.3-pr-305-fa03f9d(@types/react-dom@18.0.10)(@types/react@18.2.7)(csstype@3.1.2)
+        specifier: 0.18.3
+        version: 0.18.3(@types/react-dom@18.0.10)(@types/react@18.2.7)(csstype@3.1.2)
       '@fuel-wallet/sdk':
         specifier: 0.11.1
         version: 0.11.1(dexie@3.2.4)(fuels@0.49.0)
@@ -3426,13 +3426,6 @@ packages:
       bn.js: 5.2.1
     dev: false
 
-  /@fuel-ts/math@0.52.0:
-    resolution: {integrity: sha512-WRJ2cAyUR9TsVz4h1w30XR68QrTElPMW1EJc/dO2ORUaEWEwFq+h0QUeNl4vZuxL63HP80hO/SnSRU+UoOXS6g==}
-    dependencies:
-      '@types/bn.js': 5.1.1
-      bn.js: 5.2.1
-    dev: false
-
   /@fuel-ts/merkle@0.49.0:
     resolution: {integrity: sha512-m2qd6dPD5KkaAlSqaKhTcs9DQe6smDPF3kvo0rOQ5Dyd6vCgQZNlFGJfmZSUNL/VFz/jwihD6c9dYLTKvi5Xiw==}
     dependencies:
@@ -3634,37 +3627,18 @@ packages:
       - typescript
     dev: false
 
-  /@fuel-ui/css@0.18.2:
-    resolution: {integrity: sha512-dS0JzCQhs+f+GFCP2l/j1kXjIIaHQOl/1l9PHTjo5c748IOaUTVEqgu+HoSPCUOur+Mig4omHQR6Bw8ZMFxEQA==}
+  /@fuel-ui/css@0.18.3:
+    resolution: {integrity: sha512-nQqhOKq52GCzs1DXncRkVvVuOmrnZ0JWvGwGW+zN56cBzuT3iHtjL2Kwr1HCCgkpldU6ux/g5WijuwMqvA2ZUw==}
     dependencies:
-      '@fuel-ui/design-tokens': 0.18.2
+      '@fuel-ui/design-tokens': 0.18.3
       '@radix-ui/colors': 2.1.0
       classnames: 2.3.2
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@fuel-ui/css@0.18.3-pr-305-fa03f9d:
-    resolution: {integrity: sha512-niIBhJdcy5oh+BxiHausH+5zx9ij/r/yl9+M/CWHPu85WBVWzW1OLXmQj/ekHOksk5CrnVAyP6vC6UJBKPmzKw==}
-    dependencies:
-      '@fuel-ui/design-tokens': 0.18.3-pr-305-fa03f9d
-      '@radix-ui/colors': 2.1.0
-      classnames: 2.3.2
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-    dev: false
-
-  /@fuel-ui/design-tokens@0.18.2:
-    resolution: {integrity: sha512-Oc5Z196XNg/CHxRABWz+64qg6X+7ukaKXrfutSRRDtgzO6Pmmr74UZ9RvO71UWkH46tHKUyvIzsKWH8KFcnz8w==}
-    dependencies:
-      '@radix-ui/colors': 2.1.0
-      chroma-js: 2.4.2
-      copy-to-clipboard: 3.3.3
-      lodash: 4.17.21
-    dev: false
-
-  /@fuel-ui/design-tokens@0.18.3-pr-305-fa03f9d:
-    resolution: {integrity: sha512-8X4EC39a0IhGI7dfIUm0/udp76HsO0R7hbBsDErMdQsPZgR0QNjn9QpfyAg7TLOAwK+TBTE0JZNAbs45pLjEvw==}
+  /@fuel-ui/design-tokens@0.18.3:
+    resolution: {integrity: sha512-KpiO/5x1i3IWeuNu0eY1Wvrt6R9n3alrtomaYHUYO2BQwxAg/jbrWFglQBnyhC3/pNz35ImtzLLqf5RHo3LNww==}
     dependencies:
       '@radix-ui/colors': 2.1.0
       chroma-js: 2.4.2
@@ -3680,63 +3654,12 @@ packages:
       svgo: 3.0.2
     dev: false
 
-  /@fuel-ui/icons@0.18.3-pr-306-c2e684e:
-    resolution: {integrity: sha512-5GW/OW3RLwAfDIDbqdzNT2gsetKoJTYkXgmYMa+zZpQjeVbT1tPn5gCuS1j8QzFk0pIhOUYIaT+HChnmp53isg==}
-    dependencies:
-      '@tabler/icons': 2.32.0
-      prettier: 3.0.2
-      svgo: 3.0.2
-    dev: false
-
-  /@fuel-ui/react@0.18.2(@types/react-dom@18.0.10)(@types/react@18.2.7)(csstype@3.1.2):
-    resolution: {integrity: sha512-2Mbq3PUQl/M5veq9qYShDT03Dryn6ikiUxzNBol+MXRodyubDffw11jlHwbRmyYJpnQjH62mwOn4Eczx+8o1zg==}
+  /@fuel-ui/react@0.18.3(@types/react-dom@18.0.10)(@types/react@18.2.7)(csstype@3.1.2):
+    resolution: {integrity: sha512-JLHGHAU9kEiyUTzO4VkretAMvBlbM+GkBB4UuEe2L9hwyJTW1bGjfhaGbtnpq7DDdY/0C1uZDiJxxeVkO5xKlQ==}
     dependencies:
       '@fuel-ts/math': 0.49.1
-      '@fuel-ui/css': 0.18.2
+      '@fuel-ui/css': 0.18.3
       '@fuel-ui/icons': 0.18.3
-      '@radix-ui/react-accordion': 1.1.2(@types/react-dom@18.0.10)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-alert-dialog': 1.0.4(@types/react-dom@18.0.10)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-aspect-ratio': 1.0.3(@types/react-dom@18.0.10)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-avatar': 1.0.3(@types/react-dom@18.0.10)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-checkbox': 1.0.4(@types/react-dom@18.0.10)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-dialog': 1.0.4(@types/react-dom@18.0.10)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-label': 2.0.2(@types/react-dom@18.0.10)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-popover': 1.0.6(@types/react-dom@18.0.10)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-radio-group': 1.1.3(@types/react-dom@18.0.10)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-switch': 1.0.3(@types/react-dom@18.0.10)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-tabs': 1.0.4(@types/react-dom@18.0.10)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-tooltip': 1.0.6(@types/react-dom@18.0.10)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-visually-hidden': 1.0.3(@types/react-dom@18.0.10)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0)
-      '@react-aria/focus': 3.14.0(react@18.2.0)
-      '@react-aria/overlays': 3.16.0(react-dom@18.2.0)(react@18.2.0)
-      '@react-aria/utils': 3.19.0(react@18.2.0)
-      '@testing-library/react': 14.0.0(react-dom@18.2.0)(react@18.2.0)
-      '@xstate/react': 3.2.2(@types/react@18.2.7)(react@18.2.0)(xstate@4.38.2)
-      deepmerge-json: 1.5.0
-      framer-motion: 10.16.1(react-dom@18.2.0)(react@18.2.0)
-      react: 18.2.0
-      react-aria: 3.27.0(react-dom@18.2.0)(react@18.2.0)
-      react-content-loader: 6.2.1(react@18.2.0)
-      react-dom: 18.2.0(react@18.2.0)
-      react-hot-toast: 2.4.1(csstype@3.1.2)(react-dom@18.2.0)(react@18.2.0)
-      react-number-format: 5.3.0(react-dom@18.2.0)(react@18.2.0)
-      react-stately: 3.25.0(react@18.2.0)
-      xstate: 4.38.2
-      zustand: 4.4.1(@types/react@18.2.7)(react@18.2.0)
-    transitivePeerDependencies:
-      - '@types/react'
-      - '@types/react-dom'
-      - '@xstate/fsm'
-      - csstype
-      - immer
-    dev: false
-
-  /@fuel-ui/react@0.18.3-pr-305-fa03f9d(@types/react-dom@18.0.10)(@types/react@18.2.7)(csstype@3.1.2):
-    resolution: {integrity: sha512-OzXWp4SMykuztQLRv6/SpibI6kfrixsaX/UKTFOgFE2E0hHfeOSSFHbjNY5k0Gh83nNztqgSOlmnCUXzXyVNPQ==}
-    dependencies:
-      '@fuel-ts/math': 0.52.0
-      '@fuel-ui/css': 0.18.3-pr-305-fa03f9d
-      '@fuel-ui/icons': 0.18.3-pr-306-c2e684e
       '@radix-ui/react-accordion': 1.1.2(@types/react-dom@18.0.10)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-alert-dialog': 1.0.4(@types/react-dom@18.0.10)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-aspect-ratio': 1.0.3(@types/react-dom@18.0.10)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0)

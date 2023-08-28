@@ -37,7 +37,7 @@
     "prettier:format": "prettier --write .",
     "test:all": "run-p test test:e2e",
     "test": "turbo run test --parallel",
-    "test:e2e": "playwright test --config=packages/app/playwright.config.ts",
+    "test:e2e": "playwright test --config=packages/app/playwright.config.ts packages/app/playwright/e2e/TokenList.test.ts",
     "ts:check": "turbo run ts:check",
     "prepare": "husky install",
     "storybook": "pnpm --filter=@fuels-portal/bridge storybook",
@@ -45,8 +45,8 @@
   },
   "dependencies": {
     "@fuel-ui/config": "0.17.0",
-    "@fuel-ui/css": "0.18.2",
-    "@fuel-ui/react": "0.18.2",
+    "@fuel-ui/css": "0.18.3",
+    "@fuel-ui/react": "0.18.3",
     "@fuel-ui/test-utils": "0.17.0"
   },
   "devDependencies": {
