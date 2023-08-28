@@ -22,7 +22,7 @@ function getEnvName() {
 }
 
 function getFuelContracts() {
-  const { body } = retus('http://localhost:8081/deployments.json', {
+  const { body } = retus('http://localhost:8080/deployments.local.json', {
     json: true,
   });
 

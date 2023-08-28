@@ -42,6 +42,7 @@ export type TxEthToFuelInputs = {
   createErc20Contract: {
     ethWalletClient?: WalletClient;
     ethPublicClient?: PublicClient;
+    ethAsset?: BridgeAsset;
   };
   getReceiptsInfo: {
     ethTx?: EthTransactionResponse;
