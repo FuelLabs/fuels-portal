@@ -79,12 +79,7 @@ test.describe('Token List', () => {
   });
 
   test('should be able to add known token', async () => {
-    // Go to the bridge page
-    const bridgePage = page.locator('a').getByText('Bridge');
-    await bridgePage.click();
-
-    const tokenListButton = getByAriaLabel(page, 'Coin Selector');
-    await tokenListButton.click();
+    await goToTokenListDialog(page);
 
     const manageTokenListButton = getButtonByText(page, 'Manage token list');
     await manageTokenListButton.click();
@@ -104,10 +99,8 @@ test.describe('Token List', () => {
   });
 
   test('should be able to search for token', async () => {
-    const bridgePage = page.locator('a').getByText('Bridge');
-    await bridgePage.click();
-    const tokenListButton = getByAriaLabel(page, 'Coin Selector');
-    await tokenListButton.click();
+    await goToTokenListDialog(page);
+
     const addressInput = page.getByPlaceholder(
       'Search or paste custom address'
     );
@@ -117,10 +110,8 @@ test.describe('Token List', () => {
   });
 
   test('should be able to search for non-existing token', async () => {
-    const bridgePage = page.locator('a').getByText('Bridge');
-    await bridgePage.click();
-    const tokenListButton = getByAriaLabel(page, 'Coin Selector');
-    await tokenListButton.click();
+    await goToTokenListDialog(page);
+
     const addressInput = page.getByPlaceholder(
       'Search or paste custom address'
     );
@@ -130,10 +121,7 @@ test.describe('Token List', () => {
   });
 
   test('should be able to select token', async () => {
-    const bridgePage = page.locator('a').getByText('Bridge');
-    await bridgePage.click();
-    const tokenListButton = getByAriaLabel(page, 'Coin Selector');
-    await tokenListButton.click();
+    await goToTokenListDialog(page);
 
     const bnbButton = page.getByText('BNB');
     await bnbButton.click();
@@ -141,10 +129,7 @@ test.describe('Token List', () => {
   });
 
   test('should be able to change between editable mode', async () => {
-    const bridgePage = page.locator('a').getByText('Bridge');
-    await bridgePage.click();
-    const tokenListButton = getByAriaLabel(page, 'Coin Selector');
-    await tokenListButton.click();
+    await goToTokenListDialog(page);
 
     await hasText(page, 'Select token');
     await hasText(page, 'Manage token list');
