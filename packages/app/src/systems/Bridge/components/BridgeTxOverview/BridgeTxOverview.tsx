@@ -11,7 +11,7 @@ type BridgeTxOverviewProps = {
   asset: {
     imageUrl?: string;
     assetSymbol?: string;
-    assetAmount: string;
+    assetAmount?: string;
   };
 };
 

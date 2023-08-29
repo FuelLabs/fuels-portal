@@ -104,6 +104,7 @@ const styles = {
   connectedButton: cssObj({
     justifyContent: 'space-between',
     gap: 0,
+    borderColor: '$border',
   }),
   circle: cssObj({
     minWidth: '$3',

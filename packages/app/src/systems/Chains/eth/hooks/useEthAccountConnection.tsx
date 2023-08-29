@@ -50,7 +50,6 @@ export function useEthAccountConnection(props?: {
     isConnecting,
     signer: walletClient || undefined,
     walletClient: walletClient || undefined,
-    provider: publicClient || undefined,
     publicClient: publicClient || undefined,
     balance,
     asset,

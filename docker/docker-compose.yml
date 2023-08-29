@@ -1,59 +1,47 @@
-version: '3'
+version: '3.4'
 
 services:
   l1_chain:
+    image: fueldev/l1chain:${DOCKER_TAG_L1_CHAIN:-latest}
     platform: linux/amd64
-    container_name: '${PROJECT:-fuel-node}_l1-chain'
-    build: ./l1-chain
-    environment:
-      POA_AUTHORITY_KEY: ${WALLET_ETH_ADDRESS}
+    build:
+      context: ./l1-chain/
+    env_file:
+      - ./envs/l1_chain.env
     ports:
+      # expose the service to the host for integration testing
       - ${L1_CHAIN_HTTP_PORT:-8545}:8545
       - ${DEPLOYMENTS_PORT:-8080}:8081
 
-  fuel-core:
-    platform: linux/amd64
-    container_name: '${PROJECT:-fuel-node}_fuel-core'
-    environment:
-      # The minimum gas price required
-      GAS_PRICE: ${GAS_PRICE}
-      # Ethereum RPC URL
-      L1_CHAIN_HTTP: http://l1_chain:8545
-      # Data server that informs the contract id to use on fuel-core for L1
-      DEPLOYMENTS_HTTP: http://l1_chain:8081/deployments.local.json
-      # This is the private key of the consensus.PoA.signing_key in the chainConfig.json
-      # this key is responsible for validating the transactions
-      CONSENSUS_KEY_SECRET: ${WALLET_SECRET}
-    build: ./fuel-core
-    ports:
-      - '${FUEL_CORE_PORT:-4000}:4000'
-    volumes:
-      - fuel-core-db:/mnt/db
-    healthcheck:
-      test: curl --fail http://localhost:4000/health || exit 1
-      interval: 10s
-      timeout: 5s
-      retries: 20
-
-  faucet:
-    platform: linux/amd64
-    container_name: '${PROJECT:-fuel-node}_faucet'
-    environment:
-      # Other configurations can be found at;
-      # https://github.com/FuelLabs/faucet#configuration
-      GAS_PRICE: ${GAS_PRICE}
-      WALLET_SECRET_KEY: ${WALLET_SECRET}
-      DISPENSE_AMOUNT: ${DISPENSE_AMOUNT}
-      FUEL_NODE_URL: http://${PROJECT:-fuel-node}_fuel-core:4000/graphql
-    image: ghcr.io/fuellabs/faucet:v0.5.0
-    ports:
-      - '${FUEL_FAUCET_PORT:-4040}:3000'
-    links:
-      - fuel-core
+  fuel_core:
     depends_on:
-      fuel-core:
-        condition: service_healthy
+      - l1_chain
+    image: fueldev/fuelcore:${DOCKER_TAG_FUEL_CORE:-latest}
+    platform: linux/amd64
+    build:
+      context: ./fuel-core/
+    env_file:
+      - ./envs/fuel_core.env
+    environment:
+      L1_CHAIN_HTTP: http://l1_chain:8545
+      DEPLOYMENTS_HTTP: http://l1_chain:8081/deployments.local.json
+    ports:
+      # expose the service to the host for integration testing
+      - ${FUEL_CORE_HTTP_PORT:-4000}:4001
 
-volumes:
-  fuel-core-db:
-    name: '${PROJECT:-fuel-node}_fuel-core-db'
+  fuel_block_commiter:
+    depends_on:
+      - fuel_core
+    image: fueldev/block-committer:${DOCKER_TAG_FUEL_CORE:-latest}
+    platform: linux/amd64
+    build:
+      context: ./block-committer/
+    env_file:
+      - ./envs/block_committer.env
+    environment:
+      ETHEREUM_RPC: ws://l1_chain:8545/
+      FUEL_GRAPHQL_ENDPOINT: http://fuel_core:4001
+      DEPLOYMENTS_HTTP: http://l1_chain:8081/deployments.local.json
+    ports:
+      # expose the service to the host for integration testing
+      - ${COMMITTER_HTTP_PORT:-8888}:8888

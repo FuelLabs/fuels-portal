@@ -11,8 +11,8 @@ import {
 import { Address } from 'fuels';
 import { useMemo } from 'react';
 
-import { ETH_SYMBOL, TxCache, ethLogoSrc } from '../../eth';
-import { FUEL_UNITS } from '../utils';
+import { ETH_SYMBOL, EthTxCache, ethLogoSrc } from '../../eth';
+import { FUEL_UNITS, FuelTxCache } from '../utils';
 
 import { store } from '~/store';
 
@@ -56,7 +56,8 @@ export const useFuelAccountConnection = () => {
       connect: handleConnect,
       disconnect: () => {
         disconnect();
-        TxCache.clean();
+        EthTxCache.clean();
+        FuelTxCache.clean();
       },
       openFuelInstall: store.openFuelInstall,
       closeDialog: store.closeOverlay,
