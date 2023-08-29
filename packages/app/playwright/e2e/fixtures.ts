@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-empty-pattern */
 // Use a test fixture to set the context so tests have access to the wallet extension.
 import type { BrowserContext } from '@playwright/test';
@@ -21,34 +22,57 @@ export const test = base.extend<{
     // required for synpress
     global.expect = expect;
 
-    const extensionUrl = 'https://wallet.fuel.network/app/fuel-wallet.zip';
+    const extensionUrl =
+      'https://github.com/FuelLabs/fuels-wallet/releases/download/v0.12.0/fuel-wallet-chrome-0.12.0.zip';
 
     const zipFile = './packages/app/playwright/e2e/fuel-wallet.zip';
     const zipFileStream = fs.createWriteStream(zipFile);
-    // TODO fetch the exact version of wallet to avoid breaking ci
-    const zipPromise = new Promise((resolve, reject) => {
-      https
-        .get(extensionUrl, (res) => {
-          res.pipe(zipFileStream);
-          // after download completed close filestream
-          zipFileStream.on('finish', async () => {
-            zipFileStream.close();
-            // eslint-disable-next-line no-console
-            console.log('Download Completed extracting zip...');
-            const zip = new admZip(zipFile); // eslint-disable-line new-cap
-            zip.extractAllTo('./packages/app/playwright/e2e/dist-crx', true);
-            // eslint-disable-next-line no-console
-            console.log('zip extracted');
-            resolve(true);
+
+    function downloadFile(url, attempt = 1) {
+      return new Promise((resolve, reject) => {
+        https
+          .get(url, (res) => {
+            if (res.statusCode === 302 || res.statusCode === 301) {
+              if (attempt > 5) {
+                // prevent infinite loops if there's a redirect loop
+                reject(new Error('Too many redirects'));
+                return;
+              }
+
+              const newUrl = res.headers.location;
+              console.log(`Redirecting to: ${newUrl}`);
+              downloadFile(newUrl, attempt + 1).then(resolve, reject);
+              return;
+            }
+
+            if (res.statusCode !== 200) {
+              reject(new Error(`Unexpected status code: ${res.statusCode}`));
+              return;
+            }
+
+            res.pipe(zipFileStream);
+
+            zipFileStream.on('finish', () => {
+              zipFileStream.close(resolve);
+            });
+
+            zipFileStream.on('error', (error) => {
+              reject(error);
+            });
+          })
+          .on('error', (error) => {
+            reject(error);
           });
-        })
-        .on('error', (error) => {
-          // eslint-disable-next-line no-console
-          console.log('error: ', error);
-          reject(error);
-        });
-    });
-    await zipPromise;
+      });
+    }
+
+    await downloadFile(extensionUrl);
+
+    console.log('Download Completed extracting zip...');
+    const zip = new admZip(zipFile); // eslint-disable-line new-cap
+    zip.extractAllTo('./packages/app/playwright/e2e/dist-crx', true);
+
+    console.log('zip extracted');
 
     // download metamask
     const metamaskPath = await prepareMetamask(

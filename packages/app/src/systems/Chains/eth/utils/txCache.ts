@@ -1,7 +1,7 @@
 const BLOCK_DATE_KEY_SUBSTRING = 'ethBlockDate-';
 const HASH_DONE_KEY_SUBSTRING = 'ethToFuelTx';
 
-export const TxCache = {
+export const EthTxCache = {
   getBlockDate: (blockHash: string) => {
     return localStorage.getItem(generateBlockDateKey(blockHash));
   },

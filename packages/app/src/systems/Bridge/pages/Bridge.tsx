@@ -57,21 +57,20 @@ export const Bridge = () => {
                 onChange={(val) =>
                   handlers.changeAssetAmount({ assetAmount: val || undefined })
                 }
-                onClickAsset={handlers.openAssetsDialog}
+                // TODO: enable this when we include erc-20 deposit
+                // onClickAsset={handlers.openAssetsDialog}
               />
             </Box>
           </Box.Stack>
           <BridgeButton />
           <Alert status="warning">
             <Alert.Description>
-              <Text fontSize="sm">
-                Any assets deposited to Fuel takes 7 days to withdraw back to
-                Ethereum. Learn more about our architecture and security in
-                our&nbsp;
-                <Link href="https://fuel.sh/" isExternal>
-                  docs
-                </Link>
-              </Text>
+              Any assets deposited to Fuel takes 7 days to withdraw back to
+              Ethereum. Learn more about our architecture and security in
+              our&nbsp;
+              <Link href="https://fuel.sh/" isExternal>
+                docs
+              </Link>
             </Alert.Description>
           </Alert>
         </Box.Stack>
@@ -95,6 +94,9 @@ const styles = {
       px: '$3',
       py: '$2',
       backgroundColor: 'transparent',
+    },
+    '& button': {
+      borderColor: '$border',
     },
   }),
 };

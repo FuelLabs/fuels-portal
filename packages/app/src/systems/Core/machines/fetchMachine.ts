@@ -89,7 +89,7 @@ export const FetchMachine = {
             },
           },
           failed: {
-            entry: ['assignError', 'showError'],
+            entry: ['assignError', 'showError', 'logError'],
             type: 'final',
             data: (ctx, ev) => ({ error: ev.data }),
           },

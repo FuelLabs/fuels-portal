@@ -1,4 +1,4 @@
 packages:
   - 'packages/*'
-  - 'docker/l1-chain'
-  - 'scripts/deposit'
+  - 'scripts/bridge/*'
+  - 'docker/l1-chain/hardhat'

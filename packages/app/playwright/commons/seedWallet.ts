@@ -1,5 +1,5 @@
 import type { BN } from 'fuels';
-import { Address, NativeAssetId, Wallet } from 'fuels';
+import { Address, BaseAssetId, Wallet } from 'fuels';
 
 const { GENESIS_SECRET, FUEL_PROVIDER_URL } = process.env;
 
@@ -19,7 +19,7 @@ export async function seedWallet(
   const response = await genesisWallet.transfer(
     Address.fromString(address),
     amount,
-    NativeAssetId,
+    BaseAssetId,
     { gasPrice: 1, ...options }
   );
   await response.wait();

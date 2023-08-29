@@ -14,15 +14,15 @@ const fuelDev: FuelChain = {
   providerUrl: 'http://localhost:4000/graphql',
 };
 
-const fuelBeta3: FuelChain = {
+const fuelBeta4: FuelChain = {
   id: 1002,
-  network: 'fuel_beta3',
-  name: 'Fuel Beta3',
+  network: 'fuel_beta4',
+  name: 'Fuel Beta 4',
   testnet: true,
-  providerUrl: 'https://beta-3.fuel.network/graphql',
+  providerUrl: 'https://beta-4.fuel.network/graphql',
 };
 
 export const FUEL_CHAINS = {
   fuelDev,
-  fuelBeta3,
+  fuelBeta4,
 };
