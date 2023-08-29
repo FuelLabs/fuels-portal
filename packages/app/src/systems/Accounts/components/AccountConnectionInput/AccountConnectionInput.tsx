@@ -58,6 +58,7 @@ export const AccountConnectionInput = ({
               </Button>
             ) : (
               <Button
+                onPress={onConnect}
                 isLoading={isConnecting}
                 leftIcon={<Box css={styles.circle}>&nbsp;</Box>}
                 rightIcon={
@@ -76,7 +77,7 @@ export const AccountConnectionInput = ({
                 size="xs"
                 css={{ ...styles.connectButton, ...styles.connectedButton }}
               >
-                <Text fontSize="sm">
+                <Text fontSize="sm" css={styles.connectedButtonText}>
                   {shortAddress(account.alias, 16) ||
                     shortAddress(account.address)}
                 </Text>
@@ -102,9 +103,10 @@ const styles = {
     width: '$36',
   }),
   connectedButton: cssObj({
-    justifyContent: 'space-between',
-    gap: 0,
     borderColor: '$border',
+  }),
+  connectedButtonText: cssObj({
+    flex: 1,
   }),
   circle: cssObj({
     minWidth: '$3',
