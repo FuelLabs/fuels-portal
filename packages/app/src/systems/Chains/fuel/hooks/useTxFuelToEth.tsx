@@ -1,10 +1,9 @@
 import { useTransaction } from '@fuels-portal/sdk-react';
 import { useInterpret, useSelector } from '@xstate/react';
-import type { ReceiptMessageOut } from 'fuels';
-import { ReceiptType, fromTai64ToUnix } from 'fuels';
+import { fromTai64ToUnix, getReceiptsMessageOut } from 'fuels';
 import { useEffect, useMemo } from 'react';
 
-import { useEthAccountConnection } from '../../eth';
+import { useEthAccountConnection } from '../../eth/hooks';
 import type { TxFuelToEthMachineState } from '../machines';
 import { txFuelToEthMachine } from '../machines';
 import { FUEL_UNITS } from '../utils';
@@ -31,6 +30,8 @@ const selectors = {
     const isWaitingEthWalletApproval = state.hasTag(
       'isWaitingEthWalletApproval'
     );
+    const isReceiveLoading = state.hasTag('isReceiveLoading');
+    const isReceiveSelected = state.hasTag('isReceiveSelected');
     const isReceiveDone = state.hasTag('isReceiveDone');
 
     return {
@@ -44,6 +45,8 @@ const selectors = {
       isConfirmTransactionLoading,
       isConfirmTransactionDone,
       isWaitingEthWalletApproval,
+      isReceiveLoading,
+      isReceiveSelected,
       isReceiveDone,
     };
   },
@@ -83,9 +86,9 @@ const selectors = {
       {
         name: 'Receive on ETH',
         status: status.isReceiveDone ? 'Done!' : 'Automatic',
-        isLoading: false,
+        isLoading: status.isReceiveLoading,
         isDone: status.isReceiveDone,
-        isSelected: false,
+        isSelected: status.isReceiveSelected,
       },
     ];
     return steps;
@@ -97,16 +100,22 @@ const selectors = {
   amountSent: (state: TxFuelToEthMachineState) => {
     const fuelTxResult = state.context.fuelTxResult;
 
-    const messageOutReceipt = fuelTxResult?.receipts.find(
-      ({ type }) => type === ReceiptType.MessageOut
-    ) as ReceiptMessageOut;
+    const messageOutReceipt = getReceiptsMessageOut(
+      fuelTxResult?.receipts || []
+    )[0];
 
     const amountSent = messageOutReceipt?.amount;
     return amountSent;
   },
 };
 
-export function useTxFuelToEth({ txId }: { txId: string }) {
+export function useTxFuelToEth({
+  txId,
+  skipAnalyzeTx,
+}: {
+  txId: string;
+  skipAnalyzeTx?: boolean;
+}) {
   const { walletClient: ethWalletClient, publicClient: ethPublicClient } =
     useEthAccountConnection();
   const { provider: fuelProvider } = useFuelAccountConnection();
@@ -127,7 +136,7 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
   const { transaction: fuelTx } = useTransaction(txId);
 
   useEffect(() => {
-    if (txId && fuelProvider) {
+    if (txId && !skipAnalyzeTx && fuelProvider) {
       service.send('START_ANALYZE_TX', {
         input: {
           fuelTxId: txId,
@@ -136,7 +145,7 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
         },
       });
     }
-  }, [txId, fuelProvider, ethPublicClient]);
+  }, [txId, fuelProvider, ethPublicClient, skipAnalyzeTx]);
 
   function relayToEth() {
     service.send('RELAY_TO_ETH', {

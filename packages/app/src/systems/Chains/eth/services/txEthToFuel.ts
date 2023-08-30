@@ -1,8 +1,4 @@
 import type {
-  Provider as EthProvider,
-  TransactionResponse as EthTransactionResponse,
-} from '@ethersproject/providers';
-import type {
   Address as FuelAddress,
   BN,
   Provider as FuelProvider,
@@ -12,10 +8,13 @@ import type { WalletClient } from 'viem';
 import { decodeEventLog, getContract, isAddress } from 'viem';
 import type { PublicClient } from 'wagmi';
 
+import { getBlock } from '../../fuel/utils/getBlock';
 import { ERC_20 } from '../contracts/Erc20';
+import { FUEL_CHAIN_STATE } from '../contracts/FuelChainState';
 import { FUEL_MESSAGE_PORTAL } from '../contracts/FuelMessagePortal';
 
 import {
+  VITE_ETH_FUEL_CHAIN_STATE,
   VITE_ETH_FUEL_ERC20_GATEWAY,
   VITE_ETH_FUEL_MESSAGE_PORTAL,
 } from '~/config';
@@ -32,14 +31,15 @@ export type TxEthToFuelInputs = {
   createErc20Contract: {
     ethWalletClient?: WalletClient;
     ethPublicClient?: PublicClient;
+    ethAsset?: BridgeAsset;
   };
   getDepositNonce: {
-    ethTx?: EthTransactionResponse;
-    ethProvider?: EthProvider;
+    ethTxId?: `0x${string}`;
     ethPublicClient?: PublicClient;
   };
   getFuelMessage: {
     ethTxNonce?: BN;
+    ethDepositBlockHeight?: string;
     fuelProvider?: FuelProvider;
     fuelAddress?: FuelAddress;
   };
@@ -51,7 +51,6 @@ export class TxEthToFuelService {
     publicClient?: PublicClient;
   }) {
     const { walletClient, publicClient } = options;
-
     const contract = getContract({
       abi: ERC_20.abi,
       address: VITE_ETH_FUEL_ERC20_GATEWAY as `0x${string}`,
@@ -67,7 +66,6 @@ export class TxEthToFuelService {
     publicClient?: PublicClient;
   }) {
     const { walletClient, publicClient } = options;
-
     const contract = getContract({
       abi: FUEL_MESSAGE_PORTAL.abi,
       address: VITE_ETH_FUEL_MESSAGE_PORTAL as `0x${string}`,
@@ -95,6 +93,22 @@ export class TxEthToFuelService {
     return contract;
   }
 
+  static connectToFuelChainState(options: {
+    walletClient?: WalletClient;
+    publicClient?: PublicClient;
+  }) {
+    const { walletClient, publicClient } = options;
+
+    const contract = getContract({
+      abi: FUEL_CHAIN_STATE.abi,
+      address: VITE_ETH_FUEL_CHAIN_STATE as `0x${string}`,
+      walletClient,
+      publicClient,
+    });
+
+    return contract;
+  }
+
   static async start(input: TxEthToFuelInputs['start']) {
     if (!input?.ethWalletClient?.account || !input?.ethPublicClient) {
       throw new Error('Need to connect ETH Wallet');
@@ -114,12 +128,13 @@ export class TxEthToFuelService {
 
     try {
       // only tokens will have address, as eth is native
+      // TODO: when continuing deposit of erc20, should refactor split this part in 2 to be able to redo it in case if failed (status !== success) for both transactions
       if (ethAsset.address && isAddress(ethAsset.address)) {
         const fuelErc20Gateway = TxEthToFuelService.connectToFuelErc20Gateway({
           walletClient: ethWalletClient,
         });
         const erc20Token = TxEthToFuelService.connectToErc20({
-          address: ethAsset.address,
+          address: ethAsset.address as `0x${string}`,
           walletClient: ethWalletClient,
         });
 
@@ -137,11 +152,6 @@ export class TxEthToFuelService {
           throw new Error('Failed to approve Token for transfer');
         }
 
-        //
-        // TODO: need to split this part in 2 to be able to redo it in case if failed (status !== success) for both transactions
-        //
-
-        // TODO: fix token in side fuel? how can we know it?
         const fuelTokenId = 'fuel';
         const depositTxHash = await fuelErc20Gateway.write.deposit(
           [
@@ -186,24 +196,24 @@ export class TxEthToFuelService {
   }
 
   static async getDepositNonce(input: TxEthToFuelInputs['getDepositNonce']) {
-    if (!input?.ethTx) {
-      throw new Error('No eth TX');
+    if (!input?.ethTxId) {
+      throw new Error('No eth TX id');
     }
     if (!input?.ethPublicClient) {
       throw new Error('No eth Provider');
     }
 
-    const { ethTx, ethPublicClient } = input;
+    const { ethTxId, ethPublicClient } = input;
 
     let receipt;
     try {
       receipt = await ethPublicClient.getTransactionReceipt({
-        hash: ethTx.hash as `0x${string}`,
+        hash: ethTxId,
       });
     } catch (err: unknown) {
       // workaround in place because waitForTransactionReceipt stop working after first time using it
       receipt = await ethPublicClient.waitForTransactionReceipt({
-        hash: ethTx.hash as `0x${string}`,
+        hash: ethTxId,
       });
     }
 
@@ -211,36 +221,48 @@ export class TxEthToFuelService {
       abi: FUEL_MESSAGE_PORTAL.abi,
       data: receipt.logs[0].data,
       topics: receipt.logs[0].topics,
-    }) as unknown as { args: { nonce: number } };
+    }) as unknown as { args: { nonce: number; amount: bigint } };
     const depositNonce = bn(decodedEvent.args.nonce);
+    const amount = bn(decodedEvent.args.amount.toString()).format();
 
-    return depositNonce;
+    const ethDepositBlockHeight = receipt.blockNumber;
+
+    return {
+      depositNonce,
+      amount,
+      ethDepositBlockHeight: ethDepositBlockHeight.toString(),
+    };
   }
 
   static async getFuelMessage(input: TxEthToFuelInputs['getFuelMessage']) {
+    // we keep input?.ethTxNonce and input?.fuelAddress as they'll be needed when fixing below comments
     if (!input?.ethTxNonce) {
       throw new Error('No nonce found');
-    }
-    if (!input?.fuelProvider) {
-      throw new Error('No provider for Fuel found');
     }
     if (!input?.fuelAddress) {
       throw new Error('No address for Fuel found');
     }
-    const { ethTxNonce, fuelProvider, fuelAddress } = input;
-
-    // TODO: what happens when has more than 1000 messages ? should we do pagination or something?
-    const messages = await fuelProvider.getMessages(fuelAddress, {
-      first: 1000,
-    });
-    const message = messages.find(
-      (message) => message.nonce.toHex() === ethTxNonce.toHex()
-    );
-
-    if (message) {
-      return message;
+    if (!input?.fuelProvider) {
+      throw new Error('No provider for Fuel found');
+    }
+    if (!input?.ethDepositBlockHeight) {
+      throw new Error('No block height found');
     }
 
-    return undefined;
+    const { fuelProvider, ethDepositBlockHeight } = input;
+
+    // TODO: this method of checking DAheight with ethDepositBlockHeight should be replaced
+    // when this issue is done: https://github.com/FuelLabs/fuel-core/issues/1323
+    // this is the issue to track this work: https://github.com/FuelLabs/fuels-portal/issues/96
+    const blocks = await fuelProvider.getBlocks({ last: 1 });
+    const latestBlockId = blocks?.[0]?.id;
+    // TODO: replace this logic when SDK return blocks more complete, with header etc...
+    const fuelLatestBlock = await getBlock({
+      blockHash: latestBlockId,
+      providerUrl: fuelProvider.url,
+    });
+    const fuelLatestDAHeight = fuelLatestBlock.header.daHeight;
+
+    return bn(fuelLatestDAHeight).gte(ethDepositBlockHeight);
   }
 }

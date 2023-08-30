@@ -1,8 +1,4 @@
 import type {
-  Provider as EthProvider,
-  TransactionResponse as EthTransactionResponse,
-} from '@ethersproject/providers';
-import type {
   BN,
   Message,
   Address as FuelAddress,
@@ -14,26 +10,31 @@ import { assign, createMachine } from 'xstate';
 
 import type { TxEthToFuelInputs } from '../services';
 import { TxEthToFuelService } from '../services';
-import { TxCache } from '../utils';
+import { EthTxCache } from '../utils';
 
-import { FetchMachine } from '~/systems/Core';
+import { FetchMachine } from '~/systems/Core/machines';
 
 type MachineContext = {
-  ethTx?: EthTransactionResponse;
+  ethTxId?: `0x${string}`;
   ethTxNonce?: BN;
-  ethProvider?: EthProvider;
   fuelAddress?: FuelAddress;
   fuelProvider?: FuelProvider;
   fuelMessage?: Message;
   ethPublicClient?: PublicClient;
+  ethDepositBlockHeight?: string;
+  amount?: string;
 };
 
 type MachineServices = {
   getDepositNonce: {
-    data: BN;
+    data: {
+      depositNonce: BN;
+      amount: string;
+      ethDepositBlockHeight: string;
+    };
   };
   getFuelMessage: {
-    data: Message | undefined;
+    data: boolean | undefined;
   };
 };
 
@@ -74,8 +75,7 @@ export const txEthToFuelMachine = createMachine(
               src: 'getDepositNonce',
               data: {
                 input: (ctx: MachineContext) => ({
-                  ethTx: ctx.ethTx,
-                  ethProvider: ctx.ethProvider,
+                  ethTxId: ctx.ethTxId,
                   ethPublicClient: ctx.ethPublicClient,
                 }),
               },
@@ -84,7 +84,7 @@ export const txEthToFuelMachine = createMachine(
                   cond: FetchMachine.hasError,
                 },
                 {
-                  actions: ['assignEthTxNonce'],
+                  actions: ['assignReceiptsInfo'],
                   cond: 'hasEthTxNonce',
                   target: 'checkingFuelTx',
                 },
@@ -112,6 +112,7 @@ export const txEthToFuelMachine = createMachine(
                       ethTxNonce: ctx.ethTxNonce,
                       fuelAddress: ctx.fuelAddress,
                       fuelProvider: ctx.fuelProvider,
+                      ethDepositBlockHeight: ctx.ethDepositBlockHeight,
                     }),
                   },
                   onDone: [
@@ -119,7 +120,7 @@ export const txEthToFuelMachine = createMachine(
                       cond: FetchMachine.hasError,
                     },
                     {
-                      actions: ['assignFuelMessage', 'setEthToFuelTxDone'],
+                      actions: ['setEthToFuelTxDone'],
                       cond: 'hasFuelMessage',
                       target: 'done',
                     },
@@ -145,21 +146,19 @@ export const txEthToFuelMachine = createMachine(
   {
     actions: {
       assignAnalyzeTxInput: assign((_, ev) => ({
-        ethTx: ev.input.ethTx,
-        ethProvider: ev.input.ethProvider,
+        ethTxId: ev.input.ethTxId,
         fuelAddress: ev.input.fuelAddress,
         fuelProvider: ev.input.fuelProvider,
         ethPublicClient: ev.input.ethPublicClient,
       })),
-      assignEthTxNonce: assign({
-        ethTxNonce: (_, ev) => ev.data,
-      }),
-      assignFuelMessage: assign({
-        fuelMessage: (_, ev) => ev.data,
-      }),
+      assignReceiptsInfo: assign((_, ev) => ({
+        ethTxNonce: ev.data.depositNonce,
+        amount: ev.data.amount,
+        ethDepositBlockHeight: ev.data.ethDepositBlockHeight,
+      })),
       setEthToFuelTxDone: (ctx, ev) => {
-        if (ctx.ethTx?.hash && ev.data) {
-          TxCache.setTxIsDone(ctx.ethTx.hash);
+        if (ctx.ethTxId && ev.data) {
+          EthTxCache.setTxIsDone(ctx.ethTxId);
         }
       },
     },

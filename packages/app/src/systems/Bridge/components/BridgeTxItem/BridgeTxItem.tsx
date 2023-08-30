@@ -83,6 +83,7 @@ const styles = cssObj({
 
     '@md': {
       flex: '0 0 108px',
+      pr: '$1',
     },
   },
   ageText: cssObj({

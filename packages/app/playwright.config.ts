@@ -9,7 +9,7 @@ const config: PlaywrightTestConfig = defineConfig({
   workers: 1,
   testMatch: join(__dirname, './playwright/**/*.test.ts'),
   testDir: join(__dirname, './playwright/'),
-  timeout: 60000 * 2,
+  timeout: 60_000 * 3,
   expect: {
     timeout: 5000,
   },

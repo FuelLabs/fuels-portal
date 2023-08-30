@@ -68,7 +68,7 @@ const styles = {
     borderBottom: '1px solid $intentsBase5',
     background: '$bodyBg',
     pl: '$14',
-    zIndex: '$10',
+    zIndex: '0',
     position: 'sticky',
     top: 0,
     gap: '$2',

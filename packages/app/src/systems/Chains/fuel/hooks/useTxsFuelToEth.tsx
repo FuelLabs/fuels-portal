@@ -1,11 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import type { ReceiptMessageOut } from 'fuels';
 import {
   fromTai64ToUnix,
-  ReceiptCoder,
-  ReceiptType,
-  arrayify,
   bn,
+  getTransactionsSummaries,
+  getReceiptsMessageOut,
+  TransactionStatus,
 } from 'fuels';
 import { useMemo } from 'react';
 
@@ -15,26 +14,27 @@ import {
   ETH_SYMBOL,
   FUEL_CHAIN,
   FUEL_UNITS,
+  FuelTxCache,
   ethLogoSrc,
   useFuelAccountConnection,
 } from '~/systems/Chains';
-import { getGraphqlClient } from '~/systems/Core';
 
 export const useTxsFuelToEth = () => {
   const { address, provider } = useFuelAccountConnection();
-  // TODO: we should use sdk to get transactions
-  // TODO: how can we filter this in a better way I don't think graphql is allowing custom filters??
-  const { data: transactionsByOwner, isFetching } = useQuery(
-    ['transactionsByOwner'],
+  const { data, isFetching } = useQuery(
+    ['transactionsSummary'],
     async () => {
-      const { transactionsByOwner } = await getGraphqlClient(
-        provider?.url || ''
-      ).AddressTransactions({
-        owner: address?.toB256() || '',
-        first: 1000,
+      if (!provider || !address) return undefined;
+
+      const txSummaries = await getTransactionsSummaries({
+        provider,
+        filters: {
+          owner: address?.toB256(),
+          first: 1000,
+        },
       });
 
-      return transactionsByOwner || null;
+      return txSummaries;
     },
     {
       enabled: !!address && !!provider?.url,
@@ -42,28 +42,16 @@ export const useTxsFuelToEth = () => {
   );
 
   const txs: BridgeTx[] | undefined = useMemo(() => {
-    const txs = transactionsByOwner?.edges.reduce((prev, cur) => {
-      const txId = cur.node.id;
-      const decodedReceipts = (cur.node.receipts || []).map(
-        ({ rawPayload }) => {
-          const [decoded] = new ReceiptCoder().decode(arrayify(rawPayload), 0);
-
-          return decoded;
-        }
-      );
-
-      const messageOutReceipt = decodedReceipts.find(
-        ({ type }) => type === ReceiptType.MessageOut
-      ) as ReceiptMessageOut;
-
+    const txs = data?.transactions?.reduce((prev, txSummary) => {
+      const messageOutReceipt = getReceiptsMessageOut(txSummary.receipts)[0];
       if (messageOutReceipt) {
         let date;
-        switch (cur.node.status?.type) {
-          case 'SubmittedStatus':
-          case 'FailureStatus':
-          case 'SuccessStatus': {
-            date = cur.node.status?.time
-              ? new Date(fromTai64ToUnix(cur.node.status?.time) * 1000)
+        switch (txSummary.status) {
+          case TransactionStatus.submitted:
+          case TransactionStatus.failure:
+          case TransactionStatus.success: {
+            date = txSummary.time
+              ? new Date(fromTai64ToUnix(txSummary.time) * 1000)
               : undefined;
             break;
           }
@@ -82,11 +70,10 @@ export const useTxsFuelToEth = () => {
             assetSymbol: ETH_SYMBOL,
           },
           date,
-          txHash: txId,
+          txHash: txSummary.id || '',
           fromNetwork: FUEL_CHAIN,
           toNetwork: ETH_CHAIN,
-          // implement cache(localstorage) isDone after we have done state in txFuelToEthMachine
-          isDone: false,
+          isDone: FuelTxCache.getTxIsDone(txSummary.id || '') === 'true',
         });
       }
 
@@ -94,7 +81,7 @@ export const useTxsFuelToEth = () => {
     }, [] as BridgeTx[]);
 
     return txs;
-  }, [JSON.stringify(transactionsByOwner)]);
+  }, [JSON.stringify(data?.transactions)]);
 
   return {
     txs,

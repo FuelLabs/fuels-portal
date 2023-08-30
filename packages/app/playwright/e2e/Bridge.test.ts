@@ -1,10 +1,11 @@
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import type { WalletUnlocked } from 'fuels';
-import { NativeAssetId, Wallet, bn } from 'fuels';
-import type { HDAccount, PublicClient } from 'viem';
+import { BaseAssetId, Wallet, bn } from 'fuels';
+import type { HDAccount } from 'viem';
 import { createPublicClient, http } from 'viem';
 import { mnemonicToAccount } from 'viem/accounts';
 import { foundry } from 'viem/chains';
+import type { PublicClient } from 'wagmi';
 
 import {
   getByAriaLabel,
@@ -15,14 +16,14 @@ import {
 } from '../commons';
 import { ETH_MNEMONIC, FUEL_MNEMONIC } from '../mocks';
 
-import { test } from './fixtures';
+import { test, expect } from './fixtures';
 
 test.describe('Bridge', () => {
   let client: PublicClient;
   let account: HDAccount;
   let fuelWallet: WalletUnlocked;
 
-  test.beforeAll(async ({ context, extensionId, page }) => {
+  test.beforeEach(async ({ context, extensionId, page }) => {
     await walletSetup(context, extensionId, page);
     client = createPublicClient({
       chain: foundry,
@@ -30,9 +31,6 @@ test.describe('Bridge', () => {
     });
     account = mnemonicToAccount(ETH_MNEMONIC);
     fuelWallet = Wallet.fromMnemonic(FUEL_MNEMONIC);
-  });
-
-  test.beforeEach(async ({ page }) => {
     await page.goto('/');
   });
 
@@ -41,6 +39,8 @@ test.describe('Bridge', () => {
       return typeof window.fuel === 'object';
     });
     expect(hasFuel).toBeTruthy();
+
+    await page.bringToFront();
 
     // Go to the bridge page
     let bridgePage = page.locator('a').getByText('Bridge');
@@ -58,7 +58,7 @@ test.describe('Bridge', () => {
     await connectFuel.click();
     await walletConnect(context);
 
-    const preDepositBalanceFuel = await fuelWallet.getBalance(NativeAssetId);
+    const preDepositBalanceFuel = await fuelWallet.getBalance(BaseAssetId);
     const prevDepositBalanceEth = await client.getBalance({
       address: account.address,
     });
@@ -95,7 +95,7 @@ test.describe('Bridge', () => {
     const closeEthPopup = getByAriaLabel(page, 'Close Transaction Dialog');
     await closeEthPopup.click();
 
-    const postDepositBalanceFuel = await fuelWallet.getBalance(NativeAssetId);
+    const postDepositBalanceFuel = await fuelWallet.getBalance(BaseAssetId);
 
     expect(
       postDepositBalanceFuel
@@ -124,7 +124,7 @@ test.describe('Bridge', () => {
     const withdrawPage = getButtonByText(page, 'Withdraw from Fuel');
     await withdrawPage.click();
 
-    const preWithdrawBalanceFuel = await fuelWallet.getBalance(NativeAssetId);
+    const preWithdrawBalanceFuel = await fuelWallet.getBalance(BaseAssetId);
     const prevWithdrawBalanceEth = await client.getBalance({
       address: account.address,
     });
@@ -151,25 +151,47 @@ test.describe('Bridge', () => {
     // Go to the transaction page
     await transactionList.click();
 
+    // Wait for transactions to get fetched and sorted
+    await page.waitForTimeout(10000);
+
     transactionAssetAmount = getByAriaLabel(page, 'Asset amount');
     // Check the transaction is there
     expect((await transactionAssetAmount.first().innerHTML()).trim()).toBe(
       `${withdrawAmount} ETH`
     );
 
-    await transactionAssetAmount.first().click({ timeout: 10000 });
+    await transactionAssetAmount.first().click();
+    await page.waitForTimeout(5000);
     const confirmButton = getButtonByText(page, 'Confirm Transaction');
     await confirmButton.click();
 
+    // For some reason we need this even if we wait for load state on the metamask notification page
+    await page.waitForTimeout(3000);
+
+    let metamaskNotificationPage = context
+      .pages()
+      .find((p) => p.url().includes('notification'));
+    if (!metamaskNotificationPage) {
+      metamaskNotificationPage = await context.waitForEvent('page', {
+        predicate: (page) => page.url().includes('notification'),
+      });
+    }
+    const proceedAnyways = metamaskNotificationPage.getByText(
+      'I want to proceed anyway'
+    );
+    const count = await proceedAnyways.count();
+    if (count) {
+      await proceedAnyways.click();
+    }
+
     // Timeout needed until https://github.com/Synthetixio/synpress/issues/795 is fixed
     await page.waitForTimeout(10000);
-    // TODO Fix bug where we initially have to manually click "Proceed anyways"
     await metamask.confirmTransaction();
 
     const postWithdrawBalanceEth = await client.getBalance({
       address: account.address,
     });
-    const postWithdrawBalanceFuel = await fuelWallet.getBalance(NativeAssetId);
+    const postWithdrawBalanceFuel = await fuelWallet.getBalance(BaseAssetId);
 
     // We only divide by 15 bc bigint does not support decimals
     expect(
