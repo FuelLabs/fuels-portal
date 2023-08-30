@@ -8,6 +8,7 @@ overrides:
   yaml@>=2.0.0-5 <2.2.2: '>=2.2.2'
   vite@>=4.1.0 <4.1.5: '>=4.1.5'
   semver@<7.5.2: '>=7.5.2'
+  word-wrap: npm:@aashutoshrathi/word-wrap
   pnpm@>=8.0.0 <8.6.8: '>=8.6.8'
   got@<11.8.5: '>=11.8.5'
   is-svg@>=2.1.0 <4.3.0: '>=4.3.0'
@@ -4329,7 +4330,7 @@ packages:
     resolution: {integrity: sha512-ou4ZJSXMMWHqGS4g8uNRbC5TiTWxAgQZiVucoUrOCWuPrTbkpJbmVyIi9jU72SBry7gQtuMEDp4YR8EEXAg7VQ==}
     peerDependencies:
       typescript: '>= 4.3.x'
-      vite: ^3.0.0 || ^4.0.0
+      vite: '>=4.1.5'
     peerDependenciesMeta:
       typescript:
         optional: true
@@ -8355,7 +8356,7 @@ packages:
     peerDependencies:
       '@preact/preset-vite': '*'
       typescript: '>= 4.3.x'
-      vite: ^3.0.0 || ^4.0.0
+      vite: '>=4.1.5'
       vite-plugin-glimmerx: '*'
     peerDependenciesMeta:
       '@preact/preset-vite':
@@ -9004,7 +9005,7 @@ packages:
     peerDependencies:
       react: '*'
       react-dom: '*'
-      vite: ^3.0.0 || ^4.0.0
+      vite: '>=4.1.5'
     peerDependenciesMeta:
       react:
         optional: true
@@ -10519,7 +10520,7 @@ packages:
     resolution: {integrity: sha512-AfgcRL8ZBhAlc3BFdigClmTUMISmmzHn7sB2h9U1odvc5U/MjWXsAaz18b/WoppUTDBzxOJwo2VdClfUcItu9g==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
-      vite: ^4.1.0-beta.0
+      vite: '>=4.1.5'
     dependencies:
       '@babel/core': 7.21.8
       '@babel/plugin-transform-react-jsx-self': 7.22.5(@babel/core@7.21.8)
