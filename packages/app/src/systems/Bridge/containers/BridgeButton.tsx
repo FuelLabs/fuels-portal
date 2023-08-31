@@ -13,6 +13,7 @@ export const BridgeButton = () => {
       variant={isDisabled ? 'ghost' : 'solid'}
       intent={isDisabled ? 'base' : 'primary'}
       size="lg"
+      aria-label={text}
     >
       <b>{text}</b>
     </Button>
