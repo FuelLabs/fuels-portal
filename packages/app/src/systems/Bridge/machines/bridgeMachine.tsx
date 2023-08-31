@@ -26,9 +26,9 @@ export enum BridgeStatus {
   waitingConnectFrom = 'Connect From Wallet',
   waitingConnectTo = 'Connect To Wallet',
   waitingAsset = 'Pick asset',
-  waitingAssetAmount = 'Type amount to transfer',
+  waitingAssetAmount = 'Type amount to operation',
   insufficientBalance = 'Insufficient funds',
-  ready = 'Bridge asset',
+  ready = 'ready',
 }
 
 export type BridgeMachineEvents =

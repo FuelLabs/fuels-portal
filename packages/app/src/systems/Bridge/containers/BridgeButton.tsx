@@ -10,9 +10,11 @@ export const BridgeButton = () => {
       onPress={handlers.action}
       isLoading={isLoading}
       isDisabled={isDisabled}
-      intent="primary"
+      variant={isDisabled ? 'ghost' : 'solid'}
+      intent={isDisabled ? 'base' : 'primary'}
+      size="lg"
     >
-      {text}
+      <b>{text}</b>
     </Button>
   );
 };
