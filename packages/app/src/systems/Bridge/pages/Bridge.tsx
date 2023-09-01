@@ -1,16 +1,15 @@
 import { cssObj } from '@fuel-ui/css';
 import { Card, Box, Text, InputAmount, Alert, Link } from '@fuel-ui/react';
 import { motion, useAnimationControls } from 'framer-motion';
-
-import { BridgeButton, BridgeTabs } from '../containers';
-import { useBridge } from '../hooks';
-
 import {
   EthAccountConnection,
   FuelAccountConnection,
   isEthChain,
   isFuelChain,
 } from '~/systems/Chains';
+
+import { BridgeButton, BridgeTabs } from '../containers';
+import { useBridge } from '../hooks';
 
 export const Bridge = () => {
   const {

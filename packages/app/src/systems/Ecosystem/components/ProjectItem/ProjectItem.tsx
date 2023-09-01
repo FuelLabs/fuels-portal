@@ -10,13 +10,12 @@ import {
 } from '@fuel-ui/react';
 import { motion } from 'framer-motion';
 import { type FC } from 'react';
+import { animations, getUrlHostName } from '~/systems/Core';
 
 import type { Project } from '../../types';
 import { ProjecImage } from '../ProjectImage';
 
 import { ProjectItemLoader } from './ProjectItemLoader';
-
-import { animations, getUrlHostName } from '~/systems/Core';
 
 const MotionCard = motion(Card);
 

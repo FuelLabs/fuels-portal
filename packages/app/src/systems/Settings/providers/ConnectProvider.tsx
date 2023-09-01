@@ -10,15 +10,14 @@ import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { infuraProvider } from 'wagmi/providers/infura';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { publicProvider } from 'wagmi/providers/public';
-
-import { useTheme } from '../hooks';
-
 import {
   VITE_ALCHEMY_ID,
   VITE_INFURA_ID,
   VITE_WALLETCONNECT_ID,
 } from '~/config';
 import { ETH_CHAIN } from '~/systems/Chains';
+
+import { useTheme } from '../hooks';
 
 const app = {
   name: 'Fuel Bridge',

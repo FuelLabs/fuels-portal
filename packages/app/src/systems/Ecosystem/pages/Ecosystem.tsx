@@ -1,11 +1,10 @@
 import { cssObj } from '@fuel-ui/css';
 import { Text, Box, Heading, Input, Icon } from '@fuel-ui/react';
+import { Layout, animations } from '~/systems/Core';
 
 import { EcosystemTags } from '../components/EcosystemTags';
 import { ProjectList } from '../components/ProjectList/ProjectList';
 import { useEcosystem } from '../hooks/useEcosystem';
-
-import { Layout, animations } from '~/systems/Core';
 
 export function Ecosystem() {
   const { tags, isLoading, filter, search, handlers, filteredProjects } =

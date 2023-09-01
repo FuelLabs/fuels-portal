@@ -3,13 +3,12 @@ import { cssObj } from '@fuel-ui/css';
 import { Box } from '@fuel-ui/react';
 import type { FC, ReactNode } from 'react';
 import { Helmet } from 'react-helmet';
+import { META_DESC, META_OGIMG } from '~/constants';
+import { OverlayDialog } from '~/systems/Overlay';
 
 import { coreStyles } from '../styles';
 
 import { Header } from './Header';
-
-import { META_DESC, META_OGIMG } from '~/constants';
-import { OverlayDialog } from '~/systems/Overlay';
 
 type ContentProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

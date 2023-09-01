@@ -7,12 +7,11 @@ import type {
 import type { PublicClient } from 'wagmi';
 import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
+import { FetchMachine } from '~/systems/Core/machines';
 
 import type { TxEthToFuelInputs } from '../services';
 import { TxEthToFuelService } from '../services';
 import { EthTxCache } from '../utils';
-
-import { FetchMachine } from '~/systems/Core/machines';
 
 type MachineContext = {
   ethTxId?: `0x${string}`;
