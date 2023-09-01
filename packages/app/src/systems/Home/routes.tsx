@@ -1,5 +1,4 @@
 import { Navigate, Route } from 'react-router-dom';
-
 import { Pages } from '~/types';
 
 export const homeRoutes = (

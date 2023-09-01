@@ -10,7 +10,6 @@ import {
   Icon,
   Box,
 } from '@fuel-ui/react';
-
 import { shortAddress } from '~/systems/Core/utils';
 
 type AccountSwitchDialogProps = {

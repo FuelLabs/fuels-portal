@@ -1,13 +1,12 @@
 import type { BN } from 'fuels';
 import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
-
-import type { BridgeInputs, PossibleBridgeInputs } from '../services';
-import { BridgeService } from '../services';
-
 import { store } from '~/store';
 import type { FromToNetworks } from '~/systems/Chains';
 import { FetchMachine } from '~/systems/Core/machines';
+
+import { BridgeService } from '../services';
+import type { BridgeInputs, PossibleBridgeInputs } from '../services';
 
 type MachineContext = {
   assetAmount?: BN;

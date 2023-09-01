@@ -1,6 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
 import { Box, Button, Dialog, FuelLogo, Text } from '@fuel-ui/react';
-
 import { VITE_WALLET_INSTALL } from '~/config';
 
 export const FuelInstallDialog = () => (

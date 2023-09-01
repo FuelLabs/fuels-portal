@@ -1,7 +1,6 @@
 import { cssObj } from '@fuel-ui/css';
 import { Card, Text, Image, Button, Box, Icon, Tooltip } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
-
 import { shortAddress } from '~/systems/Core';
 
 type AccountConnectionInputProps = {
@@ -39,7 +38,12 @@ export const AccountConnectionInput = ({
           <Box.Flex align="center" wrap="wrap" justify="space-between">
             <Box.Flex gap="$2" align="center">
               {typeof networkImage === 'string' ? (
-                <Image width="20" height="20" src={networkImage} />
+                <Image
+                  width="20"
+                  height="20"
+                  src={networkImage}
+                  alt={networkName}
+                />
               ) : (
                 networkImage
               )}

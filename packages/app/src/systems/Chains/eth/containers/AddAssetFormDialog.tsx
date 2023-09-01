@@ -9,13 +9,12 @@ import {
   IconButton,
 } from '@fuel-ui/react';
 import { Controller } from 'react-hook-form';
-
-import type { AddAssetFormValues } from '../hooks';
-import { useAddAssetForm, useAssets } from '../hooks';
-
 import { store } from '~/store';
 import { shortAddress } from '~/systems/Core';
 import { useOverlay } from '~/systems/Overlay';
+
+import { useAddAssetForm, useAssets } from '../hooks';
+import type { AddAssetFormValues } from '../hooks';
 
 export function AddAssetFormDialog() {
   const { metadata } = useOverlay<{ assetAddress: string }>();

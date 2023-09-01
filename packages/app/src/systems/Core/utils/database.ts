@@ -1,6 +1,5 @@
 import type { Table } from 'dexie';
 import Dexie from 'dexie';
-
 import type { BridgeAsset } from '~/systems/Bridge';
 
 export class FuelDB extends Dexie {

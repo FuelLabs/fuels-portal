@@ -1,12 +1,11 @@
 import { cssObj } from '@fuel-ui/css';
 import { Box, Dialog, Text } from '@fuel-ui/react';
-
-import { useTxEthToFuel } from '../hooks';
-import { ETH_SYMBOL, ethLogoSrc } from '../utils';
-
 import { BridgeTxOverview, BridgeSteps } from '~/systems/Bridge';
 import { shortAddress } from '~/systems/Core';
 import { useOverlay } from '~/systems/Overlay';
+
+import { useTxEthToFuel } from '../hooks';
+import { ETH_SYMBOL, ethLogoSrc } from '../utils';
 
 export function TxEthToFuelDialog() {
   const { metadata } = useOverlay<{ txId: string }>();
