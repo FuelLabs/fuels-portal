@@ -44,8 +44,8 @@
   },
   "dependencies": {
     "@fuel-ui/config": "0.17.0",
-    "@fuel-ui/css": "0.18.2",
-    "@fuel-ui/react": "0.18.2",
+    "@fuel-ui/css": "0.19.1",
+    "@fuel-ui/react": "0.19.1",
     "@fuel-ui/test-utils": "0.17.0"
   },
   "devDependencies": {
@@ -87,6 +87,7 @@
       ]
     },
     "overrides": {
+      "@adobe/css-tools@<4.3.1": ">=4.3.1",
       "yaml@>=2.0.0-5 <2.2.2": ">=2.2.2",
       "vite@>=4.1.0 <4.1.5": ">=4.1.5",
       "semver@<7.5.2": ">=7.5.2",
