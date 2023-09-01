@@ -15,8 +15,8 @@ import { FuelTxCache } from '../utils';
 import { FetchMachine } from '~/systems/Core/machines';
 
 type MachineContext = {
-  fuelProvider: FuelProvider;
-  fuelTxId: string;
+  fuelProvider?: FuelProvider;
+  fuelTxId?: string;
   fuelTxResult?: TransactionResult;
   fuelLastBlockId?: string;
   messageId?: string;
@@ -83,6 +83,10 @@ export const txFuelToEthMachine = createMachine(
     initial: 'idle',
     states: {
       idle: {
+        always: {
+          cond: 'hasAnalyzeTxInput',
+          target: 'submittingToBridge',
+        },
         on: {
           START_ANALYZE_TX: {
             actions: ['assignAnalyzeTxInput'],
@@ -110,7 +114,7 @@ export const txFuelToEthMachine = createMachine(
                 {
                   actions: ['assignFuelTxResult', 'assignMessageId'],
                   cond: 'hasMessageId',
-                  target: 'checkingSettlement',
+                  target: 'checkingDoneCache',
                 },
               ],
             },
@@ -119,6 +123,19 @@ export const txFuelToEthMachine = createMachine(
                 target: 'waitingFuelTxResult',
               },
             },
+          },
+          checkingDoneCache: {
+            tags: ['isSubmitToBridgeLoading', 'isSubmitToBridgeSelected'],
+            always: [
+              {
+                cond: 'isTxFuelToEthDone',
+                target:
+                  '#(machine).submittingToBridge.checkingSettlement.checkingRelayed.waitingReceive.done',
+              },
+              {
+                target: 'checkingSettlement',
+              },
+            ],
           },
           checkingSettlement: {
             tags: ['isSubmitToBridgeDone'],
@@ -370,6 +387,9 @@ export const txFuelToEthMachine = createMachine(
       hasTxHashMessageRelayed: (ctx, ev) =>
         !!ctx.txHashMessageRelayed || !!ev?.data,
       hasTxMessageRelayed: (_, ev) => !!ev?.data,
+      hasAnalyzeTxInput: (ctx) =>
+        !!ctx.fuelTxId && !!ctx.fuelProvider && !!ctx.ethPublicClient,
+      isTxFuelToEthDone: (ctx) => FuelTxCache.getTxIsDone(ctx.fuelTxId || ''),
     },
     services: {
       waitFuelTxResult: FetchMachine.create<

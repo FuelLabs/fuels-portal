@@ -19,7 +19,7 @@ import {
 export const BridgeTxList = () => {
   const { isConnecting, handlers } = useFuelAccountConnection();
   const {
-    txs: bridgeTxs,
+    bridgeTxs,
     isLoading,
     shouldShowNotConnected,
     shouldShowEmpty,
@@ -47,8 +47,6 @@ export const BridgeTxList = () => {
                 <TxListItemEthToFuel
                   key={`${index}-${txDatum.txHash}`}
                   txHash={txDatum.txHash || ''}
-                  asset={txDatum.asset}
-                  isDone={txDatum.isDone}
                 />
               );
             }
@@ -60,9 +58,6 @@ export const BridgeTxList = () => {
                 <TxListItemFuelToEth
                   key={`${index}-${txDatum.txHash}`}
                   txHash={txDatum.txHash || ''}
-                  asset={txDatum.asset}
-                  isDone={txDatum.isDone}
-                  date={txDatum.date}
                 />
               );
             }

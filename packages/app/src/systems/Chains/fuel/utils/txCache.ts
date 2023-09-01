@@ -2,7 +2,10 @@ const HASH_DONE_KEY_SUBSTRING = 'fuelToEthTx';
 
 export const FuelTxCache = {
   getTxIsDone: (blockHash: string) => {
-    return localStorage.getItem(generateHashDoneKey(blockHash));
+    return (
+      !!blockHash &&
+      localStorage.getItem(generateHashDoneKey(blockHash)) === 'true'
+    );
   },
   setTxIsDone: (blockHash: string) => {
     return localStorage.setItem(generateHashDoneKey(blockHash), 'true');

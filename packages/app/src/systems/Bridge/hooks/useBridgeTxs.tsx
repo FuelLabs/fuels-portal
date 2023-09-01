@@ -1,33 +1,43 @@
+import { useEffect } from 'react';
+
+import type { BridgeTxsMachineState } from '../machines';
+
+import { Services, store } from '~/store';
 import {
+  useEthAccountConnection,
   useFuelAccountConnection,
-  useTxsEthToFuel,
-  useTxsFuelToEth,
 } from '~/systems/Chains';
 
-export const useBridgeTxs = () => {
-  const { isConnected } = useFuelAccountConnection();
-  const { txs: ethToFuelTxs, isLoading: isEthToFuelLoading } =
-    useTxsEthToFuel();
-  const { txs: fuelToEthTxs, isLoading: isFuelToEthLoading } =
-    useTxsFuelToEth();
-  const allTxs = [...(ethToFuelTxs || []), ...(fuelToEthTxs || [])];
-  const txs = allTxs.sort((a, b) => {
-    if (a.date === undefined) {
-      return 1;
-    }
-    if (b.date === undefined) {
-      return -1;
-    }
-    return b.date.getTime() - a.date.getTime();
-  });
+const selectors = {
+  bridgeTxs: (state: BridgeTxsMachineState) => {
+    return state.context.bridgeTxs || [];
+  },
+};
 
-  const isLoading = isEthToFuelLoading || isFuelToEthLoading;
+export const useBridgeTxs = () => {
+  const {
+    isConnected,
+    provider: fuelProvider,
+    address: fuelAddress,
+  } = useFuelAccountConnection();
+  const { publicClient: ethPublicClient } = useEthAccountConnection();
+  const bridgeTxs = store.useSelector(Services.bridgeTxs, selectors.bridgeTxs);
+
+  useEffect(() => {
+    if (!fuelProvider || !ethPublicClient || !fuelAddress) return;
+
+    store.fetchTxs({ fuelProvider, ethPublicClient, fuelAddress });
+  }, [fuelProvider, ethPublicClient, fuelAddress]);
+
+  // TODO: put correct loading here
+  const isLoading = false;
+  // const isLoading = isEthToFuelLoading || isFuelToEthLoading;
 
   return {
-    txs,
+    bridgeTxs,
     isLoading,
     shouldShowNotConnected: !isConnected && !isLoading,
-    shouldShowEmpty: isConnected && !isLoading && txs.length === 0,
-    shouldShowList: !isLoading && isConnected && txs.length > 0,
+    shouldShowEmpty: isConnected && !isLoading && bridgeTxs.length === 0,
+    shouldShowList: !isLoading && isConnected && (bridgeTxs.length || 0) > 0,
   };
 };

@@ -1,18 +1,23 @@
 import { useInterpret, useSelector } from '@xstate/react';
-import { useEffect } from 'react';
-import { useTransaction } from 'wagmi';
 
-import { useFuelAccountConnection } from '../../fuel';
 import type { TxEthToFuelMachineState } from '../machines';
 import { txEthToFuelMachine } from '../machines';
+import { ETH_SYMBOL, ethLogoSrc } from '../utils';
 
-import { useBlocks } from './useBlocks';
-import { useCachedBlocksDates } from './useCachedBlocksDates';
-import { useEthAccountConnection } from './useEthAccountConnection';
+import { Services, store } from '~/store';
+import type { BridgeTxsMachineState } from '~/systems/Bridge';
 
-import { store } from '~/store';
+const bridgeTxsSelectors = {
+  txEthToFuel: (txId?: `0x${string}`) => (state: BridgeTxsMachineState) => {
+    if (!txId) return undefined;
 
-const selectors = {
+    const machine = state.context?.ethToFuelTxRefs?.[txId];
+
+    return machine;
+  },
+};
+
+const txEthToFuelSelectors = {
   status: (state: TxEthToFuelMachineState) => {
     const isSettlementLoading = state.hasTag('isSettlementLoading');
     const isSettlementSelected = state.hasTag('isSettlementSelected');
@@ -35,7 +40,7 @@ const selectors = {
     };
   },
   steps: (state: TxEthToFuelMachineState) => {
-    const status = selectors.status(state);
+    const status = txEthToFuelSelectors.status(state);
     const { ethTxId } = state.context;
 
     if (!ethTxId) return undefined;
@@ -77,70 +82,58 @@ const selectors = {
 
     return amount;
   },
+  blockDate: (state: TxEthToFuelMachineState) => {
+    const { blockDate } = state.context;
+
+    return blockDate;
+  },
+  asset: (state: TxEthToFuelMachineState) => {
+    return {
+      assetAmount: state.context.amount,
+      assetImageSrc: ethLogoSrc,
+      assetSymbol: ETH_SYMBOL,
+    };
+  },
 };
 
-export function useTxEthToFuel({
-  id,
-  skipAnalyzeTx,
-}: {
-  id: string;
-  skipAnalyzeTx?: boolean;
-}) {
+export function useTxEthToFuel({ id }: { id: string }) {
   const txId = id.startsWith('0x') ? (id as `0x${string}`) : undefined;
-  const { publicClient: ethPublicClient } = useEthAccountConnection();
-  const { provider: fuelProvider, address: fuelAddress } =
-    useFuelAccountConnection();
-  const { data: ethTx } = useTransaction({
-    hash: txId,
-  });
+  const fallbackMachine = useInterpret(txEthToFuelMachine);
 
-  const { blockDates, notCachedHashes } = useCachedBlocksDates(
-    ethTx?.blockHash ? [ethTx?.blockHash] : undefined
+  const txEthToFuel = store.useSelector(
+    Services.bridgeTxs,
+    bridgeTxsSelectors.txEthToFuel(txId)
   );
-  const { blocks } = useBlocks(notCachedHashes);
-  const service = useInterpret(txEthToFuelMachine);
-  const steps = useSelector(service, selectors.steps);
-  const status = useSelector(service, selectors.status);
-  const amount = useSelector(service, selectors.amount);
-  useEffect(() => {
-    if (
-      txId &&
-      fuelProvider &&
-      fuelAddress &&
-      !skipAnalyzeTx &&
-      ethPublicClient
-    ) {
-      service.send('START_ANALYZE_TX', {
-        input: {
-          ethTxId: txId,
-          fuelProvider,
-          fuelAddress,
-          ethPublicClient,
-        },
-      });
-    }
-  }, [
-    txId,
-    fuelProvider,
-    fuelAddress,
-    service,
-    ethPublicClient,
-    skipAnalyzeTx,
-  ]);
-
-  const ethBlockDate = ethTx?.blockHash
-    ? blockDates?.[ethTx.blockHash] ||
-      blocks?.find((block) => block.hash === ethTx.blockHash)?.date
-    : undefined;
+  const steps = useSelector(
+    txEthToFuel || fallbackMachine,
+    txEthToFuelSelectors.steps
+  );
+  const status = useSelector(
+    txEthToFuel || fallbackMachine,
+    txEthToFuelSelectors.status
+  );
+  const amount = useSelector(
+    txEthToFuel || fallbackMachine,
+    txEthToFuelSelectors.amount
+  );
+  const date = useSelector(
+    txEthToFuel || fallbackMachine,
+    txEthToFuelSelectors.blockDate
+  );
+  const asset = useSelector(
+    txEthToFuel || fallbackMachine,
+    txEthToFuelSelectors.asset
+  );
 
   return {
     handlers: {
       close: store.closeOverlay,
       openTxEthToFuel: store.openTxEthToFuel,
     },
-    ethBlockDate,
+    date,
     steps,
     status,
     amount,
+    asset,
   };
 }
