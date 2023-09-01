@@ -1,12 +1,11 @@
 import { cssObj } from '@fuel-ui/css';
 import { Box, FuelLogo, IconButton, ButtonLink, Link } from '@fuel-ui/react';
 import { useLocation } from 'react-router-dom';
-
-import { removeTrailingSlash } from '../utils';
-
 import { IS_PREVIEW } from '~/config';
 import { useTheme } from '~/systems/Settings';
 import { Pages } from '~/types';
+
+import { removeTrailingSlash } from '../utils';
 
 export function Header() {
   const location = useLocation();

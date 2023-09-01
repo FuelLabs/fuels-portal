@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import type { BN } from 'fuels';
 import { useMemo } from 'react';
 import { decodeEventLog } from 'viem';
+import { VITE_ETH_FUEL_MESSAGE_PORTAL } from '~/config';
 
 import { useFuelAccountConnection } from '../../fuel';
 import { FUEL_MESSAGE_PORTAL } from '../contracts/FuelMessagePortal';
@@ -9,8 +10,6 @@ import { FUEL_MESSAGE_PORTAL } from '../contracts/FuelMessagePortal';
 import { useBlocks } from './useBlocks';
 import { useCachedBlocksDates } from './useCachedBlocksDates';
 import { useEthAccountConnection } from './useEthAccountConnection';
-
-import { VITE_ETH_FUEL_MESSAGE_PORTAL } from '~/config';
 
 export const useEthDepositLogs = () => {
   const { publicClient: ethPublicClient, paddedAddress: ethPaddedAddress } =

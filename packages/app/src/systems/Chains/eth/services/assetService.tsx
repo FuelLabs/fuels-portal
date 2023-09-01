@@ -1,5 +1,4 @@
 import { isAddress } from 'viem';
-
 import type { BridgeAsset } from '~/systems/Bridge';
 import { db } from '~/systems/Core/utils/database';
 

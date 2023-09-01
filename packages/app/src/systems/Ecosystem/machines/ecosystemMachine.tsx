@@ -1,10 +1,9 @@
 import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
+import { FetchMachine } from '~/systems/Core';
 
 import { PROJECTS } from '../data';
 import type { Project } from '../types';
-
-import { FetchMachine } from '~/systems/Core';
 
 export type EcosystemInputs = {
   filter: {

@@ -1,5 +1,5 @@
 {
-  "extends": "@fuels/ts-config/base.json",
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "module": "commonjs",
     "baseUrl": ".",

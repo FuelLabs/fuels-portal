@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
+import { Services, store } from '~/store';
 
 import type { EcosystemInputs, EcosystemMachineState } from '../machines';
-
-import { Services, store } from '~/store';
 
 const selectors = {
   filteredProjects: (state: EcosystemMachineState) => {
