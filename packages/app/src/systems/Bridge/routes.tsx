@@ -1,8 +1,7 @@
 import { Route } from 'react-router-dom';
+import { Pages } from '~/types';
 
 import { BridgeHome, BridgeTxList, Bridge } from './pages';
-
-import { Pages } from '~/types';
 
 export const bridgeRoutes = (
   <>

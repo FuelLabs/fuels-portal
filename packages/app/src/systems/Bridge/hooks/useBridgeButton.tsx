@@ -1,10 +1,9 @@
 import { useMemo } from 'react';
+import { getChainName } from '~/systems/Chains';
 
 import { BridgeStatus } from '../machines';
 
 import { useBridge } from './useBridge';
-
-import { getChainName } from '~/systems/Chains';
 
 export function useBridgeButton() {
   const {

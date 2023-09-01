@@ -1,9 +1,8 @@
 import { cssObj } from '@fuel-ui/css';
 import { CardList } from '@fuel-ui/react';
+import { ethLogoSrc } from '~/systems/Chains';
 
 import { EthAssetCard } from './EthAssetCard';
-
-import { ethLogoSrc } from '~/systems/Chains';
 
 export default {
   component: EthAssetCard,

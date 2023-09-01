@@ -1,12 +1,11 @@
 import type { StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
+import type { BridgeAsset } from '~/systems/Bridge';
+import { FetchMachine } from '~/systems/Core/machines';
 
 import { AssetList } from '../constants';
 import type { AssetServiceInputs } from '../services';
 import { AssetService } from '../services';
-
-import type { BridgeAsset } from '~/systems/Bridge';
-import { FetchMachine } from '~/systems/Core/machines';
 
 type MachineContext = {
   assetList?: BridgeAsset[];

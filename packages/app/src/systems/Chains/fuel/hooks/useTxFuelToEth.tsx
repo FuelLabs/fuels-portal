@@ -2,6 +2,7 @@ import { useTransaction } from '@fuels-portal/sdk-react';
 import { useInterpret, useSelector } from '@xstate/react';
 import { fromTai64ToUnix, getReceiptsMessageOut } from 'fuels';
 import { useEffect, useMemo } from 'react';
+import { store } from '~/store';
 
 import { useEthAccountConnection } from '../../eth/hooks';
 import type { TxFuelToEthMachineState } from '../machines';
@@ -9,8 +10,6 @@ import { txFuelToEthMachine } from '../machines';
 import { FUEL_UNITS } from '../utils';
 
 import { useFuelAccountConnection } from './useFuelAccountConnection';
-
-import { store } from '~/store';
 
 const selectors = {
   status: (state: TxFuelToEthMachineState) => {

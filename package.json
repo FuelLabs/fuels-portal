@@ -42,14 +42,11 @@
     "storybook": "pnpm --filter=@fuels-portal/bridge storybook",
     "xstate:typegen": "pnpm -r xstate:typegen"
   },
-  "dependencies": {
-    "@fuel-ui/config": "0.17.0",
-    "@fuel-ui/css": "0.19.1",
-    "@fuel-ui/react": "0.19.1",
-    "@fuel-ui/test-utils": "0.17.0"
-  },
   "devDependencies": {
     "@babel/core": "^7.20.12",
+    "@fuels/eslint-plugin": "^0.0.7",
+    "@fuels/jest": "^0.0.7",
+    "@fuels/prettier-config": "^0.0.7",
     "@jest/types": "29.4.2",
     "@nomiclabs/hardhat-etherscan": "^3.1.7",
     "@openzeppelin/hardhat-upgrades": "^2.1.0",
@@ -94,5 +91,8 @@
       "word-wrap": "npm:@aashutoshrathi/word-wrap",
       "pnpm@>=8.0.0 <8.6.8": ">=8.6.8"
     }
+  },
+  "dependencies": {
+    "@fuels/ts-config": "^0.0.7"
   }
 }

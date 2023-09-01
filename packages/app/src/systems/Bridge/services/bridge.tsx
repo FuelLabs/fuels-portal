@@ -1,9 +1,6 @@
 import { bn, DECIMAL_UNITS } from 'fuels';
 import type { Address as FuelAddress, BN } from 'fuels';
 import type { PublicClient, WalletClient } from 'wagmi';
-
-import type { BridgeAsset } from '../types';
-
 import { store } from '~/store';
 import type {
   FromToNetworks,
@@ -16,6 +13,8 @@ import {
   isFuelChain,
   TxEthToFuelService,
 } from '~/systems/Chains';
+
+import type { BridgeAsset } from '../types';
 
 export type PossibleBridgeInputs = {
   assetAmount?: BN;
