@@ -27,6 +27,7 @@
   "dependencies": {
     "@fuel-wallet/sdk": "0.11.1",
     "@tanstack/react-query": "^4.29.5",
+    "compare-versions": "^6.1.0",
     "fuels": "0.53.0",
     "react": "^18.2.0"
   },
