@@ -9,3 +9,4 @@ export * from './useTransaction';
 export * from './useTransactionReceipts';
 export * from './useWallet';
 export * from './useWindowFuel';
+export * from './useNodeInfo';
