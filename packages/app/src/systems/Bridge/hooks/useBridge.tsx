@@ -235,6 +235,8 @@ export function useBridge() {
       changeAssetAddress: store.changeAssetAddress,
       openAssetsDialog: () => openAssetsDialog(fromNetwork),
     },
+    fuelAddress,
+    ethAddress,
     fromNetwork,
     toNetwork,
     isLoading,

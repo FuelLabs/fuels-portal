@@ -53,7 +53,7 @@ function getEthFuelL1Contracts() {
 
 // Export the port to be used on vite server and
 // make it accessible to the playwirght tests
-process.env.PORT = process.env.NODE_ENV === 'test' ? 3001 : 3000;
+process.env.PORT = process.env.NODE_ENV === 'test' ? 3005 : 3004;
 
 // Export the version to be used on database
 // and application level
