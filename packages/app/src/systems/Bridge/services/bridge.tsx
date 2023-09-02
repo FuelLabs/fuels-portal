@@ -81,9 +81,17 @@ export class BridgeService {
       });
 
       if (txId) {
-        store.openTxEthToFuel({
-          txId,
-        });
+        if (fuelWallet) {
+          store.addTxEthToFuel({
+            ethTxId: txId,
+            fuelProvider: fuelWallet.provider,
+            ethPublicClient,
+            fuelAddress,
+          });
+          store.openTxEthToFuel({
+            txId,
+          });
+        }
       }
 
       return;
@@ -97,9 +105,16 @@ export class BridgeService {
       });
 
       if (txId) {
-        store.openTxFuelToEth({
-          txId,
-        });
+        if (fuelWallet) {
+          store.addTxFuelToEth({
+            fuelTxId: txId,
+            fuelProvider: fuelWallet.provider,
+            ethPublicClient,
+          });
+          store.openTxFuelToEth({
+            txId,
+          });
+        }
 
         return;
       }

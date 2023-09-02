@@ -1,16 +1,19 @@
-import { useInterpret, useSelector } from '@xstate/react';
+import { useMemo } from 'react';
 import { store, Services } from '~/store';
 import type { BridgeTxsMachineState } from '~/systems/Bridge';
 
 import type { TxEthToFuelMachineState } from '../machines';
-import { txEthToFuelMachine } from '../machines';
 import { ETH_SYMBOL, ethLogoSrc } from '../utils';
 
 const bridgeTxsSelectors = {
   txEthToFuel: (txId?: `0x${string}`) => (state: BridgeTxsMachineState) => {
     if (!txId) return undefined;
 
-    const machine = state.context?.ethToFuelTxRefs?.[txId];
+    // if (!state.context?.ethToFuelTxRefs) {
+    //   debugger;
+    // }
+
+    const machine = state.context?.ethToFuelTxRefs?.[txId]?.getSnapshot();
 
     return machine;
   },
@@ -97,32 +100,29 @@ const txEthToFuelSelectors = {
 
 export function useTxEthToFuel({ id }: { id: string }) {
   const txId = id.startsWith('0x') ? (id as `0x${string}`) : undefined;
-  const fallbackMachine = useInterpret(txEthToFuelMachine);
 
-  const txEthToFuel = store.useSelector(
+  const txEthToFuelState = store.useSelector(
     Services.bridgeTxs,
     bridgeTxsSelectors.txEthToFuel(txId)
   );
-  const steps = useSelector(
-    txEthToFuel || fallbackMachine,
-    txEthToFuelSelectors.steps
-  );
-  const status = useSelector(
-    txEthToFuel || fallbackMachine,
-    txEthToFuelSelectors.status
-  );
-  const amount = useSelector(
-    txEthToFuel || fallbackMachine,
-    txEthToFuelSelectors.amount
-  );
-  const date = useSelector(
-    txEthToFuel || fallbackMachine,
-    txEthToFuelSelectors.blockDate
-  );
-  const asset = useSelector(
-    txEthToFuel || fallbackMachine,
-    txEthToFuelSelectors.asset
-  );
+
+  const { steps, status, amount, date, asset } = useMemo(() => {
+    if (!txEthToFuelState) return {};
+
+    const steps = txEthToFuelSelectors.steps(txEthToFuelState);
+    const status = txEthToFuelSelectors.status(txEthToFuelState);
+    const amount = txEthToFuelSelectors.amount(txEthToFuelState);
+    const date = txEthToFuelSelectors.blockDate(txEthToFuelState);
+    const asset = txEthToFuelSelectors.asset(txEthToFuelState);
+
+    return {
+      steps,
+      status,
+      amount,
+      date,
+      asset,
+    };
+  }, [txEthToFuelState]);
 
   return {
     handlers: {

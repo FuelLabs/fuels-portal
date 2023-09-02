@@ -1,4 +1,3 @@
-import { useInterpret, useSelector } from '@xstate/react';
 import { fromTai64ToUnix, getReceiptsMessageOut } from 'fuels';
 import { useMemo } from 'react';
 import { store, Services } from '~/store';
@@ -8,13 +7,16 @@ import { useEthAccountConnection } from '../../eth/hooks';
 import { ETH_SYMBOL } from '../../eth/utils/chain';
 import { ethLogoSrc } from '../../eth/utils/logo';
 import type { TxFuelToEthMachineState } from '../machines';
-import { txFuelToEthMachine } from '../machines';
 
 const bridgeTxsSelectors = {
   txFuelToEth: (txId?: string) => (state: BridgeTxsMachineState) => {
     if (!txId) return undefined;
 
-    const machine = state.context?.fuelToEthTxRefs?.[txId];
+    // if (!state.context?.fuelToEthTxRefs) {
+    //   debugger;
+    // }
+
+    const machine = state.context?.fuelToEthTxRefs?.[txId]?.getSnapshot();
 
     return machine;
   },
@@ -126,28 +128,27 @@ const txFuelToEthSelectors = {
 
 export function useTxFuelToEth({ txId }: { txId: string }) {
   const { walletClient: ethWalletClient } = useEthAccountConnection();
-  const fallbackMachine = useInterpret(txFuelToEthMachine);
 
-  const txEthToFuel = store.useSelector(
+  const txFuelToEthState = store.useSelector(
     Services.bridgeTxs,
     bridgeTxsSelectors.txFuelToEth(txId)
   );
-  const status = useSelector(
-    txEthToFuel || fallbackMachine,
-    txFuelToEthSelectors.status
-  );
-  const steps = useSelector(
-    txEthToFuel || fallbackMachine,
-    txFuelToEthSelectors.steps
-  );
-  const fuelTxResult = useSelector(
-    txEthToFuel || fallbackMachine,
-    txFuelToEthSelectors.fuelTxResult
-  );
-  const asset = useSelector(
-    txEthToFuel || fallbackMachine,
-    txFuelToEthSelectors.asset
-  );
+
+  const { steps, status, fuelTxResult, asset } = useMemo(() => {
+    if (!txFuelToEthState) return {};
+
+    const steps = txFuelToEthSelectors.steps(txFuelToEthState);
+    const status = txFuelToEthSelectors.status(txFuelToEthState);
+    const fuelTxResult = txFuelToEthSelectors.fuelTxResult(txFuelToEthState);
+    const asset = txFuelToEthSelectors.asset(txFuelToEthState);
+
+    return {
+      steps,
+      status,
+      fuelTxResult,
+      asset,
+    };
+  }, [txFuelToEthState]);
 
   // TODO: remove this conversion when sdk already returns the date in unix format
   const date = useMemo(

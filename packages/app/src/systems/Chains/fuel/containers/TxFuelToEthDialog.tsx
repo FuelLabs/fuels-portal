@@ -32,8 +32,8 @@ export function TxFuelToEthDialog() {
           />
         </Box.Stack>
       </Dialog.Description>
-      {(status.isWaitingEthWalletApproval ||
-        status.isConfirmTransactionLoading) && (
+      {(status?.isWaitingEthWalletApproval ||
+        status?.isConfirmTransactionLoading) && (
         <Dialog.Footer>
           <Button
             onPress={handlers.relayToEth}

@@ -35,6 +35,18 @@ export type BridgeTxsMachineEvents =
       type: 'FETCH';
       input: BridgeInputs['fetchTxs'];
     }
+  | {
+      type: 'ADD_TX_ETH_TO_FUEL';
+      input: {
+        ethTxId?: `0x${string}`;
+      } & BridgeInputs['fetchTxs'];
+    }
+  | {
+      type: 'ADD_TX_FUEL_TO_ETH';
+      input: {
+        fuelTxId?: string;
+      } & Omit<BridgeInputs['fetchTxs'], 'fuelAddress'>;
+    }
   | TxEthToFuelMachineEvents
   | TxFuelToEthMachineEvents;
 
@@ -56,6 +68,12 @@ export const bridgeTxsMachine = createMachine(
           FETCH: {
             actions: ['assignFetchInputs'],
             target: 'fetching',
+          },
+          ADD_TX_ETH_TO_FUEL: {
+            actions: ['assignTxEthToFuel'],
+          },
+          ADD_TX_FUEL_TO_ETH: {
+            actions: ['assignTxFuelToEth'],
           },
         },
       },
@@ -145,6 +163,55 @@ export const bridgeTxsMachine = createMachine(
           return {
             ...(ctx.fuelToEthTxRefs || {}),
             ...newRefs,
+          };
+        },
+      }),
+      assignTxEthToFuel: assign({
+        ethToFuelTxRefs: (ctx, ev) => {
+          const { ethTxId, fuelAddress, fuelProvider, ethPublicClient } =
+            ev.input || {};
+          if (!ethTxId || ctx.ethToFuelTxRefs?.[ethTxId])
+            return ctx.ethToFuelTxRefs;
+
+          const newRef = {
+            [ethTxId]: spawn(
+              txEthToFuelMachine.withContext({
+                ethTxId: ethTxId as `0x${string}`,
+                fuelAddress: fuelAddress,
+                fuelProvider: fuelProvider,
+                ethPublicClient: ethPublicClient,
+              }),
+              { name: ethTxId }
+            ),
+          };
+
+          return {
+            ...(ctx.ethToFuelTxRefs || {}),
+            ...newRef,
+          };
+        },
+      }),
+      assignTxFuelToEth: assign({
+        fuelToEthTxRefs: (ctx, ev) => {
+          const { fuelTxId, fuelProvider, ethPublicClient } = ev.input || {};
+
+          if (!fuelTxId || ctx.fuelToEthTxRefs?.[fuelTxId])
+            return ctx.fuelToEthTxRefs;
+
+          const newRef = {
+            [fuelTxId]: spawn(
+              txFuelToEthMachine.withContext({
+                fuelTxId: fuelTxId as `0x${string}`,
+                fuelProvider: fuelProvider,
+                ethPublicClient: ethPublicClient,
+              }),
+              { name: fuelTxId }
+            ),
+          };
+
+          return {
+            ...(ctx.fuelToEthTxRefs || {}),
+            ...newRef,
           };
         },
       }),

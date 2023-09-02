@@ -7,7 +7,7 @@ type BridgeTxOverviewProps = {
   transactionId: BigNumberish;
   date?: Date;
   isDeposit?: boolean;
-  asset: {
+  asset?: {
     assetAmount?: string;
     assetImageSrc?: string;
     assetSymbol?: string;
@@ -38,7 +38,7 @@ export const BridgeTxOverview = ({
             <Image
               width={18}
               height={18}
-              src={asset.assetImageSrc}
+              src={asset?.assetImageSrc}
               alt={'Deposit'}
             />
             <Icon icon="ArrowNarrowRight" />
@@ -52,7 +52,7 @@ export const BridgeTxOverview = ({
             <Image
               width={18}
               height={18}
-              src={asset.assetImageSrc}
+              src={asset?.assetImageSrc}
               alt={'withdrawal'}
             />
           </Box.Flex>
@@ -64,13 +64,13 @@ export const BridgeTxOverview = ({
           <Image
             width={18}
             height={18}
-            src={asset.assetImageSrc}
-            alt={asset.assetSymbol}
+            src={asset?.assetImageSrc}
+            alt={asset?.assetSymbol}
           />
           <Text aria-label="Asset amount" css={styles.infoText}>
-            {asset.assetAmount}
+            {asset?.assetAmount}
           </Text>
-          <Text css={styles.infoText}>{asset.assetSymbol}</Text>
+          <Text css={styles.infoText}>{asset?.assetSymbol}</Text>
         </Box.Flex>
       </Box.Flex>
     </Box.Stack>
