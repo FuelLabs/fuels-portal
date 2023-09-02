@@ -1,6 +1,7 @@
 import { useInterpret, useSelector } from '@xstate/react';
 import { useEffect } from 'react';
 import { useTransaction } from 'wagmi';
+import { store } from '~/store';
 
 import { useFuelAccountConnection } from '../../fuel';
 import type { TxEthToFuelMachineState } from '../machines';
@@ -9,8 +10,6 @@ import { txEthToFuelMachine } from '../machines';
 import { useBlocks } from './useBlocks';
 import { useCachedBlocksDates } from './useCachedBlocksDates';
 import { useEthAccountConnection } from './useEthAccountConnection';
-
-import { store } from '~/store';
 
 const selectors = {
   status: (state: TxEthToFuelMachineState) => {

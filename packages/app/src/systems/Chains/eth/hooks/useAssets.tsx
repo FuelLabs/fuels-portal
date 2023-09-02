@@ -1,6 +1,6 @@
-import type { EthAssetListMachineState } from '../machines';
-
 import { Services, store } from '~/store';
+
+import type { EthAssetListMachineState } from '../machines';
 
 const selectors = {
   assetList: (state: EthAssetListMachineState) => state.context.assetList || [],

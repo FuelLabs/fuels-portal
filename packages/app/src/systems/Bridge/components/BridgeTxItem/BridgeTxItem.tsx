@@ -1,7 +1,6 @@
 import { cssObj } from '@fuel-ui/css';
 import { Box, Text, Image, Icon, CardList } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
-
 import { calculateDateDiff } from '~/systems/Core';
 
 type BridgeTxItemProps = {
@@ -39,7 +38,12 @@ export const BridgeTxItem = ({
           </Box.Flex>
           <Box.Flex align="center" gap="$1">
             {typeof asset.assetImageSrc === 'string' ? (
-              <Image width={18} height={18} src={asset.assetImageSrc} />
+              <Image
+                width={18}
+                height={18}
+                src={asset.assetImageSrc}
+                alt={asset.assetSymbol}
+              />
             ) : (
               asset.assetImageSrc
             )}

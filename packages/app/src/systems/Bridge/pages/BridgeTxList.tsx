@@ -1,13 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
 import { CardList } from '@fuel-ui/react';
-
-import {
-  BridgeListEmpty,
-  BridgeTxItemsLoading,
-  BridgeTxListNotConnected,
-} from '../components';
-import { useBridgeTxs } from '../hooks';
-
 import {
   useFuelAccountConnection,
   TxListItemEthToFuel,
@@ -15,6 +7,13 @@ import {
   isFuelChain,
   TxListItemFuelToEth,
 } from '~/systems/Chains';
+
+import {
+  BridgeListEmpty,
+  BridgeTxItemsLoading,
+  BridgeTxListNotConnected,
+} from '../components';
+import { useBridgeTxs } from '../hooks';
 
 export const BridgeTxList = () => {
   const { isConnecting, handlers } = useFuelAccountConnection();

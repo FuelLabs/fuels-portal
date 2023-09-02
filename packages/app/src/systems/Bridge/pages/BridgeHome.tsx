@@ -3,7 +3,6 @@ import { ButtonLink, Tabs, Heading } from '@fuel-ui/react';
 import { useNodeInfo } from '@fuels-portal/sdk-react';
 import type { ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
-
 import { VITE_FUEL_VERSION } from '~/config';
 import { FuelVersionDialog } from '~/systems/Chains/fuel/containers/FuelVersionDialog';
 import { Layout, removeTrailingSlash } from '~/systems/Core';
