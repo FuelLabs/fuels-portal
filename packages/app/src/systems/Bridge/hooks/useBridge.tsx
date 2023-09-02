@@ -2,11 +2,6 @@ import type { BN } from 'fuels';
 import { bn, DECIMAL_UNITS } from 'fuels';
 import { useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-
-import type { BridgeMachineState } from '../machines';
-import { BridgeStatus } from '../machines';
-import { getChainFromUrlParam } from '../utils';
-
 import { Services, store } from '~/store';
 import type { SupportedChain } from '~/systems/Chains';
 import {
@@ -18,6 +13,10 @@ import {
   FUEL_CHAIN,
 } from '~/systems/Chains';
 import { Pages } from '~/types';
+
+import { BridgeStatus } from '../machines';
+import type { BridgeMachineState } from '../machines';
+import { getChainFromUrlParam } from '../utils';
 
 const selectors = {
   fromNetwork: (state: BridgeMachineState) => state.context?.fromNetwork,
@@ -235,6 +234,8 @@ export function useBridge() {
       changeAssetAddress: store.changeAssetAddress,
       openAssetsDialog: () => openAssetsDialog(fromNetwork),
     },
+    fuelAddress,
+    ethAddress,
     fromNetwork,
     toNetwork,
     isLoading,

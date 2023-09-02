@@ -1,6 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
 import { Dialog } from '@fuel-ui/react';
-
 import {
   EthAssetsDialog,
   FuelInstallDialog,

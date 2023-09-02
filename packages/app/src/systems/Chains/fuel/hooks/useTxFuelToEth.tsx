@@ -1,15 +1,14 @@
 import { useInterpret, useSelector } from '@xstate/react';
 import { fromTai64ToUnix, getReceiptsMessageOut } from 'fuels';
 import { useMemo } from 'react';
+import { store, Services } from '~/store';
+import type { BridgeTxsMachineState } from '~/systems/Bridge';
 
 import { useEthAccountConnection } from '../../eth/hooks';
 import { ETH_SYMBOL } from '../../eth/utils/chain';
 import { ethLogoSrc } from '../../eth/utils/logo';
 import type { TxFuelToEthMachineState } from '../machines';
 import { txFuelToEthMachine } from '../machines';
-
-import { Services, store } from '~/store';
-import type { BridgeTxsMachineState } from '~/systems/Bridge';
 
 const bridgeTxsSelectors = {
   txFuelToEth: (txId?: string) => (state: BridgeTxsMachineState) => {

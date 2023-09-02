@@ -7,4 +7,5 @@ export const QUERY_KEYS = {
   wallet: 'wallet',
   transaction: 'transaction',
   transactionReceipts: 'transactionReceipts',
+  nodeInfo: 'nodeInfo',
 };

@@ -10,13 +10,12 @@ import {
 } from 'fuels';
 import type { WalletClient } from 'viem';
 import type { PublicClient as EthPublicClient } from 'wagmi';
+import { VITE_ETH_FUEL_MESSAGE_PORTAL } from '~/config';
 
 import { FUEL_MESSAGE_PORTAL } from '../../eth/contracts/FuelMessagePortal';
 import { TxEthToFuelService } from '../../eth/services';
 import { createRelayMessageParams } from '../../eth/utils/relayMessage';
 import { getBlock } from '../utils';
-
-import { VITE_ETH_FUEL_MESSAGE_PORTAL } from '~/config';
 
 export type TxFuelToEthInputs = {
   create: {

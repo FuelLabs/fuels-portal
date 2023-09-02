@@ -1,11 +1,10 @@
 import { cssObj } from '@fuel-ui/css';
 import { Dialog, Box, Button, Text } from '@fuel-ui/react';
-
-import { useTxFuelToEth } from '../hooks';
-
 import { BridgeSteps, BridgeTxOverview } from '~/systems/Bridge';
 import { shortAddress } from '~/systems/Core';
 import { useOverlay } from '~/systems/Overlay';
+
+import { useTxFuelToEth } from '../hooks';
 
 export function TxFuelToEthDialog() {
   const { metadata } = useOverlay<{ txId: string }>();

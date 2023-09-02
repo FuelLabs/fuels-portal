@@ -5,9 +5,6 @@ import type {
   Provider as FuelProvider,
 } from 'fuels';
 import type { PublicClient, WalletClient } from 'wagmi';
-
-import type { BridgeAsset, BridgeTx } from '../types';
-
 import { store } from '~/store';
 import type {
   FromToNetworks,
@@ -23,6 +20,8 @@ import {
   ETH_CHAIN,
   FUEL_CHAIN,
 } from '~/systems/Chains';
+
+import type { BridgeAsset, BridgeTx } from '../types';
 
 export type PossibleBridgeInputs = {
   assetAmount?: BN;

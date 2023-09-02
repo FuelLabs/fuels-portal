@@ -1,11 +1,10 @@
 import { useInterpret, useSelector } from '@xstate/react';
+import { store, Services } from '~/store';
+import type { BridgeTxsMachineState } from '~/systems/Bridge';
 
 import type { TxEthToFuelMachineState } from '../machines';
 import { txEthToFuelMachine } from '../machines';
 import { ETH_SYMBOL, ethLogoSrc } from '../utils';
-
-import { Services, store } from '~/store';
-import type { BridgeTxsMachineState } from '~/systems/Bridge';
 
 const bridgeTxsSelectors = {
   txEthToFuel: (txId?: `0x${string}`) => (state: BridgeTxsMachineState) => {

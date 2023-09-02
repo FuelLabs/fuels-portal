@@ -33,7 +33,7 @@ export const EthAssetCard = ({
       <Box.Flex align="center" justify="space-between" css={{ width: '$full' }}>
         <Box.Flex gap="$2" align="center">
           {imageSrc ? (
-            <Image src={imageSrc} />
+            <Image src={imageSrc} alt={name} />
           ) : (
             <Avatar.Generated size={20} hash={hash || ''} />
           )}
