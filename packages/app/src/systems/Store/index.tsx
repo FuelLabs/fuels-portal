@@ -1,4 +1,4 @@
-import { createStore } from '@fuels-portal/store';
+import { createStore } from '@fuels/react-xstore';
 import {
   bridgeMachine,
   bridgeEvents,

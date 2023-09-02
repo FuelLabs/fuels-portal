@@ -2,15 +2,14 @@ import type { Address as FuelAddress, Provider as FuelProvider } from 'fuels';
 import type { PublicClient } from 'wagmi';
 import type { ActorRefFrom, InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine, spawn } from 'xstate';
-
-import { BridgeService, type BridgeInputs } from '../services';
-import type { BridgeTx } from '../types';
-
 import type { TxFuelToEthMachineEvents } from '~/systems/Chains';
 import { isEthChain, isFuelChain, txFuelToEthMachine } from '~/systems/Chains';
 import type { TxEthToFuelMachineEvents } from '~/systems/Chains/eth/machines';
 import { txEthToFuelMachine } from '~/systems/Chains/eth/machines';
 import { FetchMachine } from '~/systems/Core';
+
+import { BridgeService, type BridgeInputs } from '../services';
+import type { BridgeTx } from '../types';
 
 export type BridgeTxsMachineContext = {
   ethToFuelTxRefs: {
@@ -61,6 +60,7 @@ export const bridgeTxsMachine = createMachine(
         },
       },
       fetching: {
+        tags: ['isLoading'],
         invoke: {
           src: 'fetchTxs',
           data: {

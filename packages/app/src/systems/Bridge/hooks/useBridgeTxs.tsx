@@ -1,16 +1,18 @@
 import { useEffect } from 'react';
-
-import type { BridgeTxsMachineState } from '../machines';
-
 import { Services, store } from '~/store';
 import {
   useEthAccountConnection,
   useFuelAccountConnection,
 } from '~/systems/Chains';
 
+import type { BridgeTxsMachineState } from '../machines';
+
 const selectors = {
   bridgeTxs: (state: BridgeTxsMachineState) => {
     return state.context.bridgeTxs || [];
+  },
+  isLoading: (state: BridgeTxsMachineState) => {
+    return state.hasTag('isLoading');
   },
 };
 
@@ -22,16 +24,13 @@ export const useBridgeTxs = () => {
   } = useFuelAccountConnection();
   const { publicClient: ethPublicClient } = useEthAccountConnection();
   const bridgeTxs = store.useSelector(Services.bridgeTxs, selectors.bridgeTxs);
+  const isLoading = store.useSelector(Services.bridgeTxs, selectors.isLoading);
 
   useEffect(() => {
     if (!fuelProvider || !ethPublicClient || !fuelAddress) return;
 
     store.fetchTxs({ fuelProvider, ethPublicClient, fuelAddress });
   }, [fuelProvider, ethPublicClient, fuelAddress]);
-
-  // TODO: put correct loading here
-  const isLoading = false;
-  // const isLoading = isEthToFuelLoading || isFuelToEthLoading;
 
   return {
     bridgeTxs,
