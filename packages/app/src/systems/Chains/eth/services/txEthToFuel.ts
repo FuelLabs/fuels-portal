@@ -260,7 +260,7 @@ export class TxEthToFuelService {
       blockHash: latestBlockId,
       providerUrl: fuelProvider.url,
     });
-    const fuelLatestDAHeight = fuelLatestBlock.header.daHeight;
+    const fuelLatestDAHeight = fuelLatestBlock?.header?.daHeight;
 
     return bn(fuelLatestDAHeight).gte(ethDepositBlockHeight);
   }
