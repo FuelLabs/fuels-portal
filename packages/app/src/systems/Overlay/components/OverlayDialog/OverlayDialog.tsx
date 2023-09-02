@@ -41,5 +41,6 @@ const styles = {
     minHeight: OVERLAY_HEIGHT,
     maxWidth: OVERLAY_WIDTH,
     maxHeight: 'none',
+    backgroundColor: '$cardBg',
   }),
 };

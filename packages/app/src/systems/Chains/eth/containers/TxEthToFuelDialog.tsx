@@ -17,7 +17,7 @@ export function TxEthToFuelDialog() {
     <>
       <Dialog.Close aria-label="Close Transaction Dialog" />
       <Dialog.Heading>
-        Transaction: {shortAddress(metadata.txId)}
+        Deposit
         <Box css={styles.divider} />
       </Dialog.Heading>
       <Dialog.Description>
