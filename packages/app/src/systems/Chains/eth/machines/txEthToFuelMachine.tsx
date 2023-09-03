@@ -183,7 +183,7 @@ export const txEthToFuelMachine = createMachine(
     },
     guards: {
       hasFuelMessage: (ctx, ev) => !!ctx.fuelMessage || !!ev?.data,
-      hasEthTxNonce: (ctx, ev) => !!ctx.ethTxNonce || !!ev?.data,
+      hasEthTxNonce: (ctx, ev) => !!ctx.ethTxNonce || !!ev?.data.depositNonce,
       hasAnalyzeTxInput: (ctx) =>
         !!ctx.ethTxId &&
         !!ctx.fuelAddress &&
