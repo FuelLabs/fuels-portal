@@ -5,7 +5,6 @@ import type { FromToNetworks } from '../Chains';
 import type { Store } from '../Store';
 import { Services } from '../Store';
 
-import type { BridgeTxsMachineContext } from './machines';
 import type { BridgeInputs, PossibleBridgeInputs } from './services';
 
 export function bridgeEvents(store: Store) {
@@ -55,13 +54,20 @@ export function bridgeEvents(store: Store) {
 
       // TODO: make store.send function support this last object prop
       const service = store.services[Services.bridgeTxs];
-      service.send(
-        { type: 'RELAY_TO_ETH', input },
-        {
-          to: (context: BridgeTxsMachineContext) =>
-            context.fuelToEthTxRefs?.[fuelTxId],
-        }
-      );
+      const snapshot = service.getSnapshot();
+      const txFuelToEthMachine = snapshot?.context.fuelToEthTxRefs?.[fuelTxId];
+
+      txFuelToEthMachine.send({ type: 'RELAY_TO_ETH', input });
+
+      // service.send(
+      //   { type: 'RELAY_TO_ETH', input },
+      //   {
+      //     to: (context: BridgeTxsMachineContext) => {
+      //       debugger;
+      //       return context.fuelToEthTxRefs?.[fuelTxId];
+      //     },
+      //   }
+      // );
     },
   };
 }
