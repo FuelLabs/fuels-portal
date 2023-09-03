@@ -16,7 +16,7 @@ export const TxListItemEthToFuel = ({ txHash }: TxListItemEthToFuelProps) => {
   const bridgeTxStatus = steps?.find(({ isSelected }) => !!isSelected);
 
   function getStatusComponent() {
-    if (status.isReceiveDone)
+    if (status?.isReceiveDone)
       return (
         <Text fontSize="xs" color="intentsBase11">
           Settled
@@ -40,7 +40,7 @@ export const TxListItemEthToFuel = ({ txHash }: TxListItemEthToFuelProps) => {
           width={18}
           height={18}
           src={ethLogoSrc}
-          alt={asset.assetSymbol}
+          alt={asset?.assetSymbol}
         />
       }
       toLogo={<FuelLogo size={17} />}

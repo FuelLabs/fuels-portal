@@ -7,10 +7,10 @@ type BridgeTxItemProps = {
   date?: Date;
   fromLogo: ReactNode;
   toLogo: ReactNode;
-  asset: {
-    assetImageSrc: ReactNode | string;
+  asset?: {
+    assetImageSrc?: ReactNode | string;
     assetAmount?: string;
-    assetSymbol: string;
+    assetSymbol?: string;
   };
   onClick: () => void;
   status: ReactNode;
