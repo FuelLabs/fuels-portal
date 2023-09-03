@@ -6,7 +6,11 @@ export const useConnect = () => {
   const { fuel } = useFuel();
 
   const { mutate, ...mutateProps } = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (connectorName?: string) => {
+      if (connectorName) {
+        localStorage.setItem('connector', connectorName);
+        await fuel?.selectConnector(connectorName);
+      }
       return fuel?.connect();
     },
   });
