@@ -94,7 +94,7 @@ export const bridgeTxsMachine = createMachine(
               target: 'idle',
             },
             {
-              actions: ['assignEthToFuelTxRefs', 'assignBridgeTxs'],
+              actions: ['assignTxMachines', 'assignBridgeTxs'],
               target: 'idle',
             },
           ],
@@ -109,7 +109,7 @@ export const bridgeTxsMachine = createMachine(
         ethPublicClient: ev.input?.ethPublicClient || ctx.ethPublicClient,
         fuelAddress: ev.input?.fuelAddress || ctx.fuelAddress,
       })),
-      assignEthToFuelTxRefs: assign({
+      assignTxMachines: assign({
         ethToFuelTxRefs: (ctx, ev) => {
           const ethToFuelBridgeTxs = ev.data.filter(({ fromNetwork }) =>
             isEthChain(fromNetwork)
@@ -119,6 +119,7 @@ export const bridgeTxsMachine = createMachine(
             // safely avoid overriding instance
             if (ctx.ethToFuelTxRefs?.[tx.txHash]) return prev;
 
+            console.log('LIST: creating machine Eth To Fuel: ' + tx.txHash);
             return {
               ...prev,
               [tx.txHash]: spawn(
@@ -128,7 +129,7 @@ export const bridgeTxsMachine = createMachine(
                   fuelProvider: ctx.fuelProvider,
                   ethPublicClient: ctx.ethPublicClient,
                 }),
-                { name: tx.txHash }
+                { name: tx.txHash, sync: true }
               ),
             };
           }, {});
@@ -147,6 +148,7 @@ export const bridgeTxsMachine = createMachine(
             // safely avoid overriding instance
             if (ctx.fuelToEthTxRefs?.[tx.txHash]) return prev;
 
+            console.log('LIST: creating machine Fuel To Eth: ' + tx.txHash);
             return {
               ...prev,
               [tx.txHash]: spawn(
@@ -155,7 +157,7 @@ export const bridgeTxsMachine = createMachine(
                   fuelProvider: ctx.fuelProvider,
                   ethPublicClient: ctx.ethPublicClient,
                 }),
-                { name: tx.txHash }
+                { name: tx.txHash, sync: true }
               ),
             };
           }, {});
@@ -173,6 +175,7 @@ export const bridgeTxsMachine = createMachine(
           if (!ethTxId || ctx.ethToFuelTxRefs?.[ethTxId])
             return ctx.ethToFuelTxRefs;
 
+          console.log('NEW: creating machine Fuel To Eth: ' + ethTxId);
           const newRef = {
             [ethTxId]: spawn(
               txEthToFuelMachine.withContext({
@@ -181,7 +184,7 @@ export const bridgeTxsMachine = createMachine(
                 fuelProvider: fuelProvider,
                 ethPublicClient: ethPublicClient,
               }),
-              { name: ethTxId }
+              { name: ethTxId, sync: true }
             ),
           };
 
@@ -198,6 +201,7 @@ export const bridgeTxsMachine = createMachine(
           if (!fuelTxId || ctx.fuelToEthTxRefs?.[fuelTxId])
             return ctx.fuelToEthTxRefs;
 
+          console.log('NEW: creating machine Fuel To Eth: ' + fuelTxId);
           const newRef = {
             [fuelTxId]: spawn(
               txFuelToEthMachine.withContext({
@@ -205,7 +209,7 @@ export const bridgeTxsMachine = createMachine(
                 fuelProvider: fuelProvider,
                 ethPublicClient: ethPublicClient,
               }),
-              { name: fuelTxId }
+              { name: fuelTxId, sync: true }
             ),
           };
 
