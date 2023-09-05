@@ -44,9 +44,9 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",
-    "@fuels/eslint-plugin": "^0.0.7",
-    "@fuels/jest": "^0.0.7",
-    "@fuels/prettier-config": "^0.0.7",
+    "@fuels/eslint-plugin": "^0.0.8",
+    "@fuels/jest": "^0.0.8",
+    "@fuels/prettier-config": "^0.0.8",
     "@jest/types": "29.4.2",
     "@nomiclabs/hardhat-etherscan": "^3.1.7",
     "@openzeppelin/hardhat-upgrades": "^2.1.0",
@@ -93,6 +93,6 @@
     }
   },
   "dependencies": {
-    "@fuels/ts-config": "^0.0.7"
+    "@fuels/ts-config": "^0.0.8"
   }
 }
