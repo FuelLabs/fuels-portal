@@ -20,7 +20,7 @@
     "./packages/*"
   ],
   "scripts": {
-    "dev": "turbo run dev",
+    "dev": "./scripts/dev.sh",
     "dev:notification": "pnpm --filter=notification-service dev:notification",
     "build": "turbo run build",
     "build:preview": "turbo run build:preview",
