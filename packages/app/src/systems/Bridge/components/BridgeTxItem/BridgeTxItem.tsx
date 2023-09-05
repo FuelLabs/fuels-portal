@@ -25,39 +25,35 @@ export const BridgeTxItem = ({
   status,
 }: BridgeTxItemProps) => {
   return (
-    <CardList.Item onClick={onClick} css={styles.root} variant="outlined">
-      <Box.Flex css={styles.wrapper}>
-        <Box css={styles.ageColumn}>
-          <Text css={styles.ageText}>{calculateDateDiff(date)}</Text>
-        </Box>
-        <Box.Flex css={styles.txColumn}>
-          <Box.Flex>
-            {fromLogo}
-            <Icon icon="ArrowNarrowRight" />
-            {toLogo}
-          </Box.Flex>
-          <Box.Flex align="center" gap="$1">
-            {typeof asset.assetImageSrc === 'string' ? (
-              <Image
-                width={18}
-                height={18}
-                src={asset.assetImageSrc}
-                alt={asset.assetSymbol}
-              />
-            ) : (
-              asset.assetImageSrc
-            )}
-            <Text
-              aria-label="Asset amount"
-              fontSize="sm"
-              css={styles.assetAmountText}
-            >
-              {asset.assetAmount} {asset.assetSymbol}
-            </Text>
-          </Box.Flex>
-          <Box.Flex css={styles.statusColumn} align="center" justify="flex-end">
-            {status}
-          </Box.Flex>
+    <CardList.Item onClick={onClick} css={styles.cardItem}>
+      <Box.Flex gap={'$1'}>
+        {fromLogo}
+        <Icon icon="ArrowNarrowRight" />
+        {toLogo}
+      </Box.Flex>
+      <Box.Flex align="center" gap="$1">
+        {typeof asset.assetImageSrc === 'string' ? (
+          <Image
+            width={18}
+            height={18}
+            src={asset.assetImageSrc}
+            alt={asset.assetSymbol}
+          />
+        ) : (
+          asset.assetImageSrc
+        )}
+        <Text
+          aria-label="Asset amount"
+          fontSize="sm"
+          css={styles.assetAmountText}
+        >
+          {asset.assetAmount} {asset.assetSymbol}
+        </Text>
+      </Box.Flex>
+      <Box.Flex css={styles.statusTime} justify={'space-between'}>
+        <Text css={styles.ageText}>{calculateDateDiff(date)}</Text>
+        <Box.Flex css={styles.statusColumn} align="center" justify="flex-end">
+          {status}
         </Box.Flex>
       </Box.Flex>
     </CardList.Item>
@@ -65,47 +61,29 @@ export const BridgeTxItem = ({
 };
 
 const styles = cssObj({
-  root: cssObj({
-    display: 'flex',
-
-    '@md': {
-      alignItems: 'center',
-      p: '$4 !important',
-    },
-  }),
-  wrapper: cssObj({
-    gap: '$0',
+  cardItem: cssObj({
+    // This mean height ensure that the component will
+    // have the same size of the loader
+    minHeight: 24,
+    gap: '$6',
     alignItems: 'center',
+  }),
+  statusTime: cssObj({
     flex: 1,
-    flexWrap: 'wrap',
-    '@md': {
-      flexWrap: 'nowrap',
+    '@media (max-width: 400px)': {
+      flexDirection: 'column-reverse',
+      flexWrap: 'wrap',
+      alignItems: 'flex-end',
+      gap: '$1',
     },
   }),
-  ageColumn: {
-    flex: '1 0 100%',
-
-    '@md': {
-      flex: '0 0 108px',
-      pr: '$1',
-    },
-  },
+  line: cssObj({
+    flex: 1,
+  }),
   ageText: cssObj({
     fontSize: '$xs',
     color: '$intentsBase12',
   }),
-  txColumn: cssObj({
-    gap: '$2',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flex: 1,
-  }),
-  directionInfo: cssObj({
-    gap: '$1',
-  }),
-  statusColumn: {
-    flex: '0 0 90px',
-  },
   assetAmountText: cssObj({
     color: '$intentsBase12',
   }),

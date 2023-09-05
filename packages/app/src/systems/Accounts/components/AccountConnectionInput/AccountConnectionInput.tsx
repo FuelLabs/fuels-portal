@@ -93,7 +93,8 @@ const styles = {
   root: cssObj({
     minHeight: '$15',
     overflowX: 'hidden',
-    backgroundColor: '$cardBg !important',
+    backgroundColor: '$inputBaseBg !important',
+    borderColor: '$inputBaseBorder !important',
   }),
   cardBody: cssObj({
     px: '$3',

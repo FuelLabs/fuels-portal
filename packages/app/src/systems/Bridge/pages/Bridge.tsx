@@ -52,7 +52,7 @@ export const Bridge = () => {
             </Box.Stack>
           )}
           <Box.Stack gap="$2">
-            <Text color="intentsBase12">Asset</Text>
+            <Text color="intentsBase12">Asset amount</Text>
             <InputAmount
               isDisabled={!ethAddress && !fuelAddress}
               balance={assetBalance}

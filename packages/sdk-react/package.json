@@ -24,14 +24,18 @@
     "build": "pnpm ts:check && tsup --dts",
     "ts:check": "pnpm tsc --noEmit"
   },
+  "peerDependencies": {
+    "fuels": ">=0.54.0",
+    "@fuel-wallet/sdk": ">=0.12.0"
+  },
   "dependencies": {
-    "@fuel-wallet/sdk": "0.12.2",
     "@tanstack/react-query": "^4.29.5",
     "compare-versions": "^6.1.0",
-    "fuels": "0.53.0",
     "react": "^18.2.0"
   },
   "devDependencies": {
-    "tsup": "^6.5.0"
+    "@fuel-wallet/sdk": "0.12.3",
+    "tsup": "^6.5.0",
+    "fuels": "0.54.1"
   }
 }

@@ -76,9 +76,11 @@ export const BridgeTxList = () => {
 
 const styles = {
   cardList: cssObj({
-    // width: '328px',
-    // '@md': {
-    //   width: '95%',
-    // },
+    cursor: 'pointer',
+    userSelect: 'none',
+
+    ':hover': {
+      backgroundColor: '$intentsBase3',
+    },
   }),
 };

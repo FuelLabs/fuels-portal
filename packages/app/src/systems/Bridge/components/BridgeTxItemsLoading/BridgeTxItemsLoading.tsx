@@ -10,30 +10,30 @@ export const BridgeTxItemsLoading = () => {
     <Box.Stack justify="center" gap="$4">
       <ContentLoader
         speed={2}
-        height="24px"
+        height="58"
         width="100%"
         backgroundColor={currentColors.intentsBase3}
         foregroundColor={currentColors.intentsBase5}
       >
-        <ContentLoader.Rect width="100%" height="24" rx="4" />
+        <ContentLoader.Rect width="100%" height="58" rx="4" />
       </ContentLoader>
       <ContentLoader
         speed={2}
-        height="24px"
+        height="58"
         width="100%"
         backgroundColor={currentColors.intentsBase2}
         foregroundColor={currentColors.intentsBase4}
       >
-        <ContentLoader.Rect width="100%" height="24" rx="4" />
+        <ContentLoader.Rect width="100%" height="58" rx="4" />
       </ContentLoader>
       <ContentLoader
         speed={2}
-        height="24px"
+        height="58"
         width="100%"
         backgroundColor={currentColors.intentsBase1}
         foregroundColor={currentColors.intentsBase3}
       >
-        <ContentLoader.Rect width="100%" height="24" rx="4" />
+        <ContentLoader.Rect width="100%" height="58" rx="4" />
       </ContentLoader>
     </Box.Stack>
   );
