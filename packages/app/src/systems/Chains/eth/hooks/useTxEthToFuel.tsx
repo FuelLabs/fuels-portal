@@ -9,10 +9,6 @@ const bridgeTxsSelectors = {
   txEthToFuel: (txId?: `0x${string}`) => (state: BridgeTxsMachineState) => {
     if (!txId) return undefined;
 
-    // if (!state.context?.ethToFuelTxRefs) {
-    //   debugger;
-    // }
-
     const machine = state.context?.ethToFuelTxRefs?.[txId]?.getSnapshot();
 
     return machine;

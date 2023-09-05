@@ -58,16 +58,6 @@ export function bridgeEvents(store: Store) {
       const txFuelToEthMachine = snapshot?.context.fuelToEthTxRefs?.[fuelTxId];
 
       txFuelToEthMachine.send({ type: 'RELAY_TO_ETH', input });
-
-      // service.send(
-      //   { type: 'RELAY_TO_ETH', input },
-      //   {
-      //     to: (context: BridgeTxsMachineContext) => {
-      //       debugger;
-      //       return context.fuelToEthTxRefs?.[fuelTxId];
-      //     },
-      //   }
-      // );
     },
   };
 }

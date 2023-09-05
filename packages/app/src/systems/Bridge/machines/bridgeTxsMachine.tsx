@@ -2,9 +2,7 @@ import type { Address as FuelAddress, Provider as FuelProvider } from 'fuels';
 import type { PublicClient } from 'wagmi';
 import type { ActorRefFrom, InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine, spawn } from 'xstate';
-import type { TxFuelToEthMachineEvents } from '~/systems/Chains';
 import { isEthChain, isFuelChain, txFuelToEthMachine } from '~/systems/Chains';
-import type { TxEthToFuelMachineEvents } from '~/systems/Chains/eth/machines';
 import { txEthToFuelMachine } from '~/systems/Chains/eth/machines';
 import { FetchMachine } from '~/systems/Core';
 
@@ -46,9 +44,7 @@ export type BridgeTxsMachineEvents =
       input: {
         fuelTxId?: string;
       } & Omit<BridgeInputs['fetchTxs'], 'fuelAddress'>;
-    }
-  | TxEthToFuelMachineEvents
-  | TxFuelToEthMachineEvents;
+    };
 
 export const bridgeTxsMachine = createMachine(
   {
@@ -119,7 +115,6 @@ export const bridgeTxsMachine = createMachine(
             // safely avoid overriding instance
             if (ctx.ethToFuelTxRefs?.[tx.txHash]) return prev;
 
-            console.log('LIST: creating machine Eth To Fuel: ' + tx.txHash);
             return {
               ...prev,
               [tx.txHash]: spawn(
@@ -148,7 +143,6 @@ export const bridgeTxsMachine = createMachine(
             // safely avoid overriding instance
             if (ctx.fuelToEthTxRefs?.[tx.txHash]) return prev;
 
-            console.log('LIST: creating machine Fuel To Eth: ' + tx.txHash);
             return {
               ...prev,
               [tx.txHash]: spawn(
