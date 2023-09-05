@@ -35,7 +35,8 @@ export const useBridgeTxs = () => {
   return {
     bridgeTxs,
     isLoading,
-    shouldShowNotConnected: !isConnected && !isLoading,
+    shouldShowNotConnected:
+      !isConnected && !isLoading && bridgeTxs.length === 0,
     shouldShowEmpty: isConnected && !isLoading && bridgeTxs.length === 0,
     shouldShowList: !isLoading && isConnected && (bridgeTxs.length || 0) > 0,
   };
