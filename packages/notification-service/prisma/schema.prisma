@@ -19,7 +19,7 @@ model User {
 model Address {
   address String @unique
   transactions Transaction[]
-  withdrawer User @relation(fields: [withdrawerId], references: [id])
+  withdrawer User @relation(fields: [withdrawerId], references: [id], onDelete: Cascade)
   withdrawerId Int
 }
 
@@ -27,6 +27,7 @@ model Transaction {
   transactionId String @id
   status String
   emailSent Boolean @default(false)
-  address Address @relation(fields: [addressId], references: [address])
+  address Address @relation(fields: [addressId], references: [address], onDelete: Cascade)
   addressId String
+  blockHeight BigInt?
 }
