@@ -48,7 +48,7 @@ export type TxFuelToEthInputs = {
     messageId: string;
   };
   relayMessageFromFuelBlock: {
-    relayMessageParams: RelayMessageParams;
+    messageProof: MessageProof;
     ethWalletClient: WalletClient;
   };
   waitTxMessageRelayed: {
@@ -76,6 +76,7 @@ export class TxFuelToEthService {
     const { amount, fuelWallet, ethAddress } = input;
     const gasLimit = (await fuelWallet.provider.getChain()).consensusParameters
       .maxGasPerTx;
+    console.log('one', fuelWallet);
     const txFuel = await fuelWallet.withdrawToBaseLayer(
       FuelAddress.fromString(ethAddress),
       amount,
@@ -84,6 +85,7 @@ export class TxFuelToEthService {
         gasLimit: gasLimit.sub(10_000).toNumber(),
       }
     );
+    console.log('two');
 
     return txFuel.id;
   }

@@ -178,7 +178,6 @@ export const txFuelToEthMachine = createMachine(
                       messageId: ctx.messageId,
                       fuelBlockHashCommited: ctx.fuelBlockHashCommited,
                       fuelProvider: ctx.fuelProvider,
-                      fuelLastBlockId: ctx.fuelLastBlockId,
                     }),
                   },
                   onDone: [
@@ -285,13 +284,14 @@ export const txFuelToEthMachine = createMachine(
                             { type: 'RELAY_TO_ETH' }
                           >
                         ) => ({
-                          relayMessageParams: ctx.relayMessageParams,
+                          messageProof: ctx.messageProof,
                           ethWalletClient: ev.input.ethWalletClient,
                         }),
                       },
                       onDone: [
                         {
                           cond: FetchMachine.hasError,
+                          target: 'waitingEthWalletApproval',
                         },
                         {
                           actions: ['assignTxHashMessageRelayed'],
@@ -299,11 +299,6 @@ export const txFuelToEthMachine = createMachine(
                           target: 'waitingReceive',
                         },
                       ],
-                    },
-                    after: {
-                      10000: {
-                        target: 'relayingMessageFromFuelBlock',
-                      },
                     },
                   },
                   waitingReceive: {
