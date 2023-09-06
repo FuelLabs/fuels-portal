@@ -3,9 +3,10 @@ import type { BN, Provider as FuelProvider, MessageProof } from 'fuels';
 import {
   bn,
   TransactionResponse,
-  Address,
+  Address as FuelAddress,
   ZeroBytes32,
   getReceiptsMessageOut,
+  getTransactionsSummaries,
 } from 'fuels';
 import type { WalletClient } from 'viem';
 import type { PublicClient as EthPublicClient } from 'wagmi';
@@ -54,6 +55,10 @@ export type TxFuelToEthInputs = {
     txHash: `0x${string}`;
     ethPublicClient: EthPublicClient;
   };
+  fetchTxs: {
+    fuelAddress: FuelAddress;
+    fuelProvider: FuelProvider;
+  };
 };
 
 export class TxFuelToEthService {
@@ -72,7 +77,7 @@ export class TxFuelToEthService {
     const gasLimit = (await fuelWallet.provider.getChain()).consensusParameters
       .maxGasPerTx;
     const txFuel = await fuelWallet.withdrawToBaseLayer(
-      Address.fromString(ethAddress),
+      FuelAddress.fromString(ethAddress),
       amount,
       // TODO: remove this once fuel-core is fixed (max_gas considering metered_bytes as well)
       {
@@ -280,14 +285,47 @@ export class TxFuelToEthService {
 
     const { ethPublicClient, txHash } = input;
 
-    const txReceipts = await ethPublicClient.waitForTransactionReceipt({
-      hash: txHash,
-    });
+    let txReceipts;
+    try {
+      txReceipts = await ethPublicClient.getTransactionReceipt({
+        hash: txHash,
+      });
+    } catch (err: unknown) {
+      // workaround in place because waitForTransactionReceipt stop working after first time using it
+      txReceipts = await ethPublicClient.waitForTransactionReceipt({
+        hash: txHash,
+      });
+    }
 
     if (txReceipts.status !== 'success') {
       throw new Error('Failed to relay message (transaction reverted)');
     }
 
     return !!txReceipts;
+  }
+
+  static async fetchTxs(input: TxFuelToEthInputs['fetchTxs']) {
+    if (!input?.fuelAddress) {
+      throw new Error('No Fuel address found');
+    }
+    if (!input?.fuelProvider) {
+      throw new Error('No Fuel provider found');
+    }
+
+    const { fuelAddress, fuelProvider } = input;
+
+    const txSummaries = await getTransactionsSummaries({
+      provider: fuelProvider,
+      filters: {
+        owner: fuelAddress?.toB256(),
+        first: 1000,
+      },
+    });
+
+    const bridgeTxs = txSummaries.transactions.filter(
+      (txSummary) => !!getReceiptsMessageOut(txSummary.receipts)?.[0]
+    );
+
+    return bridgeTxs;
   }
 }

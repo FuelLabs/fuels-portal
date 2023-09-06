@@ -5,11 +5,10 @@ import { shortAddress } from '~/systems/Core';
 import { useOverlay } from '~/systems/Overlay';
 
 import { useTxEthToFuel } from '../hooks';
-import { ETH_SYMBOL, ethLogoSrc } from '../utils';
 
 export function TxEthToFuelDialog() {
   const { metadata } = useOverlay<{ txId: string }>();
-  const { steps, ethBlockDate, amount } = useTxEthToFuel({
+  const { steps, date, asset } = useTxEthToFuel({
     id: metadata.txId,
   });
 
@@ -27,13 +26,9 @@ export function TxEthToFuelDialog() {
           <Box css={styles.border} />
           <BridgeTxOverview
             transactionId={shortAddress(metadata.txId)}
-            date={ethBlockDate}
+            date={date}
             isDeposit={true}
-            asset={{
-              assetSymbol: ETH_SYMBOL,
-              imageUrl: ethLogoSrc,
-              assetAmount: amount,
-            }}
+            asset={asset}
           />
         </Box.Stack>
       </Dialog.Description>

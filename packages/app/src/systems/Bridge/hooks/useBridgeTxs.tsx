@@ -1,33 +1,43 @@
+import { useEffect } from 'react';
+import { Services, store } from '~/store';
 import {
+  useEthAccountConnection,
   useFuelAccountConnection,
-  useTxsEthToFuel,
-  useTxsFuelToEth,
 } from '~/systems/Chains';
 
+import type { BridgeTxsMachineState } from '../machines';
+
+const selectors = {
+  bridgeTxs: (state: BridgeTxsMachineState) => {
+    return state.context.bridgeTxs || [];
+  },
+  isLoading: (state: BridgeTxsMachineState) => {
+    return state.hasTag('isLoading');
+  },
+};
+
 export const useBridgeTxs = () => {
-  const { isConnected } = useFuelAccountConnection();
-  const { txs: ethToFuelTxs, isLoading: isEthToFuelLoading } =
-    useTxsEthToFuel();
-  const { txs: fuelToEthTxs, isLoading: isFuelToEthLoading } =
-    useTxsFuelToEth();
-  const allTxs = [...(ethToFuelTxs || []), ...(fuelToEthTxs || [])];
-  const txs = allTxs.sort((a, b) => {
-    if (a.date === undefined) {
-      return 1;
-    }
-    if (b.date === undefined) {
-      return -1;
-    }
-    return b.date.getTime() - a.date.getTime();
-  });
-  const isLoading = isEthToFuelLoading || isFuelToEthLoading;
+  const {
+    isConnected,
+    provider: fuelProvider,
+    address: fuelAddress,
+  } = useFuelAccountConnection();
+  const { publicClient: ethPublicClient } = useEthAccountConnection();
+  const bridgeTxs = store.useSelector(Services.bridgeTxs, selectors.bridgeTxs);
+  const isLoading = store.useSelector(Services.bridgeTxs, selectors.isLoading);
+
+  useEffect(() => {
+    if (!fuelProvider || !ethPublicClient || !fuelAddress) return;
+
+    store.fetchTxs({ fuelProvider, ethPublicClient, fuelAddress });
+  }, [fuelProvider, ethPublicClient, fuelAddress]);
 
   return {
-    txs,
+    bridgeTxs,
     isLoading,
     shouldShowNotConnected:
-      !(isConnected ?? true) && !isLoading && txs.length === 0,
-    shouldShowEmpty: isConnected && !isLoading && txs.length === 0,
-    shouldShowList: !isLoading && isConnected && txs.length > 0,
+      !(isConnected ?? true) && !isLoading && bridgeTxs.length === 0,
+    shouldShowEmpty: isConnected && !isLoading && bridgeTxs.length === 0,
+    shouldShowList: !isLoading && isConnected && (bridgeTxs.length || 0) > 0,
   };
 };

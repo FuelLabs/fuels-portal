@@ -4,12 +4,11 @@ import { BridgeSteps, BridgeTxOverview } from '~/systems/Bridge';
 import { shortAddress } from '~/systems/Core';
 import { useOverlay } from '~/systems/Overlay';
 
-import { ETH_SYMBOL, ethLogoSrc } from '../../eth';
 import { useTxFuelToEth } from '../hooks';
 
 export function TxFuelToEthDialog() {
   const { metadata } = useOverlay<{ txId: string }>();
-  const { steps, status, handlers, fuelTxDate, fuelTxAmount } = useTxFuelToEth({
+  const { steps, status, handlers, date, asset } = useTxFuelToEth({
     txId: metadata.txId,
   });
 
@@ -27,18 +26,14 @@ export function TxFuelToEthDialog() {
           <Box css={styles.border} />
           <BridgeTxOverview
             transactionId={shortAddress(metadata.txId)}
-            date={fuelTxDate}
+            date={date}
             isDeposit={false}
-            asset={{
-              assetSymbol: ETH_SYMBOL,
-              imageUrl: ethLogoSrc,
-              assetAmount: fuelTxAmount,
-            }}
+            asset={asset}
           />
         </Box.Stack>
       </Dialog.Description>
-      {(status.isWaitingEthWalletApproval ||
-        status.isConfirmTransactionLoading) && (
+      {(status?.isWaitingEthWalletApproval ||
+        status?.isConfirmTransactionLoading) && (
         <Dialog.Footer>
           <Button
             onPress={handlers.relayToEth}
