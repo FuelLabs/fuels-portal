@@ -35,7 +35,7 @@ function getEthFuelL1Contracts() {
     return {
       FuelChainState: '0xbe7aB12653e705642eb42EF375fd0d35Cfc45b03',
       FuelMessagePortal: '0x03f2901Db5723639978deBed3aBA66d4EA03aF73',
-      FuelERC20Gateway: '0x0C817d089c693Ea435a95c52409984F45847F53c'
+      FuelERC20Gateway: '0x0C817d089c693Ea435a95c52409984F45847F53c',
     };
   }
 }
