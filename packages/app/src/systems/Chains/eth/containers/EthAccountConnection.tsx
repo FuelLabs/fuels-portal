@@ -1,8 +1,8 @@
+import { AccountConnectionInput } from '~/systems/Accounts';
+
 import { ETH_CHAIN } from '../../config';
 import { useEthAccountConnection } from '../hooks';
 import { ethLogoSrc } from '../utils';
-
-import { AccountConnectionInput } from '~/systems/Accounts';
 
 export const EthAccountConnection = ({ label }: { label?: string }) => {
   const { address, ens, handlers, isConnecting } = useEthAccountConnection();

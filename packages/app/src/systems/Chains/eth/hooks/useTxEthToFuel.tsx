@@ -1,18 +1,21 @@
-import { useInterpret, useSelector } from '@xstate/react';
-import { useEffect } from 'react';
-import { useTransaction } from 'wagmi';
+import { useMemo } from 'react';
+import { store, Services } from '~/store';
+import type { BridgeTxsMachineState } from '~/systems/Bridge';
 
-import { useFuelAccountConnection } from '../../fuel';
 import type { TxEthToFuelMachineState } from '../machines';
-import { txEthToFuelMachine } from '../machines';
+import { ETH_SYMBOL, ethLogoSrc } from '../utils';
 
-import { useBlocks } from './useBlocks';
-import { useCachedBlocksDates } from './useCachedBlocksDates';
-import { useEthAccountConnection } from './useEthAccountConnection';
+const bridgeTxsSelectors = {
+  txEthToFuel: (txId?: `0x${string}`) => (state: BridgeTxsMachineState) => {
+    if (!txId) return undefined;
 
-import { store } from '~/store';
+    const machine = state.context?.ethToFuelTxRefs?.[txId]?.getSnapshot();
 
-const selectors = {
+    return machine;
+  },
+};
+
+const txEthToFuelSelectors = {
   status: (state: TxEthToFuelMachineState) => {
     const isSettlementLoading = state.hasTag('isSettlementLoading');
     const isSettlementSelected = state.hasTag('isSettlementSelected');
@@ -35,10 +38,10 @@ const selectors = {
     };
   },
   steps: (state: TxEthToFuelMachineState) => {
-    const status = selectors.status(state);
-    const { ethTx } = state.context;
+    const status = txEthToFuelSelectors.status(state);
+    const { ethTxId } = state.context;
 
-    if (!ethTx) return undefined;
+    if (!ethTxId) return undefined;
 
     const steps = [
       {
@@ -72,68 +75,60 @@ const selectors = {
 
     return steps;
   },
+  amount: (state: TxEthToFuelMachineState) => {
+    const { amount } = state.context;
+
+    return amount;
+  },
+  blockDate: (state: TxEthToFuelMachineState) => {
+    const { blockDate } = state.context;
+
+    return blockDate;
+  },
+  asset: (state: TxEthToFuelMachineState) => {
+    return {
+      assetAmount: state.context.amount,
+      assetImageSrc: ethLogoSrc,
+      assetSymbol: ETH_SYMBOL,
+    };
+  },
 };
 
-export function useTxEthToFuel({
-  id,
-  skipAnalyzeTx,
-}: {
-  id: string;
-  skipAnalyzeTx?: boolean;
-}) {
-  const { publicClient: ethPublicClient } = useEthAccountConnection();
-  const { provider: fuelProvider, address: fuelAddress } =
-    useFuelAccountConnection();
-  const { data: ethTx } = useTransaction({
-    hash: id.startsWith('0x') ? (id as `0x${string}`) : undefined,
-  });
+export function useTxEthToFuel({ id }: { id: string }) {
+  const txId = id.startsWith('0x') ? (id as `0x${string}`) : undefined;
 
-  const { blockDates, notCachedHashes } = useCachedBlocksDates(
-    ethTx?.blockHash ? [ethTx?.blockHash] : undefined
+  const txEthToFuelState = store.useSelector(
+    Services.bridgeTxs,
+    bridgeTxsSelectors.txEthToFuel(txId)
   );
-  const { blocks } = useBlocks(notCachedHashes);
-  const service = useInterpret(txEthToFuelMachine);
-  const steps = useSelector(service, selectors.steps);
-  const status = useSelector(service, selectors.status);
-  useEffect(() => {
-    if (
-      ethTx &&
-      fuelProvider &&
-      fuelAddress &&
-      !skipAnalyzeTx &&
-      ethPublicClient
-    ) {
-      service.send('START_ANALYZE_TX', {
-        input: {
-          ethTx,
-          fuelProvider,
-          fuelAddress,
-          ethPublicClient,
-        },
-      });
-    }
-  }, [
-    ethTx,
-    fuelProvider,
-    fuelAddress,
-    service,
-    ethPublicClient,
-    skipAnalyzeTx,
-  ]);
 
-  const ethBlockDate = ethTx?.blockHash
-    ? blockDates?.[ethTx.blockHash] ||
-      blocks?.find((block) => block.hash === ethTx.blockHash)?.date
-    : undefined;
+  const { steps, status, amount, date, asset } = useMemo(() => {
+    if (!txEthToFuelState) return {};
+
+    const steps = txEthToFuelSelectors.steps(txEthToFuelState);
+    const status = txEthToFuelSelectors.status(txEthToFuelState);
+    const amount = txEthToFuelSelectors.amount(txEthToFuelState);
+    const date = txEthToFuelSelectors.blockDate(txEthToFuelState);
+    const asset = txEthToFuelSelectors.asset(txEthToFuelState);
+
+    return {
+      steps,
+      status,
+      amount,
+      date,
+      asset,
+    };
+  }, [txEthToFuelState]);
 
   return {
     handlers: {
       close: store.closeOverlay,
       openTxEthToFuel: store.openTxEthToFuel,
     },
-    ethTx,
-    ethBlockDate,
+    date,
     steps,
     status,
+    amount,
+    asset,
   };
 }

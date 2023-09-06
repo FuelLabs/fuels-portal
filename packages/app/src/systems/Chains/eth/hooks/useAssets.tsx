@@ -1,20 +1,30 @@
-import { ETH_UNITS, ethLogoSrc } from '../utils';
+import { Services, store } from '~/store';
 
-import { VITE_ETH_ERC20_TOKEN_ADDRESS } from '~/config';
+import type { EthAssetListMachineState } from '../machines';
+
+const selectors = {
+  assetList: (state: EthAssetListMachineState) => state.context.assetList || [],
+  isLoading: (state: EthAssetListMachineState) => {
+    return state.hasTag('loading');
+  },
+};
 
 export const useAssets = () => {
+  const assetList = store.useSelector(
+    Services.ethAssetList,
+    selectors.assetList
+  );
+  const isLoading = store.useSelector(
+    Services.ethAssetList,
+    selectors.isLoading
+  );
+
   return {
-    assets: [
-      {
-        decimals: ETH_UNITS,
-        symbol: 'ETH',
-        image: ethLogoSrc,
-      },
-      {
-        address: VITE_ETH_ERC20_TOKEN_ADDRESS as `0x${string}`,
-        decimals: ETH_UNITS,
-        symbol: 'TKN',
-      },
-    ],
+    assets: assetList || [],
+    handlers: {
+      addAsset: store.addAsset,
+      removeAsset: store.removeAsset,
+    },
+    isLoading,
   };
 };

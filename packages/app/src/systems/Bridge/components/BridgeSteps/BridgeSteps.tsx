@@ -61,6 +61,7 @@ const styles = {
     minWidth: '344px',
     borderRadius: '$md',
     border: '1px solid $border',
+    backgroundColor: '$inputBaseBg',
   }),
   item: cssObj({
     alignItems: 'center',

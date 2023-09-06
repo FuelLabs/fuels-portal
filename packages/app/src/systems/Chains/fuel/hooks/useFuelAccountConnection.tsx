@@ -10,11 +10,10 @@ import {
 } from '@fuels-portal/sdk-react';
 import { Address } from 'fuels';
 import { useMemo } from 'react';
+import { store } from '~/store';
 
 import { ETH_SYMBOL, EthTxCache, ethLogoSrc } from '../../eth';
 import { FUEL_UNITS, FuelTxCache } from '../utils';
-
-import { store } from '~/store';
 
 export const useFuelAccountConnection = () => {
   const { fuel } = useFuel();

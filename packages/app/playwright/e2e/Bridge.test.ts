@@ -40,19 +40,21 @@ test.describe('Bridge', () => {
     });
     expect(hasFuel).toBeTruthy();
 
+    await page.bringToFront();
+
     // Go to the bridge page
     let bridgePage = page.locator('a').getByText('Bridge');
     await bridgePage.click();
 
     // Connect metamask
-    const connectKitButton = getByAriaLabel(page, 'From Connect wallet');
+    const connectKitButton = getByAriaLabel(page, 'Connect Ethereum Wallet');
     await connectKitButton.click();
     const metamaskConnect = getButtonByText(page, 'Metamask');
     await metamaskConnect.click();
     await metamask.acceptAccess();
 
     // Connect fuel
-    const connectFuel = getByAriaLabel(page, 'To Connect wallet');
+    const connectFuel = getByAriaLabel(page, 'Connect Fuel Wallet');
     await connectFuel.click();
     await walletConnect(context);
 
@@ -65,7 +67,7 @@ test.describe('Bridge', () => {
     const depositAmount = '1.12345';
     const depositInput = page.locator('input');
     await depositInput.fill(depositAmount);
-    const depositButton = getButtonByText(page, 'Bridge asset');
+    const depositButton = getByAriaLabel(page, 'Deposit');
     await depositButton.click();
 
     // Timeout needed until https://github.com/Synthetixio/synpress/issues/795 is fixed
@@ -131,7 +133,7 @@ test.describe('Bridge', () => {
     const withdrawAmount = '0.012345';
     const withdrawInput = page.locator('input');
     await withdrawInput.fill(withdrawAmount);
-    const withdrawButton = getButtonByText(page, 'Bridge asset');
+    const withdrawButton = getByAriaLabel(page, 'Withdraw');
     await withdrawButton.click();
     await walletApprove(context);
 
@@ -149,6 +151,9 @@ test.describe('Bridge', () => {
     // Go to the transaction page
     await transactionList.click();
 
+    // Wait for transactions to get fetched and sorted
+    await page.waitForTimeout(10000);
+
     transactionAssetAmount = getByAriaLabel(page, 'Asset amount');
     // Check the transaction is there
     expect((await transactionAssetAmount.first().innerHTML()).trim()).toBe(
@@ -156,7 +161,7 @@ test.describe('Bridge', () => {
     );
 
     await transactionAssetAmount.first().click();
-    await page.waitForTimeout(20000);
+    await page.waitForTimeout(5000);
     const confirmButton = getButtonByText(page, 'Confirm Transaction');
     await confirmButton.click();
 
