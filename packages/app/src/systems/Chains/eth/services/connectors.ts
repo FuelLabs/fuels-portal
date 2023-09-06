@@ -1,17 +1,16 @@
 import type { WalletClient } from 'viem';
 import { getContract } from 'viem';
 import type { PublicClient } from 'wagmi';
-
-import { ERC_20 } from '../contracts/Erc20';
-import { FUEL_CHAIN_STATE } from '../contracts/FuelChainState';
-import { FUEL_ERC_20_GATEWAY } from '../contracts/FuelErc20Gateway';
-import { FUEL_MESSAGE_PORTAL } from '../contracts/FuelMessagePortal';
-
 import {
   VITE_ETH_FUEL_CHAIN_STATE,
   VITE_ETH_FUEL_ERC20_GATEWAY,
   VITE_ETH_FUEL_MESSAGE_PORTAL,
 } from '~/config';
+
+import { ERC_20 } from '../contracts/Erc20';
+import { FUEL_CHAIN_STATE } from '../contracts/FuelChainState';
+import { FUEL_ERC_20_GATEWAY } from '../contracts/FuelErc20Gateway';
+import { FUEL_MESSAGE_PORTAL } from '../contracts/FuelMessagePortal';
 
 export class EthConnectorService {
   static connectToFuelErc20Gateway(options: {

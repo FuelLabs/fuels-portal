@@ -1,6 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { decodeEventLog } from 'viem';
+import {
+  VITE_ETH_FUEL_MESSAGE_PORTAL,
+  VITE_ETH_FUEL_ERC20_GATEWAY,
+} from '~/config';
 
 import { useFuelAccountConnection } from '../../fuel';
 import type { FuelERC20GatewayArgs } from '../contracts/FuelErc20Gateway';
@@ -11,11 +15,6 @@ import { FUEL_MESSAGE_PORTAL } from '../contracts/FuelMessagePortal';
 import { useBlocks } from './useBlocks';
 import { useCachedBlocksDates } from './useCachedBlocksDates';
 import { useEthAccountConnection } from './useEthAccountConnection';
-
-import {
-  VITE_ETH_FUEL_ERC20_GATEWAY,
-  VITE_ETH_FUEL_MESSAGE_PORTAL,
-} from '~/config';
 
 export const useEthDepositLogs = () => {
   const { publicClient: ethPublicClient, paddedAddress: ethPaddedAddress } =
@@ -55,6 +54,7 @@ export const useEthDepositLogs = () => {
         args: {
           // TODO: fix here once the FuelErc20Gateway contract informs the recipient in Deposit event, instead of only sender.
           sender: ethPaddedAddress as `0x${string}`,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } as any,
         fromBlock: 'earliest',
       });

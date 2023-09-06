@@ -100,6 +100,15 @@
   },
   {
     "isLive": false,
+    "name": "Fuelart",
+    "url": "https://fuelart.io/",
+    "tags": ["Marketplace", "NFTs"],
+    "description": "Fuelart is a next gen NFT marketplace built on Fuel.",
+    "github": "",
+    "image": "fuelart"
+  },
+  {
+    "isLive": false,
     "name": "Fuelet Wallet",
     "url": "https://fuelet.app/",
     "tags": ["Infrastructure Tooling or Platform", "Wallet"],

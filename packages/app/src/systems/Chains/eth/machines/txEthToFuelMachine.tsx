@@ -1,4 +1,3 @@
-import type { TransactionResponse as EthTransactionResponse } from '@ethersproject/providers';
 import type {
   BN,
   Message,
@@ -11,19 +10,21 @@ import type { PublicClient } from 'wagmi';
 import type { FetchTokenResult } from 'wagmi/actions';
 import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
+import { FetchMachine } from '~/systems/Core/machines';
 
 import type { GetReceiptsInfoReturn, TxEthToFuelInputs } from '../services';
 import { TxEthToFuelService } from '../services';
-
-import { FetchMachine } from '~/systems/Core/machines';
+import { EthTxCache } from '../utils';
 
 type MachineContext = {
-  ethPublicClient?: PublicClient;
-  ethTx?: EthTransactionResponse;
+  ethTxId?: `0x${string}`;
   ethTxNonce?: BN;
   ethSender?: string;
+  fuelAddress?: FuelAddress;
   fuelProvider?: FuelProvider;
   fuelMessage?: Message;
+  ethPublicClient?: PublicClient;
+  ethDepositBlockHeight?: string;
   erc20Token: FetchTokenResult;
   amount?: string;
   fuelRecipient?: FuelAddress;
@@ -34,7 +35,7 @@ type MachineServices = {
     data: GetReceiptsInfoReturn | undefined;
   };
   getFuelMessage: {
-    data: Message | undefined;
+    data: boolean | undefined;
   };
   relayMessageOnFuel: {
     data: TransactionResponse | undefined;
@@ -85,7 +86,7 @@ export const txEthToFuelMachine = createMachine(
               src: 'getReceiptsInfo',
               data: {
                 input: (ctx: MachineContext) => ({
-                  ethTx: ctx.ethTx,
+                  ethTxId: ctx.ethTxId,
                   ethPublicClient: ctx.ethPublicClient,
                 }),
               },
@@ -122,6 +123,7 @@ export const txEthToFuelMachine = createMachine(
                       ethTxNonce: ctx.ethTxNonce,
                       fuelRecipient: ctx.fuelRecipient,
                       fuelProvider: ctx.fuelProvider,
+                      ethDepositBlockHeight: ctx.ethDepositBlockHeight,
                     }),
                   },
                   onDone: [
@@ -212,7 +214,8 @@ export const txEthToFuelMachine = createMachine(
   {
     actions: {
       assignAnalyzeTxInput: assign((_, ev) => ({
-        ethTx: ev.input.ethTx,
+        ethTxId: ev.input.ethTxId,
+        fuelRecipient: ev.input.fuelRecipient,
         fuelProvider: ev.input.fuelProvider,
         ethPublicClient: ev.input.ethPublicClient,
       })),
@@ -223,14 +226,17 @@ export const txEthToFuelMachine = createMachine(
           ethSender: ev.data?.sender,
           amount: ev.data?.amount,
           fuelRecipient: ev.data?.recipient,
+          ethDepositBlockHeight: ev.data?.ethDepositBlockHeight,
         };
       }),
       assignFuelMessage: assign({
-        fuelMessage: (_, ev) => ev.data,
+        // TODO: fix here when we can get the actual message even if spent
+        fuelMessage: (_) => undefined,
+        // fuelMessage: (_, ev) => ev.data,
       }),
       setEthToFuelTxDone: (ctx) => {
-        if (ctx.ethTx?.hash) {
-          // EthTxCache.setTxIsDone(ctx.ethTx.hash);
+        if (ctx.ethTxId) {
+          EthTxCache.setTxIsDone(ctx.ethTxId);
         }
       },
     },

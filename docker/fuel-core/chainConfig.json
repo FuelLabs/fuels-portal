@@ -115,7 +115,7 @@
     "max_inputs": 255,
     "max_outputs": 255,
     "max_witnesses": 255,
-    "max_gas_per_tx": 100000000,
+    "max_gas_per_tx": 1000000,
     "max_script_length": 1048576,
     "max_script_data_length": 1048576,
     "max_static_contracts": 255,
@@ -123,6 +123,6 @@
     "max_predicate_length": 1048576,
     "max_predicate_data_length": 1048576,
     "gas_price_factor": 1000000,
-    "max_gas_per_predicate": 100000000
+    "max_gas_per_predicate": 1000000
   }
 }

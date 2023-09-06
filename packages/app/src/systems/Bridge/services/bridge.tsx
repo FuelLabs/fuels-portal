@@ -1,9 +1,6 @@
 import { bn, DECIMAL_UNITS } from 'fuels';
 import type { Address as FuelAddress, BN } from 'fuels';
 import type { PublicClient, WalletClient } from 'wagmi';
-
-import type { BridgeAsset } from '../types';
-
 import { store } from '~/store';
 import type {
   FromToNetworks,
@@ -17,6 +14,8 @@ import {
   TxEthToFuelService,
 } from '~/systems/Chains';
 
+import type { BridgeAsset } from '../types';
+
 export type PossibleBridgeInputs = {
   assetAmount?: BN;
   ethWalletClient?: WalletClient;
@@ -24,7 +23,7 @@ export type PossibleBridgeInputs = {
   fuelAddress?: FuelAddress;
   ethAsset?: BridgeAsset;
   fuelAsset?: BridgeAsset;
-} & Omit<TxEthToFuelInputs['start'], 'amount'> &
+} & Omit<TxEthToFuelInputs['startErc20'], 'amount'> &
   Omit<TxFuelToEthInputs['create'], 'amount'>;
 export type BridgeInputs = {
   bridge: FromToNetworks & PossibleBridgeInputs;

@@ -20,13 +20,13 @@ export const useBridgeTxs = () => {
     }
     return b.date.getTime() - a.date.getTime();
   });
-
   const isLoading = isEthToFuelLoading || isFuelToEthLoading;
 
   return {
     txs,
     isLoading,
-    shouldShowNotConnected: !isConnected && !isLoading,
+    shouldShowNotConnected:
+      !(isConnected ?? true) && !isLoading && txs.length === 0,
     shouldShowEmpty: isConnected && !isLoading && txs.length === 0,
     shouldShowList: !isLoading && isConnected && txs.length > 0,
   };

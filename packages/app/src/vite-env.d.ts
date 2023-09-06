@@ -11,7 +11,10 @@ interface ImportMetaEnv {
   readonly VITE_FUEL_TOKEN_CONTRACT_ID: string;
   readonly VITE_ETH_CHAIN: string;
   readonly VITE_FUEL_CHAIN: string;
+  readonly VITE_FUEL_VERSION: string;
   readonly VITE_IS_PUBLIC_PREVIEW: string;
+  readonly VITE_WALLET_INSTALL: string;
+  readonly VITE_WALLET_INSTALL_NEXT: string;
 }
 
 interface ImportMeta {

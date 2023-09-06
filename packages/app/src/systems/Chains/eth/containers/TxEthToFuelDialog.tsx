@@ -1,23 +1,21 @@
 import { cssObj } from '@fuel-ui/css';
 import { Box, Button, Dialog, Text } from '@fuel-ui/react';
-import { bn } from 'fuels';
-
-import { useTxEthToFuel } from '../hooks';
-import { ETH_SYMBOL, ETH_UNITS, ethLogoSrc } from '../utils';
-
 import { BridgeTxOverview, BridgeSteps } from '~/systems/Bridge';
 import { shortAddress } from '~/systems/Core';
 import { useOverlay } from '~/systems/Overlay';
+
+import { useTxEthToFuel } from '../hooks';
+import { ETH_SYMBOL, ethLogoSrc } from '../utils';
 
 export function TxEthToFuelDialog() {
   const { metadata } = useOverlay<{ txId: string }>();
   const {
     steps,
-    ethTx,
     ethBlockDate,
     status,
     handlers,
     shouldShowConfirmButton,
+    amount,
   } = useTxEthToFuel({
     id: metadata.txId,
   });
@@ -26,7 +24,7 @@ export function TxEthToFuelDialog() {
     <>
       <Dialog.Close aria-label="Close Transaction Dialog" />
       <Dialog.Heading>
-        Transaction: {shortAddress(metadata.txId)}
+        Deposit
         <Box css={styles.divider} />
       </Dialog.Heading>
       <Dialog.Description>
@@ -41,10 +39,7 @@ export function TxEthToFuelDialog() {
             asset={{
               assetSymbol: ETH_SYMBOL,
               imageUrl: ethLogoSrc,
-              assetAmount: bn(ethTx?.value.toString()).format({
-                precision: 9,
-                units: ETH_UNITS,
-              }),
+              assetAmount: amount,
             }}
           />
         </Box.Stack>

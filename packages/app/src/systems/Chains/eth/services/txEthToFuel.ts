@@ -1,4 +1,3 @@
-import type { TransactionResponse as EthTransactionResponse } from '@ethersproject/providers';
 import type {
   BN,
   Provider as FuelProvider,
@@ -12,8 +11,14 @@ import { decodeEventLog } from 'viem';
 import type { PublicClient } from 'wagmi';
 import type { FetchTokenResult } from 'wagmi/actions';
 import { fetchToken } from 'wagmi/actions';
+import {
+  VITE_ETH_FUEL_ERC20_GATEWAY,
+  VITE_FUEL_TOKEN_CONTRACT_ID,
+} from '~/config';
+import type { BridgeAsset } from '~/systems/Bridge';
 
 import { FUEL_UNITS } from '../../fuel/utils/chain';
+import { getBlock } from '../../fuel/utils/getBlock';
 import { relayCommonMessage } from '../../fuel/utils/relayMessage';
 import type { FuelERC20GatewayArgs } from '../contracts/FuelErc20Gateway';
 import { FUEL_ERC_20_GATEWAY } from '../contracts/FuelErc20Gateway';
@@ -22,12 +27,6 @@ import { FUEL_MESSAGE_PORTAL } from '../contracts/FuelMessagePortal';
 import { isErc20Address } from '../utils';
 
 import { EthConnectorService } from './connectors';
-
-import {
-  VITE_ETH_FUEL_ERC20_GATEWAY,
-  VITE_FUEL_TOKEN_CONTRACT_ID,
-} from '~/config';
-import type { BridgeAsset } from '~/systems/Bridge';
 
 export type TxEthToFuelInputs = {
   startEth: {
@@ -42,13 +41,15 @@ export type TxEthToFuelInputs = {
   createErc20Contract: {
     ethWalletClient?: WalletClient;
     ethPublicClient?: PublicClient;
+    ethAsset?: BridgeAsset;
   };
   getReceiptsInfo: {
-    ethTx?: EthTransactionResponse;
+    ethTxId?: `0x${string}`;
     ethPublicClient?: PublicClient;
   };
   getFuelMessage: {
     ethTxNonce?: BN;
+    ethDepositBlockHeight?: string;
     fuelProvider?: FuelProvider;
     fuelRecipient?: FuelAddress;
   };
@@ -68,6 +69,7 @@ export type GetReceiptsInfoReturn = {
   sender?: string;
   recipient?: FuelAddress;
   nonce?: BN;
+  ethDepositBlockHeight?: string;
 };
 
 export class TxEthToFuelService {
@@ -167,6 +169,7 @@ export class TxEthToFuelService {
           amount,
         ]);
 
+        // TODO: apply workaround logic to use waitTransactionReceipt together
         const approveTxHashReceipt =
           await ethPublicClient.getTransactionReceipt({ hash: approveTxHash });
 
@@ -198,24 +201,24 @@ export class TxEthToFuelService {
   static async getReceiptsInfo(
     input: TxEthToFuelInputs['getReceiptsInfo']
   ): Promise<GetReceiptsInfoReturn> {
-    if (!input?.ethTx) {
-      throw new Error('No eth TX');
+    if (!input?.ethTxId) {
+      throw new Error('No eth Tx id');
     }
     if (!input?.ethPublicClient) {
       throw new Error('No eth Provider');
     }
 
-    const { ethTx, ethPublicClient } = input;
+    const { ethTxId, ethPublicClient } = input;
 
     let receipt;
     try {
       receipt = await ethPublicClient.getTransactionReceipt({
-        hash: ethTx.hash as `0x${string}`,
+        hash: ethTxId,
       });
     } catch (err: unknown) {
       // workaround in place because waitForTransactionReceipt stop working after first time using it
       receipt = await ethPublicClient.waitForTransactionReceipt({
-        hash: ethTx.hash as `0x${string}`,
+        hash: ethTxId,
       });
     }
 
@@ -225,6 +228,7 @@ export class TxEthToFuelService {
 
     let receiptsInfo: GetReceiptsInfoReturn = {};
 
+    // TODO: refactor this 2 fors to something better
     // try to get messageSent event from logs, for deposit ETH operation
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < receipt.logs.length; i++) {
@@ -272,6 +276,7 @@ export class TxEthToFuelService {
               precision: FUEL_UNITS,
             }),
             sender,
+            ethDepositBlockHeight: receipt.blockNumber.toString(),
           };
         }
       } catch (_) {
@@ -283,27 +288,32 @@ export class TxEthToFuelService {
   }
 
   static async getFuelMessage(input: TxEthToFuelInputs['getFuelMessage']) {
+    // we keep input?.ethTxNonce and input?.fuelAddress as they'll be needed when fixing below comments
     if (!input?.ethTxNonce) {
       throw new Error('No nonce found');
     }
     if (!input?.fuelProvider) {
       throw new Error('No provider for Fuel found');
     }
-    if (!input?.fuelRecipient) {
-      throw new Error('No fuel recipient found');
+    if (!input?.ethDepositBlockHeight) {
+      throw new Error('No block height found');
     }
-    const { ethTxNonce, fuelProvider, fuelRecipient } = input;
 
-    // TODO: what happens when has more than 1000 messages ? should we do pagination or something?
-    const messages = await fuelProvider.getMessages(fuelRecipient, {
-      first: 1000,
+    const { fuelProvider, ethDepositBlockHeight } = input;
+
+    // TODO: this method of checking DAheight with ethDepositBlockHeight should be replaced
+    // when this issue is done: https://github.com/FuelLabs/fuel-core/issues/1323
+    // this is the issue to track this work: https://github.com/FuelLabs/fuels-portal/issues/96
+    const blocks = await fuelProvider.getBlocks({ last: 1 });
+    const latestBlockId = blocks?.[0]?.id;
+    // TODO: replace this logic when SDK return blocks more complete, with header etc...
+    const fuelLatestBlock = await getBlock({
+      blockHash: latestBlockId,
+      providerUrl: fuelProvider.url,
     });
+    const fuelLatestDAHeight = fuelLatestBlock?.header?.daHeight;
 
-    const message = messages.find(
-      (message) => message.nonce.toString() === ethTxNonce.toHex(32).toString()
-    );
-
-    return message || undefined;
+    return bn(fuelLatestDAHeight).gte(ethDepositBlockHeight);
   }
 
   static async relayMessageOnFuel(
@@ -326,8 +336,8 @@ export class TxEthToFuelService {
     // TODO: put this status check in a separate step after figure out how to get txHash
     const txMessageRelayedResult = await txMessageRelayed.waitForResult();
 
-    if (txMessageRelayedResult.status.type !== 'success') {
-      console.log(txMessageRelayedResult.status.reason);
+    if (txMessageRelayedResult.status !== 'success') {
+      console.log(txMessageRelayedResult.status);
       console.log(txMessageRelayedResult);
       console.log(txMessageRelayedResult.transaction.inputs);
       console.log(txMessageRelayedResult.transaction.outputs);

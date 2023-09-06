@@ -1,12 +1,11 @@
 import { cssObj } from '@fuel-ui/css';
 import { Dialog, Box, Button, Text } from '@fuel-ui/react';
-
-import { ETH_SYMBOL, ethLogoSrc } from '../../eth';
-import { useTxFuelToEth } from '../hooks';
-
 import { BridgeSteps, BridgeTxOverview } from '~/systems/Bridge';
 import { shortAddress } from '~/systems/Core';
 import { useOverlay } from '~/systems/Overlay';
+
+import { ETH_SYMBOL, ethLogoSrc } from '../../eth';
+import { useTxFuelToEth } from '../hooks';
 
 export function TxFuelToEthDialog() {
   const { metadata } = useOverlay<{ txId: string }>();
@@ -18,7 +17,7 @@ export function TxFuelToEthDialog() {
     <>
       <Dialog.Close aria-label="Close Transaction Dialog" />
       <Dialog.Heading>
-        Transaction: {shortAddress(metadata.txId)}
+        Withdrawal
         <Box css={styles.divider} />
       </Dialog.Heading>
       <Dialog.Description>

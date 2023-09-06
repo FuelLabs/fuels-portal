@@ -1,6 +1,5 @@
 import { bn } from 'fuels';
 import { useMemo } from 'react';
-
 import type { BridgeTx } from '~/systems/Bridge/types';
 import {
   useEthDepositLogs,

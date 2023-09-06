@@ -1,7 +1,6 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "keyofStringsOnly": true,
     "allowJs": true,
     "outDir": "./dist",
     "baseUrl": ".",
@@ -12,6 +11,6 @@
     },
     "types": ["@fuel-wallet/sdk", "jest"]
   },
-  "include": ["./src", "public/ecosystem/images"],
+  "include": ["./src", ".storybook", "public/ecosystem/images"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

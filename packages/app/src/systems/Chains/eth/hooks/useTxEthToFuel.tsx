@@ -1,6 +1,7 @@
 import { useInterpret, useSelector } from '@xstate/react';
 import { useEffect } from 'react';
 import { useTransaction } from 'wagmi';
+import { store } from '~/store';
 
 import { useFuelAccountConnection } from '../../fuel';
 import type { TxEthToFuelMachineState } from '../machines';
@@ -10,8 +11,6 @@ import { isErc20Address } from '../utils';
 import { useBlocks } from './useBlocks';
 import { useCachedBlocksDates } from './useCachedBlocksDates';
 import { useEthAccountConnection } from './useEthAccountConnection';
-
-import { store } from '~/store';
 
 const selectors = {
   status: (state: TxEthToFuelMachineState) => {
@@ -41,9 +40,9 @@ const selectors = {
   },
   steps: (state: TxEthToFuelMachineState) => {
     const status = selectors.status(state);
-    const { ethTx, erc20Token } = state.context;
+    const { ethTxId, erc20Token } = state.context;
 
-    if (!ethTx) return undefined;
+    if (!ethTxId) return undefined;
 
     const confirmTransactionText = isErc20Address(erc20Token?.address)
       ? 'Action'
@@ -85,6 +84,11 @@ const selectors = {
     const { erc20Token } = state.context;
     return erc20Token;
   },
+  amount: (state: TxEthToFuelMachineState) => {
+    const { amount } = state.context;
+
+    return amount;
+  },
 };
 
 export function useTxEthToFuel({
@@ -94,6 +98,7 @@ export function useTxEthToFuel({
   id: string;
   skipAnalyzeTx?: boolean;
 }) {
+  const txId = id.startsWith('0x') ? (id as `0x${string}`) : undefined;
   const { publicClient: ethPublicClient } = useEthAccountConnection();
   const {
     provider: fuelProvider,
@@ -101,7 +106,7 @@ export function useTxEthToFuel({
     wallet: fuelWallet,
   } = useFuelAccountConnection();
   const { data: ethTx } = useTransaction({
-    hash: id.startsWith('0x') ? (id as `0x${string}`) : undefined,
+    hash: txId,
   });
 
   const { blockDates, notCachedHashes } = useCachedBlocksDates(
@@ -112,10 +117,11 @@ export function useTxEthToFuel({
   const steps = useSelector(service, selectors.steps);
   const status = useSelector(service, selectors.status);
   const erc20Token = useSelector(service, selectors.ercToken);
+  const amount = useSelector(service, selectors.amount);
 
   useEffect(() => {
     if (
-      ethTx &&
+      txId &&
       fuelProvider &&
       fuelAddress &&
       !skipAnalyzeTx &&
@@ -123,7 +129,7 @@ export function useTxEthToFuel({
     ) {
       service.send('START_ANALYZE_TX', {
         input: {
-          ethTx,
+          ethTxId: txId,
           fuelProvider,
           fuelAddress,
           ethPublicClient,
@@ -131,7 +137,7 @@ export function useTxEthToFuel({
       });
     }
   }, [
-    ethTx,
+    txId,
     fuelProvider,
     fuelAddress,
     service,
@@ -161,10 +167,10 @@ export function useTxEthToFuel({
       openTxEthToFuel: store.openTxEthToFuel,
       relayMessageToFuel,
     },
-    ethTx,
     ethBlockDate,
     steps,
     status,
     shouldShowConfirmButton,
+    amount,
   };
 }

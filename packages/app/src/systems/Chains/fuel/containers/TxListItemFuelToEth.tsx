@@ -1,10 +1,9 @@
 import { Image, FuelLogo, Text, Box, Spinner } from '@fuel-ui/react';
+import { BridgeTxItem } from '~/systems/Bridge';
 
 import { ETH_SYMBOL, ethLogoSrc } from '../../eth';
 import { ActionRequiredBadge } from '../components';
 import { useTxFuelToEth } from '../hooks';
-
-import { BridgeTxItem } from '~/systems/Bridge';
 
 type TxListItemFuelToEthProps = {
   asset: {
@@ -62,7 +61,9 @@ export const TxListItemFuelToEth = ({
   return (
     <BridgeTxItem
       fromLogo={<FuelLogo size={17} />}
-      toLogo={<Image width={18} height={18} src={ethLogoSrc} />}
+      toLogo={
+        <Image width={18} height={18} src={ethLogoSrc} alt={asset.symbol} />
+      }
       date={date}
       asset={asset}
       onClick={() => handlers.openTxFuelToEth({ txId: txHash })}
