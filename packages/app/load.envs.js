@@ -22,11 +22,15 @@ function getEnvName() {
 }
 
 function getFuelContracts() {
-  const { body } = retus('http://localhost:8081/deployments.json', {
-    json: true,
-  });
+  if (process.env.VITE_FUEL_CHAIN === 'fuelDev') {
+    const { body } = retus('http://localhost:8081/deployments.json', {
+      json: true,
+    });
 
-  return body;
+    return body;
+  }
+
+  return {};
 }
 
 function getEthFuelL1Contracts() {

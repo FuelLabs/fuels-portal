@@ -3,15 +3,13 @@ import { Box, Text, FuelLogo, Image, Icon } from '@fuel-ui/react';
 import type { BigNumberish } from 'fuels';
 import { calculateDateDiff } from '~/systems/Core';
 
+import type { BridgeAsset } from '../../types';
+
 type BridgeTxOverviewProps = {
   transactionId: BigNumberish;
   date?: Date;
   isDeposit?: boolean;
-  asset: {
-    imageUrl?: string;
-    assetSymbol?: string;
-    assetAmount?: string;
-  };
+  asset?: BridgeAsset;
 };
 
 export const BridgeTxOverview = ({
@@ -35,12 +33,7 @@ export const BridgeTxOverview = ({
         {isDeposit ? (
           <Box.Flex css={styles.directionInfo}>
             <Text css={styles.subtleText}>(Deposit)</Text>
-            <Image
-              width={18}
-              height={18}
-              src={asset.imageUrl}
-              alt={'Deposit'}
-            />
+            <Image width={18} height={18} src={asset?.image} alt={'Deposit'} />
             <Icon icon="ArrowNarrowRight" />
             <FuelLogo size={17} />
           </Box.Flex>
@@ -52,7 +45,7 @@ export const BridgeTxOverview = ({
             <Image
               width={18}
               height={18}
-              src={asset.imageUrl}
+              src={asset?.image}
               alt={'withdrawal'}
             />
           </Box.Flex>
@@ -64,13 +57,13 @@ export const BridgeTxOverview = ({
           <Image
             width={18}
             height={18}
-            src={asset.imageUrl}
-            alt={asset.assetSymbol}
+            src={asset?.image}
+            alt={asset?.symbol}
           />
           <Text aria-label="Asset amount" css={styles.infoText}>
-            {asset.assetAmount}
+            {asset?.amount}
           </Text>
-          <Text css={styles.infoText}>{asset.assetSymbol}</Text>
+          <Text css={styles.infoText}>{asset?.symbol}</Text>
         </Box.Flex>
       </Box.Flex>
     </Box.Stack>

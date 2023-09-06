@@ -13,6 +13,7 @@ import type { FetchTokenResult } from 'wagmi/actions';
 import { fetchToken } from 'wagmi/actions';
 import {
   VITE_ETH_FUEL_ERC20_GATEWAY,
+  VITE_ETH_FUEL_MESSAGE_PORTAL,
   VITE_FUEL_TOKEN_CONTRACT_ID,
 } from '~/config';
 import type { BridgeAsset } from '~/systems/Bridge';
@@ -24,7 +25,7 @@ import type { FuelERC20GatewayArgs } from '../contracts/FuelErc20Gateway';
 import { FUEL_ERC_20_GATEWAY } from '../contracts/FuelErc20Gateway';
 import type { FuelMessagePortalArgs } from '../contracts/FuelMessagePortal';
 import { FUEL_MESSAGE_PORTAL } from '../contracts/FuelMessagePortal';
-import { isErc20Address } from '../utils';
+import { isErc20Address, getBlockDate } from '../utils';
 
 import { EthConnectorService } from './connectors';
 
@@ -51,7 +52,6 @@ export type TxEthToFuelInputs = {
     ethTxNonce?: BN;
     ethDepositBlockHeight?: string;
     fuelProvider?: FuelProvider;
-    fuelRecipient?: FuelAddress;
   };
   relayMessageOnFuel: {
     fuelWallet?: FuelWallet;
@@ -60,6 +60,10 @@ export type TxEthToFuelInputs = {
       TransactionRequestLike,
       'gasLimit' | 'gasPrice' | 'maturity'
     >;
+  };
+  fetchDepositLogs: {
+    fuelAddress?: FuelAddress;
+    ethPublicClient?: PublicClient;
   };
 };
 
@@ -70,6 +74,7 @@ export type GetReceiptsInfoReturn = {
   recipient?: FuelAddress;
   nonce?: BN;
   ethDepositBlockHeight?: string;
+  blockDate?: Date;
 };
 
 export class TxEthToFuelService {
@@ -226,7 +231,15 @@ export class TxEthToFuelService {
       throw new Error('Failed to deposit Token');
     }
 
-    let receiptsInfo: GetReceiptsInfoReturn = {};
+    const blockDate = await getBlockDate({
+      blockHash: receipt.blockHash,
+      publicClient: ethPublicClient,
+    });
+
+    let receiptsInfo: GetReceiptsInfoReturn = {
+      blockDate,
+      ethDepositBlockHeight: receipt.blockNumber.toString(),
+    };
 
     // TODO: refactor this 2 fors to something better
     // try to get messageSent event from logs, for deposit ETH operation
@@ -276,7 +289,6 @@ export class TxEthToFuelService {
               precision: FUEL_UNITS,
             }),
             sender,
-            ethDepositBlockHeight: receipt.blockNumber.toString(),
           };
         }
       } catch (_) {
@@ -293,7 +305,7 @@ export class TxEthToFuelService {
       throw new Error('No nonce found');
     }
     if (!input?.fuelProvider) {
-      throw new Error('No provider for Fuel found');
+      throw new Error('No Fuel provider found');
     }
     if (!input?.ethDepositBlockHeight) {
       throw new Error('No block height found');
@@ -345,5 +357,35 @@ export class TxEthToFuelService {
     }
 
     return txMessageRelayed;
+  }
+
+  static async fetchDepositLogs(input: TxEthToFuelInputs['fetchDepositLogs']) {
+    if (!input?.ethPublicClient) {
+      throw new Error('Need to connect ETH Wallet');
+    }
+    if (!input?.fuelAddress) {
+      throw new Error('Need fuel address');
+    }
+
+    const { ethPublicClient, fuelAddress } = input;
+
+    const abiMessageSent = FUEL_MESSAGE_PORTAL.abi.find(
+      ({ name, type }) => name === 'MessageSent' && type === 'event'
+    );
+    const logs = await ethPublicClient!.getLogs({
+      address: VITE_ETH_FUEL_MESSAGE_PORTAL as `0x${string}`,
+      event: {
+        type: 'event',
+        name: 'MessageSent',
+        inputs: abiMessageSent?.inputs || [],
+      },
+      args: {
+        recipient: fuelAddress?.toHexString() as `0x${string}`,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any,
+      fromBlock: 'earliest',
+    });
+
+    return logs;
   }
 }

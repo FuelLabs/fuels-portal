@@ -14,8 +14,8 @@ import { TxFuelToEthService } from '../services';
 import { FuelTxCache } from '../utils';
 
 type MachineContext = {
-  fuelProvider: FuelProvider;
-  fuelTxId: string;
+  fuelProvider?: FuelProvider;
+  fuelTxId?: string;
   fuelTxResult?: TransactionResult;
   fuelLastBlockId?: string;
   messageId?: string;
@@ -82,6 +82,10 @@ export const txFuelToEthMachine = createMachine(
     initial: 'idle',
     states: {
       idle: {
+        always: {
+          cond: 'hasAnalyzeTxInput',
+          target: 'submittingToBridge',
+        },
         on: {
           START_ANALYZE_TX: {
             actions: ['assignAnalyzeTxInput'],
@@ -109,7 +113,7 @@ export const txFuelToEthMachine = createMachine(
                 {
                   actions: ['assignFuelTxResult', 'assignMessageId'],
                   cond: 'hasMessageId',
-                  target: 'waitingNextBlock',
+                  target: 'checkingDoneCache',
                 },
               ],
             },
@@ -119,32 +123,18 @@ export const txFuelToEthMachine = createMachine(
               },
             },
           },
-          waitingNextBlock: {
+          checkingDoneCache: {
             tags: ['isSubmitToBridgeLoading', 'isSubmitToBridgeSelected'],
-            invoke: {
-              src: 'waitNextBlock',
-              data: {
-                input: (ctx: MachineContext) => ({
-                  fuelProvider: ctx.fuelProvider,
-                  blockId: ctx.fuelTxResult?.blockId,
-                }),
+            always: [
+              {
+                cond: 'isTxFuelToEthDone',
+                target:
+                  '#(machine).submittingToBridge.checkingSettlement.checkingRelayed.waitingReceive.done',
               },
-              onDone: [
-                {
-                  cond: FetchMachine.hasError,
-                },
-                {
-                  actions: ['assignFuelLastBlockId'],
-                  cond: 'hasFuelLastBlockId',
-                  target: 'checkingSettlement',
-                },
-              ],
-            },
-            after: {
-              5000: {
-                target: 'waitingNextBlock',
+              {
+                target: 'checkingSettlement',
               },
-            },
+            ],
           },
           checkingSettlement: {
             tags: ['isSubmitToBridgeDone'],
@@ -401,6 +391,9 @@ export const txFuelToEthMachine = createMachine(
       hasTxHashMessageRelayed: (ctx, ev) =>
         !!ctx.txHashMessageRelayed || !!ev?.data,
       hasTxMessageRelayed: (_, ev) => !!ev?.data,
+      hasAnalyzeTxInput: (ctx) =>
+        !!ctx.fuelTxId && !!ctx.fuelProvider && !!ctx.ethPublicClient,
+      isTxFuelToEthDone: (ctx) => FuelTxCache.getTxIsDone(ctx.fuelTxId || ''),
     },
     services: {
       waitFuelTxResult: FetchMachine.create<

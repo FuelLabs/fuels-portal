@@ -1,18 +1,22 @@
-import { useInterpret, useSelector } from '@xstate/react';
-import { useEffect } from 'react';
-import { useTransaction } from 'wagmi';
-import { store } from '~/store';
+import { useMemo } from 'react';
+import { store, Services } from '~/store';
+import type { BridgeAsset, BridgeTxsMachineState } from '~/systems/Bridge';
 
 import { useFuelAccountConnection } from '../../fuel';
 import type { TxEthToFuelMachineState } from '../machines';
-import { txEthToFuelMachine } from '../machines';
-import { isErc20Address } from '../utils';
+import { isErc20Address, ETH_SYMBOL, ethLogoSrc } from '../utils';
 
-import { useBlocks } from './useBlocks';
-import { useCachedBlocksDates } from './useCachedBlocksDates';
-import { useEthAccountConnection } from './useEthAccountConnection';
+const bridgeTxsSelectors = {
+  txEthToFuel: (txId?: `0x${string}`) => (state: BridgeTxsMachineState) => {
+    if (!txId) return undefined;
 
-const selectors = {
+    const machine = state.context?.ethToFuelTxRefs?.[txId]?.getSnapshot();
+
+    return machine;
+  },
+};
+
+const txEthToFuelSelectors = {
   status: (state: TxEthToFuelMachineState) => {
     const isSettlementLoading = state.hasTag('isSettlementLoading');
     const isSettlementSelected = state.hasTag('isSettlementSelected');
@@ -39,7 +43,7 @@ const selectors = {
     };
   },
   steps: (state: TxEthToFuelMachineState) => {
-    const status = selectors.status(state);
+    const status = txEthToFuelSelectors.status(state);
     const { ethTxId, erc20Token } = state.context;
 
     if (!ethTxId) return undefined;
@@ -80,86 +84,81 @@ const selectors = {
 
     return steps;
   },
-  ercToken: (state: TxEthToFuelMachineState) => {
-    const { erc20Token } = state.context;
-    return erc20Token;
-  },
   amount: (state: TxEthToFuelMachineState) => {
     const { amount } = state.context;
 
     return amount;
   },
+  blockDate: (state: TxEthToFuelMachineState) => {
+    const { blockDate } = state.context;
+
+    return blockDate;
+  },
+  asset: (state: TxEthToFuelMachineState) => {
+    const asset: BridgeAsset = {
+      amount: state.context.amount,
+      image: ethLogoSrc,
+      symbol: ETH_SYMBOL,
+    };
+    return asset;
+  },
+  erc20Token: (state: TxEthToFuelMachineState) => {
+    const { erc20Token } = state.context;
+    return erc20Token;
+  },
+  ethTxId: (state: TxEthToFuelMachineState) => {
+    const { ethTxId } = state.context;
+    return ethTxId;
+  },
 };
 
-export function useTxEthToFuel({
-  id,
-  skipAnalyzeTx,
-}: {
-  id: string;
-  skipAnalyzeTx?: boolean;
-}) {
+export function useTxEthToFuel({ id }: { id: string }) {
+  const { wallet: fuelWallet } = useFuelAccountConnection();
   const txId = id.startsWith('0x') ? (id as `0x${string}`) : undefined;
-  const { publicClient: ethPublicClient } = useEthAccountConnection();
-  const {
-    provider: fuelProvider,
-    address: fuelAddress,
-    wallet: fuelWallet,
-  } = useFuelAccountConnection();
-  const { data: ethTx } = useTransaction({
-    hash: txId,
-  });
 
-  const { blockDates, notCachedHashes } = useCachedBlocksDates(
-    ethTx?.blockHash ? [ethTx?.blockHash] : undefined
+  const txEthToFuelState = store.useSelector(
+    Services.bridgeTxs,
+    bridgeTxsSelectors.txEthToFuel(txId)
   );
-  const { blocks } = useBlocks(notCachedHashes);
-  const service = useInterpret(txEthToFuelMachine);
-  const steps = useSelector(service, selectors.steps);
-  const status = useSelector(service, selectors.status);
-  const erc20Token = useSelector(service, selectors.ercToken);
-  const amount = useSelector(service, selectors.amount);
 
-  useEffect(() => {
-    if (
-      txId &&
-      fuelProvider &&
-      fuelAddress &&
-      !skipAnalyzeTx &&
-      ethPublicClient
-    ) {
-      service.send('START_ANALYZE_TX', {
-        input: {
-          ethTxId: txId,
-          fuelProvider,
-          fuelAddress,
-          ethPublicClient,
-        },
-      });
-    }
-  }, [
-    txId,
-    fuelProvider,
-    fuelAddress,
-    service,
-    ethPublicClient,
-    skipAnalyzeTx,
-  ]);
+  const { steps, status, amount, date, asset, erc20Token, ethTxId } =
+    useMemo(() => {
+      if (!txEthToFuelState) return {};
+
+      const steps = txEthToFuelSelectors.steps(txEthToFuelState);
+      const status = txEthToFuelSelectors.status(txEthToFuelState);
+      const amount = txEthToFuelSelectors.amount(txEthToFuelState);
+      const date = txEthToFuelSelectors.blockDate(txEthToFuelState);
+      const asset = txEthToFuelSelectors.asset(txEthToFuelState);
+      const erc20Token = txEthToFuelSelectors.erc20Token(txEthToFuelState);
+      const ethTxId = txEthToFuelSelectors.ethTxId(txEthToFuelState);
+
+      return {
+        steps,
+        status,
+        amount,
+        date,
+        asset,
+        erc20Token,
+        ethTxId,
+      };
+    }, [txEthToFuelState]);
 
   function relayMessageToFuel() {
-    service.send('RELAY_MESSAGE_ON_FUEL', {
+    if (!ethTxId || !fuelWallet) return;
+
+    store.relayMessageEthToFuel({
       input: {
         fuelWallet,
       },
+      ethTxId,
     });
   }
 
-  const ethBlockDate = ethTx?.blockHash
-    ? blockDates?.[ethTx.blockHash] ||
-      blocks?.find((block) => block.hash === ethTx.blockHash)?.date
-    : undefined;
   const shouldShowConfirmButton =
     isErc20Address(erc20Token?.address) &&
-    (status.isWaitingFuelWalletApproval || status.isConfirmTransactionLoading);
+    (status?.isWaitingFuelWalletApproval ||
+      status?.isConfirmTransactionLoading);
 
   return {
     handlers: {
@@ -167,10 +166,11 @@ export function useTxEthToFuel({
       openTxEthToFuel: store.openTxEthToFuel,
       relayMessageToFuel,
     },
-    ethBlockDate,
+    date,
     steps,
     status,
     shouldShowConfirmButton,
     amount,
+    asset,
   };
 }

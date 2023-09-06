@@ -9,7 +9,7 @@ type BridgeTxItemProps = {
   date?: Date;
   fromLogo: ReactNode;
   toLogo: ReactNode;
-  asset: BridgeAsset;
+  asset?: BridgeAsset;
   onClick: () => void;
   status: ReactNode;
 };
@@ -30,17 +30,17 @@ export const BridgeTxItem = ({
         {toLogo}
       </Box.Flex>
       <Box.Flex align="center" gap="$1">
-        {typeof asset.image === 'string' ? (
+        {typeof asset?.image === 'string' ? (
           <Image width={18} height={18} src={asset.image} alt={asset.symbol} />
         ) : (
-          asset.image
+          asset?.image
         )}
         <Text
           aria-label="Asset amount"
           fontSize="sm"
           css={styles.assetAmountText}
         >
-          {asset.amount} {asset.symbol}
+          {asset?.amount} {asset?.symbol}
         </Text>
       </Box.Flex>
       <Box.Flex css={styles.statusTime} justify={'space-between'}>

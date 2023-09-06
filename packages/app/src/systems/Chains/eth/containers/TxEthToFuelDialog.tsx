@@ -5,20 +5,13 @@ import { shortAddress } from '~/systems/Core';
 import { useOverlay } from '~/systems/Overlay';
 
 import { useTxEthToFuel } from '../hooks';
-import { ETH_SYMBOL, ethLogoSrc } from '../utils';
 
 export function TxEthToFuelDialog() {
   const { metadata } = useOverlay<{ txId: string }>();
-  const {
-    steps,
-    ethBlockDate,
-    status,
-    handlers,
-    shouldShowConfirmButton,
-    amount,
-  } = useTxEthToFuel({
-    id: metadata.txId,
-  });
+  const { steps, date, asset, handlers, shouldShowConfirmButton, status } =
+    useTxEthToFuel({
+      id: metadata.txId,
+    });
 
   return (
     <>
@@ -34,13 +27,9 @@ export function TxEthToFuelDialog() {
           <Box css={styles.border} />
           <BridgeTxOverview
             transactionId={shortAddress(metadata.txId)}
-            date={ethBlockDate}
+            date={date}
             isDeposit={true}
-            asset={{
-              assetSymbol: ETH_SYMBOL,
-              imageUrl: ethLogoSrc,
-              assetAmount: amount,
-            }}
+            asset={asset}
           />
         </Box.Stack>
       </Dialog.Description>
@@ -50,7 +39,7 @@ export function TxEthToFuelDialog() {
             onPress={handlers.relayMessageToFuel}
             intent="primary"
             css={styles.actionButton}
-            isLoading={status.isConfirmTransactionLoading}
+            isLoading={status?.isConfirmTransactionLoading}
           >
             Confirm Transaction
           </Button>

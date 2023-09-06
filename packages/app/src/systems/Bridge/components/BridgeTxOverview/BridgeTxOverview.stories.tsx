@@ -21,7 +21,11 @@ export const Usage = () => {
         transactionId={bn(1234567876543456)}
         date={new Date()}
         isDeposit={true}
-        asset={{ imageUrl: ethImage, assetSymbol: 'ETH', assetAmount: '1.500' }}
+        asset={{
+          image: ethImage,
+          symbol: 'ETH',
+          amount: '1.500',
+        }}
       />
     </Box.Flex>
   );
@@ -33,7 +37,11 @@ export const Withdrawal = () => {
       <BridgeTxOverview
         transactionId={bn(1234567876543456)}
         date={new Date()}
-        asset={{ imageUrl: ethImage, assetSymbol: 'ETH', assetAmount: '1.500' }}
+        asset={{
+          image: ethImage,
+          symbol: 'ETH',
+          amount: '1.500',
+        }}
       />
     </Box.Flex>
   );

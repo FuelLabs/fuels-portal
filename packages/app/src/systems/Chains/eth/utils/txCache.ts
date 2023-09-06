@@ -3,13 +3,16 @@ const HASH_DONE_KEY_SUBSTRING = 'ethToFuelTx';
 
 export const EthTxCache = {
   getBlockDate: (blockHash: string) => {
-    return localStorage.getItem(generateBlockDateKey(blockHash));
+    return !!blockHash && localStorage.getItem(generateBlockDateKey(blockHash));
   },
   setBlockDate: (blockHash: string, blockDate: string) => {
     return localStorage.setItem(generateBlockDateKey(blockHash), blockDate);
   },
   getTxIsDone: (blockHash: string) => {
-    return localStorage.getItem(generateHashDoneKey(blockHash));
+    return (
+      !!blockHash &&
+      localStorage.getItem(generateHashDoneKey(blockHash)) === 'true'
+    );
   },
   setTxIsDone: (blockHash: string) => {
     return localStorage.setItem(generateHashDoneKey(blockHash), 'true');
