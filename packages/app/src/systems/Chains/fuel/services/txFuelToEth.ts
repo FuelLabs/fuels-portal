@@ -230,6 +230,9 @@ export class TxFuelToEthService {
       ({ name, type }) => name === 'MessageRelayed' && type === 'event'
     );
 
+    console.log(`input.messageId`, input.messageId);
+    console.log(`ethPublicClient`, ethPublicClient);
+
     const logs = await ethPublicClient.getLogs({
       address: VITE_ETH_FUEL_MESSAGE_PORTAL as `0x${string}`,
       event: {

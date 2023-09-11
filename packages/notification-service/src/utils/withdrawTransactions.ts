@@ -28,6 +28,12 @@ export const getWithdrawTransactions = async (
     transactionsByOwner.transactions.map(async (transaction) => {
       const messageOutReceipt = getReceiptsMessageOut(transaction.receipts)[0];
 
+      console.log(`messageOutReceipt`, messageOutReceipt);
+      console.log(
+        `process.env.ETH_FUEL_MESSAGE_PORTAL`,
+        process.env.ETH_FUEL_MESSAGE_PORTAL
+      );
+
       const logs = await ethPublicClient.getLogs({
         address: process.env.ETH_FUEL_MESSAGE_PORTAL as `0x${string}`,
         event: {
@@ -35,12 +41,13 @@ export const getWithdrawTransactions = async (
           name: 'MessageRelayed',
           inputs: abiMessageRelayed?.inputs || [],
         },
-        args: {
-          messageId: messageOutReceipt?.messageId as `0x${string}`,
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } as any,
+        // args: {
+        //   messageId: messageOutReceipt?.messageId as `0x${string}`,
+        //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // } as any,
         fromBlock: 'earliest',
       });
+      console.log(`logs`, logs);
       return logs[0]?.blockNumber || undefined;
     })
   );

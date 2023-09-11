@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 export const fuelTestEmail = 'test@test.com';
 export const fuelTestAddress = new Address(
-  'fuel18e7amfxs60urq7h97xhdsa3rnykpcn0valkxsjfkjcrh2xqmyvpq4ay9jn'
+  'fuel1a22g3l4d5d24fg4a77sejagj8s96smx84qcvfwm48ka9rx05v4vq6gn7tk'
 ).toB256();
 
 async function main() {

@@ -18,7 +18,8 @@
     "graphql-request": "^5.1.0",
     "graphql-tag": "^2.12.6",
     "ts-node": "^10.9.1",
-    "viem": "^0.3.36"
+    "viem": "^0.3.36",
+    "wagmi": "^1.0.6"
   },
   "devDependencies": {
     "@types/express": "^4.17.17",

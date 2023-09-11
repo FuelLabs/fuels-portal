@@ -31,3 +31,11 @@ model Transaction {
   addressId String
   blockHeight BigInt?
 }
+
+model CommitSubmittedLog {
+  blockId Int @id
+  commitHeight String
+  blockHash String
+  fuelBlockHeight Int
+  fuelBlockId String
+}

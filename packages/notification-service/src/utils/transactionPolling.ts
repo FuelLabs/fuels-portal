@@ -30,19 +30,14 @@ export const transactionPolling = async (
     ) => {
       const addresses = email.addresses;
       addresses.forEach(async (address) => {
-        let dbTransactions = [];
         const transactionsWithBlockHeights = await getWithdrawTransactions(
           address.address,
           fuelProviderUrl,
           ethPublicClient
         );
 
-        dbTransactions = await Promise.all(
+        const dbTransactions = await Promise.all(
           transactionsWithBlockHeights.map((transactionWithBlockHeight) => {
-            console.log(
-              `transactionWithBlockHeight.blockHeight`,
-              transactionWithBlockHeight.blockHeight
-            );
             return prisma.transaction.upsert({
               where: {
                 transactionId: transactionWithBlockHeight.id,
@@ -61,12 +56,6 @@ export const transactionPolling = async (
           })
         );
         console.log(`dbTransactions`, dbTransactions);
-        // console.log(`temp`, dbTransactions);
-        // dbTransactions.forEach((transaction) => {
-        //   if (transaction.status === 'SuccessStatus') {
-        //     console.log('TODO: send email and update the db');
-        //   }
-        // });
       });
     }
   );
