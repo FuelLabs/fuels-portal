@@ -1,58 +1,19 @@
 import { cssObj } from '@fuel-ui/css';
-import {
-  Box,
-  Dialog,
-  Icon,
-  IconButton,
-  Text,
-  useFuelTheme,
-} from '@fuel-ui/react';
-import { useConnect, useFuel } from '@fuels-portal/sdk-react';
-import { useState } from 'react';
+import { Box, Dialog, Icon, IconButton, Text } from '@fuel-ui/react';
+
+import { useConnector } from '../../components';
 
 import { ConnectInstall } from './ConnectInstall';
 import { ConnectList } from './ConnectList';
-import type { ConnectProps, Connector } from './defs';
 
-export const Connect = ({ connectors, children }: ConnectProps) => {
-  const { current } = useFuelTheme();
-  const { fuel } = useFuel();
-  const { connect } = useConnect();
-  const [connector, setConnector] = useState<Connector | null>(null);
-  const [open, setOpen] = useState(false);
-
-  const handleConnect = async (connector: Connector) => {
-    if (!fuel) return setConnector(connector);
-
-    const connectors = await fuel.listConnectors();
-    const hasConnector = connectors.find((c) => c.name === connector.name);
-
-    if (hasConnector) {
-      connect(connector.name);
-      handleClose();
-    } else {
-      setConnector(connector);
-    }
-  };
-
-  const handleClose = () => {
-    setConnector(null);
-    setOpen(false);
-  };
-
-  const handleBack = () => {
-    setConnector(null);
-  };
+export const Connect = ({ theme }: { theme: string }) => {
+  const {
+    connectors,
+    _internal: { isOpen, connector, connect, back },
+  } = useConnector();
 
   return (
-    <Dialog
-      isOpen={open}
-      isBlocked={open}
-      onOpenChange={(s) => {
-        if (s) setOpen(true);
-      }}
-    >
-      <Dialog.Trigger>{children}</Dialog.Trigger>
+    <Dialog isOpen={isOpen} isBlocked={isOpen}>
       <Dialog.Content css={styles.content}>
         <Dialog.Heading css={styles.header}>
           <Box css={styles.headerAction}>
@@ -61,7 +22,7 @@ export const Connect = ({ connectors, children }: ConnectProps) => {
                 icon={Icon.is('ChevronLeft')}
                 aria-label="back"
                 variant="link"
-                onPress={handleBack}
+                onPress={back}
               />
             )}
           </Box>
@@ -71,15 +32,15 @@ export const Connect = ({ connectors, children }: ConnectProps) => {
               icon={Icon.is('X')}
               aria-label="close"
               variant="link"
-              onPress={handleClose}
+              onPress={close}
             />
           </Box>
         </Dialog.Heading>
         {!connector ? (
           <ConnectList
             connectors={connectors}
-            theme={current}
-            onPress={handleConnect}
+            theme={theme}
+            onPress={connect}
           />
         ) : (
           <ConnectInstall connector={connector} />

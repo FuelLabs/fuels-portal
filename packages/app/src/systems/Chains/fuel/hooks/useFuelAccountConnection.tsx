@@ -1,12 +1,12 @@
 import {
   useFuel,
-  useConnect,
   useAccount,
   useDisconnect,
   useIsConnected,
   useProvider,
   useBalance,
   useWallet,
+  useConnector,
 } from '@fuels-portal/sdk-react';
 import { Address } from 'fuels';
 import { useMemo } from 'react';
@@ -20,7 +20,7 @@ export const useFuelAccountConnection = () => {
   const { account } = useAccount();
   const { balance } = useBalance({ address: account || '' });
   const { isConnected } = useIsConnected();
-  const { connect, error, isLoading: isConnecting } = useConnect();
+  const { connect, error, isConnecting } = useConnector();
   const { disconnect } = useDisconnect();
   const { provider } = useProvider();
   const { wallet } = useWallet({ address: account || '' });

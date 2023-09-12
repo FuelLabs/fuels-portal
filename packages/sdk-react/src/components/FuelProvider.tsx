@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Fuel } from '@fuel-wallet/sdk';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { ReactNode } from 'react';
-import { useContext, createContext, useEffect } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
-import { useWindowFuel } from '../hooks';
+import { useWindowFuel } from '../hooks/useWindowFuel';
 import { QUERY_KEYS } from '../utils';
 
 export const fuelQueryClient = new QueryClient({
@@ -25,8 +26,10 @@ type FuelProviderProps = {
   children?: ReactNode;
 };
 
-type FuelReactContextType = {
+export type FuelReactContextType = {
   fuel: Fuel | undefined;
+  data: any;
+  setData: (data: any) => void;
 };
 
 export const FuelReactContext = createContext<FuelReactContextType | null>(
@@ -39,6 +42,7 @@ export const useFuel = () => {
 
 export const FuelProvider = ({ children }: FuelProviderProps) => {
   const fuel = useWindowFuel();
+  const [data, setData] = useState<any>({});
 
   function onCurrentAccountChange() {
     fuelQueryClient.fetchQuery([QUERY_KEYS.account]);
@@ -81,7 +85,7 @@ export const FuelProvider = ({ children }: FuelProviderProps) => {
   }, [fuel]);
 
   return (
-    <FuelReactContext.Provider value={{ fuel }}>
+    <FuelReactContext.Provider value={{ fuel, data, setData }}>
       <QueryClientProvider client={fuelQueryClient}>
         {children}
       </QueryClientProvider>

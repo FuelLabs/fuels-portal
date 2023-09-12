@@ -5,7 +5,7 @@ import { useFuel } from '../components';
 export const useConnect = () => {
   const { fuel } = useFuel();
 
-  const { mutate, ...mutateProps } = useMutation({
+  const { mutateAsync, ...mutateProps } = useMutation({
     mutationFn: async (connectorName?: string) => {
       if (connectorName) {
         localStorage.setItem('connector', connectorName);
@@ -16,7 +16,7 @@ export const useConnect = () => {
   });
 
   return {
-    connect: mutate,
+    connect: mutateAsync,
     ...mutateProps,
   };
 };

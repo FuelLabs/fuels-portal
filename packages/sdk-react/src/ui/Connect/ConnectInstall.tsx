@@ -1,8 +1,13 @@
 import { cssObj } from '@fuel-ui/css';
 import { Box, Button, Image, Text, useFuelTheme } from '@fuel-ui/react';
 
-import type { ConnectInstallProps } from './defs';
+import type { Connector } from '../../types';
+
 import { getImageUrl } from './utils/getImageUrl';
+
+type ConnectInstallProps = {
+  connector: Connector;
+};
 
 export const ConnectInstall = ({ connector }: ConnectInstallProps) => {
   const { current } = useFuelTheme();
@@ -16,20 +21,20 @@ export const ConnectInstall = ({ connector }: ConnectInstallProps) => {
         />
       </Box>
       <Text fontSize="lg" css={styles.connectorTitle}>
-        Install {connector.name}
+        {connector.install.action} {connector.name}
       </Text>
       <Text css={styles.connectorDescription}>
-        To connect your {connector.name}, install the browser extension.
+        {connector.install.description}
       </Text>
       <Box css={styles.connectorFooter}>
         <Button
           size="lg"
           variant="ghost"
           as="a"
-          href={connector.install}
+          href={connector.install.link}
           target="_blank"
         >
-          <b>Install</b>
+          <b>{connector.install.action}</b>
         </Button>
       </Box>
     </Box.Stack>

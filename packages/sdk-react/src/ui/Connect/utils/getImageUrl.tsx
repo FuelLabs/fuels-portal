@@ -1,4 +1,4 @@
-import type { Connector } from '../defs';
+import type { Connector } from '../../../types';
 
 export const getImageUrl = (theme: string, connector: Connector) => {
   if (typeof connector.image === 'object') {

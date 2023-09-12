@@ -1,8 +1,15 @@
 import { cssObj } from '@fuel-ui/css';
 import { Box, Card, Image, Text } from '@fuel-ui/react';
 
-import type { ConnectListProps } from './defs';
+import type { Connector, ConnectorList } from '../../types';
+
 import { getImageUrl } from './utils/getImageUrl';
+
+export type ConnectListProps = {
+  theme: string;
+  connectors: ConnectorList;
+  onPress: (connector: Connector) => void;
+};
 
 export const ConnectList = ({
   connectors,
