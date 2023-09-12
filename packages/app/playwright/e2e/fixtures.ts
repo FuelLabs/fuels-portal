@@ -23,7 +23,7 @@ export const test = base.extend<{
     global.expect = expect;
 
     const extensionUrl =
-      'https://github.com/FuelLabs/fuels-wallet/releases/download/v0.12.0/fuel-wallet-chrome-0.12.0.zip';
+      'https://github.com/FuelLabs/fuels-wallet/releases/download/v0.12.3/fuel-wallet-chrome-0.12.3.zip';
 
     const zipFile = './packages/app/playwright/e2e/fuel-wallet.zip';
     const zipFileStream = fs.createWriteStream(zipFile);

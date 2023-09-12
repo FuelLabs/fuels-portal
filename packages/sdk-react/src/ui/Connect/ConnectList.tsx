@@ -23,6 +23,7 @@ export const ConnectList = ({
           key={connector.connector}
           css={styles.connector}
           onPress={() => onPress(connector)}
+          aria-label={`Connect to ${connector.name}}`}
         >
           <Text css={styles.connectorTitle}>{connector.name}</Text>
           <Box css={styles.connectorImage}>
