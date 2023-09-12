@@ -9,6 +9,7 @@ import { ConnectList } from './ConnectList';
 export const Connect = ({ theme }: { theme: string }) => {
   const {
     connectors,
+    cancel,
     _internal: { isOpen, connector, connect, back },
   } = useConnector();
 
@@ -32,7 +33,7 @@ export const Connect = ({ theme }: { theme: string }) => {
               icon={Icon.is('X')}
               aria-label="close"
               variant="link"
-              onPress={close}
+              onPress={cancel}
             />
           </Box>
         </Dialog.Heading>
