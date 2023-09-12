@@ -14,10 +14,12 @@ import {
 } from '~/config';
 import type { BridgeAsset } from '~/systems/Bridge';
 
+import { FUEL_UNITS } from '../../fuel';
 import { getBlock } from '../../fuel/utils/getBlock';
 import { ERC_20 } from '../contracts/Erc20';
 import { FUEL_CHAIN_STATE } from '../contracts/FuelChainState';
 import { FUEL_MESSAGE_PORTAL } from '../contracts/FuelMessagePortal';
+import { getBlockDate } from '../utils';
 
 export type TxEthToFuelInputs = {
   start: {
@@ -41,6 +43,10 @@ export type TxEthToFuelInputs = {
     ethDepositBlockHeight?: string;
     fuelProvider?: FuelProvider;
     fuelAddress?: FuelAddress;
+  };
+  fetchDepositLogs: {
+    fuelAddress?: FuelAddress;
+    ethPublicClient?: PublicClient;
   };
 };
 
@@ -216,13 +222,20 @@ export class TxEthToFuelService {
       });
     }
 
+    const blockDate = await getBlockDate({
+      blockHash: receipt.blockHash,
+      publicClient: ethPublicClient,
+    });
+
     const decodedEvent = decodeEventLog({
       abi: FUEL_MESSAGE_PORTAL.abi,
       data: receipt.logs[0].data,
       topics: receipt.logs[0].topics,
     }) as unknown as { args: { nonce: number; amount: bigint } };
     const depositNonce = bn(decodedEvent.args.nonce);
-    const amount = bn(decodedEvent.args.amount.toString()).format();
+    const amount = bn(decodedEvent.args.amount.toString()).format({
+      precision: FUEL_UNITS,
+    });
 
     const ethDepositBlockHeight = receipt.blockNumber;
 
@@ -230,6 +243,7 @@ export class TxEthToFuelService {
       depositNonce,
       amount,
       ethDepositBlockHeight: ethDepositBlockHeight.toString(),
+      blockDate,
     };
   }
 
@@ -239,10 +253,10 @@ export class TxEthToFuelService {
       throw new Error('No nonce found');
     }
     if (!input?.fuelAddress) {
-      throw new Error('No address for Fuel found');
+      throw new Error('No Fuel address found');
     }
     if (!input?.fuelProvider) {
-      throw new Error('No provider for Fuel found');
+      throw new Error('No Fuel provider found');
     }
     if (!input?.ethDepositBlockHeight) {
       throw new Error('No block height found');
@@ -260,8 +274,38 @@ export class TxEthToFuelService {
       blockHash: latestBlockId,
       providerUrl: fuelProvider.url,
     });
-    const fuelLatestDAHeight = fuelLatestBlock.header.daHeight;
+    const fuelLatestDAHeight = fuelLatestBlock?.header?.daHeight;
 
     return bn(fuelLatestDAHeight).gte(ethDepositBlockHeight);
+  }
+
+  static async fetchDepositLogs(input: TxEthToFuelInputs['fetchDepositLogs']) {
+    if (!input?.ethPublicClient) {
+      throw new Error('Need to connect ETH Wallet');
+    }
+    if (!input?.fuelAddress) {
+      throw new Error('Need fuel address');
+    }
+
+    const { ethPublicClient, fuelAddress } = input;
+
+    const abiMessageSent = FUEL_MESSAGE_PORTAL.abi.find(
+      ({ name, type }) => name === 'MessageSent' && type === 'event'
+    );
+    const logs = await ethPublicClient!.getLogs({
+      address: VITE_ETH_FUEL_MESSAGE_PORTAL as `0x${string}`,
+      event: {
+        type: 'event',
+        name: 'MessageSent',
+        inputs: abiMessageSent?.inputs || [],
+      },
+      args: {
+        recipient: fuelAddress?.toHexString() as `0x${string}`,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any,
+      fromBlock: 'earliest',
+    });
+
+    return logs;
   }
 }

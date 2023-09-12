@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import type {
   BN,
   Message,
@@ -22,6 +23,7 @@ type MachineContext = {
   ethPublicClient?: PublicClient;
   ethDepositBlockHeight?: string;
   amount?: string;
+  blockDate?: Date;
 };
 
 type MachineServices = {
@@ -30,6 +32,7 @@ type MachineServices = {
       depositNonce: BN;
       amount: string;
       ethDepositBlockHeight: string;
+      blockDate: Date;
     };
   };
   getFuelMessage: {
@@ -58,6 +61,10 @@ export const txEthToFuelMachine = createMachine(
     initial: 'idle',
     states: {
       idle: {
+        always: {
+          cond: 'hasAnalyzeTxInput',
+          target: 'checkingSettlement',
+        },
         on: {
           START_ANALYZE_TX: {
             actions: ['assignAnalyzeTxInput'],
@@ -85,7 +92,7 @@ export const txEthToFuelMachine = createMachine(
                 {
                   actions: ['assignReceiptsInfo'],
                   cond: 'hasEthTxNonce',
-                  target: 'checkingFuelTx',
+                  target: 'checkingDoneCache',
                 },
               ],
             },
@@ -94,6 +101,18 @@ export const txEthToFuelMachine = createMachine(
                 target: 'gettingNonce',
               },
             },
+          },
+          checkingDoneCache: {
+            tags: ['isSettlementLoading', 'isSettlementSelected'],
+            always: [
+              {
+                cond: 'isTxEthToFuelDone',
+                target: '#(machine).checkingSettlement.checkingFuelTx.done',
+              },
+              {
+                target: 'checkingFuelTx',
+              },
+            ],
           },
           checkingFuelTx: {
             tags: ['isSettlementDone'],
@@ -119,7 +138,6 @@ export const txEthToFuelMachine = createMachine(
                       cond: FetchMachine.hasError,
                     },
                     {
-                      actions: ['setEthToFuelTxDone'],
                       cond: 'hasFuelMessage',
                       target: 'done',
                     },
@@ -132,6 +150,7 @@ export const txEthToFuelMachine = createMachine(
                 },
               },
               done: {
+                entry: ['setEthToFuelTxDone'],
                 tags: ['isReceiveDone'],
                 type: 'final',
               },
@@ -154,16 +173,23 @@ export const txEthToFuelMachine = createMachine(
         ethTxNonce: ev.data.depositNonce,
         amount: ev.data.amount,
         ethDepositBlockHeight: ev.data.ethDepositBlockHeight,
+        blockDate: ev.data.blockDate,
       })),
-      setEthToFuelTxDone: (ctx, ev) => {
-        if (ctx.ethTxId && ev.data) {
+      setEthToFuelTxDone: (ctx) => {
+        if (ctx.ethTxId) {
           EthTxCache.setTxIsDone(ctx.ethTxId);
         }
       },
     },
     guards: {
       hasFuelMessage: (ctx, ev) => !!ctx.fuelMessage || !!ev?.data,
-      hasEthTxNonce: (ctx, ev) => !!ctx.ethTxNonce || !!ev?.data,
+      hasEthTxNonce: (ctx, ev) => !!ctx.ethTxNonce || !!ev?.data.depositNonce,
+      hasAnalyzeTxInput: (ctx) =>
+        !!ctx.ethTxId &&
+        !!ctx.fuelAddress &&
+        !!ctx.fuelProvider &&
+        !!ctx.ethPublicClient,
+      isTxEthToFuelDone: (ctx) => EthTxCache.getTxIsDone(ctx.ethTxId || ''),
     },
     services: {
       getDepositNonce: FetchMachine.create<
@@ -176,6 +202,7 @@ export const txEthToFuelMachine = createMachine(
             throw new Error('No input to getNonce');
           }
 
+          console.log('getDepositNonce');
           return TxEthToFuelService.getDepositNonce(input);
         },
       }),
@@ -190,6 +217,7 @@ export const txEthToFuelMachine = createMachine(
             throw new Error('No input to get fuel message');
           }
 
+          console.log('getFuelMessage');
           return TxEthToFuelService.getFuelMessage(input);
         },
       }),
