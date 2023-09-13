@@ -14,7 +14,7 @@ import { fetchToken } from 'wagmi/actions';
 import {
   VITE_ETH_FUEL_ERC20_GATEWAY,
   VITE_ETH_FUEL_MESSAGE_PORTAL,
-  VITE_FUEL_TOKEN_CONTRACT_ID,
+  VITE_FUEL_FUNGIBLE_TOKEN_ID,
 } from '~/config';
 import type { BridgeAsset } from '~/systems/Bridge';
 
@@ -185,7 +185,7 @@ export class TxEthToFuelService {
         const depositTxHash = await fuelErc20Gateway.write.deposit([
           fuelAddress.toB256() as `0x${string}`,
           ethAsset?.address,
-          FuelAddress.fromString(VITE_FUEL_TOKEN_CONTRACT_ID).toB256(),
+          FuelAddress.fromString(VITE_FUEL_FUNGIBLE_TOKEN_ID).toB256(),
           amount,
         ]);
 

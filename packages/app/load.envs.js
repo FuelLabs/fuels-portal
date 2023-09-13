@@ -82,5 +82,5 @@ if (ethFuelContracts && ethFuelContracts.FuelMessagePortal) {
   process.env.VITE_ETH_ERC20 = ethFuelContracts.ERC20;
 }
 if (fuelContracts) {
-  process.env.VITE_FUEL_TOKEN_CONTRACT_ID = fuelContracts.fuelTokenContractId;
+  process.env.VITE_FUEL_FUNGIBLE_TOKEN_ID = fuelContracts.fuelFungibleTokenId;
 }
