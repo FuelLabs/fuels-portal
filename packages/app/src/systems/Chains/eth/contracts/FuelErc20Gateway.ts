@@ -1,8 +1,6 @@
 export type FuelERC20GatewayArgs = {
   Deposit: {
-    // TODO: change here, adding recipient when it gets added to fuelErc20Gateway contract deposit event
     amount: bigint;
-    nonce: bigint;
     sender: `0x${string}`;
     tokenId: `0x${string}`;
     fuelTokenId: `0x${string}`;

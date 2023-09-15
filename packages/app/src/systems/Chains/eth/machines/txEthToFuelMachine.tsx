@@ -2,7 +2,7 @@
 import type { FuelWalletLocked as FuelWallet } from '@fuel-wallet/sdk';
 import type {
   BN,
-  Message,
+  Message as FuelMessage,
   Address as FuelAddress,
   Provider as FuelProvider,
   TransactionResponse,
@@ -20,16 +20,16 @@ import { EthTxCache } from '../utils';
 type MachineContext = {
   ethTxId?: `0x${string}`;
   ethTxNonce?: BN;
-  ethSender?: string;
   fuelAddress?: FuelAddress;
   fuelProvider?: FuelProvider;
-  fuelMessage?: Message;
+  fuelMessage?: FuelMessage;
   ethPublicClient?: PublicClient;
   ethDepositBlockHeight?: string;
   erc20Token?: FetchTokenResult;
   amount?: string;
   fuelRecipient?: FuelAddress;
   blockDate?: Date;
+  assetId?: string;
 };
 
 type MachineServices = {
@@ -37,6 +37,9 @@ type MachineServices = {
     data: GetReceiptsInfoReturn | undefined;
   };
   getFuelMessage: {
+    data: FuelMessage | undefined;
+  };
+  checkSyncDaHeight: {
     data: boolean | undefined;
   };
   relayMessageOnFuel: {
@@ -121,46 +124,81 @@ export const txEthToFuelMachine = createMachine(
                 target: '#(machine).checkingSettlement.checkingFuelTx.done',
               },
               {
-                target: 'checkingFuelTx',
+                target: 'decidingCheckMessageAction',
               },
             ],
           },
+          decidingCheckMessageAction: {
+            // decide if erc20 token get fuel message, otherwise go for daHeight method
+            tags: ['isSettlementLoading', 'isSettlementSelected'],
+            always: [
+              {
+                cond: 'hasErc20Token',
+                target: 'gettingFuelMessage',
+              },
+              {
+                target: 'checkSyncDaHeight',
+              },
+            ],
+          },
+          checkSyncDaHeight: {
+            tags: ['isSettlementLoading', 'isSettlementSelected'],
+            invoke: {
+              src: 'checkSyncDaHeight',
+              data: {
+                input: (ctx: MachineContext) => ({
+                  fuelProvider: ctx.fuelProvider,
+                  ethDepositBlockHeight: ctx.ethDepositBlockHeight,
+                }),
+              },
+              onDone: [
+                {
+                  cond: FetchMachine.hasError,
+                },
+                {
+                  cond: 'isDaHeightSynced',
+                  target: 'checkingFuelTx',
+                },
+              ],
+            },
+            after: {
+              10000: {
+                target: 'decidingCheckMessageAction',
+              },
+            },
+          },
+          gettingFuelMessage: {
+            tags: ['isSettlementLoading', 'isSettlementSelected'],
+            invoke: {
+              src: 'getFuelMessage',
+              data: {
+                input: (ctx: MachineContext) => ({
+                  ethTxNonce: ctx.ethTxNonce,
+                  fuelProvider: ctx.fuelProvider,
+                  fuelRecipient: ctx.fuelRecipient,
+                }),
+              },
+              onDone: [
+                {
+                  cond: FetchMachine.hasError,
+                },
+                {
+                  actions: ['assignFuelMessage'],
+                  cond: 'hasFuelMessage',
+                  target: 'checkingFuelTx',
+                },
+              ],
+            },
+            after: {
+              10000: {
+                target: 'decidingCheckMessageAction',
+              },
+            },
+          },
           checkingFuelTx: {
             tags: ['isSettlementDone'],
-            initial: 'gettingFuelMessage',
+            initial: 'decidingRelayAction',
             states: {
-              gettingFuelMessage: {
-                tags: [
-                  'isConfirmTransactionLoading',
-                  'isConfirmTransactionSelected',
-                ],
-                invoke: {
-                  src: 'getFuelMessage',
-                  data: {
-                    input: (ctx: MachineContext) => ({
-                      ethTxNonce: ctx.ethTxNonce,
-                      fuelRecipient: ctx.fuelRecipient,
-                      fuelProvider: ctx.fuelProvider,
-                      ethDepositBlockHeight: ctx.ethDepositBlockHeight,
-                    }),
-                  },
-                  onDone: [
-                    {
-                      cond: FetchMachine.hasError,
-                    },
-                    {
-                      actions: ['assignFuelMessage'],
-                      cond: 'hasFuelMessage',
-                      target: 'decidingRelayAction',
-                    },
-                  ],
-                },
-                after: {
-                  10000: {
-                    target: 'gettingFuelMessage',
-                  },
-                },
-              },
               decidingRelayAction: {
                 tags: [
                   'isConfirmTransactionLoading',
@@ -209,7 +247,8 @@ export const txEthToFuelMachine = createMachine(
                     {
                       cond: FetchMachine.hasError,
                       // TODO: change here to check if relay message already happened
-                      target: 'gettingFuelMessage',
+                      target:
+                        '#(machine).checkingSettlement.decidingCheckMessageAction',
                     },
                     {
                       target: 'done',
@@ -240,17 +279,15 @@ export const txEthToFuelMachine = createMachine(
         return {
           erc20Token: ev.data?.erc20Token,
           ethTxNonce: ev.data?.nonce,
-          ethSender: ev.data?.sender,
           amount: ev.data?.amount,
           fuelRecipient: ev.data?.recipient,
           ethDepositBlockHeight: ev.data?.ethDepositBlockHeight,
           blockDate: ev.data?.blockDate,
+          assetId: ev.data?.assetId,
         };
       }),
       assignFuelMessage: assign({
-        // TODO: fix here when we can get the actual message even if spent
-        fuelMessage: (_) => undefined,
-        // fuelMessage: (_, ev) => ev.data,
+        fuelMessage: (_, ev) => ev.data,
       }),
       setEthToFuelTxDone: (ctx) => {
         if (ctx.ethTxId) {
@@ -259,8 +296,9 @@ export const txEthToFuelMachine = createMachine(
       },
     },
     guards: {
-      hasFuelMessage: (ctx, ev) => !!ctx.fuelMessage || !!ev?.data,
       hasErc20Token: (ctx) => !!ctx.erc20Token,
+      isDaHeightSynced: (_, ev) => !!ev?.data,
+      hasFuelMessage: (ctx, ev) => !!ctx.fuelMessage || !!ev?.data,
       hasEthTxNonce: (ctx, ev) => !!ctx.ethTxNonce || !!ev?.data?.nonce,
       hasAnalyzeTxInput: (ctx) =>
         !!ctx.ethTxId &&
@@ -284,6 +322,20 @@ export const txEthToFuelMachine = createMachine(
           return TxEthToFuelService.getReceiptsInfo(input);
         },
       }),
+      checkSyncDaHeight: FetchMachine.create<
+        TxEthToFuelInputs['checkSyncDaHeight'],
+        MachineServices['checkSyncDaHeight']['data']
+      >({
+        showError: true,
+        async fetch({ input }) {
+          if (!input) {
+            throw new Error('No input to checkSyncDaHeight');
+          }
+
+          console.log('checkSyncDaHeight');
+          return TxEthToFuelService.checkSyncDaHeight(input);
+        },
+      }),
       getFuelMessage: FetchMachine.create<
         TxEthToFuelInputs['getFuelMessage'],
         MachineServices['getFuelMessage']['data']
@@ -296,7 +348,6 @@ export const txEthToFuelMachine = createMachine(
           }
 
           console.log('getFuelMessage');
-          // TODO: continue from here. how to get message if it can be spent ?
           return TxEthToFuelService.getFuelMessage(input);
         },
       }),
