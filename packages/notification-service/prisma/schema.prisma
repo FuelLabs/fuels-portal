@@ -11,31 +11,24 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  email String @unique
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
   addresses Address[]
 }
 
 model Address {
-  address String @unique
+  address      String        @unique
   transactions Transaction[]
-  withdrawer User @relation(fields: [withdrawerId], references: [id], onDelete: Cascade)
+  withdrawer   User          @relation(fields: [withdrawerId], references: [id], onDelete: Cascade)
   withdrawerId Int
 }
 
 model Transaction {
-  transactionId String @id
-  status String
-  emailSent Boolean @default(false)
-  address Address @relation(fields: [addressId], references: [address], onDelete: Cascade)
-  addressId String
-  blockHeight BigInt?
-}
-
-model CommitSubmittedLog {
-  blockId Int @id
-  commitHeight String
-  blockHash String
-  fuelBlockHeight Int
-  fuelBlockId String
+  transactionId             String             @id
+  status                    String
+  emailSent                 Boolean            @default(false)
+  address                   Address            @relation(fields: [addressId], references: [address], onDelete: Cascade)
+  addressId                 String
+  blockHeight               BigInt?
+  messageId                 String
 }

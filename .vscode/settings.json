@@ -10,5 +10,8 @@
   },
   "[typescript]": {
     "editor.defaultFormatter": "ms-vsliveshare.vsliveshare"
+  },
+  "[prisma]": {
+    "editor.defaultFormatter": "ms-vsliveshare.vsliveshare"
   }
 }
