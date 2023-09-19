@@ -147,6 +147,9 @@ importers:
       '@ethersproject/sha2':
         specifier: ^5.7.0
         version: 5.7.0
+      '@fuel-bridge/solidity-contracts':
+        specifier: 0.0.2-next-9ebbea2
+        version: 0.0.2-next-9ebbea2(ethers@5.7.2)(hardhat@2.13.0)
       '@fuel-ui/css':
         specifier: 0.20.0-dev-7b40886
         version: 0.20.0-dev-7b40886
