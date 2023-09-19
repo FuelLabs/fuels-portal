@@ -12,7 +12,7 @@ import path from 'path';
 
 import { ETH_MNEMONIC, ETH_WALLET_PASSWORD } from '../mocks';
 
-const pathToExtension = path.join(__dirname, './dist-crx');
+const fuelPathExtension = path.join(__dirname, './dist-crx');
 
 export const test = base.extend<{
   context: BrowserContext;
@@ -80,8 +80,8 @@ export const test = base.extend<{
     );
     // prepare browser args
     const browserArgs = [
-      `--disable-extensions-except=${metamaskPath},${pathToExtension}`,
-      `--load-extension=${metamaskPath},${pathToExtension}`,
+      `--disable-extensions-except=${metamaskPath},${fuelPathExtension}`,
+      `--load-extension=${metamaskPath},${fuelPathExtension}`,
       '--remote-debugging-port=9222',
     ];
 
@@ -90,10 +90,14 @@ export const test = base.extend<{
       headless: false,
       args: browserArgs,
     });
-    // wait for metamask
-    await context.pages()[0].waitForTimeout(3000);
-    // setup metamask
-    // TODO sometimes this step is flaky, but I'm not sure how to fix
+
+    // Wait for Fuel Wallet to load
+    await context.waitForEvent('page', {
+      predicate: (page) => {
+        return page.url().includes('/sign-up/welcome');
+      },
+    });
+
     await initialSetup(chromium, {
       secretWordsOrPrivateKey: ETH_MNEMONIC,
       rpcUrl: 'http://localhost:8080',
