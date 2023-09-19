@@ -98,6 +98,54 @@ export const test = base.extend<{
       },
     });
 
+    /// TEMP CI TESTING
+    const extensionsData = {};
+    async function getExtensionsData() {
+      const page = await context.newPage();
+
+      await page.goto('chrome://extensions');
+      await page.waitForLoadState('load');
+      await page.waitForLoadState('domcontentloaded');
+
+      const devModeButton = page.locator('#devMode');
+      await devModeButton.waitFor();
+      await devModeButton.focus();
+      await devModeButton.click();
+
+      const extensionDataItems = await page.locator('extensions-item').all();
+      for (const extensionData of extensionDataItems) {
+        const extensionName = (
+          await extensionData
+            .locator('#name-and-version')
+            .locator('#name')
+            .textContent()
+        ).toLowerCase();
+
+        const extensionVersion = (
+          await extensionData
+            .locator('#name-and-version')
+            .locator('#version')
+            .textContent()
+        ).replace(/(\n| )/g, '');
+
+        const extensionId = (
+          await extensionData.locator('#extension-id').textContent()
+        ).replace('ID: ', '');
+
+        extensionsData[extensionName] = {
+          version: extensionVersion,
+          id: extensionId,
+        };
+      }
+      await page.close();
+
+      return extensionsData;
+    }
+
+    await getExtensionsData();
+    console.log(extensionsData);
+    /// TEMP CI TESTING
+
     await initialSetup(chromium, {
       secretWordsOrPrivateKey: ETH_MNEMONIC,
       rpcUrl: 'http://localhost:8080',
