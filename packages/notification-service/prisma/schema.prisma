@@ -30,5 +30,4 @@ model Transaction {
   address                   Address            @relation(fields: [addressId], references: [address], onDelete: Cascade)
   addressId                 String
   blockHeight               BigInt?
-  messageId                 String
 }
