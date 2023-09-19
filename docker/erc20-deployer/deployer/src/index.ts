@@ -21,7 +21,7 @@ async function main() {
     gasLimit: 1_000_000,
   });
   await startServer({
-    ETH_ERC20Gateway: ETHToken.address,
+    ETH_ERC20: ETHToken.address,
     FUEL_TokenContract: FuelToken.id.toB256(),
   });
 }
