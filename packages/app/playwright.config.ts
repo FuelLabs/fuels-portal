@@ -17,7 +17,7 @@ const config: PlaywrightTestConfig = defineConfig({
   // Retry tests on CI if they fail
   retries: IS_CI ? 2 : 0,
   webServer: {
-    command: `NODE_ENV=test pnpm dev`,
+    command: `pnpm dev`,
     port: Number(PORT),
     reuseExistingServer: true,
   },
