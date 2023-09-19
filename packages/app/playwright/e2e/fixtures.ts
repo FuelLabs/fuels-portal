@@ -138,6 +138,7 @@ export const test = base.extend<{
     });
 
     const extenssions = await getExtensionsData(context);
+    console.log(extenssions);
     async function waitForPages() {
       const pages = await context.pages();
 
@@ -148,10 +149,13 @@ export const test = base.extend<{
         return page.url().includes(extenssions['fuel wallet'].id);
       });
 
+      console.log('Waiting for the pages');
       if (!hasMetamask || !hasFuelWallet) {
+        console.log('Pages not found!');
         await setTimeout(3000);
         return waitForPages();
       }
+      console.log('Pages found!');
       return true;
     }
 
