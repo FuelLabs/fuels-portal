@@ -138,7 +138,7 @@ export const test = base.extend<{
     });
 
     const extenssions = await getExtensionsData(context);
-    console.log(extenssions);
+    console.log('extenssions', extenssions);
     async function waitForPages() {
       const pages = await context.pages();
 
