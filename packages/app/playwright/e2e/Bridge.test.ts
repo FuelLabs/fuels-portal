@@ -107,9 +107,11 @@ test.describe('Bridge', () => {
     const transactionList = page.locator('a').getByText('Transactions');
     await transactionList.click();
 
+    const txDeposit = page.locator(
+      `[aria-label="ETH to FUEL"] [aria-label="Asset amount"]`
+    );
     // check the transaction is there
-    let transactionAssetAmount = getByAriaLabel(page, 'Asset amount');
-    expect((await transactionAssetAmount.first().innerHTML()).trim()).toBe(
+    expect((await txDeposit.first().innerHTML()).trim()).toBe(
       `${depositAmount} ETH`
     );
 
@@ -154,13 +156,15 @@ test.describe('Bridge', () => {
     // Wait for transactions to get fetched and sorted
     await page.waitForTimeout(10000);
 
-    transactionAssetAmount = getByAriaLabel(page, 'Asset amount');
+    const txItem = page.locator(
+      `[aria-label="FUEL to ETH"] [aria-label="Asset amount"]`
+    );
     // Check the transaction is there
-    expect((await transactionAssetAmount.first().innerHTML()).trim()).toBe(
+    expect((await txItem.first().innerHTML()).trim()).toBe(
       `${withdrawAmount} ETH`
     );
 
-    await transactionAssetAmount.first().click();
+    await txItem.first().click();
     await page.waitForTimeout(5000);
     const confirmButton = getButtonByText(page, 'Confirm Transaction');
     await confirmButton.click();
