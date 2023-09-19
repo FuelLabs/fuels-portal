@@ -19,6 +19,7 @@ export const Usage = () => {
         fromLogo={
           <Image width={18} height={18} src={ethLogoSrc} alt={'ETH logo'} />
         }
+        ariaLabel="ETH to FUEL"
         toLogo={<FuelLogo size={17} />}
         date={new Date()}
         asset={{
