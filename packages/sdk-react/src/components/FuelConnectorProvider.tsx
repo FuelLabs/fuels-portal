@@ -8,7 +8,7 @@ import {
 } from 'react';
 
 import { useConnect } from '../hooks/useConnect';
-import { useConnectorList } from '../hooks/useConnectorList';
+import { useConnectors } from '../hooks/useConnectors';
 import type { Connector, ConnectorList } from '../types';
 import { Connect } from '../ui';
 import { DEFAULT_CONNECTORS } from '../ui/Connect/connectors';
@@ -51,7 +51,7 @@ export function FuelConnectorProvider({
 }: FuelConnectProviderProps) {
   const { fuel } = useFuel();
   const { isLoading: isConnecting, isError, connect } = useConnect();
-  const { connectors: connectorList } = useConnectorList();
+  const { connectors: connectorList } = useConnectors();
   const connectors = useMemo(() => {
     return initalConnectors
       .map((connector) => ({
@@ -76,7 +76,7 @@ export function FuelConnectorProvider({
     setConnector(null);
   };
 
-  const handleConnectToConnector = useCallback(
+  const handleSelectConnector = useCallback(
     async (connector: Connector) => {
       if (!fuel) return setConnector(connector);
 
@@ -109,7 +109,7 @@ export function FuelConnectorProvider({
         _internal: {
           connector,
           isOpen,
-          connect: handleConnectToConnector,
+          connect: handleSelectConnector,
           back: handleBack,
         },
       }}

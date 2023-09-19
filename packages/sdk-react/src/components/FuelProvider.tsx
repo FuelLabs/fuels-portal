@@ -2,7 +2,7 @@
 import type { Fuel } from '@fuel-wallet/sdk';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { ReactNode } from 'react';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect } from 'react';
 
 import { useWindowFuel } from '../hooks/useWindowFuel';
 import { QUERY_KEYS } from '../utils';
@@ -28,8 +28,6 @@ type FuelProviderProps = {
 
 export type FuelReactContextType = {
   fuel: Fuel | undefined;
-  data: any;
-  setData: (data: any) => void;
 };
 
 export const FuelReactContext = createContext<FuelReactContextType | null>(
@@ -42,7 +40,6 @@ export const useFuel = () => {
 
 export const FuelProvider = ({ children }: FuelProviderProps) => {
   const fuel = useWindowFuel();
-  const [data, setData] = useState<any>({});
 
   function onCurrentAccountChange() {
     fuelQueryClient.invalidateQueries({
@@ -116,7 +113,7 @@ export const FuelProvider = ({ children }: FuelProviderProps) => {
   }, [fuel]);
 
   return (
-    <FuelReactContext.Provider value={{ fuel, data, setData }}>
+    <FuelReactContext.Provider value={{ fuel }}>
       <QueryClientProvider client={fuelQueryClient}>
         {children}
       </QueryClientProvider>

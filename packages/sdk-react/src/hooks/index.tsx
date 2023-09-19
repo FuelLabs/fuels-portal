@@ -10,4 +10,4 @@ export * from './useTransactionReceipts';
 export * from './useWallet';
 export * from './useWindowFuel';
 export * from './useNodeInfo';
-export * from './useConnectorList';
+export * from './useConnectors';

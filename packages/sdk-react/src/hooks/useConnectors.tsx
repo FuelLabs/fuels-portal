@@ -4,7 +4,7 @@ import { QUERY_KEYS } from '../utils';
 
 import { useWindowFuel } from './useWindowFuel';
 
-export const useConnectorList = () => {
+export const useConnectors = () => {
   const fuel = useWindowFuel();
 
   const query = useQuery(
