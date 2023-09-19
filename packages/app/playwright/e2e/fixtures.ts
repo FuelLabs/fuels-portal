@@ -9,10 +9,55 @@ import admZip from 'adm-zip';
 import * as fs from 'fs';
 import https from 'https';
 import path from 'path';
+import { setTimeout } from 'timers/promises';
 
 import { ETH_MNEMONIC, ETH_WALLET_PASSWORD } from '../mocks';
 
 const fuelPathExtension = path.join(__dirname, './dist-crx');
+
+const extensionsData = {};
+
+async function getExtensionsData(context: BrowserContext) {
+  const page = await context.newPage();
+
+  await page.goto('chrome://extensions');
+  await page.waitForLoadState('load');
+  await page.waitForLoadState('domcontentloaded');
+
+  const devModeButton = page.locator('#devMode');
+  await devModeButton.waitFor();
+  await devModeButton.focus();
+  await devModeButton.click();
+
+  const extensionDataItems = await page.locator('extensions-item').all();
+  for (const extensionData of extensionDataItems) {
+    const extensionName = (
+      await extensionData
+        .locator('#name-and-version')
+        .locator('#name')
+        .textContent()
+    ).toLowerCase();
+
+    const extensionVersion = (
+      await extensionData
+        .locator('#name-and-version')
+        .locator('#version')
+        .textContent()
+    ).replace(/(\n| )/g, '');
+
+    const extensionId = (
+      await extensionData.locator('#extension-id').textContent()
+    ).replace('ID: ', '');
+
+    extensionsData[extensionName] = {
+      version: extensionVersion,
+      id: extensionId,
+    };
+  }
+  await page.close();
+
+  return extensionsData;
+}
 
 export const test = base.extend<{
   context: BrowserContext;
@@ -92,12 +137,26 @@ export const test = base.extend<{
       args: browserArgs,
     });
 
+    const extenssions = await getExtensionsData(context);
+    async function waitForPages() {
+      const pages = await context.pages();
+
+      const hasMetamask = pages.find((page) => {
+        return page.url().includes(extenssions['metamask'].id);
+      });
+      const hasFuelWallet = pages.find((page) => {
+        return page.url().includes(extenssions['fuel wallet'].id);
+      });
+
+      if (!hasMetamask || !hasFuelWallet) {
+        await setTimeout(3000);
+        return waitForPages();
+      }
+      return true;
+    }
+
     // Wait for Fuel Wallet to load
-    await context.waitForEvent('page', {
-      predicate: (page) => {
-        return page.url().includes('/sign-up/welcome');
-      },
-    });
+    await waitForPages();
 
     try {
       await initialSetup(chromium, {
@@ -109,6 +168,7 @@ export const test = base.extend<{
       });
     } catch (err) {
       console.error(err);
+      throw err;
     }
     await use(context);
     await context.close();
