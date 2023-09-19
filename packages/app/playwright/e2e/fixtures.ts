@@ -78,6 +78,7 @@ export const test = base.extend<{
     const metamaskPath = await prepareMetamask(
       process.env.META_MASK_VERSION || '10.25.0'
     );
+
     // prepare browser args
     const browserArgs = [
       `--disable-extensions-except=${metamaskPath},${fuelPathExtension}`,
@@ -98,13 +99,17 @@ export const test = base.extend<{
       },
     });
 
-    await initialSetup(chromium, {
-      secretWordsOrPrivateKey: ETH_MNEMONIC,
-      rpcUrl: 'http://localhost:8080',
-      network: 'localhost',
-      password: ETH_WALLET_PASSWORD,
-      enableAdvancedSettings: true,
-    });
+    try {
+      await initialSetup(chromium, {
+        secretWordsOrPrivateKey: ETH_MNEMONIC,
+        rpcUrl: 'http://localhost:8080',
+        network: 'localhost',
+        password: ETH_WALLET_PASSWORD,
+        enableAdvancedSettings: true,
+      });
+    } catch (err) {
+      console.error(err);
+    }
     await use(context);
     await context.close();
   },
