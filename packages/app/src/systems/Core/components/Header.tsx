@@ -31,6 +31,26 @@ export function Header() {
         </Nav.Menu>
         <Nav.ThemeToggle />
       </Nav.Desktop>
+      <Nav.Mobile>
+        <Nav.MobileContent>
+          <Nav.Logo />
+          <Nav.ThemeToggle />
+        </Nav.MobileContent>
+        <Nav.Menu>
+          <Nav.MenuItem
+            href={Pages.bridge}
+            isActive={isLinkActive(Pages.bridge)}
+          >
+            Bridge
+          </Nav.MenuItem>
+          <Nav.MenuItem
+            href={Pages.ecosystem}
+            isActive={isLinkActive(Pages.ecosystem)}
+          >
+            Ecosystem
+          </Nav.MenuItem>
+        </Nav.Menu>
+      </Nav.Mobile>
     </Nav>
   );
 }
