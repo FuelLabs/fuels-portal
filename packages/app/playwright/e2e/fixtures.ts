@@ -149,6 +149,10 @@ export const test = base.extend<{
         return page.url().includes(extenssions['fuel wallet'].id);
       });
 
+      console.log(
+        'page urls',
+        pages.map((p) => p.url())
+      );
       console.log('Waiting for the pages');
       if (!hasMetamask || !hasFuelWallet) {
         console.log('Pages not found!');
