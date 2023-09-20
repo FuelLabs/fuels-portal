@@ -1,5 +1,6 @@
 import { Nav } from '@fuel-ui/react';
 import { useLocation } from 'react-router-dom';
+import { IS_PREVIEW } from '~/config';
 import { Pages } from '~/types';
 
 import { removeTrailingSlash } from '../utils';
@@ -15,20 +16,22 @@ export function Header() {
       <Nav.Desktop>
         <Nav.Logo />
         <Nav.Spacer />
-        <Nav.Menu>
-          <Nav.MenuItem
-            href={Pages.bridge}
-            isActive={isLinkActive(Pages.bridge)}
-          >
-            Bridge
-          </Nav.MenuItem>
-          <Nav.MenuItem
-            href={Pages.ecosystem}
-            isActive={isLinkActive(Pages.ecosystem)}
-          >
-            Ecosystem
-          </Nav.MenuItem>
-        </Nav.Menu>
+        {IS_PREVIEW && (
+          <Nav.Menu>
+            <Nav.MenuItem
+              href={Pages.bridge}
+              isActive={isLinkActive(Pages.bridge)}
+            >
+              Bridge
+            </Nav.MenuItem>
+            <Nav.MenuItem
+              href={Pages.ecosystem}
+              isActive={isLinkActive(Pages.ecosystem)}
+            >
+              Ecosystem
+            </Nav.MenuItem>
+          </Nav.Menu>
+        )}
         <Nav.ThemeToggle />
       </Nav.Desktop>
       <Nav.Mobile>
@@ -36,20 +39,22 @@ export function Header() {
           <Nav.Logo />
           <Nav.ThemeToggle />
         </Nav.MobileContent>
-        <Nav.Menu>
-          <Nav.MenuItem
-            href={Pages.bridge}
-            isActive={isLinkActive(Pages.bridge)}
-          >
-            Bridge
-          </Nav.MenuItem>
-          <Nav.MenuItem
-            href={Pages.ecosystem}
-            isActive={isLinkActive(Pages.ecosystem)}
-          >
-            Ecosystem
-          </Nav.MenuItem>
-        </Nav.Menu>
+        {IS_PREVIEW && (
+          <Nav.Menu>
+            <Nav.MenuItem
+              href={Pages.bridge}
+              isActive={isLinkActive(Pages.bridge)}
+            >
+              Bridge
+            </Nav.MenuItem>
+            <Nav.MenuItem
+              href={Pages.ecosystem}
+              isActive={isLinkActive(Pages.ecosystem)}
+            >
+              Ecosystem
+            </Nav.MenuItem>
+          </Nav.Menu>
+        )}
       </Nav.Mobile>
     </Nav>
   );
