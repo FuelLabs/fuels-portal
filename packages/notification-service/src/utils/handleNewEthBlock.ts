@@ -18,6 +18,9 @@ export const handleNewEthBlock = async (
   fuelProviderUrl: string,
   ethPublicClient: PublicClient
 ) => {
+  const mailService = await MailService.getInstance();
+  console.log(`mailService.transporter`, mailService.transporter);
+
   const abiFuelChainState = FUEL_CHAIN_STATE.abi.find(
     ({ name, type }) => name === 'CommitSubmitted' && type === 'event'
   );
@@ -107,7 +110,7 @@ export const handleNewEthBlock = async (
           })
         );
 
-        withdrawsWithBlocks.forEach(async (w) => {
+        for (const w of withdrawsWithBlocks) {
           // Message is already sent
           // Check if the email was already sent
           let dbTransaction = await prisma.transaction.findUnique({
@@ -149,8 +152,8 @@ export const handleNewEthBlock = async (
             dbTransaction &&
             !dbTransaction.emailSent
           ) {
-            console.log(`dbTransaction`, dbTransaction);
-            const mailService = await MailService.getInstance();
+            //console.log(`dbTransaction`, dbTransaction);
+            console.log('0');
             await mailService.sendMail({
               from: 'matt.auer@fuel.sh',
               to: dbTransaction.address.withdrawer.email,
@@ -158,13 +161,78 @@ export const handleNewEthBlock = async (
               text: `Your transaction ${w.tranasction.id} is ready for withdrawal`,
               html: `<p>Your transaction ${w.tranasction.id} is ready for withdrawal<p>`,
             });
+            console.log(
+              `dbTransaction.transactionId`,
+              dbTransaction.transactionId
+            );
             // Update the message is sent
-            await prisma.transaction.update({
+            const newTx = await prisma.transaction.update({
               where: { transactionId: dbTransaction.transactionId },
               data: { emailSent: true },
             });
+            console.log(`newTx`, newTx);
           }
-        });
+        }
+
+        // withdrawsWithBlocks.forEach(async (w) => {
+        //   // Message is already sent
+        //   // Check if the email was already sent
+        //   let dbTransaction = await prisma.transaction.findUnique({
+        //     where: {
+        //       transactionId: w.tranasction.id,
+        //     },
+        //     include: {
+        //       address: {
+        //         include: {
+        //           withdrawer: true,
+        //         },
+        //       },
+        //     },
+        //   });
+        //   if (!dbTransaction && w.tranasction.id && w.tranasction.status) {
+        //     dbTransaction = await prisma.transaction.create({
+        //       data: {
+        //         transactionId: w.tranasction.id,
+        //         status: w.tranasction.status,
+        //         address: {
+        //           connect: {
+        //             address: owner,
+        //           },
+        //         },
+        //         blockHeight: w.block?.height.toNumber(),
+        //       },
+        //       include: {
+        //         address: {
+        //           include: {
+        //             withdrawer: true,
+        //           },
+        //         },
+        //       },
+        //     });
+        //   }
+        //   if (
+        //     w.isReady &&
+        //     !w.isAlreadyRelayed &&
+        //     dbTransaction &&
+        //     !dbTransaction.emailSent
+        //   ) {
+        //     console.log(`dbTransaction`, dbTransaction);
+        //     await mailService.sendMail({
+        //       from: 'matt.auer@fuel.sh',
+        //       to: dbTransaction.address.withdrawer.email,
+        //       subject: 'Withdraw Notification',
+        //       text: `Your transaction ${w.tranasction.id} is ready for withdrawal`,
+        //       html: `<p>Your transaction ${w.tranasction.id} is ready for withdrawal<p>`,
+        //     });
+        //     console.log(`dbTransaction.transactionId`, dbTransaction.transactionId);
+        //     // Update the message is sent
+        //     const newTx = await prisma.transaction.update({
+        //       where: { transactionId: dbTransaction.transactionId },
+        //       data: { emailSent: true },
+        //     });
+        //     console.log(`newTx`, newTx);
+        //   }
+        // });
       });
     } catch (e) {
       console.error(e);

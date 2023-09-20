@@ -11,8 +11,8 @@ export default class MailService {
     if (!MailService.instance) {
       MailService.instance = new MailService();
     }
-    if (!this.instance.transporter) {
-      await this.instance.createLocalConnection();
+    if (!MailService.instance.transporter) {
+      await MailService.instance.createLocalConnection();
     }
     return MailService.instance;
   }
@@ -37,6 +37,7 @@ export default class MailService {
     text: string;
     html: string;
   }) {
+    console.log('one');
     const info = await this.transporter.sendMail({
       from: `"Fred Foo" ${options.from}`,
       to: options.to,
@@ -44,7 +45,8 @@ export default class MailService {
       text: options.text,
       html: options.html,
     });
-    console.log(`ethereal url: ${nodemailer.getTestMessageUrl(info)}`);
+    console.log('two');
+    //console.log(`ethereal url: ${nodemailer.getTestMessageUrl(info)}`);
     return info;
   }
 }
