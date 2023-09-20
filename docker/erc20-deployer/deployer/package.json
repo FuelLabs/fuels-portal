@@ -1,0 +1,15 @@
+{
+  "name": "erc20-deployer",
+  "scripts": {
+    "start": "ts-node ./src/index.ts"
+  },
+  "dependencies": {
+    "@fuel-bridge/solidity-contracts": "0.0.2-next-9ebbea2",
+    "@fuel-bridge/test-utils": "0.0.2-next-9ebbea2",
+    "ethers": "5.7.2",
+    "fuels": "0.54.1"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1"
+  }
+}

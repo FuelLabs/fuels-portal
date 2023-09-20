@@ -1,5 +1,6 @@
-import type { BrowserContext, Page } from '@playwright/test';
+import { type BrowserContext, type Page } from '@playwright/test';
 
+import { expect } from '../e2e/fixtures';
 import { FUEL_MNEMONIC, FUEL_WALLET_PASSWORD } from '../mocks';
 
 import { getButtonByText } from './button';
