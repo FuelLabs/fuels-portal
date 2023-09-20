@@ -104,7 +104,7 @@ test.describe('Bridge', () => {
     ).toBe(depositAmount);
 
     // Go to transaction page
-    const transactionList = page.locator('a').getByText('Transactions');
+    const transactionList = page.locator('a').getByText('History');
     await transactionList.click();
 
     // check the transaction is there
