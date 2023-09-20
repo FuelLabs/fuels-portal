@@ -21,9 +21,9 @@ function getEnvName() {
   }
 }
 
-function getFuelContracts() {
+function getBridgeTokenContracts() {
   if (process.env.VITE_FUEL_CHAIN === 'fuelDev') {
-    const { body } = retus('http://localhost:8081/deployments.json', {
+    const { body } = retus('http://localhost:8082/deployments', {
       json: true,
     });
 
@@ -33,7 +33,7 @@ function getFuelContracts() {
   return {};
 }
 
-function getEthFuelL1Contracts() {
+function getBridgeSolidityContracts() {
   if (process.env.VITE_ETH_CHAIN === 'foundry') {
     const { body } = retus('http://localhost:8080/deployments.local.json', {
       json: true,
@@ -70,14 +70,18 @@ const versions = getVersion();
 process.env.VITE_APP_VERSION = versions.version;
 
 // Export ETH Fuel contracts addresses
-const ethFuelContracts = getEthFuelL1Contracts();
-const fuelContracts = getFuelContracts();
-if (ethFuelContracts && ethFuelContracts.FuelMessagePortal) {
-  process.env.VITE_ETH_FUEL_MESSAGE_PORTAL = ethFuelContracts.FuelMessagePortal;
-  process.env.VITE_ETH_FUEL_ERC20_GATEWAY = ethFuelContracts.FuelERC20Gateway;
-  process.env.VITE_ETH_FUEL_CHAIN_STATE = ethFuelContracts.FuelChainState;
-  process.env.VITE_ETH_ERC20 = ethFuelContracts.ERC20;
+const bridgeSolidityContracts = getBridgeSolidityContracts();
+if (bridgeSolidityContracts && bridgeSolidityContracts.FuelMessagePortal) {
+  process.env.VITE_ETH_FUEL_MESSAGE_PORTAL =
+    bridgeSolidityContracts.FuelMessagePortal;
+  process.env.VITE_ETH_FUEL_ERC20_GATEWAY =
+    bridgeSolidityContracts.FuelERC20Gateway;
+  process.env.VITE_ETH_FUEL_CHAIN_STATE =
+    bridgeSolidityContracts.FuelChainState;
 }
-if (fuelContracts) {
-  process.env.VITE_FUEL_FUNGIBLE_TOKEN_ID = fuelContracts.fuelFungibleTokenId;
+const bridgeTokenContracts = getBridgeTokenContracts();
+if (bridgeTokenContracts) {
+  process.env.VITE_FUEL_FUNGIBLE_TOKEN_ID =
+    bridgeTokenContracts.fuelFungibleTokenId;
+  process.env.VITE_ETH_ERC20 = bridgeTokenContracts.ERC20;
 }
