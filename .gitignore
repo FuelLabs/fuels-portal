@@ -85,3 +85,5 @@ act-actions
 
 # XState typegen
 *.typegen.ts
+
+dist-crx/
