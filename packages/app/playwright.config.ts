@@ -13,7 +13,7 @@ const config: PlaywrightTestConfig = defineConfig({
   expect: {
     timeout: 5000,
   },
-  reporter: 'html',
+  reporter: [['html'], ['list', { printSteps: true }]],
   // Retry tests on CI if they fail
   retries: IS_CI ? 2 : 0,
   webServer: {
