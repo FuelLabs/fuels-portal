@@ -34,7 +34,7 @@ export const BridgeHome = ({ children }: BridgeHomeProps) => {
               <Tabs.Trigger value="bridge">Bridge</Tabs.Trigger>
             </ButtonLink>
             <ButtonLink href={Pages.transactions} css={styles.buttonLink}>
-              <Tabs.Trigger value="transactions">History</Tabs.Trigger>
+              <Tabs.Trigger value="transactions">history</Tabs.Trigger>
             </ButtonLink>
           </Tabs.List>
           {children}
