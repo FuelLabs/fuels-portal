@@ -42,7 +42,6 @@ export const TxListItemFuelToEth = ({ txHash }: TxListItemFuelToEthProps) => {
 
   return (
     <BridgeTxItem
-      ariaLabel={'FUEL to ETH'}
       fromLogo={<FuelLogo size={17} />}
       toLogo={
         <Image

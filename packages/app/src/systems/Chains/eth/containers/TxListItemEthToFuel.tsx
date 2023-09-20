@@ -43,7 +43,6 @@ export const TxListItemEthToFuel = ({ txHash }: TxListItemEthToFuelProps) => {
           alt={asset?.assetSymbol}
         />
       }
-      ariaLabel={'ETH to FUEL'}
       toLogo={<FuelLogo size={17} />}
       date={date}
       asset={asset}

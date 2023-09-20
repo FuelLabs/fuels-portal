@@ -7,7 +7,6 @@ type BridgeTxItemProps = {
   date?: Date;
   fromLogo: ReactNode;
   toLogo: ReactNode;
-  ariaLabel: string;
   asset?: {
     assetImageSrc?: ReactNode | string;
     assetAmount?: string;
@@ -24,14 +23,9 @@ export const BridgeTxItem = ({
   fromLogo,
   toLogo,
   status,
-  ariaLabel,
 }: BridgeTxItemProps) => {
   return (
-    <CardList.Item
-      onClick={onClick}
-      css={styles.cardItem}
-      aria-label={ariaLabel}
-    >
+    <CardList.Item onClick={onClick} css={styles.cardItem}>
       <Box.Flex gap={'$1'}>
         {fromLogo}
         <Icon icon="ArrowNarrowRight" />
