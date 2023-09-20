@@ -229,6 +229,7 @@ export const txEthToFuelMachine = createMachine(
                     input: (ctx: MachineContext) => ({
                       fuelProvider: ctx.fuelProvider,
                       fuelMessage: ctx.fuelMessage,
+                      fuelAddress: ctx.fuelAddress,
                     }),
                   },
                   onDone: [
