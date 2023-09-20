@@ -22,7 +22,7 @@ export const handleNewEthBlock = async (
     ({ name, type }) => name === 'CommitSubmitted' && type === 'event'
   );
 
-  // Grap the last logs of commit state to the fuelChainState
+  // Grab the last logs of commit state to the fuelChainState
   const logs = await ethPublicClient.getLogs({
     address: process.env.ETH_FUEL_CHAIN_STATE as `0x${string}`,
     event: {
@@ -48,7 +48,6 @@ export const handleNewEthBlock = async (
       });
 
       addresses.forEach(async ({ address }) => {
-        console.log(`address`, address);
         const owner = Address.fromString(address).toB256();
 
         const transactionsByOwner = await getTransactionsSummaries({
@@ -150,6 +149,7 @@ export const handleNewEthBlock = async (
             dbTransaction &&
             !dbTransaction.emailSent
           ) {
+            console.log(`dbTransaction`, dbTransaction);
             const mailService = await MailService.getInstance();
             await mailService.sendMail({
               from: 'matt.auer@fuel.sh',

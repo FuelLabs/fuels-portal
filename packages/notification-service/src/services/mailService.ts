@@ -5,9 +5,7 @@ export default class MailService {
 
   private static instance: MailService;
 
-  private constructor() {
-    this.createLocalConnection();
-  }
+  private constructor() {}
 
   static async getInstance() {
     if (!MailService.instance) {
