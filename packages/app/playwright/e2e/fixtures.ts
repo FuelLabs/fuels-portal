@@ -59,6 +59,8 @@ async function getExtensionsData(context: BrowserContext) {
   return extensionsData;
 }
 
+let context: BrowserContext;
+
 export const test = base.extend<{
   context: BrowserContext;
   extensionId: string;
@@ -132,7 +134,7 @@ export const test = base.extend<{
     ];
 
     // launch browser
-    const context = await chromium.launchPersistentContext('', {
+    context = await chromium.launchPersistentContext('', {
       headless: false,
       args: browserArgs,
     });
@@ -179,7 +181,6 @@ export const test = base.extend<{
       throw err;
     }
     await use(context);
-    await context.close();
   },
   extensionId: async ({ context }, use) => {
     let [background] = context.serviceWorkers();
@@ -187,6 +188,10 @@ export const test = base.extend<{
     const extensionId = background.url().split('/')[2];
     await use(extensionId);
   },
+});
+
+test.afterAll(async () => {
+  await context.close();
 });
 
 export const expect = test.expect;
