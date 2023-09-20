@@ -5,7 +5,12 @@ import type {
   TransactionRequestLike,
   WalletUnlocked as FuelWallet,
 } from 'fuels';
-import { Address as FuelAddress, bn } from 'fuels';
+import {
+  Address as FuelAddress,
+  bn,
+  getInputsMessage,
+  getTransactionsSummaries,
+} from 'fuels';
 import type { WalletClient } from 'viem';
 import { decodeEventLog } from 'viem';
 import type { PublicClient } from 'wagmi';
@@ -59,6 +64,11 @@ export type TxEthToFuelInputs = {
   checkSyncDaHeight: {
     ethDepositBlockHeight?: string;
     fuelProvider?: FuelProvider;
+  };
+  checkFuelRelayMessage: {
+    fuelProvider?: FuelProvider;
+    fuelMessage?: Message;
+    fuelAddress?: FuelAddress;
   };
   relayMessageOnFuel: {
     fuelWallet?: FuelWallet;
@@ -266,16 +276,16 @@ export class TxEthToFuelService {
         const isErc20Deposit =
           recipient ===
           '0x86a8f7487cb0d3faca1895173d5ff35c1e839bd2ab88657eede9933ea8988815';
-        const { tokenId } = decodeMessageSentData.erc20Deposit(data);
-        console.log(`tokenId`, tokenId);
-        // here
+
         receiptsInfo = {
           ...receiptsInfo,
           nonce: bn(nonce.toString()),
           amount: bn(amount.toString()).format({ precision: FUEL_UNITS }),
           sender,
           recipient: FuelAddress.fromB256(recipient),
-          assetId: isErc20Deposit ? tokenId : undefined,
+          assetId: isErc20Deposit
+            ? decodeMessageSentData.erc20Deposit(data).tokenId
+            : undefined,
         };
       } catch (_) {
         /* empty */
@@ -366,6 +376,47 @@ export class TxEthToFuelService {
     return fuelMessage;
   }
 
+  static async checkFuelRelayMessage(
+    input: TxEthToFuelInputs['checkFuelRelayMessage']
+  ) {
+    if (!input?.fuelProvider) {
+      throw new Error('No fuel provider found');
+    }
+    if (!input?.fuelMessage) {
+      throw new Error('No fuel message found');
+    }
+    if (!input?.fuelAddress) {
+      throw new Error('No fuel address found');
+    }
+    const { fuelProvider, fuelMessage, fuelAddress } = input;
+
+    const txSummaries = await getTransactionsSummaries({
+      filters: {
+        first: 1000,
+        owner: fuelAddress.toB256(),
+      },
+      provider: fuelProvider,
+    });
+
+    const txMessageRelayed = txSummaries.transactions.find((txSummary) => {
+      const messageCoinInputs = getInputsMessage(
+        txSummary?.transaction?.inputs || []
+      );
+
+      const hasMessageRelayed = messageCoinInputs.find((messageInput) => {
+        return (
+          messageInput.sender.toString() === fuelMessage.sender.toString() &&
+          messageInput.nonce.toString() === fuelMessage.nonce.toString() &&
+          messageInput.recipient === fuelMessage.recipient.toString()
+        );
+      });
+
+      return hasMessageRelayed;
+    });
+
+    return txMessageRelayed;
+  }
+
   static async relayMessageOnFuel(
     input: TxEthToFuelInputs['relayMessageOnFuel']
   ) {
@@ -383,18 +434,8 @@ export class TxEthToFuelService {
       txParams,
     });
 
-    // TODO: put this status check in a separate step after figure out how to get txHash
     const txMessageRelayedResult = await txMessageRelayed.waitForResult();
-
-    if (txMessageRelayedResult.status !== 'success') {
-      console.log(txMessageRelayedResult.status);
-      console.log(txMessageRelayedResult);
-      console.log(txMessageRelayedResult.transaction.inputs);
-      console.log(txMessageRelayedResult.transaction.outputs);
-      throw new Error('failed to relay message from gateway');
-    }
-
-    return txMessageRelayed;
+    return txMessageRelayedResult;
   }
 
   static async fetchDepositLogs(input: TxEthToFuelInputs['fetchDepositLogs']) {

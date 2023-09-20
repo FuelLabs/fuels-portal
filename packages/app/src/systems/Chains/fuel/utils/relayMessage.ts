@@ -52,7 +52,7 @@ const COMMON_RELAYABLE_MESSAGES: CommonMessageDetails[] = [
         },
       ]);
       // convert resources to inputs
-      const coins = resourcesToInputs(resources);
+      const spendableInputs = resourcesToInputs(resources);
 
       // get contract id
       const data = arrayify(message.data);
@@ -81,7 +81,7 @@ const COMMON_RELAYABLE_MESSAGES: CommonMessageDetails[] = [
         txPointer: ZeroBytes32,
         contractId,
       });
-      transaction.inputs.push(...coins);
+      transaction.inputs.push(...spendableInputs);
 
       transaction.outputs.push({
         type: OutputType.Contract,
