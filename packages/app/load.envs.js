@@ -48,9 +48,6 @@ function getEthFuelL1Contracts() {
       FuelChainState: '0xbe7aB12653e705642eb42EF375fd0d35Cfc45b03',
       FuelMessagePortal: '0x03f2901Db5723639978deBed3aBA66d4EA03aF73',
       FuelERC20Gateway: '0x0C817d089c693Ea435a95c52409984F45847F53c',
-      FuelChainState_impl: '0x9fe3f180aa29Cd49a73e99129A988F36A5800ADa',
-      FuelMessagePortal_impl: '0xaf4EBaF4D853809D984d4ee3D6DAA8fa2367396A',
-      FuelERC20Gateway_impl: '0xea8BE566210aE54687bFA3b0BF8Ddc3e49767655',
     };
   }
 }

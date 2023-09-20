@@ -2,3 +2,4 @@ packages:
   - 'packages/*'
   - 'scripts/bridge/*'
   - 'docker/l1-chain/hardhat'
+  - 'docker/erc20-deployer/deployer'
