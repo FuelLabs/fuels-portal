@@ -28,7 +28,7 @@ export type FuelConnectContextType = {
   connect: () => void;
   cancel: () => void;
   error: Error | null;
-  _internal: {
+  dialog: {
     connector: Connector | null;
     isOpen: boolean;
     back: () => void;
@@ -106,7 +106,7 @@ export function FuelConnectorProvider({
         error,
         connect: handleConnect,
         cancel: handleCancel,
-        _internal: {
+        dialog: {
           connector,
           isOpen,
           connect: handleSelectConnector,

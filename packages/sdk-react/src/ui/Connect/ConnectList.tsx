@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, Card, Image, Text } from '@fuel-ui/react';
+import { Box, CardList, Image, Text } from '@fuel-ui/react';
 
 import type { Connector, ConnectorList } from '../../types';
 
@@ -17,15 +17,16 @@ export const ConnectList = ({
   onPress,
 }: ConnectListProps) => {
   return (
-    <Box.Stack gap={'$2'}>
-      {connectors.map((connector) => (
-        <Card
+    <CardList>
+      {connectors.map((connector, index) => (
+        <CardList.Item
+          variant="ghost"
           key={connector.connector}
-          css={styles.connector}
           onPress={() => onPress(connector)}
           aria-label={`Connect to ${connector.name}}`}
+          css={styles.connector}
+          autoFocus={index === 0}
         >
-          <Text css={styles.connectorTitle}>{connector.name}</Text>
           <Box css={styles.connectorImage}>
             {getImageUrl(theme, connector) && (
               <Image
@@ -34,9 +35,10 @@ export const ConnectList = ({
               />
             )}
           </Box>
-        </Card>
+          <Text>{connector.name}</Text>
+        </CardList.Item>
       ))}
-    </Box.Stack>
+    </CardList>
   );
 };
 
@@ -45,23 +47,14 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '$2 $4',
-    fontWeight: '$bold',
-    height: '$10',
     cursor: 'pointer',
-
-    '&:hover': {
-      backgroundColor: '$intentsBase3',
-    },
   }),
   connectorImage: cssObj({
     height: '$8',
     width: '$8',
-
     '& > img': {
       maxHeight: '$full',
       width: '$full',
     },
   }),
-  connectorTitle: cssObj({}),
 };

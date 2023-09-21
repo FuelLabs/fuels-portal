@@ -43,7 +43,6 @@ export const ConnectInstall = ({ connector }: ConnectInstallProps) => {
 
 const styles = {
   connectorTitle: cssObj({
-    mt: '$2',
     textAlign: 'center',
   }),
   connectorImage: cssObj({
@@ -63,10 +62,9 @@ const styles = {
     fontWeight: '$normal',
     textAlign: 'center',
     color: '$intentsBase9',
-    mt: '$4',
   }),
   connectorFooter: cssObj({
-    mt: '$8',
+    mt: '$6',
 
     '& > .fuel_Button': {
       boxSizing: 'border-box',

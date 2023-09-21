@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, Dialog, Icon, IconButton, Text } from '@fuel-ui/react';
+import { Box, Dialog, Icon, IconButton, Text, HStack } from '@fuel-ui/react';
 
 import { useConnector } from '../../components';
 
@@ -10,32 +10,36 @@ export const Connect = ({ theme }: { theme: string }) => {
   const {
     connectors,
     cancel,
-    _internal: { isOpen, connector, connect, back },
+    dialog: { isOpen, connector, connect, back },
   } = useConnector();
 
   return (
     <Dialog isOpen={isOpen} isBlocked={isOpen}>
       <Dialog.Content css={styles.content}>
-        <Dialog.Heading css={styles.header}>
-          <Box css={styles.headerAction}>
-            {connector && (
+        <Dialog.Heading as="div">
+          <HStack justify="space-between">
+            <Box css={styles.headerAction}>
+              {connector && (
+                <IconButton
+                  icon={Icon.is('ChevronLeft')}
+                  aria-label="back"
+                  variant="link"
+                  onPress={back}
+                />
+              )}
+            </Box>
+            <Text fontSize="base" css={styles.headerTitle}>
+              Connect Wallet
+            </Text>
+            <Box css={styles.headerAction}>
               <IconButton
-                icon={Icon.is('ChevronLeft')}
-                aria-label="back"
+                icon={Icon.is('X')}
+                aria-label="close"
                 variant="link"
-                onPress={back}
+                onPress={cancel}
               />
-            )}
-          </Box>
-          <Text fontSize="sm">Connect Wallet</Text>
-          <Box css={styles.headerAction}>
-            <IconButton
-              icon={Icon.is('X')}
-              aria-label="close"
-              variant="link"
-              onPress={cancel}
-            />
-          </Box>
+            </Box>
+          </HStack>
         </Dialog.Heading>
         {!connector ? (
           <ConnectList
@@ -52,29 +56,18 @@ export const Connect = ({ theme }: { theme: string }) => {
 };
 
 const styles = {
-  headerAction: cssObj({
-    with: '$2',
-  }),
-  header: cssObj({
+  headerTitle: cssObj({
     display: 'flex',
-    justifyContent: 'space-between',
+    alignItems: 'center',
+  }),
+  headerAction: cssObj({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    with: '$2',
   }),
   content: cssObj({
     maxWidth: 300,
-  }),
-  connector: cssObj({
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '$2 $4',
-    fontWeight: '$bold',
-    height: '$10',
-
-    cursor: 'pointer',
-
-    '&:hover': {
-      backgroundColor: '$intentsBase3',
-    },
   }),
   connectorImage: cssObj({
     height: '$8',
@@ -85,5 +78,4 @@ const styles = {
       width: '$full',
     },
   }),
-  connectorTitle: cssObj({}),
 };
