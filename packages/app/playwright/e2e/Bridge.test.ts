@@ -129,7 +129,7 @@ test.describe('Bridge', () => {
       // Go to the bridge page
       bridgePage = page
         .locator('div')
-        .filter({ hasText: 'BridgeTransactions' })
+        .filter({ hasText: 'BridgeHistory' })
         .getByRole('link', { name: 'Bridge ' });
       await bridgePage.first().click();
 
