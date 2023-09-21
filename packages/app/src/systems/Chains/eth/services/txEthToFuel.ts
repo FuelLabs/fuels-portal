@@ -2,7 +2,6 @@ import type {
   BN,
   Provider as FuelProvider,
   Message,
-  TransactionRequestLike,
   WalletUnlocked as FuelWallet,
 } from 'fuels';
 import {
@@ -73,10 +72,6 @@ export type TxEthToFuelInputs = {
   relayMessageOnFuel: {
     fuelWallet?: FuelWallet;
     fuelMessage?: Message;
-    txParams?: Pick<
-      TransactionRequestLike,
-      'gasLimit' | 'gasPrice' | 'maturity'
-    >;
   };
   fetchDepositLogs: {
     fuelAddress?: FuelAddress;
@@ -426,12 +421,15 @@ export class TxEthToFuelService {
     if (!input?.fuelMessage) {
       throw new Error('No fuel message found');
     }
-    const { fuelWallet, fuelMessage, txParams } = input;
+    const { fuelWallet, fuelMessage } = input;
 
+    // TODO: change to use getGasConfig instead
+    // const { maxGasPerTx } = await fuelWallet.provider.getGasConfig();
+    const chain = await fuelWallet.provider.getChain();
     const txMessageRelayed = await relayCommonMessage({
       relayer: fuelWallet,
       message: fuelMessage,
-      txParams,
+      txParams: { gasLimit: chain.consensusParameters.maxGasPerTx },
     });
 
     const txMessageRelayedResult = await txMessageRelayed.waitForResult();

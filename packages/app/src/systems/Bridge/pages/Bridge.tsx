@@ -59,6 +59,7 @@ export const Bridge = () => {
               asset={{
                 name: asset?.symbol,
                 imageUrl: asset?.image,
+                address: asset?.address,
               }}
               value={assetAmount}
               onChange={(val) =>
@@ -73,7 +74,7 @@ export const Bridge = () => {
               Any assets deposited to Fuel takes 7 days to withdraw back to
               Ethereum. Learn more about our architecture and security in
               our&nbsp;
-              <Link href="https://fuel.sh/" isExternal>
+              <Link href="https://docs.fuel.network/" isExternal>
                 docs
               </Link>
             </Alert.Description>
