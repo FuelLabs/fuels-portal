@@ -24,6 +24,7 @@ export const ConnectList = ({
           key={connector.connector}
           onPress={() => onPress(connector)}
           aria-label={`Connect to ${connector.name}}`}
+          data-theme={theme}
           css={styles.connector}
           tabIndex={index}
         >
@@ -48,8 +49,11 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     cursor: 'pointer',
-    border: 0,
-    backgroundColor: '$intentsBase2',
+
+    '&[data-theme="dark"]': {
+      border: 0,
+      backgroundColor: '$intentsBase2',
+    },
 
     '&:hover': {
       backgroundColor: '$intentsBase3',
