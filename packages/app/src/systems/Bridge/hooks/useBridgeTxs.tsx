@@ -19,6 +19,7 @@ const selectors = {
 export const useBridgeTxs = () => {
   const {
     isConnected,
+    hasWallet,
     provider: fuelProvider,
     address: fuelAddress,
   } = useFuelAccountConnection();
@@ -36,7 +37,7 @@ export const useBridgeTxs = () => {
     bridgeTxs,
     isLoading,
     shouldShowNotConnected:
-      !(isConnected ?? true) && !isLoading && bridgeTxs.length === 0,
+      !(isConnected ?? hasWallet) && !isLoading && bridgeTxs.length === 0,
     shouldShowEmpty: isConnected && !isLoading && bridgeTxs.length === 0,
     shouldShowList: !isLoading && isConnected && (bridgeTxs.length || 0) > 0,
   };
