@@ -25,7 +25,7 @@ export const ConnectList = ({
           onPress={() => onPress(connector)}
           aria-label={`Connect to ${connector.name}}`}
           css={styles.connector}
-          autoFocus={index === 0}
+          tabIndex={index}
         >
           <Box css={styles.connectorImage}>
             {getImageUrl(theme, connector) && (
@@ -48,6 +48,11 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     cursor: 'pointer',
+    border: 0,
+
+    '&:hover': {
+      backgroundColor: '$intentsBase3',
+    },
   }),
   connectorImage: cssObj({
     height: '$8',

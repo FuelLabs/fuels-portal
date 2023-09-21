@@ -68,6 +68,7 @@ const styles = {
   }),
   content: cssObj({
     maxWidth: 300,
+    backgroundColor: '$intentsBase1',
   }),
   connectorImage: cssObj({
     height: '$8',
