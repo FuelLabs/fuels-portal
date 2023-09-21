@@ -49,6 +49,7 @@ const styles = {
     alignItems: 'center',
     cursor: 'pointer',
     border: 0,
+    backgroundColor: '$intentsBase2',
 
     '&:hover': {
       backgroundColor: '$intentsBase3',
