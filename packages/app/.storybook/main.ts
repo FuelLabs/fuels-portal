@@ -14,6 +14,17 @@ const config: StorybookConfig = {
     'storybook-dark-mode',
     'storybook-addon-react-router-v6',
   ],
+  env: (config) => {
+    // Filter out all env variables
+    // This was causing a issue were envs
+    // were been loaded as JSON strings
+    // and causing storybook to not work
+    return {
+      NODE_ENV: config.NODE_ENV,
+      NODE_PATH: config.NODE_PATH,
+      STORYBOOK: config.STORYBOOK,
+    };
+  },
   staticDirs: ['../public'],
   core: {
     builder: '@storybook/builder-vite',
