@@ -20,7 +20,7 @@ export const FUEL_WALLET_DEVELOPMENT_CONNECTOR: Connector = {
     action: 'Install',
     description:
       'To connect your Fuel Wallet Development, install the browser extension.',
-    link: 'https://next-wallet.fuel.network',
+    link: 'https://chrome.google.com/webstore/detail/fuel-wallet-development/hcgmehahnlbhpilepakbdinkhhaackmc',
   },
   installed: false,
 };
