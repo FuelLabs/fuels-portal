@@ -25,8 +25,10 @@
     "ts:check": "pnpm tsc --noEmit"
   },
   "peerDependencies": {
-    "fuels": ">=0.58.0",
-    "@fuel-wallet/sdk": ">=0.12.0"
+    "@fuel-wallet/sdk": ">=0.12.0",
+    "@fuel-ui/css": "0.20.0-dev-7b40886",
+    "@fuel-ui/react": "0.20.0-dev-7b40886",
+    "fuels": ">=0.57.0"
   },
   "dependencies": {
     "@tanstack/react-query": "^4.29.5",
@@ -34,8 +36,10 @@
     "react": "^18.2.0"
   },
   "devDependencies": {
+    "@fuel-ui/css": "0.20.0-dev-7b40886",
+    "@fuel-ui/react": "0.20.0-dev-7b40886",
     "@fuel-wallet/sdk": "0.12.3",
-    "tsup": "^6.5.0",
-    "fuels": "0.58.0"
+    "fuels": "0.57.0",
+    "tsup": "^6.5.0"
   }
 }

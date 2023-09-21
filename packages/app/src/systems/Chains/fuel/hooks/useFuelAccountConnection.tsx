@@ -1,12 +1,12 @@
 import {
-  useFuel,
-  useConnect,
   useAccount,
   useDisconnect,
   useIsConnected,
   useProvider,
   useBalance,
   useWallet,
+  useConnector,
+  useFuel,
 } from '@fuels-portal/sdk-react';
 import { Address } from 'fuels';
 import { useMemo } from 'react';
@@ -20,7 +20,7 @@ export const useFuelAccountConnection = () => {
   const { account } = useAccount();
   const { balance } = useBalance({ address: account || '' });
   const { isConnected } = useIsConnected();
-  const { connect, error, isLoading: isConnecting } = useConnect();
+  const { connect, error, isConnecting } = useConnector();
   const { disconnect } = useDisconnect();
   const { provider } = useProvider();
   const { wallet } = useWallet({ address: account || '' });
@@ -40,14 +40,10 @@ export const useFuelAccountConnection = () => {
     () => (account ? Address.fromString(account) : undefined),
     [account]
   );
-  const hasInstalledFuel = Boolean(fuel);
+  const hasWallet = Boolean(fuel);
 
   function handleConnect() {
-    if (hasInstalledFuel) {
-      connect();
-    } else {
-      store.openFuelInstall();
-    }
+    connect();
   }
 
   return {
@@ -58,10 +54,9 @@ export const useFuelAccountConnection = () => {
         EthTxCache.clean();
         FuelTxCache.clean();
       },
-      openFuelInstall: store.openFuelInstall,
       closeDialog: store.closeOverlay,
     },
-    hasInstalledFuel,
+    hasWallet,
     account,
     address,
     isConnected,

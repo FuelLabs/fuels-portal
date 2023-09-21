@@ -63,6 +63,7 @@ test.describe('Bridge', () => {
       // Connect fuel
       const connectFuel = getByAriaLabel(page, 'Connect Fuel Wallet');
       await connectFuel.click();
+      await getByAriaLabel(page, 'Connect to Fuel Wallet').click();
       await walletConnect(context);
     });
 
