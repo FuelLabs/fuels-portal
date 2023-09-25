@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Fuel } from '@fuel-wallet/sdk';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { ReactNode } from 'react';
-import { useContext, createContext, useEffect } from 'react';
+import { createContext, useContext, useEffect } from 'react';
 
-import { useWindowFuel } from '../hooks';
+import { useWindowFuel } from '../hooks/useWindowFuel';
 import { QUERY_KEYS } from '../utils';
 
 export const fuelQueryClient = new QueryClient({
@@ -25,7 +26,7 @@ type FuelProviderProps = {
   children?: ReactNode;
 };
 
-type FuelReactContextType = {
+export type FuelReactContextType = {
   fuel: Fuel | undefined;
 };
 
@@ -41,29 +42,60 @@ export const FuelProvider = ({ children }: FuelProviderProps) => {
   const fuel = useWindowFuel();
 
   function onCurrentAccountChange() {
-    fuelQueryClient.fetchQuery([QUERY_KEYS.account]);
-    fuelQueryClient.fetchQuery([QUERY_KEYS.wallet]);
-    fuelQueryClient.fetchQuery([QUERY_KEYS.balance]);
+    fuelQueryClient.invalidateQueries({
+      queryKey: [QUERY_KEYS.account],
+    });
+    fuelQueryClient.invalidateQueries({
+      queryKey: [QUERY_KEYS.account],
+    });
+    fuelQueryClient.invalidateQueries({
+      queryKey: [QUERY_KEYS.wallet],
+    });
+    fuelQueryClient.invalidateQueries({
+      queryKey: [QUERY_KEYS.balance],
+    });
   }
 
   function onConnectionChange() {
-    fuelQueryClient.fetchQuery([QUERY_KEYS.account]);
-    fuelQueryClient.fetchQuery([QUERY_KEYS.isConnected]);
-    fuelQueryClient.fetchQuery([QUERY_KEYS.wallet]);
-    fuelQueryClient.fetchQuery([QUERY_KEYS.balance]);
-    fuelQueryClient.fetchQuery([QUERY_KEYS.provider]);
-    fuelQueryClient.fetchQuery([QUERY_KEYS.nodeInfo]);
+    fuelQueryClient.invalidateQueries({
+      queryKey: [QUERY_KEYS.account],
+    });
+    fuelQueryClient.invalidateQueries({
+      queryKey: [QUERY_KEYS.isConnected],
+    });
+    fuelQueryClient.invalidateQueries({
+      queryKey: [QUERY_KEYS.wallet],
+    });
+    fuelQueryClient.invalidateQueries({
+      queryKey: [QUERY_KEYS.balance],
+    });
+    fuelQueryClient.invalidateQueries({
+      queryKey: [QUERY_KEYS.provider],
+    });
+    fuelQueryClient.invalidateQueries({
+      queryKey: [QUERY_KEYS.nodeInfo],
+    });
   }
 
   function onNetworkChange() {
-    fuelQueryClient.fetchQuery([QUERY_KEYS.provider]);
-    fuelQueryClient.fetchQuery([QUERY_KEYS.transactionReceipts]);
-    fuelQueryClient.fetchQuery([QUERY_KEYS.chain]);
-    fuelQueryClient.fetchQuery([QUERY_KEYS.nodeInfo]);
+    fuelQueryClient.invalidateQueries({
+      queryKey: [QUERY_KEYS.provider],
+    });
+    fuelQueryClient.invalidateQueries({
+      queryKey: [QUERY_KEYS.transactionReceipts],
+    });
+    fuelQueryClient.invalidateQueries({
+      queryKey: [QUERY_KEYS.chain],
+    });
+    fuelQueryClient.invalidateQueries({
+      queryKey: [QUERY_KEYS.nodeInfo],
+    });
   }
 
   function onAccountsChange() {
-    fuelQueryClient.fetchQuery([QUERY_KEYS.account]);
+    fuelQueryClient.invalidateQueries({
+      queryKey: [QUERY_KEYS.account],
+    });
   }
 
   useEffect(() => {

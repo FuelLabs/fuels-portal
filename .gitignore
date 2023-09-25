@@ -85,3 +85,6 @@ act-actions
 
 # XState typegen
 *.typegen.ts
+
+# generated chrome extension folder
+dist-crx/
