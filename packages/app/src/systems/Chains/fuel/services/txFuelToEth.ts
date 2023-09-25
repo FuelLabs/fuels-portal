@@ -76,7 +76,6 @@ export class TxFuelToEthService {
     const { amount, fuelWallet, ethAddress } = input;
     const gasLimit = (await fuelWallet.provider.getChain()).consensusParameters
       .maxGasPerTx;
-    console.log('one', fuelWallet);
     const txFuel = await fuelWallet.withdrawToBaseLayer(
       FuelAddress.fromString(ethAddress),
       amount,
@@ -85,7 +84,6 @@ export class TxFuelToEthService {
         gasLimit: gasLimit.sub(10_000).toNumber(),
       }
     );
-    console.log('two');
 
     return txFuel.id;
   }
@@ -229,9 +227,6 @@ export class TxFuelToEthService {
     const abiMessageRelayed = FUEL_MESSAGE_PORTAL.abi.find(
       ({ name, type }) => name === 'MessageRelayed' && type === 'event'
     );
-
-    console.log(`input.messageId`, input.messageId);
-    console.log(`ethPublicClient`, ethPublicClient);
 
     const logs = await ethPublicClient.getLogs({
       address: VITE_ETH_FUEL_MESSAGE_PORTAL as `0x${string}`,
