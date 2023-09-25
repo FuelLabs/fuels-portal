@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer';
 
 export default class MailService {
-  private transporter: nodemailer.Transporter;
+  private transporter?: nodemailer.Transporter;
 
   private static instance: MailService;
 
@@ -37,7 +37,7 @@ export default class MailService {
     text: string;
     html: string;
   }) {
-    const info = await this.transporter.sendMail({
+    const info = await this.transporter?.sendMail({
       from: `"Fred Foo" ${options.from}`,
       to: options.to,
       subject: options.subject,
