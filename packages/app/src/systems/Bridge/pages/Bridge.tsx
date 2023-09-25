@@ -71,6 +71,7 @@ export const Bridge = () => {
           <BridgeButton />
           <Alert status="warning">
             <Alert.Description>
+              {/* TODO: get it from contract constant to show exact time, instead of hardcoded "7 days" */}
               Any assets deposited to Fuel takes 7 days to withdraw back to
               Ethereum. Learn more about our architecture and security in
               our&nbsp;

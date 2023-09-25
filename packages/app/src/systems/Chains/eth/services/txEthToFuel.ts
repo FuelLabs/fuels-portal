@@ -268,6 +268,7 @@ export class TxEthToFuelService {
           messageSentEvent.args;
 
         // TODO: get predicate root contract address from FuelMessagePortal contract
+        // we can get also from predicateRoot from the contract (search for CONTRACT_MESSAGE_PREDICATE)
         const isErc20Deposit =
           recipient ===
           '0x86a8f7487cb0d3faca1895173d5ff35c1e839bd2ab88657eede9933ea8988815';
