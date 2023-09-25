@@ -35,8 +35,7 @@ export const handleNewEthBlock = async (
     fromBlock: 'earliest',
   });
 
-  const last5Logs = logs.slice(-5); // Remove the slice here to grab all the logs
-  for (const lastLog of last5Logs) {
+  for (const lastLog of logs) {
     const { blockHash } = lastLog.args as any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
     const fuelProvider = new Provider(fuelProviderUrl);

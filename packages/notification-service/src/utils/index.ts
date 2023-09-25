@@ -1,3 +1,1 @@
-export * from './graphql';
-export * from './withdrawTransactions';
-export * from './transactionPolling';
+export * from './handleNewEthBlock';
