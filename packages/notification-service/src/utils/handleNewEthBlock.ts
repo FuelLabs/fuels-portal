@@ -1,5 +1,4 @@
 import type { PrismaClient } from '@prisma/client';
-import nodemailer from "nodemailer";
 import type { ReceiptMessageOut } from 'fuels';
 import {
   getTransactionsSummaries,
@@ -19,18 +18,7 @@ export const handleNewEthBlock = async (
   fuelProviderUrl: string,
   ethPublicClient: PublicClient
 ) => {
-  // const mailService = await MailService.getInstance();
-  // console.log(`mailService.transporter`, mailService.transporter);
-  const account = await nodemailer.createTestAccount();
-  const transporter = nodemailer.createTransport({
-    host: account.smtp.host,
-    port: account.smtp.port,
-    secure: account.smtp.secure,
-    auth: {
-      user: account.user,
-      pass: account.pass,
-    },
-  });
+  const mailService = await MailService.getInstance();
 
   const abiFuelChainState = FUEL_CHAIN_STATE.abi.find(
     ({ name, type }) => name === 'CommitSubmitted' && type === 'event'
@@ -48,7 +36,7 @@ export const handleNewEthBlock = async (
   });
 
   const last5Logs = logs.slice(-5); // Remove the slice here to grab all the logs
-  last5Logs.map(async (lastLog) => {
+  for (const lastLog of last5Logs) {
     const { blockHash } = lastLog.args as any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
     const fuelProvider = new Provider(fuelProviderUrl);
@@ -61,8 +49,8 @@ export const handleNewEthBlock = async (
         },
       });
 
-      addresses.forEach(async ({ address }) => {
-        const owner = Address.fromString(address).toB256();
+      for (const address of addresses) {
+        const owner = Address.fromString(address.address).toB256();
 
         const transactionsByOwner = await getTransactionsSummaries({
           provider: fuelProvider,
@@ -163,99 +151,24 @@ export const handleNewEthBlock = async (
             dbTransaction &&
             !dbTransaction.emailSent
           ) {
-            //console.log(`dbTransaction`, dbTransaction);
-            console.log('0');
-            // await mailService.sendMail({
-            //   from: 'matt.auer@fuel.sh',
-            //   to: dbTransaction.address.withdrawer.email,
-            //   subject: 'Withdraw Notification',
-            //   text: `Your transaction ${w.tranasction.id} is ready for withdrawal`,
-            //   html: `<p>Your transaction ${w.tranasction.id} is ready for withdrawal<p>`,
-            // });
-            // console.log(
-            //   `dbTransaction.transactionId`,
-            //   dbTransaction.transactionId
-            // );
-            await transporter.sendMail({
-              from: `"Fred Foo" matt.auer@fuel.sh`,
+            await mailService.sendMail({
+              from: 'matt.auer@fuel.sh',
               to: dbTransaction.address.withdrawer.email,
               subject: 'Withdraw Notification',
               text: `Your transaction ${w.tranasction.id} is ready for withdrawal`,
               html: `<p>Your transaction ${w.tranasction.id} is ready for withdrawal<p>`,
             });
-            console.log('two');
-            // Update the message is sent
-            const newTx = await prisma.transaction.update({
+            // Update the email is sent
+            await prisma.transaction.update({
               where: { transactionId: dbTransaction.transactionId },
               data: { emailSent: true },
             });
-            console.log(`newTx`, newTx);
           }
         }
-
-        // withdrawsWithBlocks.forEach(async (w) => {
-        //   // Message is already sent
-        //   // Check if the email was already sent
-        //   let dbTransaction = await prisma.transaction.findUnique({
-        //     where: {
-        //       transactionId: w.tranasction.id,
-        //     },
-        //     include: {
-        //       address: {
-        //         include: {
-        //           withdrawer: true,
-        //         },
-        //       },
-        //     },
-        //   });
-        //   if (!dbTransaction && w.tranasction.id && w.tranasction.status) {
-        //     dbTransaction = await prisma.transaction.create({
-        //       data: {
-        //         transactionId: w.tranasction.id,
-        //         status: w.tranasction.status,
-        //         address: {
-        //           connect: {
-        //             address: owner,
-        //           },
-        //         },
-        //         blockHeight: w.block?.height.toNumber(),
-        //       },
-        //       include: {
-        //         address: {
-        //           include: {
-        //             withdrawer: true,
-        //           },
-        //         },
-        //       },
-        //     });
-        //   }
-        //   if (
-        //     w.isReady &&
-        //     !w.isAlreadyRelayed &&
-        //     dbTransaction &&
-        //     !dbTransaction.emailSent
-        //   ) {
-        //     console.log(`dbTransaction`, dbTransaction);
-        //     await mailService.sendMail({
-        //       from: 'matt.auer@fuel.sh',
-        //       to: dbTransaction.address.withdrawer.email,
-        //       subject: 'Withdraw Notification',
-        //       text: `Your transaction ${w.tranasction.id} is ready for withdrawal`,
-        //       html: `<p>Your transaction ${w.tranasction.id} is ready for withdrawal<p>`,
-        //     });
-        //     console.log(`dbTransaction.transactionId`, dbTransaction.transactionId);
-        //     // Update the message is sent
-        //     const newTx = await prisma.transaction.update({
-        //       where: { transactionId: dbTransaction.transactionId },
-        //       data: { emailSent: true },
-        //     });
-        //     console.log(`newTx`, newTx);
-        //   }
-        // });
-      });
+      }
     } catch (e) {
       console.error(e);
       console.log('Not finalized yet');
     }
-  });
+  }
 };

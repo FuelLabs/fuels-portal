@@ -37,7 +37,6 @@ export default class MailService {
     text: string;
     html: string;
   }) {
-    console.log('one');
     const info = await this.transporter.sendMail({
       from: `"Fred Foo" ${options.from}`,
       to: options.to,
@@ -45,8 +44,7 @@ export default class MailService {
       text: options.text,
       html: options.html,
     });
-    console.log('two');
-    //console.log(`ethereal url: ${nodemailer.getTestMessageUrl(info)}`);
+    console.log(`ethereal url: ${nodemailer.getTestMessageUrl(info)}`);
     return info;
   }
 }
