@@ -35,9 +35,6 @@ function getEthFuelL1Contracts() {
       FuelChainState: '0xbe7aB12653e705642eb42EF375fd0d35Cfc45b03',
       FuelMessagePortal: '0x03f2901Db5723639978deBed3aBA66d4EA03aF73',
       FuelERC20Gateway: '0x0C817d089c693Ea435a95c52409984F45847F53c',
-      FuelChainState_impl: '0xd729074a050CEf155BC984a0519499C248fABE27',
-      FuelMessagePortal_impl: '0x4AF37b8205De46a5C4885EEcd6cFE290Df969CbD',
-      FuelERC20Gateway_impl: '0x13e56579Bd678541DE89d75203B7b04c7B8481E6',
     };
   }
 }
@@ -49,10 +46,6 @@ function getEthFuelL1Contracts() {
     path: resolve(__dirname, envFile),
   });
 });
-
-// Export the port to be used on vite server and
-// make it accessible to the playwirght tests
-process.env.PORT = process.env.NODE_ENV === 'test' ? 3001 : 3000;
 
 // Export the version to be used on database
 // and application level
