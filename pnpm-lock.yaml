@@ -11,7 +11,6 @@ overrides:
   semver@<7.5.2: '>=7.5.2'
   word-wrap: npm:@aashutoshrathi/word-wrap
   pnpm@>=8.0.0 <8.6.8: '>=8.6.8'
-  graphql: '>=16.8.1'
 
 importers:
 
@@ -191,14 +190,14 @@ importers:
         specifier: 0.58.0
         version: 0.58.0
       graphql:
-        specifier: '>=16.8.1'
-        version: 16.8.1
+        specifier: 16.6.0
+        version: 16.6.0
       graphql-request:
-        specifier: ^5.1.0
-        version: 5.1.0(graphql@16.8.1)
+        specifier: ^6.1.0
+        version: 6.1.0(graphql@16.6.0)
       graphql-tag:
         specifier: ^2.12.6
-        version: 2.12.6(graphql@16.8.1)
+        version: 2.12.6(graphql@16.6.0)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -3416,9 +3415,9 @@ packages:
       '@fuel-ts/interfaces': 0.58.0
       '@fuel-ts/math': 0.58.0
       '@fuel-ts/transactions': 0.58.0
-      graphql: 16.8.1
-      graphql-request: 5.1.0(graphql@16.8.1)
-      graphql-tag: 2.12.6(graphql@16.8.1)
+      graphql: 16.6.0
+      graphql-request: 5.1.0(graphql@16.6.0)
+      graphql-tag: 2.12.6(graphql@16.6.0)
       ramda: 0.29.0
       tai64: 1.0.0
     transitivePeerDependencies:
@@ -3763,12 +3762,12 @@ packages:
     resolution: {integrity: sha512-MXtNDk0WXONIrDJOlk07+X7GegpCz2hfbAgSIWycOD0th2z1GndvMqBryiw/pTVDHLnHe+5TGIODLsprI4RiEw==}
     dev: false
 
-  /@graphql-typed-document-node/core@3.2.0(graphql@16.8.1):
+  /@graphql-typed-document-node/core@3.2.0(graphql@16.6.0):
     resolution: {integrity: sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==}
     peerDependencies:
-      graphql: '>=16.8.1'
+      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
-      graphql: 16.8.1
+      graphql: 16.6.0
     dev: false
 
   /@hapi/hoek@9.3.0:
@@ -4325,7 +4324,7 @@ packages:
       '@motionone/types': 10.15.1
       '@motionone/utils': 10.15.1
       hey-listen: 1.0.8
-      tslib: 2.5.3
+      tslib: 2.6.2
     dev: false
 
   /@motionone/dom@10.16.2:
@@ -11746,7 +11745,7 @@ packages:
     resolution: {integrity: sha512-6t10qk83GOG8p0vKmaCr8eiilZwO171AvbROMtvvNiwrTly62t+7XkA8RdIIVbpMhCASAsxgAzdRSwh6nw/5Dg==}
     engines: {node: '>=4'}
     dependencies:
-      tslib: 2.5.3
+      tslib: 2.6.2
     dev: true
 
   /astral-regex@2.0.0:
@@ -15920,7 +15919,7 @@ packages:
   /framesync@6.0.1:
     resolution: {integrity: sha512-fUY88kXvGiIItgNC7wcTOl0SNRCVXMKSWW2Yzfmn7EKNc+MpCzcz9DhdHcdjbrtN3c6R4H5dTY2jiCpPdysEjA==}
     dependencies:
-      tslib: 2.5.3
+      tslib: 2.6.2
     dev: false
 
   /framesync@6.1.2:
@@ -16507,32 +16506,44 @@ packages:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
     dev: true
 
-  /graphql-request@5.1.0(graphql@16.8.1):
+  /graphql-request@5.1.0(graphql@16.6.0):
     resolution: {integrity: sha512-0OeRVYigVwIiXhNmqnPDt+JhMzsjinxHE7TVy3Lm6jUzav0guVcL0lfSbi6jVTRAxcbwgyr6yrZioSHxf9gHzw==}
     peerDependencies:
-      graphql: '>=16.8.1'
+      graphql: 14 - 16
     dependencies:
-      '@graphql-typed-document-node/core': 3.2.0(graphql@16.8.1)
+      '@graphql-typed-document-node/core': 3.2.0(graphql@16.6.0)
       cross-fetch: 3.1.6
       extract-files: 9.0.0
       form-data: 3.0.1
-      graphql: 16.8.1
+      graphql: 16.6.0
     transitivePeerDependencies:
       - encoding
     dev: false
 
-  /graphql-tag@2.12.6(graphql@16.8.1):
+  /graphql-request@6.1.0(graphql@16.6.0):
+    resolution: {integrity: sha512-p+XPfS4q7aIpKVcgmnZKhMNqhltk20hfXtkaIkTfjjmiKMJ5xrt5c743cL03y/K7y1rg3WrIC49xGiEQ4mxdNw==}
+    peerDependencies:
+      graphql: 14 - 16
+    dependencies:
+      '@graphql-typed-document-node/core': 3.2.0(graphql@16.6.0)
+      cross-fetch: 3.1.6
+      graphql: 16.6.0
+    transitivePeerDependencies:
+      - encoding
+    dev: false
+
+  /graphql-tag@2.12.6(graphql@16.6.0):
     resolution: {integrity: sha512-FdSNcu2QQcWnM2VNvSCCDCVS5PpPqpzgFT8+GXzqJuoDd0CBncxCY278u4mhRO7tMgo2JjgJA5aZ+nWSQ/Z+xg==}
     engines: {node: '>=10'}
     peerDependencies:
-      graphql: '>=16.8.1'
+      graphql: ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
-      graphql: 16.8.1
+      graphql: 16.6.0
       tslib: 2.5.3
     dev: false
 
-  /graphql@16.8.1:
-    resolution: {integrity: sha512-59LZHPdGZVh695Ud9lRzPBVTtlX9ZCV150Er2W43ro37wVof0ctenSaskPPjN7lVTIN8mSZt8PHUNKZuNQUuxw==}
+  /graphql@16.6.0:
+    resolution: {integrity: sha512-KPIBPDlW7NxrbT/eh4qPXz5FiFdL5UbaA0XUNz2Rp3Z3hqBSkbj0GVjwFDztsWVauZUWsbKHgMg++sk8UX0bkw==}
     engines: {node: ^12.22.0 || ^14.16.0 || ^16.0.0 || >=17.0.0}
     dev: false
 
@@ -20708,7 +20719,7 @@ packages:
       framesync: 6.0.1
       hey-listen: 1.0.8
       style-value-types: 5.0.0
-      tslib: 2.5.3
+      tslib: 2.6.2
     dev: false
 
   /portfinder@1.0.32:
@@ -21460,7 +21471,7 @@ packages:
       '@types/react': 18.0.27
       react: 18.2.0
       react-style-singleton: 2.2.1(@types/react@18.0.27)(react@18.2.0)
-      tslib: 2.5.3
+      tslib: 2.6.2
 
   /react-remove-scroll@2.5.5(@types/react@18.0.27)(react@18.2.0):
     resolution: {integrity: sha512-ImKhrzJJsyXJfBZ4bzu8Bwpka14c/fQt0k+cyFp/PBhTfyDnU5hjOtM4AG/0AMyy8oKzOTR0lDgJIM7pYXI0kw==}
@@ -21600,7 +21611,7 @@ packages:
       get-nonce: 1.0.1
       invariant: 2.2.4
       react: 18.2.0
-      tslib: 2.5.3
+      tslib: 2.6.2
 
   /react-syntax-highlighter@15.5.0(react@18.2.0):
     resolution: {integrity: sha512-+zq2myprEnQmH5yw6Gqc8lD55QHnpKaU8TOcFeC/Lg/MQSs8UknEA0JC4nTZGFAXC2J2Hyj/ijJ7NlabyPi2gg==}
@@ -23111,7 +23122,7 @@ packages:
     resolution: {integrity: sha512-08yq36Ikn4kx4YU6RD7jWEv27v4V+PUsOGa4n/as8Et3CuODMJQ00ENeAVXAeydX4Z2j1XHZF1K2sX4mGl18fA==}
     dependencies:
       hey-listen: 1.0.8
-      tslib: 2.5.3
+      tslib: 2.6.2
     dev: false
 
   /styled-components@5.3.11(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0):
@@ -24375,7 +24386,7 @@ packages:
     dependencies:
       '@types/react': 18.0.27
       react: 18.2.0
-      tslib: 2.5.3
+      tslib: 2.6.2
 
   /use-isomorphic-layout-effect@1.1.2(@types/react@18.0.27)(react@18.2.0):
     resolution: {integrity: sha512-49L8yCO3iGT/ZF9QttjwLF/ZD9Iwto5LnH5LmEdk/6cFmXddqi2ulF0edxTwjj+7mqvpVVGQWvbXZdn32wRSHA==}
@@ -24423,7 +24434,7 @@ packages:
       '@types/react': 18.0.27
       detect-node-es: 1.1.0
       react: 18.2.0
-      tslib: 2.5.3
+      tslib: 2.6.2
 
   /use-sync-external-store@1.2.0(react@18.2.0):
     resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
