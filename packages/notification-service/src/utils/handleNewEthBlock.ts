@@ -1,4 +1,5 @@
 import type { PrismaClient } from '@prisma/client';
+import nodemailer from "nodemailer";
 import type { ReceiptMessageOut } from 'fuels';
 import {
   getTransactionsSummaries,
@@ -18,8 +19,18 @@ export const handleNewEthBlock = async (
   fuelProviderUrl: string,
   ethPublicClient: PublicClient
 ) => {
-  const mailService = await MailService.getInstance();
-  console.log(`mailService.transporter`, mailService.transporter);
+  // const mailService = await MailService.getInstance();
+  // console.log(`mailService.transporter`, mailService.transporter);
+  const account = await nodemailer.createTestAccount();
+  const transporter = nodemailer.createTransport({
+    host: account.smtp.host,
+    port: account.smtp.port,
+    secure: account.smtp.secure,
+    auth: {
+      user: account.user,
+      pass: account.pass,
+    },
+  });
 
   const abiFuelChainState = FUEL_CHAIN_STATE.abi.find(
     ({ name, type }) => name === 'CommitSubmitted' && type === 'event'
@@ -154,17 +165,25 @@ export const handleNewEthBlock = async (
           ) {
             //console.log(`dbTransaction`, dbTransaction);
             console.log('0');
-            await mailService.sendMail({
-              from: 'matt.auer@fuel.sh',
+            // await mailService.sendMail({
+            //   from: 'matt.auer@fuel.sh',
+            //   to: dbTransaction.address.withdrawer.email,
+            //   subject: 'Withdraw Notification',
+            //   text: `Your transaction ${w.tranasction.id} is ready for withdrawal`,
+            //   html: `<p>Your transaction ${w.tranasction.id} is ready for withdrawal<p>`,
+            // });
+            // console.log(
+            //   `dbTransaction.transactionId`,
+            //   dbTransaction.transactionId
+            // );
+            await transporter.sendMail({
+              from: `"Fred Foo" matt.auer@fuel.sh`,
               to: dbTransaction.address.withdrawer.email,
               subject: 'Withdraw Notification',
               text: `Your transaction ${w.tranasction.id} is ready for withdrawal`,
               html: `<p>Your transaction ${w.tranasction.id} is ready for withdrawal<p>`,
             });
-            console.log(
-              `dbTransaction.transactionId`,
-              dbTransaction.transactionId
-            );
+            console.log('two');
             // Update the message is sent
             const newTx = await prisma.transaction.update({
               where: { transactionId: dbTransaction.transactionId },
