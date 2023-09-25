@@ -109,11 +109,11 @@ importers:
   docker/erc20-deployer/deployer:
     dependencies:
       '@fuel-bridge/solidity-contracts':
-        specifier: 0.0.2-next-9ebbea2
-        version: 0.0.2-next-9ebbea2(ethers@5.7.2)(hardhat@2.13.0)
+        specifier: 0.1.1
+        version: 0.1.1(ethers@5.7.2)(hardhat@2.13.0)
       '@fuel-bridge/test-utils':
-        specifier: 0.0.2-next-9ebbea2
-        version: 0.0.2-next-9ebbea2(ethers@5.7.2)(fuels@0.58.0)
+        specifier: 0.1.1
+        version: 0.1.1(ethers@5.7.2)(fuels@0.58.0)
       ethers:
         specifier: 5.7.2
         version: 5.7.2
@@ -149,8 +149,8 @@ importers:
         specifier: ^5.7.0
         version: 5.7.0
       '@fuel-bridge/solidity-contracts':
-        specifier: 0.0.2-next-9ebbea2
-        version: 0.0.2-next-9ebbea2(ethers@5.7.2)(hardhat@2.13.0)
+        specifier: 0.1.1
+        version: 0.1.1(ethers@5.7.2)(hardhat@2.13.0)
       '@fuel-ui/css':
         specifier: 0.21.0
         version: 0.21.0
@@ -3161,8 +3161,8 @@ packages:
       ts-interface-checker: 0.1.13
     dev: true
 
-  /@fuel-bridge/solidity-contracts@0.0.2-next-9ebbea2(ethers@5.7.2)(hardhat@2.13.0):
-    resolution: {integrity: sha512-NC1wCDnCLxp64ZH7tsQo+uuygubScdtG+n6ok3iIl+NlR5805ZsV5MsGELkqxnpeUPDjWVwU5P37aGdaB9IPaA==}
+  /@fuel-bridge/solidity-contracts@0.1.1(ethers@5.7.2)(hardhat@2.13.0):
+    resolution: {integrity: sha512-1Yto+1GfEUYcjGhnU9OW+CE0T5UO3k2FO/Rv1825hgjL8ppGCaBmk9D9LZ/j748zT9xUywnbbq762hiihXU1RQ==}
     dependencies:
       '@ethersproject/abi': 5.7.0
       '@ethersproject/abstract-provider': 5.7.0
@@ -3184,11 +3184,11 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@fuel-bridge/test-utils@0.0.2-next-9ebbea2(ethers@5.7.2)(fuels@0.58.0):
-    resolution: {integrity: sha512-K825RuEA9emxQ8W7g+diBD5uQVCNx12DKIIm42WevEsu7daGLfpNKmcCMVTZ5NXubtmVzs5seSG5GSkVLarmZg==}
+  /@fuel-bridge/test-utils@0.1.1(ethers@5.7.2)(fuels@0.58.0):
+    resolution: {integrity: sha512-4DqnlaRdHBl3Ynm7u6G1Er159Xygbx0UbmHASHOyEDz/+JoGhlckq9TunXsVMiErhjYq3fbMWL8s4ozkGfuNGQ==}
     peerDependencies:
       ethers: '>=5.7.2'
-      fuels: '>=0.54.1'
+      fuels: '>=0.58.0'
     dependencies:
       ethers: 5.7.2
       fuels: 0.58.0
