@@ -17,17 +17,18 @@ model User {
 }
 
 model Address {
-  address      String        @unique
+  id           Int           @id @default(autoincrement())
+  address      String
   transactions Transaction[]
   withdrawer   User          @relation(fields: [withdrawerId], references: [id], onDelete: Cascade)
   withdrawerId Int
 }
 
 model Transaction {
-  transactionId             String             @id
-  status                    String
-  emailSent                 Boolean            @default(false)
-  address                   Address            @relation(fields: [addressId], references: [address], onDelete: Cascade)
-  addressId                 String
-  blockHeight               BigInt?
+  transactionId String  @id
+  status        String
+  emailSent     Boolean @default(false)
+  address       Address @relation(fields: [addressId], references: [id], onDelete: Cascade)
+  addressId     Int
+  blockHeight   BigInt?
 }
