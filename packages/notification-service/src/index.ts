@@ -33,7 +33,7 @@ const prisma = new PrismaClient();
 
 notificationServer.use(express.json());
 
-notificationServer.get('/notify', async (req: Request, res: Response) => {
+notificationServer.get('/notify', async (_req: Request, res: Response) => {
   if (!NOTIFY_LOCK) {
     NOTIFY_LOCK = true;
     await handleNewEthBlock(prisma, fuelProvider.url, ethPublicClient);
@@ -42,7 +42,7 @@ notificationServer.get('/notify', async (req: Request, res: Response) => {
   res.send('success');
 });
 
-notificationServer.listen(port, async () => {
+notificationServer.listen(port, () => {
   // eslint-disable-next-line no-console
   console.log(`Notification server running at http://localhost:${port}`);
 });

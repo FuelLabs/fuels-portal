@@ -12,20 +12,19 @@ export default class MailService {
       MailService.instance = new MailService();
     }
     if (!MailService.instance.transporter) {
-      await MailService.instance.createLocalConnection();
+      await MailService.instance.createConnection();
     }
     return MailService.instance;
   }
 
-  async createLocalConnection() {
-    const account = await nodemailer.createTestAccount();
+  async createConnection() {
     this.transporter = nodemailer.createTransport({
-      host: account.smtp.host,
-      port: account.smtp.port,
-      secure: account.smtp.secure,
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT),
+      secure: process.env.SMTP_SECURE === 'true',
       auth: {
-        user: account.user,
-        pass: account.pass,
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
       },
     });
   }
@@ -38,7 +37,7 @@ export default class MailService {
     html: string;
   }) {
     const info = await this.transporter?.sendMail({
-      from: `"Fred Foo" ${options.from}`,
+      from: options.from,
       to: options.to,
       subject: options.subject,
       text: options.text,
