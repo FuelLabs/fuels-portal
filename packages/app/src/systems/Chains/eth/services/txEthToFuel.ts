@@ -329,7 +329,7 @@ export class TxEthToFuelService {
     // TODO: should use the fuelProvider from input when wallet gets updated with new SDK
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { fuelProvider, ethTxNonce } = input;
-    const provider = await FuelProvider.create('http://localhost:4000/graphql');
+    const provider = await FuelProvider.create(fuelProvider.url);
     const messageStatus = await provider.getMessageStatus(
       ethTxNonce.toHex(32).toString()
     );
