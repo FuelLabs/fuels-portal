@@ -360,17 +360,7 @@ export const txEthToFuelMachine = createMachine(
         !!ctx.ethPublicClient,
       isTxEthToFuelDone: (ctx) => EthTxCache.getTxIsDone(ctx.ethTxId || ''),
       hasFuelRelayedTx: (ctx, ev) => !!ctx.fuelRelayedTx || !!ev?.data,
-      hasFuelRelayedTxSuccess: (ctx) => {
-        if (ctx.fuelRelayedTx?.status !== 'success') {
-          console.log(ctx.fuelRelayedTx);
-          console.log(ctx.fuelRelayedTx?.status);
-          console.log(ctx.fuelRelayedTx?.transaction.inputs);
-
-          return false;
-        }
-
-        return true;
-      },
+      hasFuelRelayedTxSuccess: (ctx) => ctx.fuelRelayedTx?.status === 'success',
     },
     services: {
       getReceiptsInfo: FetchMachine.create<
