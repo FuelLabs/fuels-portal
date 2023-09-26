@@ -169,9 +169,6 @@ export class TxEthToFuelService {
         fuelAddress &&
         ethPublicClient
       ) {
-        const fuelErc20Gateway = EthConnectorService.connectToFuelErc20Gateway({
-          walletClient: ethWalletClient,
-        });
         const erc20Token = EthConnectorService.connectToErc20({
           address: ethAsset?.address as `0x${string}`,
           walletClient: ethWalletClient,
@@ -190,6 +187,9 @@ export class TxEthToFuelService {
           throw new Error('Failed to approve Token for transfer');
         }
 
+        const fuelErc20Gateway = EthConnectorService.connectToFuelErc20Gateway({
+          walletClient: ethWalletClient,
+        });
         const depositTxHash = await fuelErc20Gateway.write.deposit([
           fuelAddress.toB256() as `0x${string}`,
           ethAsset?.address,

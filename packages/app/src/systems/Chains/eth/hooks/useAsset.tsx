@@ -22,11 +22,13 @@ export const useAsset = (params?: { address?: string }) => {
       // is both addresses empty or equal
       (asset) => (!asset.address && !address) || asset.address === address
     );
-    const webAsset = token && {
-      address: token?.address,
-      decimals: token?.decimals,
-      symbol: token?.symbol,
-    };
+    const webAsset = token
+      ? {
+          address: token?.address,
+          decimals: token?.decimals,
+          symbol: token?.symbol,
+        }
+      : undefined;
 
     return appAsset || webAsset || undefined;
   }, [assets, address, token]);

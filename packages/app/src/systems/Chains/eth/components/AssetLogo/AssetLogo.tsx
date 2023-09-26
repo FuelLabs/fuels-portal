@@ -1,6 +1,6 @@
 import { Image, Avatar } from '@fuel-ui/react';
 
-type EthAssetCardProps = {
+type EthAssetLogoProps = {
   asset: {
     address?: string;
     image?: string;
@@ -15,7 +15,7 @@ export const AssetLogo = ({
   alt = 'AssetLogo',
   asset,
   size = DEFAULT_SIZE,
-}: EthAssetCardProps) => {
+}: EthAssetLogoProps) => {
   if (!asset?.image && !asset?.address) return null;
 
   return (
