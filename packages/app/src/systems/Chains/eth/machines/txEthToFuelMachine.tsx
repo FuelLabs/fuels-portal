@@ -6,6 +6,7 @@ import type {
   Address as FuelAddress,
   Provider as FuelProvider,
   TransactionResult,
+  MessageStatus,
 } from 'fuels';
 import type { PublicClient } from 'wagmi';
 import type { FetchTokenResult } from 'wagmi/actions';
@@ -22,6 +23,7 @@ type MachineContext = {
   ethTxNonce?: BN;
   fuelAddress?: FuelAddress;
   fuelProvider?: FuelProvider;
+  fuelMessageStatus?: MessageStatus;
   fuelMessage?: FuelMessage;
   ethPublicClient?: PublicClient;
   ethDepositBlockHeight?: string;
@@ -40,8 +42,8 @@ type MachineServices = {
   getFuelMessage: {
     data: FuelMessage | undefined;
   };
-  checkSyncDaHeight: {
-    data: boolean | undefined;
+  getFuelMessageStatus: {
+    data: MessageStatus | undefined;
   };
   checkFuelRelayMessage: {
     data: TransactionResult | undefined;
@@ -130,31 +132,18 @@ export const txEthToFuelMachine = createMachine(
                 target: '#(machine).checkingSettlement.checkingFuelTx.done',
               },
               {
-                target: 'decidingCheckMessageAction',
+                target: 'gettingFuelMessageStatus',
               },
             ],
           },
-          decidingCheckMessageAction: {
-            // decide if erc20 token get fuel message, otherwise go for daHeight method
-            tags: ['isSettlementLoading', 'isSettlementSelected'],
-            always: [
-              {
-                cond: 'hasErc20Token',
-                target: 'gettingFuelMessage',
-              },
-              {
-                target: 'checkSyncDaHeight',
-              },
-            ],
-          },
-          checkSyncDaHeight: {
+          gettingFuelMessageStatus: {
             tags: ['isSettlementLoading', 'isSettlementSelected'],
             invoke: {
-              src: 'checkSyncDaHeight',
+              src: 'getFuelMessageStatus',
               data: {
                 input: (ctx: MachineContext) => ({
                   fuelProvider: ctx.fuelProvider,
-                  ethDepositBlockHeight: ctx.ethDepositBlockHeight,
+                  ethTxNonce: ctx.ethTxNonce,
                 }),
               },
               onDone: [
@@ -162,15 +151,43 @@ export const txEthToFuelMachine = createMachine(
                   cond: FetchMachine.hasError,
                 },
                 {
-                  cond: 'isDaHeightSynced',
-                  target: 'checkingFuelTx',
+                  actions: ['assignFuelMessageStatus'],
+                  target: 'decidingFuelMessageAction',
                 },
               ],
             },
             after: {
               10000: {
-                target: 'decidingCheckMessageAction',
+                target: 'gettingFuelMessageStatus',
               },
+            },
+          },
+          decidingFuelMessageAction: {
+            tags: ['isSettlementLoading', 'isSettlementSelected'],
+            always: [
+              {
+                // if message is spent, assume it's done as message has arrived and already spent
+                cond: 'isMessageSpent',
+                target: '#(machine).checkingSettlement.checkingFuelTx.done',
+              },
+              {
+                // if message is unspent for a eth deposit, it's done as message has arrived and ready to use
+                cond: 'isMessageUnspentEth',
+                target: '#(machine).checkingSettlement.checkingFuelTx.done',
+              },
+              {
+                // if message is unspent for a erc20 deposit, it means the predicate has the message, user needs to relay it
+                cond: 'isMessageUnspentErc20',
+                target: 'gettingFuelMessage',
+              },
+              {
+                target: 'waitingForRetryFuelMessage',
+              },
+            ],
+          },
+          waitingForRetryFuelMessage: {
+            after: {
+              2000: 'gettingFuelMessageStatus',
             },
           },
           gettingFuelMessage: {
@@ -197,7 +214,7 @@ export const txEthToFuelMachine = createMachine(
             },
             after: {
               10000: {
-                target: 'decidingCheckMessageAction',
+                target: 'gettingFuelMessage',
               },
             },
           },
@@ -347,10 +364,12 @@ export const txEthToFuelMachine = createMachine(
       assignFuelRelayedTx: assign({
         fuelRelayedTx: (_, ev) => ev.data,
       }),
+      assignFuelMessageStatus: assign({
+        fuelMessageStatus: (_, ev) => ev.data,
+      }),
     },
     guards: {
       hasErc20Token: (ctx) => !!ctx.erc20Token,
-      isDaHeightSynced: (_, ev) => !!ev?.data,
       hasFuelMessage: (ctx, ev) => !!ctx.fuelMessage || !!ev?.data,
       hasEthTxNonce: (ctx, ev) => !!ctx.ethTxNonce || !!ev?.data?.nonce,
       hasAnalyzeTxInput: (ctx) =>
@@ -371,6 +390,11 @@ export const txEthToFuelMachine = createMachine(
 
         return true;
       },
+      isMessageSpent: (ctx) => ctx.fuelMessageStatus?.state === 'SPENT',
+      isMessageUnspentEth: (ctx) =>
+        ctx.fuelMessageStatus?.state === 'UNSPENT' && !ctx.erc20Token,
+      isMessageUnspentErc20: (ctx) =>
+        ctx.fuelMessageStatus?.state === 'UNSPENT' && !!ctx.erc20Token,
     },
     services: {
       getReceiptsInfo: FetchMachine.create<
@@ -387,18 +411,18 @@ export const txEthToFuelMachine = createMachine(
           return TxEthToFuelService.getReceiptsInfo(input);
         },
       }),
-      checkSyncDaHeight: FetchMachine.create<
-        TxEthToFuelInputs['checkSyncDaHeight'],
-        MachineServices['checkSyncDaHeight']['data']
+      getFuelMessageStatus: FetchMachine.create<
+        TxEthToFuelInputs['getFuelMessageStatus'],
+        MachineServices['getFuelMessageStatus']['data']
       >({
         showError: true,
         async fetch({ input }) {
           if (!input) {
-            throw new Error('No input to checkSyncDaHeight');
+            throw new Error('No input to getFuelMessageStatus');
           }
 
-          console.log('checkSyncDaHeight');
-          return TxEthToFuelService.checkSyncDaHeight(input);
+          console.log('getFuelMessageStatus');
+          return TxEthToFuelService.getFuelMessageStatus(input);
         },
       }),
       getFuelMessage: FetchMachine.create<

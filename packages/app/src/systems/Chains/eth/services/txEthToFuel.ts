@@ -1,10 +1,6 @@
-import type {
-  BN,
-  Provider as FuelProvider,
-  Message,
-  WalletUnlocked as FuelWallet,
-} from 'fuels';
+import type { BN, Message, WalletUnlocked as FuelWallet } from 'fuels';
 import {
+  Provider as FuelProvider,
   Address as FuelAddress,
   bn,
   getInputsMessage,
@@ -23,7 +19,6 @@ import {
 import type { BridgeAsset } from '~/systems/Bridge';
 
 import { FUEL_UNITS } from '../../fuel/utils/chain';
-import { getBlock } from '../../fuel/utils/getBlock';
 import { relayCommonMessage } from '../../fuel/utils/relayMessage';
 import type { FuelERC20GatewayArgs } from '../contracts/FuelErc20Gateway';
 import { FUEL_ERC_20_GATEWAY } from '../contracts/FuelErc20Gateway';
@@ -60,9 +55,9 @@ export type TxEthToFuelInputs = {
     fuelRecipient?: FuelAddress;
     fuelProvider?: FuelProvider;
   };
-  checkSyncDaHeight: {
-    ethDepositBlockHeight?: string;
+  getFuelMessageStatus: {
     fuelProvider?: FuelProvider;
+    ethTxNonce?: BN;
   };
   checkFuelRelayMessage: {
     fuelProvider?: FuelProvider;
@@ -321,32 +316,24 @@ export class TxEthToFuelService {
     return receiptsInfo;
   }
 
-  static async checkSyncDaHeight(
-    input: TxEthToFuelInputs['checkSyncDaHeight']
+  static async getFuelMessageStatus(
+    input: TxEthToFuelInputs['getFuelMessageStatus']
   ) {
     if (!input?.fuelProvider) {
       throw new Error('No Fuel provider found');
     }
-    if (!input?.ethDepositBlockHeight) {
-      throw new Error('No block height found');
+    if (!input?.ethTxNonce) {
+      throw new Error('No message nonce found');
     }
 
-    const { fuelProvider, ethDepositBlockHeight } = input;
-
-    const blocks = await fuelProvider.getBlocks({ last: 1 });
-    const latestBlockId = blocks?.[0]?.id;
-    // TODO: replace this logic when SDK return blocks more complete, with header etc...
-    const fuelLatestBlock = await getBlock({
-      blockHash: latestBlockId,
-      providerUrl: fuelProvider.url,
-    });
-
-    // TODO: this method of checking DAheight with ethDepositBlockHeight should be replaced to get actual message instead
-    // we'll be able to do this when issue is done: https://github.com/FuelLabs/fuel-core/issues/1323
-    // issue to track this work: https://github.com/FuelLabs/fuels-portal/issues/96
-    const fuelLatestDAHeight = fuelLatestBlock?.header?.daHeight;
-
-    return bn(fuelLatestDAHeight).gte(ethDepositBlockHeight);
+    // TODO: should use the fuelProvider from input when wallet gets updated with new SDK
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { fuelProvider, ethTxNonce } = input;
+    const provider = await FuelProvider.create('http://localhost:4000/graphql');
+    const messageStatus = await provider.getMessageStatus(
+      ethTxNonce.toHex(32).toString()
+    );
+    return messageStatus;
   }
 
   static async getFuelMessage(input: TxEthToFuelInputs['getFuelMessage']) {
@@ -365,6 +352,7 @@ export class TxEthToFuelService {
     const messages = await fuelProvider.getMessages(fuelRecipient, {
       first: 1000,
     });
+    console.log(`ethTxNonce`, ethTxNonce);
     const fuelMessage = messages.find((message) => {
       return message.nonce.toString() === ethTxNonce.toHex(32).toString();
     });
