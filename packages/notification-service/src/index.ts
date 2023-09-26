@@ -43,7 +43,7 @@ notificationServer.get('/notify', async (req: Request, res: Response) => {
 });
 
 notificationServer.post('/signup', async (req: Request, res: Response) => {
-  const user = await prisma.user.upsert({
+  await prisma.user.upsert({
     where: {
       email: req.body.email,
     },
@@ -76,11 +76,10 @@ notificationServer.post('/signup', async (req: Request, res: Response) => {
       addresses: true,
     },
   });
-  console.log(`user`, user);
   res.send('success');
 });
 
-notificationServer.listen(port, async () => {
+notificationServer.listen(port, () => {
   // eslint-disable-next-line no-console
   console.log(`Notification server running at http://localhost:${port}`);
 });
