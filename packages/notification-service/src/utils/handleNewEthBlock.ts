@@ -151,7 +151,7 @@ export const handleNewEthBlock = async (
             !dbTransaction.emailSent
           ) {
             await mailService.sendMail({
-              from: 'matt.auer@fuel.sh',
+              from: process.env.FROM_EMAIL,
               to: dbTransaction.address.withdrawer.email,
               subject: 'Withdraw Notification',
               text: `Your transaction ${w.tranasction.id} is ready for withdrawal`,

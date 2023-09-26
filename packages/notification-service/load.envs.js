@@ -2,6 +2,7 @@ const { config } = require('dotenv');
 const { resolve } = require('path');
 const { readFileSync } = require('fs');
 const retus = require('retus');
+const nodemailer = require('nodemailer');
 
 function getVersion() {
   const packageJson = JSON.parse(
@@ -59,3 +60,36 @@ if (ethFuelContracts && ethFuelContracts.FuelMessagePortal) {
   process.env.ETH_FUEL_ERC20_GATEWAY = ethFuelContracts.FuelERC20Gateway;
   process.env.ETH_FUEL_CHAIN_STATE = ethFuelContracts.FuelChainState;
 }
+
+async function getMailServiceOptions() {
+  if (process.env.ETH_CHAIN === 'foundry') {
+    const account = await nodemailer.createTestAccount();
+    const mailServiceOptions = {
+      host: account.smtp.host,
+      port: account.smtp.port,
+      secure: account.smtp.secure,
+      auth: {
+        user: account.user,
+        pass: account.pass,
+      },
+    };
+    return mailServiceOptions;
+  }
+  return {
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT,
+    secure: process.env.SMTP_SECURE,
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  };
+}
+
+getMailServiceOptions().then((mailServiceOptions) => {
+  process.env.SMTP_HOST = mailServiceOptions.host;
+  process.env.SMTP_PORT = mailServiceOptions.port;
+  process.env.SMTP_SECURE = mailServiceOptions.secure;
+  process.env.EMAIL_USER = mailServiceOptions.auth.user;
+  process.env.EMAIL_PASS = mailServiceOptions.auth.pass;
+});

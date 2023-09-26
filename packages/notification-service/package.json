@@ -10,6 +10,7 @@
     "dev:notification": "ts-node-dev -r tsconfig-paths/register --transpile-only --watch ./src/**/*, src/index.ts"
   },
   "dependencies": {
+    "@fuel-bridge/solidity-contracts": "0.0.2-next-9ebbea2",
     "@prisma/client": "5.1.1",
     "@types/nodemailer": "^6.4.10",
     "dotenv": "^16.3.1",
