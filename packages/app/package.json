@@ -32,7 +32,7 @@
     "dexie": "^3.2.4",
     "framer-motion": "^10.12.16",
     "fuels": "0.58.0",
-    "graphql": "16.6.0",
+    "graphql": "16.2.0",
     "graphql-request": "^6.1.0",
     "graphql-tag": "^2.12.6",
     "react": "^18.2.0",
