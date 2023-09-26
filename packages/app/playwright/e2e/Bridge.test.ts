@@ -1,7 +1,7 @@
 import type { Locator } from '@playwright/test';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import type { WalletUnlocked } from 'fuels';
-import { BaseAssetId, Wallet, bn } from 'fuels';
+import { BaseAssetId, Wallet, bn, Provider } from 'fuels';
 import type { HDAccount } from 'viem';
 import { createPublicClient, http } from 'viem';
 import { mnemonicToAccount } from 'viem/accounts';
@@ -18,6 +18,9 @@ import {
 import { ETH_MNEMONIC, FUEL_MNEMONIC } from '../mocks';
 
 import { test, expect } from './fixtures';
+import { closeTransactionPopup } from './utils/bridge';
+
+const { FUEL_PROVIDER_URL } = process.env;
 
 test.describe('Bridge', () => {
   let client: PublicClient;
@@ -31,7 +34,8 @@ test.describe('Bridge', () => {
       transport: http(),
     });
     account = mnemonicToAccount(ETH_MNEMONIC);
-    fuelWallet = Wallet.fromMnemonic(FUEL_MNEMONIC);
+    const fuelProvider = await Provider.create(FUEL_PROVIDER_URL);
+    fuelWallet = Wallet.fromMnemonic(FUEL_MNEMONIC, fuelProvider);
     await page.goto('/');
   });
 
@@ -81,7 +85,7 @@ test.describe('Bridge', () => {
       await depositButton.click();
 
       // Timeout needed until https://github.com/Synthetixio/synpress/issues/795 is fixed
-      await page.waitForTimeout(10000);
+      await page.waitForTimeout(2000);
       await metamask.confirmTransaction();
 
       // Check steps
@@ -100,10 +104,12 @@ test.describe('Bridge', () => {
       ).toBeCloseTo(parseFloat(depositAmount));
 
       // check the popup is correct
+      const transactionID = (
+        await getByAriaLabel(page, 'Transaction ID').innerHTML()
+      ).trim();
       const assetAmount = getByAriaLabel(page, 'Asset amount');
       expect((await assetAmount.innerHTML()).trim()).toBe(depositAmount);
-      const closeEthPopup = getByAriaLabel(page, 'Close Transaction Dialog');
-      await closeEthPopup.click();
+      await closeTransactionPopup(page);
 
       const postDepositBalanceFuel = await fuelWallet.getBalance(BaseAssetId);
 
@@ -118,10 +124,20 @@ test.describe('Bridge', () => {
       await transactionList.click();
 
       // check the transaction is there
-      const transactionAssetAmount = getByAriaLabel(page, 'Asset amount');
-      expect((await transactionAssetAmount.first().innerHTML()).trim()).toBe(
+      const depositLocator = getByAriaLabel(
+        page,
+        `Transaction ID: ${transactionID}`
+      );
+
+      // check if has correct asset amount
+      const assetAmountLocator = depositLocator.getByText(
         `${depositAmount} ETH`
       );
+      await assetAmountLocator.innerText();
+
+      // check if it's settled on the list
+      const statusLocator = depositLocator.getByText(`Settled`);
+      await statusLocator.innerText();
     });
 
     await test.step('Withdraw from Fuel to ETH', async () => {
@@ -155,30 +171,34 @@ test.describe('Bridge', () => {
       await page.locator(':text("Action Required")').waitFor();
 
       // Check the popup is correct
+      const transactionID = (
+        await getByAriaLabel(page, 'Transaction ID').innerHTML()
+      ).trim();
       const assetAmountWithdraw = getByAriaLabel(page, 'Asset amount');
       expect((await assetAmountWithdraw.innerHTML()).trim()).toBe(
         withdrawAmount
       );
-      const closeEthPopupWithdraw = getByAriaLabel(
-        page,
-        'Close Transaction Dialog'
-      );
-      await closeEthPopupWithdraw.click();
+      await closeTransactionPopup(page);
 
       // Go to the transaction page
       await transactionList.click();
 
       // Wait for transactions to get fetched and sorted
-      await page.waitForTimeout(10000);
+      await page.waitForTimeout(2000);
 
-      const transactionAssetAmount = getByAriaLabel(page, 'Asset amount');
       // Check the transaction is there
-      expect((await transactionAssetAmount.first().innerHTML()).trim()).toBe(
-        `${withdrawAmount} ETH`
+      const withdrawLocator = getByAriaLabel(
+        page,
+        `Transaction ID: ${transactionID}`
       );
 
-      await transactionAssetAmount.first().click();
-      await page.waitForTimeout(20000);
+      const assetAmountLocator = withdrawLocator.getByText(
+        `${withdrawAmount} ETH`
+      );
+      await assetAmountLocator.innerText();
+
+      await assetAmountLocator.click();
+      await page.waitForTimeout(10000);
       const confirmButton = getButtonByText(page, 'Confirm Transaction');
       await confirmButton.click();
 
@@ -204,6 +224,8 @@ test.describe('Bridge', () => {
       // Timeout needed until https://github.com/Synthetixio/synpress/issues/795 is fixed
       await page.waitForTimeout(10000);
       await metamask.confirmTransaction();
+
+      await closeTransactionPopup(page);
 
       const postWithdrawBalanceEth = await client.getBalance({
         address: account.address,

@@ -24,7 +24,9 @@ export const BridgeTxOverview = ({
     <Box.Stack css={styles.stack}>
       <Box.Flex css={styles.txItem}>
         <Text css={styles.labelText}>ID</Text>
-        <Text css={styles.infoText}>{transactionId.toString()}</Text>
+        <Text css={styles.infoText} aria-label="Transaction ID">
+          {transactionId.toString()}
+        </Text>
       </Box.Flex>
       <Box.Flex css={styles.txItem}>
         <Text css={styles.labelText}>Age</Text>

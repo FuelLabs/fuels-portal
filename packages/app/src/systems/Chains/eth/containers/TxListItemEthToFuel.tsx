@@ -47,6 +47,7 @@ export const TxListItemEthToFuel = ({ txHash }: TxListItemEthToFuelProps) => {
       asset={asset}
       onClick={() => handlers.openTxEthToFuel({ txId: txHash })}
       status={getStatusComponent()}
+      txId={txHash}
     />
   );
 };

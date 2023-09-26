@@ -1,5 +1,5 @@
 import type { BN } from 'fuels';
-import { Address, BaseAssetId, Wallet } from 'fuels';
+import { Address, BaseAssetId, Wallet, Provider } from 'fuels';
 
 const { GENESIS_SECRET, FUEL_PROVIDER_URL } = process.env;
 
@@ -12,10 +12,8 @@ export async function seedWallet(
   amount: BN,
   options: SeedWalletOptions = {}
 ) {
-  const genesisWallet = Wallet.fromPrivateKey(
-    GENESIS_SECRET,
-    FUEL_PROVIDER_URL
-  );
+  const fuelProvider = await Provider.create(FUEL_PROVIDER_URL);
+  const genesisWallet = Wallet.fromPrivateKey(GENESIS_SECRET, fuelProvider);
   const response = await genesisWallet.transfer(
     Address.fromString(address),
     amount,

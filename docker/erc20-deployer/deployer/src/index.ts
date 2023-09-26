@@ -11,7 +11,7 @@ const {
   L1_CHAIN_HTTP,
   DEPLOYMENTS_HTTP,
   FUEL_GRAPHQL_ENDPOINT,
-  PK_ETH_SIGNER_2,
+  PK_ETH_WALLET,
 } = process.env;
 const APP_PORT = PORT || 9090;
 
@@ -20,7 +20,8 @@ async function main() {
     http_ethereum_client: L1_CHAIN_HTTP,
     http_fuel_client: FUEL_GRAPHQL_ENDPOINT,
     http_deployer: DEPLOYMENTS_HTTP,
-    pk_eth_signer2: PK_ETH_SIGNER_2,
+    pk_eth_signer2: PK_ETH_WALLET,
+    pk_eth_deployer: PK_ETH_WALLET,
   });
   const ETHToken = await getOrDeployECR20Contract(env);
   const FuelToken = await getOrDeployFuelTokenContract(env, ETHToken, {

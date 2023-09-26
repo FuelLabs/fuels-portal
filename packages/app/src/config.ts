@@ -16,5 +16,5 @@ export const {
 } = import.meta.env;
 
 export const IS_PREVIEW = import.meta.env.VITE_IS_PUBLIC_PREVIEW === 'true';
-export const IS_DEVELOPMENT = process.env.NODE_ENV !== 'production';
-export const IS_TEST = process.env.NODE_ENV === 'test';
+export const IS_DEVELOPMENT = import.meta.env.DEV;
+export const IS_TEST = import.meta.env.MODE === 'test';
