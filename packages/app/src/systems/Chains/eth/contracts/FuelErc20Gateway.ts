@@ -11,5 +11,4 @@ export type FuelERC20GatewayArgs = {
 
 export const FUEL_ERC_20_GATEWAY = {
   abi: FuelERC20Gateway.abi,
-  hashcode: FuelERC20Gateway.bytecode,
 };

@@ -31,5 +31,4 @@ export const decodeMessageSentData = {
 
 export const FUEL_MESSAGE_PORTAL = {
   abi: FuelMessagePortal.abi,
-  hashcode: FuelMessagePortal.bytecode,
 };
