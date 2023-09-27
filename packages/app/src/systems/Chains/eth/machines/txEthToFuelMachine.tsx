@@ -183,6 +183,7 @@ export const txEthToFuelMachine = createMachine(
             ],
           },
           waitingForRetryFuelMessage: {
+            tags: ['isSettlementLoading', 'isSettlementSelected'],
             after: {
               2000: 'gettingFuelMessageStatus',
             },
@@ -305,6 +306,10 @@ export const txEthToFuelMachine = createMachine(
                 ],
               },
               waitingForRetryFuelMessage: {
+                tags: [
+                  'isConfirmTransactionLoading',
+                  'isConfirmTransactionSelected',
+                ],
                 after: {
                   2000: 'gettingFuelMessageStatus',
                 },

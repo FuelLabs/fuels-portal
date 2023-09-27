@@ -315,8 +315,9 @@ export class TxEthToFuelService {
       throw new Error('No message nonce found');
     }
 
-    // TODO: should use the fuelProvider from input when wallet gets updated with new SDK
     const { fuelProvider, ethTxNonce } = input;
+
+    // TODO: should use the fuelProvider from input when wallet gets updated with new SDK
     const provider = await FuelProvider.create(fuelProvider.url);
     const messageStatus = await provider.getMessageStatus(
       ethTxNonce.toHex(32).toString()
