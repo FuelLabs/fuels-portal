@@ -4,10 +4,10 @@
     "start": "ts-node ./src/index.ts"
   },
   "dependencies": {
-    "@fuel-bridge/solidity-contracts": "0.0.2-next-9ebbea2",
-    "@fuel-bridge/test-utils": "0.0.2-next-9ebbea2",
+    "@fuel-bridge/solidity-contracts": "0.1.1",
+    "@fuel-bridge/test-utils": "0.1.1",
     "ethers": "5.7.2",
-    "fuels": "0.54.1"
+    "fuels": "0.58.0"
   },
   "devDependencies": {
     "ts-node": "^10.9.1"

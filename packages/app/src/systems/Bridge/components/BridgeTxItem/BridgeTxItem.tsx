@@ -1,19 +1,19 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, Text, Image, Icon, CardList } from '@fuel-ui/react';
+import { Box, Text, Icon, CardList } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
-import { calculateDateDiff } from '~/systems/Core';
+import { AssetLogo } from '~/systems/Chains/eth/components/AssetLogo';
+import { calculateDateDiff, shortAddress } from '~/systems/Core';
+
+import type { BridgeAsset } from '../../types';
 
 type BridgeTxItemProps = {
   date?: Date;
   fromLogo: ReactNode;
   toLogo: ReactNode;
-  asset?: {
-    assetImageSrc?: ReactNode | string;
-    assetAmount?: string;
-    assetSymbol?: string;
-  };
+  asset?: BridgeAsset;
   onClick: () => void;
   status: ReactNode;
+  txId?: string;
 };
 
 export const BridgeTxItem = ({
@@ -23,31 +23,23 @@ export const BridgeTxItem = ({
   fromLogo,
   toLogo,
   status,
+  txId,
 }: BridgeTxItemProps) => {
   return (
-    <CardList.Item onClick={onClick} css={styles.cardItem}>
+    <CardList.Item
+      onClick={onClick}
+      css={styles.cardItem}
+      aria-label={`Transaction ID: ${shortAddress(txId)}`}
+    >
       <Box.Flex gap={'$1'}>
         {fromLogo}
         <Icon icon="ArrowNarrowRight" />
         {toLogo}
       </Box.Flex>
       <Box.Flex align="center" gap="$1">
-        {typeof asset?.assetImageSrc === 'string' ? (
-          <Image
-            width={18}
-            height={18}
-            src={asset.assetImageSrc}
-            alt={asset.assetSymbol}
-          />
-        ) : (
-          asset?.assetImageSrc
-        )}
-        <Text
-          aria-label="Asset amount"
-          fontSize="sm"
-          css={styles.assetAmountText}
-        >
-          {asset?.assetAmount} {asset?.assetSymbol}
+        <AssetLogo asset={asset || {}} alt={asset?.symbol} />
+        <Text fontSize="sm" css={styles.assetAmountText}>
+          {asset?.amount} {asset?.symbol}
         </Text>
       </Box.Flex>
       <Box.Flex css={styles.statusTime} justify={'space-between'}>

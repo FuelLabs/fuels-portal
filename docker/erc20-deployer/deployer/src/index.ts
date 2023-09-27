@@ -1,12 +1,18 @@
 import {
   getOrDeployECR20Contract,
   getOrDeployFuelTokenContract,
+  mintECR20,
   setupEnvironment,
 } from '@fuel-bridge/test-utils';
 import { createServer } from 'http';
 
-const { PORT, L1_CHAIN_HTTP, DEPLOYMENTS_HTTP, FUEL_GRAPHQL_ENDPOINT } =
-  process.env;
+const {
+  PORT,
+  L1_CHAIN_HTTP,
+  DEPLOYMENTS_HTTP,
+  FUEL_GRAPHQL_ENDPOINT,
+  PK_ETH_WALLET,
+} = process.env;
 const APP_PORT = PORT || 9090;
 
 async function main() {
@@ -14,12 +20,16 @@ async function main() {
     http_ethereum_client: L1_CHAIN_HTTP,
     http_fuel_client: FUEL_GRAPHQL_ENDPOINT,
     http_deployer: DEPLOYMENTS_HTTP,
+    pk_eth_signer2: PK_ETH_WALLET,
+    pk_eth_deployer: PK_ETH_WALLET,
   });
   const ETHToken = await getOrDeployECR20Contract(env);
   const FuelToken = await getOrDeployFuelTokenContract(env, ETHToken, {
     gasPrice: 1,
     gasLimit: 1_000_000,
   });
+  const addressToMint = await env.eth.signers[1].getAddress();
+  await mintECR20(env, ETHToken, addressToMint, '100000');
   await startServer({
     ETH_ERC20: ETHToken.address,
     FUEL_TokenContract: FuelToken.id.toB256(),
