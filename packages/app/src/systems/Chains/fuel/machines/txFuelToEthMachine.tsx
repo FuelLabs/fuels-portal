@@ -285,7 +285,7 @@ export const txFuelToEthMachine = createMachine(
                             { type: 'RELAY_TO_ETH' }
                           >
                         ) => ({
-                          relayMessageParams: ctx.messageProof,
+                          messageProof: ctx.messageProof,
                           ethWalletClient: ev.input.ethWalletClient,
                         }),
                       },

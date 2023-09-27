@@ -1,4 +1,5 @@
 import { Button, AlertDialog } from '@fuel-ui/react';
+import { useState } from 'react';
 import type { ReactNode } from 'react';
 
 type RemoveAssetDialogProps = {
@@ -12,10 +13,21 @@ export const RemoveAssetDialog = ({
   assetSymbol,
   onConfirm,
 }: RemoveAssetDialogProps) => {
+  const [opened, setOpened] = useState(false);
+
+  function handleCancel() {
+    setOpened(false);
+  }
+
+  function handleConfirm() {
+    onConfirm();
+    setOpened(false);
+  }
+
   return (
-    <AlertDialog>
+    <AlertDialog open={opened} onOpenChange={setOpened}>
       <AlertDialog.Trigger>{children}</AlertDialog.Trigger>
-      <AlertDialog.Content id="Remove asset alert dialog">
+      <AlertDialog.Content>
         <AlertDialog.Heading>Are you sure?</AlertDialog.Heading>
         <AlertDialog.Description>
           This action cannot be undone. {assetSymbol} will be permanently
@@ -23,10 +35,12 @@ export const RemoveAssetDialog = ({
         </AlertDialog.Description>
         <AlertDialog.Footer>
           <AlertDialog.Cancel>
-            <Button variant="outlined">Cancel</Button>
+            <Button variant="outlined" onPress={handleCancel}>
+              Cancel
+            </Button>
           </AlertDialog.Cancel>
-          <AlertDialog.Action onClick={onConfirm}>
-            <Button variant="ghost" intent="error">
+          <AlertDialog.Action>
+            <Button variant="ghost" intent="error" onPress={handleConfirm}>
               Confirm
             </Button>
           </AlertDialog.Action>

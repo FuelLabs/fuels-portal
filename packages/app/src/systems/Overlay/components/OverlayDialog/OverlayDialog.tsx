@@ -19,14 +19,6 @@ export function OverlayDialog() {
       isOpen={overlay.isDialogOpen}
       onOpenChange={(isOpen) => !isOpen && overlay.close()}
       css={styles.dialog}
-      shouldCloseOnInteractOutside={(element) => {
-        return (
-          element.id !== 'Remove asset alert dialog' &&
-          element.parentElement?.id !== 'Remove asset alert dialog' &&
-          element.parentElement?.parentElement?.id !==
-            'Remove asset alert dialog'
-        );
-      }}
     >
       <Dialog.Content css={styles.content}>
         {overlay.is('tx.fromEth.toFuel') && <TxEthToFuelDialog />}
