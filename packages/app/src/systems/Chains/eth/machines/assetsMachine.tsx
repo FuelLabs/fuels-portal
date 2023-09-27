@@ -1,5 +1,7 @@
+import { toast } from '@fuel-ui/react';
 import type { StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
+import { VITE_ETH_ERC20 } from '~/config';
 import type { BridgeAsset } from '~/systems/Bridge';
 import { FetchMachine } from '~/systems/Core/machines';
 
@@ -113,6 +115,7 @@ export const ethAssetListMachine = createMachine(
           },
           onDone: [
             {
+              actions: ['notifyFaucetSuccess'],
               target: 'idle',
             },
           ],
@@ -125,6 +128,9 @@ export const ethAssetListMachine = createMachine(
       assignAssets: assign({
         assetList: (_, ev) => ev.data,
       }),
+      notifyFaucetSuccess: () => {
+        toast.success('Added tokens to your wallet');
+      },
     },
     services: {
       fetchAssets: FetchMachine.create<
@@ -133,8 +139,17 @@ export const ethAssetListMachine = createMachine(
       >({
         showError: true,
         async fetch() {
+          const defaultAssets = [...AssetList];
+
+          if (VITE_ETH_ERC20) {
+            defaultAssets.push({
+              symbol: 'LFBG',
+              decimals: 18,
+              address: VITE_ETH_ERC20,
+            });
+          }
           const assets = await AssetService.getAssets();
-          return [...AssetList, ...assets];
+          return [...defaultAssets, ...assets];
         },
       }),
       addAsset: FetchMachine.create<

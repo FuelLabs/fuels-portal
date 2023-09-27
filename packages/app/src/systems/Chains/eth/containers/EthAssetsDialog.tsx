@@ -13,6 +13,7 @@ import {
 } from '@fuel-ui/react';
 import { useState } from 'react';
 import { Controller, useWatch } from 'react-hook-form';
+import { VITE_ETH_ERC20 } from '~/config';
 import { store } from '~/store';
 import { useBridge } from '~/systems/Bridge/hooks';
 import { shortAddress } from '~/systems/Core';
@@ -127,6 +128,7 @@ export function EthAssetsDialog() {
               !(showCustomTokenButton || showUseTokenButton) &&
               assets.map((asset, i) => {
                 const isEth = asset.address === undefined;
+                const isFaucetable = asset.address === VITE_ETH_ERC20;
 
                 return (
                   <EthAssetCard
@@ -153,7 +155,7 @@ export function EthAssetsDialog() {
                         : undefined
                     }
                     onFaucet={
-                      !isEth
+                      isFaucetable
                         ? () => {
                             handlers.faucetErc20({
                               address: asset.address,

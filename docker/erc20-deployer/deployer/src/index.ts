@@ -1,7 +1,6 @@
 import {
   getOrDeployECR20Contract,
   getOrDeployFuelTokenContract,
-  mintECR20,
   setupEnvironment,
 } from '@fuel-bridge/test-utils';
 import { createServer } from 'http';
@@ -28,8 +27,6 @@ async function main() {
     gasPrice: 1,
     gasLimit: 1_000_000,
   });
-  const addressToMint = await env.eth.signers[1].getAddress();
-  await mintECR20(env, ETHToken, addressToMint, '100000');
   await startServer({
     ETH_ERC20: ETHToken.address,
     FUEL_TokenContract: FuelToken.id.toB256(),
