@@ -1,5 +1,5 @@
 import { Nav } from '@fuel-ui/react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { IS_PREVIEW } from '~/config';
 import { Pages } from '~/types';
 
@@ -7,6 +7,7 @@ import { removeTrailingSlash } from '../utils';
 
 export function Header() {
   const location = useLocation();
+  const navigate = useNavigate();
   const isLinkActive = (url: string) => {
     return removeTrailingSlash(location.pathname) === removeTrailingSlash(url);
   };
@@ -19,13 +20,13 @@ export function Header() {
         {IS_PREVIEW && (
           <Nav.Menu>
             <Nav.MenuItem
-              href={Pages.bridge}
+              onClick={() => navigate(Pages.bridge)}
               isActive={isLinkActive(Pages.bridge)}
             >
               Bridge
             </Nav.MenuItem>
             <Nav.MenuItem
-              href={Pages.ecosystem}
+              onClick={() => navigate(Pages.ecosystem)}
               isActive={isLinkActive(Pages.ecosystem)}
             >
               Ecosystem
