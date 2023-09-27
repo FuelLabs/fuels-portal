@@ -351,7 +351,6 @@ export class TxEthToFuelService {
     const messages = await fuelProvider.getMessages(fuelRecipient, {
       first: 1000,
     });
-    console.log(`ethTxNonce`, ethTxNonce);
     const fuelMessage = messages.find((message) => {
       return message.nonce.toString() === ethTxNonce.toHex(32).toString();
     });
@@ -411,13 +410,11 @@ export class TxEthToFuelService {
     }
     const { fuelWallet, fuelMessage } = input;
 
-    // TODO: change to use getGasConfig instead
-    // const { maxGasPerTx } = await fuelWallet.provider.getGasConfig();
-    const chain = await fuelWallet.provider.getChain();
+    const { maxGasPerTx } = await fuelWallet.provider.getGasConfig();
     const txMessageRelayed = await relayCommonMessage({
       relayer: fuelWallet,
       message: fuelMessage,
-      txParams: { gasLimit: chain.consensusParameters.maxGasPerTx },
+      txParams: { gasLimit: maxGasPerTx },
     });
 
     const txMessageRelayedResult = await txMessageRelayed.waitForResult();

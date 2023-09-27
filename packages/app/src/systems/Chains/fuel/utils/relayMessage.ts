@@ -61,7 +61,7 @@ function getCommonRelayableMessages(provider: Provider) {
           throw new Error('cannot find contract ID in message data');
         const contractId = hexlify(data.slice(0, 32));
 
-        const maxGasPerTx = provider.getChain().consensusParameters.maxGasPerTx;
+        const { maxGasPerTx } = provider.getGasConfig();
         // build the transaction
         const transaction = new ScriptTransactionRequest({
           script,

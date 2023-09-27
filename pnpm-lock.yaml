@@ -4321,7 +4321,7 @@ packages:
       '@motionone/types': 10.15.1
       '@motionone/utils': 10.15.1
       hey-listen: 1.0.8
-      tslib: 2.6.2
+      tslib: 2.5.3
     dev: false
 
   /@motionone/dom@10.16.2:
@@ -11742,7 +11742,7 @@ packages:
     resolution: {integrity: sha512-6t10qk83GOG8p0vKmaCr8eiilZwO171AvbROMtvvNiwrTly62t+7XkA8RdIIVbpMhCASAsxgAzdRSwh6nw/5Dg==}
     engines: {node: '>=4'}
     dependencies:
-      tslib: 2.6.2
+      tslib: 2.5.3
     dev: true
 
   /astral-regex@2.0.0:
@@ -15916,7 +15916,7 @@ packages:
   /framesync@6.0.1:
     resolution: {integrity: sha512-fUY88kXvGiIItgNC7wcTOl0SNRCVXMKSWW2Yzfmn7EKNc+MpCzcz9DhdHcdjbrtN3c6R4H5dTY2jiCpPdysEjA==}
     dependencies:
-      tslib: 2.6.2
+      tslib: 2.5.3
     dev: false
 
   /framesync@6.1.2:
@@ -20725,7 +20725,7 @@ packages:
       framesync: 6.0.1
       hey-listen: 1.0.8
       style-value-types: 5.0.0
-      tslib: 2.6.2
+      tslib: 2.5.3
     dev: false
 
   /portfinder@1.0.32:
@@ -21477,7 +21477,7 @@ packages:
       '@types/react': 18.0.27
       react: 18.2.0
       react-style-singleton: 2.2.1(@types/react@18.0.27)(react@18.2.0)
-      tslib: 2.6.2
+      tslib: 2.5.3
 
   /react-remove-scroll@2.5.5(@types/react@18.0.27)(react@18.2.0):
     resolution: {integrity: sha512-ImKhrzJJsyXJfBZ4bzu8Bwpka14c/fQt0k+cyFp/PBhTfyDnU5hjOtM4AG/0AMyy8oKzOTR0lDgJIM7pYXI0kw==}
@@ -21617,7 +21617,7 @@ packages:
       get-nonce: 1.0.1
       invariant: 2.2.4
       react: 18.2.0
-      tslib: 2.6.2
+      tslib: 2.5.3
 
   /react-syntax-highlighter@15.5.0(react@18.2.0):
     resolution: {integrity: sha512-+zq2myprEnQmH5yw6Gqc8lD55QHnpKaU8TOcFeC/Lg/MQSs8UknEA0JC4nTZGFAXC2J2Hyj/ijJ7NlabyPi2gg==}
@@ -23128,7 +23128,7 @@ packages:
     resolution: {integrity: sha512-08yq36Ikn4kx4YU6RD7jWEv27v4V+PUsOGa4n/as8Et3CuODMJQ00ENeAVXAeydX4Z2j1XHZF1K2sX4mGl18fA==}
     dependencies:
       hey-listen: 1.0.8
-      tslib: 2.6.2
+      tslib: 2.5.3
     dev: false
 
   /styled-components@5.3.11(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0):
@@ -24392,7 +24392,7 @@ packages:
     dependencies:
       '@types/react': 18.0.27
       react: 18.2.0
-      tslib: 2.6.2
+      tslib: 2.5.3
 
   /use-isomorphic-layout-effect@1.1.2(@types/react@18.0.27)(react@18.2.0):
     resolution: {integrity: sha512-49L8yCO3iGT/ZF9QttjwLF/ZD9Iwto5LnH5LmEdk/6cFmXddqi2ulF0edxTwjj+7mqvpVVGQWvbXZdn32wRSHA==}
@@ -24440,7 +24440,7 @@ packages:
       '@types/react': 18.0.27
       detect-node-es: 1.1.0
       react: 18.2.0
-      tslib: 2.6.2
+      tslib: 2.5.3
 
   /use-sync-external-store@1.2.0(react@18.2.0):
     resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
