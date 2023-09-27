@@ -13,7 +13,7 @@ import type { PublicClient as EthPublicClient } from 'wagmi';
 import { VITE_ETH_FUEL_MESSAGE_PORTAL } from '~/config';
 
 import { FUEL_MESSAGE_PORTAL } from '../../eth/contracts/FuelMessagePortal';
-import { TxEthToFuelService } from '../../eth/services';
+import { EthConnectorService } from '../../eth/services';
 import { createRelayMessageParams } from '../../eth/utils/relayMessage';
 import { getBlock } from '../utils';
 
@@ -127,7 +127,7 @@ export class TxFuelToEthService {
     });
     const withdrawBlockHeight = withdrawBlock.header.height;
 
-    const fuelChainState = TxEthToFuelService.connectToFuelChainState({
+    const fuelChainState = EthConnectorService.connectToFuelChainState({
       publicClient: ethPublicClient,
     });
 
@@ -197,7 +197,7 @@ export class TxFuelToEthService {
 
     const { ethPublicClient, messageProof } = input;
 
-    const fuelChainState = TxEthToFuelService.connectToFuelChainState({
+    const fuelChainState = EthConnectorService.connectToFuelChainState({
       publicClient: ethPublicClient,
     });
 
@@ -257,11 +257,9 @@ export class TxFuelToEthService {
 
     const { messageProof, ethWalletClient } = input;
 
-    const relayMessageParams = await createRelayMessageParams({
-      withdrawMessageProof: messageProof,
-    });
+    const relayMessageParams = await createRelayMessageParams(messageProof);
 
-    const fuelPortal = TxEthToFuelService.connectToFuelMessagePortal({
+    const fuelPortal = EthConnectorService.connectToFuelMessagePortal({
       walletClient: ethWalletClient,
     });
 
@@ -281,6 +279,9 @@ export class TxFuelToEthService {
   ) {
     if (!input?.ethPublicClient) {
       throw new Error('Need to connect ETH Wallet');
+    }
+    if (!input?.txHash) {
+      throw new Error('Need transaction hash');
     }
 
     const { ethPublicClient, txHash } = input;

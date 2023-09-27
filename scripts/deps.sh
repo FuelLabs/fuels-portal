@@ -14,7 +14,7 @@ if [ "$LINK_FUEL_TS" = true ]; then
 fi
 
 if [ "$LINK_FUEL_UI" = true ]; then
-	fuel_ui_deps="@fuel-ui/react @fuel-ui/css @fuel-ui/icons"
+	fuel_ui_deps="@fuel-ui/react @fuel-ui/css"
 	deps="$deps $fuel_ui_deps"
 fi
 

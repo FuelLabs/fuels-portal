@@ -1,3 +1,4 @@
+import type { FuelWalletLocked as FuelWallet } from '@fuel-wallet/sdk';
 import type { BN } from 'fuels';
 import type { WalletClient } from 'viem';
 
@@ -58,6 +59,24 @@ export function bridgeEvents(store: Store) {
       const txFuelToEthMachine = snapshot?.context.fuelToEthTxRefs?.[fuelTxId];
 
       txFuelToEthMachine.send({ type: 'RELAY_TO_ETH', input });
+    },
+    relayMessageEthToFuel({
+      input,
+      ethTxId,
+    }: {
+      input?: {
+        fuelWallet: FuelWallet;
+      };
+      ethTxId: `0x${string}`;
+    }) {
+      if (!input) return;
+
+      // TODO: make store.send function support this last object prop
+      const service = store.services[Services.bridgeTxs];
+      const snapshot = service.getSnapshot();
+      const txEthToFuelMachine = snapshot?.context.ethToFuelTxRefs?.[ethTxId];
+
+      txEthToFuelMachine.send({ type: 'RELAY_MESSAGE_ON_FUEL', input });
     },
   };
 }

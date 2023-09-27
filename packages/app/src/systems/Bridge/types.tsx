@@ -12,4 +12,5 @@ export type BridgeAsset = {
   decimals?: number;
   symbol?: string;
   image?: string;
+  amount?: string;
 };

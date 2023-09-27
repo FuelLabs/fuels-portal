@@ -13,3 +13,4 @@ pnpm-lock.yaml
 .changeset/**.md
 **/fuel-v2-contracts
 **/storybook-static
+playwright-report/

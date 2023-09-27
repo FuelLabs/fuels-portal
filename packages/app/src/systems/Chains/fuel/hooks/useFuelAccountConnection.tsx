@@ -7,7 +7,7 @@ import {
   useWallet,
   useConnector,
   useFuel,
-} from '@fuels-portal/sdk-react';
+} from '@fuel-wallet/react';
 import { Address } from 'fuels';
 import { useMemo } from 'react';
 import { store } from '~/store';
