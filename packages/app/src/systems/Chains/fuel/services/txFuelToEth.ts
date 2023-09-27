@@ -1,9 +1,10 @@
 import type { FuelWalletLocked } from '@fuel-wallet/sdk';
-import type { BN, Provider as FuelProvider, MessageProof } from 'fuels';
+import type { BN, MessageProof } from 'fuels';
 import {
   bn,
   TransactionResponse,
   Address as FuelAddress,
+  Provider as FuelProvider,
   ZeroBytes32,
   getReceiptsMessageOut,
   getTransactionsSummaries,
@@ -98,7 +99,9 @@ export class TxFuelToEthService {
 
     const { fuelTxId, fuelProvider } = input;
 
-    const response = new TransactionResponse(fuelTxId || '', fuelProvider);
+    // TODO: should use the fuelProvider from input when wallet gets updated with new SDK
+    const provider = await FuelProvider.create(fuelProvider.url);
+    const response = new TransactionResponse(fuelTxId || '', provider);
     const txResult = await response.waitForResult();
     const message = getReceiptsMessageOut(txResult.receipts)[0];
 

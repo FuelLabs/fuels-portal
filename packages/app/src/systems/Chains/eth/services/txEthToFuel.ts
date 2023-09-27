@@ -1,15 +1,5 @@
-import type {
-  BN,
-  Provider as FuelProvider,
-  Message,
-  WalletUnlocked as FuelWallet,
-} from 'fuels';
-import {
-  Address as FuelAddress,
-  bn,
-  getInputsMessage,
-  getTransactionsSummaries,
-} from 'fuels';
+import type { BN, Message, WalletUnlocked as FuelWallet } from 'fuels';
+import { Provider as FuelProvider, Address as FuelAddress, bn } from 'fuels';
 import type { WalletClient } from 'viem';
 import { decodeEventLog } from 'viem';
 import type { PublicClient } from 'wagmi';
@@ -23,7 +13,6 @@ import {
 import type { BridgeAsset } from '~/systems/Bridge';
 
 import { FUEL_UNITS } from '../../fuel/utils/chain';
-import { getBlock } from '../../fuel/utils/getBlock';
 import { relayCommonMessage } from '../../fuel/utils/relayMessage';
 import type { FuelERC20GatewayArgs } from '../contracts/FuelErc20Gateway';
 import { FUEL_ERC_20_GATEWAY } from '../contracts/FuelErc20Gateway';
@@ -60,14 +49,9 @@ export type TxEthToFuelInputs = {
     fuelRecipient?: FuelAddress;
     fuelProvider?: FuelProvider;
   };
-  checkSyncDaHeight: {
-    ethDepositBlockHeight?: string;
+  getFuelMessageStatus: {
     fuelProvider?: FuelProvider;
-  };
-  checkFuelRelayMessage: {
-    fuelProvider?: FuelProvider;
-    fuelMessage?: Message;
-    fuelAddress?: FuelAddress;
+    ethTxNonce?: BN;
   };
   relayMessageOnFuel: {
     fuelWallet?: FuelWallet;
@@ -321,32 +305,24 @@ export class TxEthToFuelService {
     return receiptsInfo;
   }
 
-  static async checkSyncDaHeight(
-    input: TxEthToFuelInputs['checkSyncDaHeight']
+  static async getFuelMessageStatus(
+    input: TxEthToFuelInputs['getFuelMessageStatus']
   ) {
     if (!input?.fuelProvider) {
       throw new Error('No Fuel provider found');
     }
-    if (!input?.ethDepositBlockHeight) {
-      throw new Error('No block height found');
+    if (!input?.ethTxNonce) {
+      throw new Error('No message nonce found');
     }
 
-    const { fuelProvider, ethDepositBlockHeight } = input;
+    const { fuelProvider, ethTxNonce } = input;
 
-    const blocks = await fuelProvider.getBlocks({ last: 1 });
-    const latestBlockId = blocks?.[0]?.id;
-    // TODO: replace this logic when SDK return blocks more complete, with header etc...
-    const fuelLatestBlock = await getBlock({
-      blockHash: latestBlockId,
-      providerUrl: fuelProvider.url,
-    });
-
-    // TODO: this method of checking DAheight with ethDepositBlockHeight should be replaced to get actual message instead
-    // we'll be able to do this when issue is done: https://github.com/FuelLabs/fuel-core/issues/1323
-    // issue to track this work: https://github.com/FuelLabs/fuels-portal/issues/96
-    const fuelLatestDAHeight = fuelLatestBlock?.header?.daHeight;
-
-    return bn(fuelLatestDAHeight).gte(ethDepositBlockHeight);
+    // TODO: should use the fuelProvider from input when wallet gets updated with new SDK
+    const provider = await FuelProvider.create(fuelProvider.url);
+    const messageStatus = await provider.getMessageStatus(
+      ethTxNonce.toHex(32).toString()
+    );
+    return messageStatus;
   }
 
   static async getFuelMessage(input: TxEthToFuelInputs['getFuelMessage']) {
@@ -372,47 +348,6 @@ export class TxEthToFuelService {
     return fuelMessage;
   }
 
-  static async checkFuelRelayMessage(
-    input: TxEthToFuelInputs['checkFuelRelayMessage']
-  ) {
-    if (!input?.fuelProvider) {
-      throw new Error('No fuel provider found');
-    }
-    if (!input?.fuelMessage) {
-      throw new Error('No fuel message found');
-    }
-    if (!input?.fuelAddress) {
-      throw new Error('No fuel address found');
-    }
-    const { fuelProvider, fuelMessage, fuelAddress } = input;
-
-    const txSummaries = await getTransactionsSummaries({
-      filters: {
-        first: 1000,
-        owner: fuelAddress.toB256(),
-      },
-      provider: fuelProvider,
-    });
-
-    const txMessageRelayed = txSummaries.transactions.find((txSummary) => {
-      const messageCoinInputs = getInputsMessage(
-        txSummary?.transaction?.inputs || []
-      );
-
-      const hasMessageRelayed = messageCoinInputs.find((messageInput) => {
-        return (
-          messageInput.sender.toString() === fuelMessage.sender.toString() &&
-          messageInput.nonce.toString() === fuelMessage.nonce.toString() &&
-          messageInput.recipient === fuelMessage.recipient.toString()
-        );
-      });
-
-      return hasMessageRelayed;
-    });
-
-    return txMessageRelayed;
-  }
-
   static async relayMessageOnFuel(
     input: TxEthToFuelInputs['relayMessageOnFuel']
   ) {
@@ -424,17 +359,18 @@ export class TxEthToFuelService {
     }
     const { fuelWallet, fuelMessage } = input;
 
-    // TODO: change to use getGasConfig instead
-    // const { maxGasPerTx } = await fuelWallet.provider.getGasConfig();
-    const chain = await fuelWallet.provider.getChain();
+    const { maxGasPerTx } = await fuelWallet.provider.getGasConfig();
     const txMessageRelayed = await relayCommonMessage({
       relayer: fuelWallet,
       message: fuelMessage,
-      txParams: { gasLimit: chain.consensusParameters.maxGasPerTx },
+      txParams: { gasLimit: maxGasPerTx },
     });
 
     const txMessageRelayedResult = await txMessageRelayed.waitForResult();
-    return txMessageRelayedResult;
+
+    if (txMessageRelayedResult.status !== 'success') {
+      throw new Error('Failed to relay message on Fuel');
+    }
   }
 
   static async fetchDepositLogs(input: TxEthToFuelInputs['fetchDepositLogs']) {
