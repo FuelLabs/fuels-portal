@@ -1,11 +1,5 @@
 import type { BN, Message, WalletUnlocked as FuelWallet } from 'fuels';
-import {
-  Provider as FuelProvider,
-  Address as FuelAddress,
-  bn,
-  getInputsMessage,
-  getTransactionsSummaries,
-} from 'fuels';
+import { Provider as FuelProvider, Address as FuelAddress, bn } from 'fuels';
 import type { WalletClient } from 'viem';
 import { decodeEventLog } from 'viem';
 import type { PublicClient } from 'wagmi';
@@ -58,11 +52,6 @@ export type TxEthToFuelInputs = {
   getFuelMessageStatus: {
     fuelProvider?: FuelProvider;
     ethTxNonce?: BN;
-  };
-  checkFuelRelayMessage: {
-    fuelProvider?: FuelProvider;
-    fuelMessage?: Message;
-    fuelAddress?: FuelAddress;
   };
   relayMessageOnFuel: {
     fuelWallet?: FuelWallet;
@@ -358,47 +347,6 @@ export class TxEthToFuelService {
     return fuelMessage;
   }
 
-  static async checkFuelRelayMessage(
-    input: TxEthToFuelInputs['checkFuelRelayMessage']
-  ) {
-    if (!input?.fuelProvider) {
-      throw new Error('No fuel provider found');
-    }
-    if (!input?.fuelMessage) {
-      throw new Error('No fuel message found');
-    }
-    if (!input?.fuelAddress) {
-      throw new Error('No fuel address found');
-    }
-    const { fuelProvider, fuelMessage, fuelAddress } = input;
-
-    const txSummaries = await getTransactionsSummaries({
-      filters: {
-        first: 1000,
-        owner: fuelAddress.toB256(),
-      },
-      provider: fuelProvider,
-    });
-
-    const txMessageRelayed = txSummaries.transactions.find((txSummary) => {
-      const messageCoinInputs = getInputsMessage(
-        txSummary?.transaction?.inputs || []
-      );
-
-      const hasMessageRelayed = messageCoinInputs.find((messageInput) => {
-        return (
-          messageInput.sender.toString() === fuelMessage.sender.toString() &&
-          messageInput.nonce.toString() === fuelMessage.nonce.toString() &&
-          messageInput.recipient === fuelMessage.recipient.toString()
-        );
-      });
-
-      return hasMessageRelayed;
-    });
-
-    return txMessageRelayed;
-  }
-
   static async relayMessageOnFuel(
     input: TxEthToFuelInputs['relayMessageOnFuel']
   ) {
@@ -418,7 +366,10 @@ export class TxEthToFuelService {
     });
 
     const txMessageRelayedResult = await txMessageRelayed.waitForResult();
-    return txMessageRelayedResult;
+
+    if (txMessageRelayedResult.status !== 'success') {
+      throw new Error('Failed to relay message on Fuel');
+    }
   }
 
   static async fetchDepositLogs(input: TxEthToFuelInputs['fetchDepositLogs']) {
