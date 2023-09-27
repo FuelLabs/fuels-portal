@@ -30,7 +30,7 @@ export type PossibleBridgeInputs = {
   fuelAddress?: FuelAddress;
   ethAsset?: BridgeAsset;
   fuelAsset?: BridgeAsset;
-} & Omit<TxEthToFuelInputs['start'], 'amount'> &
+} & Omit<TxEthToFuelInputs['startErc20'], 'amount'> &
   Omit<TxFuelToEthInputs['create'], 'amount'>;
 export type BridgeInputs = {
   bridge: FromToNetworks & PossibleBridgeInputs;

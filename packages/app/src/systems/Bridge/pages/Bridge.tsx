@@ -59,22 +59,23 @@ export const Bridge = () => {
               asset={{
                 name: asset?.symbol,
                 imageUrl: asset?.image,
+                address: asset?.address,
               }}
               value={assetAmount}
               onChange={(val) =>
                 handlers.changeAssetAmount({ assetAmount: val || undefined })
               }
-              // TODO: enable this when we include erc-20 deposit
-              // onClickAsset={handlers.openAssetsDialog}
+              onClickAsset={handlers.openAssetsDialog}
             />
           </Box.Stack>
           <BridgeButton />
           <Alert status="warning">
             <Alert.Description>
+              {/* TODO: get it from contract constant to show exact time, instead of hardcoded "7 days" */}
               Any assets deposited to Fuel takes 7 days to withdraw back to
               Ethereum. Learn more about our architecture and security in
               our&nbsp;
-              <Link href="https://fuel.sh/" isExternal>
+              <Link href="https://docs.fuel.network/" isExternal>
                 docs
               </Link>
             </Alert.Description>

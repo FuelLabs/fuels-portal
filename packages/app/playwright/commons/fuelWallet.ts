@@ -60,9 +60,7 @@ export async function walletSetup(
   await signupPage.locator('button').getByText('Add new network').click();
   await signupPage
     .locator('[aria-label="Network URL"]')
-    .fill(
-      process.env.VITE_FUEL_PROVIDER_URL || 'http://localhost:4000/graphql'
-    );
+    .fill(process.env.FUEL_PROVIDER_URL || 'http://localhost:4000/graphql');
   const addButton = getButtonByText(signupPage, 'Add');
   await addButton.click({ timeout: 9000 });
 }

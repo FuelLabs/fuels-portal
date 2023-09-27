@@ -2,8 +2,11 @@ import { useMemo } from 'react';
 import { store, Services } from '~/store';
 import type { BridgeTxsMachineState } from '~/systems/Bridge';
 
+import { useFuelAccountConnection } from '../../fuel';
 import type { TxEthToFuelMachineState } from '../machines';
-import { ETH_SYMBOL, ethLogoSrc } from '../utils';
+import { isErc20Address, parseFuelAddressToEth } from '../utils';
+
+import { useAsset } from './useAsset';
 
 const bridgeTxsSelectors = {
   txEthToFuel: (txId?: `0x${string}`) => (state: BridgeTxsMachineState) => {
@@ -27,6 +30,9 @@ const txEthToFuelSelectors = {
       'isConfirmTransactionSelected'
     );
     const isReceiveDone = state.hasTag('isReceiveDone');
+    const isWaitingFuelWalletApproval = state.hasTag(
+      'isWaitingFuelWalletApproval'
+    );
 
     return {
       isSettlementLoading,
@@ -35,13 +41,18 @@ const txEthToFuelSelectors = {
       isConfirmTransactionLoading,
       isConfirmTransactionSelected,
       isReceiveDone,
+      isWaitingFuelWalletApproval,
     };
   },
   steps: (state: TxEthToFuelMachineState) => {
     const status = txEthToFuelSelectors.status(state);
-    const { ethTxId } = state.context;
+    const { ethTxId, erc20Token } = state.context;
 
     if (!ethTxId) return undefined;
+
+    const confirmTransactionText = isErc20Address(erc20Token?.address)
+      ? 'Action'
+      : 'Automatic';
 
     const steps = [
       {
@@ -59,7 +70,7 @@ const txEthToFuelSelectors = {
       },
       {
         name: 'Confirm transaction',
-        status: status.isReceiveDone ? 'Done!' : 'Automatic',
+        status: status.isReceiveDone ? 'Done!' : confirmTransactionText,
         isLoading: status.isConfirmTransactionLoading,
         isDone: status.isReceiveDone,
         isSelected: status.isConfirmTransactionSelected,
@@ -85,16 +96,23 @@ const txEthToFuelSelectors = {
 
     return blockDate;
   },
-  asset: (state: TxEthToFuelMachineState) => {
-    return {
-      assetAmount: state.context.amount,
-      assetImageSrc: ethLogoSrc,
-      assetSymbol: ETH_SYMBOL,
-    };
+  assetId: (state: TxEthToFuelMachineState) => {
+    const { assetId } = state.context;
+
+    return assetId;
+  },
+  erc20Token: (state: TxEthToFuelMachineState) => {
+    const { erc20Token } = state.context;
+    return erc20Token;
+  },
+  ethTxId: (state: TxEthToFuelMachineState) => {
+    const { ethTxId } = state.context;
+    return ethTxId;
   },
 };
 
 export function useTxEthToFuel({ id }: { id: string }) {
+  const { wallet: fuelWallet } = useFuelAccountConnection();
   const txId = id.startsWith('0x') ? (id as `0x${string}`) : undefined;
 
   const txEthToFuelState = store.useSelector(
@@ -102,33 +120,68 @@ export function useTxEthToFuel({ id }: { id: string }) {
     bridgeTxsSelectors.txEthToFuel(txId)
   );
 
-  const { steps, status, amount, date, asset } = useMemo(() => {
-    if (!txEthToFuelState) return {};
+  const { steps, status, amount, date, assetId, erc20Token, ethTxId } =
+    useMemo(() => {
+      if (!txEthToFuelState) return {};
 
-    const steps = txEthToFuelSelectors.steps(txEthToFuelState);
-    const status = txEthToFuelSelectors.status(txEthToFuelState);
-    const amount = txEthToFuelSelectors.amount(txEthToFuelState);
-    const date = txEthToFuelSelectors.blockDate(txEthToFuelState);
-    const asset = txEthToFuelSelectors.asset(txEthToFuelState);
+      const steps = txEthToFuelSelectors.steps(txEthToFuelState);
+      const status = txEthToFuelSelectors.status(txEthToFuelState);
+      const amount = txEthToFuelSelectors.amount(txEthToFuelState);
+      const date = txEthToFuelSelectors.blockDate(txEthToFuelState);
+      const assetId = txEthToFuelSelectors.assetId(txEthToFuelState);
+      const erc20Token = txEthToFuelSelectors.erc20Token(txEthToFuelState);
+      const ethTxId = txEthToFuelSelectors.ethTxId(txEthToFuelState);
+
+      return {
+        steps,
+        status,
+        amount,
+        date,
+        assetId,
+        erc20Token,
+        ethTxId,
+      };
+    }, [txEthToFuelState]);
+
+  const { asset } = useAsset({
+    address: assetId ? parseFuelAddressToEth(assetId) : '',
+  });
+  const assetAmount = useMemo(() => {
+    if (!asset || !amount) return undefined;
 
     return {
-      steps,
-      status,
+      ...asset,
       amount,
-      date,
-      asset,
     };
-  }, [txEthToFuelState]);
+  }, [asset, amount]);
+
+  function relayMessageToFuel() {
+    if (!ethTxId || !fuelWallet) return;
+
+    store.relayMessageEthToFuel({
+      input: {
+        fuelWallet,
+      },
+      ethTxId,
+    });
+  }
+
+  const shouldShowConfirmButton =
+    isErc20Address(erc20Token?.address) &&
+    (status?.isWaitingFuelWalletApproval ||
+      status?.isConfirmTransactionLoading);
 
   return {
     handlers: {
       close: store.closeOverlay,
       openTxEthToFuel: store.openTxEthToFuel,
+      relayMessageToFuel,
     },
     date,
     steps,
     status,
+    shouldShowConfirmButton,
     amount,
-    asset,
+    asset: assetAmount,
   };
 }

@@ -1,6 +1,6 @@
 import { cssObj } from '@fuel-ui/css';
 import { ButtonLink, Tabs, Heading } from '@fuel-ui/react';
-import { useNodeInfo } from '@fuels-portal/sdk-react';
+import { useNodeInfo } from '@fuel-wallet/react';
 import type { ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
 import { VITE_FUEL_VERSION } from '~/config';
