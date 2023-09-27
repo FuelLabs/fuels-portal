@@ -5,13 +5,16 @@ export const {
   VITE_ETH_FUEL_MESSAGE_PORTAL,
   VITE_ETH_CHAIN,
   VITE_FUEL_CHAIN,
+  VITE_FUEL_VERSION,
   NODE_ENV,
   VITE_ETH_FUEL_ERC20_GATEWAY,
   VITE_ETH_FUEL_CHAIN_STATE,
   VITE_ETH_ERC20,
-  VITE_FUEL_TOKEN_CONTRACT_ID,
+  VITE_FUEL_FUNGIBLE_TOKEN_ID,
+  VITE_WALLET_INSTALL,
+  VITE_WALLET_INSTALL_NEXT,
 } = import.meta.env;
 
 export const IS_PREVIEW = import.meta.env.VITE_IS_PUBLIC_PREVIEW === 'true';
-export const IS_DEVELOPMENT = process.env.NODE_ENV !== 'production';
-export const IS_TEST = process.env.NODE_ENV === 'test';
+export const IS_DEVELOPMENT = import.meta.env.DEV;
+export const IS_TEST = import.meta.env.MODE === 'test';

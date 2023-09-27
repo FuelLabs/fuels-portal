@@ -1,8 +1,10 @@
 import { cssObj } from '@fuel-ui/css';
 import { ButtonLink, Tabs, Heading } from '@fuel-ui/react';
+import { useNodeInfo } from '@fuel-wallet/react';
 import type { ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
-
+import { VITE_FUEL_VERSION } from '~/config';
+import { FuelVersionDialog } from '~/systems/Chains/fuel/containers/FuelVersionDialog';
 import { Layout, removeTrailingSlash } from '~/systems/Core';
 import { Pages } from '~/types';
 
@@ -12,10 +14,11 @@ type BridgeHomeProps = {
 
 export const BridgeHome = ({ children }: BridgeHomeProps) => {
   const location = useLocation();
-
+  const { isCompatible } = useNodeInfo({
+    version: VITE_FUEL_VERSION,
+  });
   const isCurrentPage = (pageUrl: string) =>
     removeTrailingSlash(location.pathname) === removeTrailingSlash(pageUrl);
-
   const currentTab = isCurrentPage(Pages.bridge) ? 'bridge' : 'transactions';
 
   return (
@@ -24,13 +27,14 @@ export const BridgeHome = ({ children }: BridgeHomeProps) => {
         <Heading as="h2" css={styles.heading}>
           Fuel Native Bridge
         </Heading>
+        <FuelVersionDialog isOpen={!(isCompatible ?? true)} />
         <Tabs defaultValue={currentTab}>
           <Tabs.List css={styles.tabs}>
             <ButtonLink href={Pages.bridge} css={styles.buttonLink}>
               <Tabs.Trigger value="bridge">Bridge</Tabs.Trigger>
             </ButtonLink>
             <ButtonLink href={Pages.transactions} css={styles.buttonLink}>
-              <Tabs.Trigger value="transactions">Transactions</Tabs.Trigger>
+              <Tabs.Trigger value="transactions">History</Tabs.Trigger>
             </ButtonLink>
           </Tabs.List>
           {children}

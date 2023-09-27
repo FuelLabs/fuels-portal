@@ -1,32 +1,23 @@
 import { cssObj } from '@fuel-ui/css';
 import { Box, Button, Dialog, Text } from '@fuel-ui/react';
-import { bn } from 'fuels';
-
-import { useTxEthToFuel } from '../hooks';
-import { ETH_SYMBOL, ETH_UNITS, ethLogoSrc } from '../utils';
-
 import { BridgeTxOverview, BridgeSteps } from '~/systems/Bridge';
 import { shortAddress } from '~/systems/Core';
 import { useOverlay } from '~/systems/Overlay';
 
+import { useTxEthToFuel } from '../hooks';
+
 export function TxEthToFuelDialog() {
   const { metadata } = useOverlay<{ txId: string }>();
-  const {
-    steps,
-    ethTx,
-    ethBlockDate,
-    status,
-    handlers,
-    shouldShowConfirmButton,
-  } = useTxEthToFuel({
-    id: metadata.txId,
-  });
+  const { steps, date, asset, handlers, shouldShowConfirmButton, status } =
+    useTxEthToFuel({
+      id: metadata.txId,
+    });
 
   return (
     <>
       <Dialog.Close aria-label="Close Transaction Dialog" />
       <Dialog.Heading>
-        Transaction: {shortAddress(metadata.txId)}
+        Deposit
         <Box css={styles.divider} />
       </Dialog.Heading>
       <Dialog.Description>
@@ -36,16 +27,9 @@ export function TxEthToFuelDialog() {
           <Box css={styles.border} />
           <BridgeTxOverview
             transactionId={shortAddress(metadata.txId)}
-            date={ethBlockDate}
+            date={date}
             isDeposit={true}
-            asset={{
-              assetSymbol: ETH_SYMBOL,
-              imageUrl: ethLogoSrc,
-              assetAmount: bn(ethTx?.value.toString()).format({
-                precision: 9,
-                units: ETH_UNITS,
-              }),
-            }}
+            asset={asset}
           />
         </Box.Stack>
       </Dialog.Description>
@@ -55,7 +39,7 @@ export function TxEthToFuelDialog() {
             onPress={handlers.relayMessageToFuel}
             intent="primary"
             css={styles.actionButton}
-            isLoading={status.isConfirmTransactionLoading}
+            isLoading={status?.isConfirmTransactionLoading}
           >
             Confirm Transaction
           </Button>

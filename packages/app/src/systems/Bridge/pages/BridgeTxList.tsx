@@ -1,13 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
 import { CardList } from '@fuel-ui/react';
-
-import {
-  BridgeListEmpty,
-  BridgeTxItemsLoading,
-  BridgeTxListNotConnected,
-} from '../components';
-import { useBridgeTxs } from '../hooks';
-
 import {
   useFuelAccountConnection,
   TxListItemEthToFuel,
@@ -16,10 +8,17 @@ import {
   TxListItemFuelToEth,
 } from '~/systems/Chains';
 
+import {
+  BridgeListEmpty,
+  BridgeTxItemsLoading,
+  BridgeTxListNotConnected,
+} from '../components';
+import { useBridgeTxs } from '../hooks';
+
 export const BridgeTxList = () => {
   const { isConnecting, handlers } = useFuelAccountConnection();
   const {
-    txs: bridgeTxs,
+    bridgeTxs,
     isLoading,
     shouldShowNotConnected,
     shouldShowEmpty,
@@ -47,8 +46,6 @@ export const BridgeTxList = () => {
                 <TxListItemEthToFuel
                   key={`${index}-${txDatum.txHash}`}
                   txHash={txDatum.txHash || ''}
-                  asset={txDatum.asset}
-                  isDone={txDatum.isDone}
                 />
               );
             }
@@ -60,9 +57,6 @@ export const BridgeTxList = () => {
                 <TxListItemFuelToEth
                   key={`${index}-${txDatum.txHash}`}
                   txHash={txDatum.txHash || ''}
-                  asset={txDatum.asset}
-                  isDone={txDatum.isDone}
-                  date={txDatum.date}
                 />
               );
             }
@@ -77,9 +71,11 @@ export const BridgeTxList = () => {
 
 const styles = {
   cardList: cssObj({
-    // width: '328px',
-    // '@md': {
-    //   width: '95%',
-    // },
+    cursor: 'pointer',
+    userSelect: 'none',
+
+    ':hover': {
+      backgroundColor: '$intentsBase3',
+    },
   }),
 };

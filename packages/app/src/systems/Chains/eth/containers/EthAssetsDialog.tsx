@@ -13,14 +13,13 @@ import {
 } from '@fuel-ui/react';
 import { useState } from 'react';
 import { Controller, useWatch } from 'react-hook-form';
+import { store } from '~/store';
+import { useBridge } from '~/systems/Bridge/hooks';
+import { shortAddress } from '~/systems/Core';
 
 import { EthAssetCard } from '../components';
 import { useManageEthAssets, useSetAddressForm } from '../hooks';
 import type { SetAddressFormValues } from '../hooks';
-
-import { store } from '~/store';
-import { useBridge } from '~/systems/Bridge/hooks';
-import { shortAddress } from '~/systems/Core';
 
 export function EthAssetsDialog() {
   const { handlers: bridgeHandlers } = useBridge();

@@ -1,6 +1,6 @@
-import { ethLogoSrc } from './utils';
-
 import type { BridgeAsset } from '~/systems/Bridge';
+
+import { ethLogoSrc } from './utils';
 
 export const AssetList: BridgeAsset[] = [
   {

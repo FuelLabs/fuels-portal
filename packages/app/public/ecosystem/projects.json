@@ -48,7 +48,7 @@
     "isLive": false,
     "name": "BSAFE",
     "url": "https://bsafe.pro/",
-    "tags": ["DeFi", " Wallet"],
+    "tags": ["DeFi", "Wallet"],
     "description": "Bsafe is a multisign tool created to simplify asset management!",
     "github": "",
     "image": "bsafe"
@@ -97,6 +97,15 @@
     "description": "Fluid is the native decentralized stablecoin on Fuel.",
     "github": "",
     "image": "fluid"
+  },
+  {
+    "isLive": false,
+    "name": "Fuelart",
+    "url": "https://fuelart.io/",
+    "tags": ["Marketplace", "NFTs"],
+    "description": "Fuelart is a next gen NFT marketplace built on Fuel.",
+    "github": "",
+    "image": "fuelart"
   },
   {
     "isLive": false,

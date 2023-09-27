@@ -1,18 +1,17 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, Text, FuelLogo, Image, Icon } from '@fuel-ui/react';
+import { Box, Text, FuelLogo, Icon } from '@fuel-ui/react';
 import type { BigNumberish } from 'fuels';
-
+import { AssetLogo } from '~/systems/Chains/eth/components/AssetLogo';
+import { ETH_ASSET } from '~/systems/Chains/eth/utils';
 import { calculateDateDiff } from '~/systems/Core';
+
+import type { BridgeAsset } from '../../types';
 
 type BridgeTxOverviewProps = {
   transactionId: BigNumberish;
   date?: Date;
   isDeposit?: boolean;
-  asset: {
-    imageUrl?: string;
-    assetSymbol?: string;
-    assetAmount: string;
-  };
+  asset?: BridgeAsset;
 };
 
 export const BridgeTxOverview = ({
@@ -25,7 +24,9 @@ export const BridgeTxOverview = ({
     <Box.Stack css={styles.stack}>
       <Box.Flex css={styles.txItem}>
         <Text css={styles.labelText}>ID</Text>
-        <Text css={styles.infoText}>{transactionId.toString()}</Text>
+        <Text css={styles.infoText} aria-label="Transaction ID">
+          {transactionId.toString()}
+        </Text>
       </Box.Flex>
       <Box.Flex css={styles.txItem}>
         <Text css={styles.labelText}>Age</Text>
@@ -36,7 +37,7 @@ export const BridgeTxOverview = ({
         {isDeposit ? (
           <Box.Flex css={styles.directionInfo}>
             <Text css={styles.subtleText}>(Deposit)</Text>
-            <Image width={18} height={18} src={asset.imageUrl} />
+            <AssetLogo asset={ETH_ASSET} alt={'Deposit'} />
             <Icon icon="ArrowNarrowRight" />
             <FuelLogo size={17} />
           </Box.Flex>
@@ -45,18 +46,18 @@ export const BridgeTxOverview = ({
             <Text css={styles.subtleText}>(Withdrawal)</Text>
             <FuelLogo size={17} />
             <Icon icon="ArrowNarrowRight" />
-            <Image width={18} height={18} src={asset.imageUrl} />
+            <AssetLogo asset={ETH_ASSET} alt={'withdrawal'} />
           </Box.Flex>
         )}
       </Box.Flex>
       <Box.Flex css={styles.txItem}>
         <Text css={styles.labelText}>Asset</Text>
         <Box.Flex css={styles.directionInfo}>
-          <Image width={18} height={18} src={asset.imageUrl} />
+          <AssetLogo asset={asset || {}} alt={`Asset ${asset?.symbol}`} />
           <Text aria-label="Asset amount" css={styles.infoText}>
-            {asset.assetAmount}
+            {asset?.amount}
           </Text>
-          <Text css={styles.infoText}>{asset.assetSymbol}</Text>
+          <Text css={styles.infoText}>{asset?.symbol}</Text>
         </Box.Flex>
       </Box.Flex>
     </Box.Stack>

@@ -1,5 +1,6 @@
-import type { BrowserContext, Page } from '@playwright/test';
+import { type BrowserContext, type Page } from '@playwright/test';
 
+import { expect } from '../e2e/fixtures';
 import { FUEL_MNEMONIC, FUEL_WALLET_PASSWORD } from '../mocks';
 
 import { getButtonByText } from './button';
@@ -59,9 +60,7 @@ export async function walletSetup(
   await signupPage.locator('button').getByText('Add new network').click();
   await signupPage
     .locator('[aria-label="Network URL"]')
-    .fill(
-      process.env.VITE_FUEL_PROVIDER_URL || 'http://localhost:4000/graphql'
-    );
+    .fill(process.env.FUEL_PROVIDER_URL || 'http://localhost:4000/graphql');
   const addButton = getButtonByText(signupPage, 'Add');
   await addButton.click({ timeout: 9000 });
 }
