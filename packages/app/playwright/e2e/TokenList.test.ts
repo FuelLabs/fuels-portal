@@ -8,6 +8,10 @@ const goToTokenListDialog = async (page: Page) => {
   const bridgePage = page.locator('a').getByText('Bridge');
   await bridgePage.click();
 
+  await openTokenListDialog(page);
+};
+
+const openTokenListDialog = async (page: Page) => {
   const tokenListButton = getByAriaLabel(page, 'Coin Selector');
   await tokenListButton.click();
 };
@@ -69,6 +73,8 @@ test.describe('Token List', () => {
     await hasText(page, 'Are you sure?');
     const confirmButton = getButtonByText(page, 'Confirm');
     await confirmButton.click();
+
+    await openTokenListDialog(page);
 
     expect(await page.getByText('BNB').count()).toBe(0);
   });
