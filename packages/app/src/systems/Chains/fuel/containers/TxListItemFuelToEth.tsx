@@ -44,17 +44,13 @@ export const TxListItemFuelToEth = ({ txHash }: TxListItemFuelToEthProps) => {
     <BridgeTxItem
       fromLogo={<FuelLogo size={17} />}
       toLogo={
-        <Image
-          width={18}
-          height={18}
-          src={ethLogoSrc}
-          alt={asset?.assetSymbol}
-        />
+        <Image width={18} height={18} src={ethLogoSrc} alt={asset?.symbol} />
       }
       date={date}
       asset={asset}
       onClick={() => handlers.openTxFuelToEth({ txId: txHash })}
       status={getStatusComponent()}
+      txId={txHash}
     />
   );
 };

@@ -1,7 +1,7 @@
 import { fromTai64ToUnix, getReceiptsMessageOut } from 'fuels';
 import { useMemo } from 'react';
 import { store, Services } from '~/store';
-import type { BridgeTxsMachineState } from '~/systems/Bridge';
+import type { BridgeAsset, BridgeTxsMachineState } from '~/systems/Bridge';
 
 import { useEthAccountConnection } from '../../eth/hooks';
 import { ETH_SYMBOL } from '../../eth/utils/chain';
@@ -111,14 +111,15 @@ const txFuelToEthSelectors = {
     )[0];
 
     const amountSent = messageOutReceipt?.amount;
-
-    return {
-      assetAmount: amountSent?.format({
+    const asset: BridgeAsset = {
+      amount: amountSent?.format({
         precision: 9,
       }),
-      assetImageSrc: ethLogoSrc,
-      assetSymbol: ETH_SYMBOL,
+      image: ethLogoSrc,
+      symbol: ETH_SYMBOL,
     };
+
+    return asset;
   },
 };
 

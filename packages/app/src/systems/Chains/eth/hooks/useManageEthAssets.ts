@@ -17,7 +17,7 @@ export const useManageEthAssets = ({ assetQuery }: { assetQuery: string }) => {
       const filteredAssets = assets.filter(
         (asset) => asset.address === assetQuery
       );
-      return { filteredAssets, doesAssetExist: filteredAssets.length };
+      return { filteredAssets, doesAssetExist: !!filteredAssets.length };
     }
     const queriedAssets = assets.filter((asset) =>
       asset.symbol?.toLowerCase().startsWith(assetQuery.toLowerCase())

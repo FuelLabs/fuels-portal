@@ -1,6 +1,7 @@
 import { Image, FuelLogo, Text, Box, Spinner } from '@fuel-ui/react';
 import { BridgeTxItem } from '~/systems/Bridge';
 
+import { ActionRequiredBadge } from '../../fuel';
 import { useTxEthToFuel } from '../hooks';
 import { ethLogoSrc } from '../utils';
 
@@ -30,24 +31,23 @@ export const TxListItemEthToFuel = ({ txHash }: TxListItemEthToFuelProps) => {
         </Box.Flex>
       );
 
+    if (bridgeTxStatus?.name === 'Confirm transaction') {
+      return <ActionRequiredBadge />;
+    }
     return '';
   }
 
   return (
     <BridgeTxItem
       fromLogo={
-        <Image
-          width={18}
-          height={18}
-          src={ethLogoSrc}
-          alt={asset?.assetSymbol}
-        />
+        <Image width={18} height={18} src={ethLogoSrc} alt={asset?.symbol} />
       }
       toLogo={<FuelLogo size={17} />}
       date={date}
       asset={asset}
       onClick={() => handlers.openTxEthToFuel({ txId: txHash })}
       status={getStatusComponent()}
+      txId={txHash}
     />
   );
 };

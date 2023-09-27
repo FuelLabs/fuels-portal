@@ -1,6 +1,6 @@
 import { cssObj } from '@fuel-ui/css';
 import { ButtonLink, Tabs, Heading } from '@fuel-ui/react';
-import { useNodeInfo } from '@fuels-portal/sdk-react';
+import { useNodeInfo } from '@fuel-wallet/react';
 import type { ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
 import { VITE_FUEL_VERSION } from '~/config';
@@ -34,7 +34,7 @@ export const BridgeHome = ({ children }: BridgeHomeProps) => {
               <Tabs.Trigger value="bridge">Bridge</Tabs.Trigger>
             </ButtonLink>
             <ButtonLink href={Pages.transactions} css={styles.buttonLink}>
-              <Tabs.Trigger value="transactions">Transactions</Tabs.Trigger>
+              <Tabs.Trigger value="transactions">History</Tabs.Trigger>
             </ButtonLink>
           </Tabs.List>
           {children}

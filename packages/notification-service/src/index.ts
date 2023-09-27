@@ -16,17 +16,11 @@ const port = 3005;
 
 const isDev = process.env.ETH_CHAIN === 'foundry';
 
-const fuelProvider = new Provider(
-  isDev ? process.env.FUEL_PROVIDER_URL! : 'https://beta-4.fuel.network/graphql'
-);
+const fuelProvider = new Provider(process.env.FUEL_PROVIDER_URL!);
 
 const ethPublicClient = createPublicClient({
   chain: isDev ? foundry : sepolia,
-  transport: isDev
-    ? http('http://localhost:8545')
-    : http(
-        'https://eth-sepolia.g.alchemy.com/v2/v_2w-fv1Jg2R3TMKbT3N_p7zue7EeA9N'
-      ),
+  transport: http(process.env.L1_PROVIDER_URL),
 });
 
 const prisma = new PrismaClient();
