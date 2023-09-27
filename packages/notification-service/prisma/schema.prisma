@@ -17,7 +17,7 @@ model User {
 }
 
 model Address {
-  address      String @id
+  address      String        @id
   transactions Transaction[]
   withdrawer   User          @relation(fields: [withdrawerId], references: [id], onDelete: Cascade)
   withdrawerId Int
