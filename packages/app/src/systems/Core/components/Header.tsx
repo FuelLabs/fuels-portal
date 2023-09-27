@@ -20,12 +20,14 @@ export function Header() {
         {IS_PREVIEW && (
           <Nav.Menu>
             <Nav.MenuItem
+              href="#"
               onClick={() => navigate(Pages.bridge)}
               isActive={isLinkActive(Pages.bridge)}
             >
               Bridge
             </Nav.MenuItem>
             <Nav.MenuItem
+              href="#"
               onClick={() => navigate(Pages.ecosystem)}
               isActive={isLinkActive(Pages.ecosystem)}
             >
