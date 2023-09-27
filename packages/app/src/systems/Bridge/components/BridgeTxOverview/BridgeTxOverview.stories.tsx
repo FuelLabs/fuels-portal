@@ -22,9 +22,9 @@ export const Usage = () => {
         date={new Date()}
         isDeposit={true}
         asset={{
-          assetImageSrc: ethImage,
-          assetSymbol: 'ETH',
-          assetAmount: '1.500',
+          image: ethImage,
+          symbol: 'ETH',
+          amount: '1.500',
         }}
       />
     </Box.Flex>
@@ -38,9 +38,9 @@ export const Withdrawal = () => {
         transactionId={bn(1234567876543456)}
         date={new Date()}
         asset={{
-          assetImageSrc: ethImage,
-          assetSymbol: 'ETH',
-          assetAmount: '1.500',
+          image: ethImage,
+          symbol: 'ETH',
+          amount: '1.500',
         }}
       />
     </Box.Flex>

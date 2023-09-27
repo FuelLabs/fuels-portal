@@ -22,11 +22,9 @@ export const Usage = () => {
         toLogo={<FuelLogo size={17} />}
         date={new Date()}
         asset={{
-          assetAmount: '0.050',
-          assetSymbol: 'ETH',
-          assetImageSrc: (
-            <Image width={18} height={18} src={ethLogoSrc} alt={'ETH logo'} />
-          ),
+          amount: '0.050',
+          symbol: 'ETH',
+          image: ethLogoSrc,
         }}
         onClick={() => {}}
         status={

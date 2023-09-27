@@ -178,6 +178,7 @@ export const txFuelToEthMachine = createMachine(
                       messageId: ctx.messageId,
                       fuelBlockHashCommited: ctx.fuelBlockHashCommited,
                       fuelProvider: ctx.fuelProvider,
+                      fuelLastBlockId: ctx.fuelLastBlockId,
                     }),
                   },
                   onDone: [
@@ -291,7 +292,6 @@ export const txFuelToEthMachine = createMachine(
                       onDone: [
                         {
                           cond: FetchMachine.hasError,
-                          target: 'waitingEthWalletApproval',
                         },
                         {
                           actions: ['assignTxHashMessageRelayed'],
@@ -299,6 +299,11 @@ export const txFuelToEthMachine = createMachine(
                           target: 'waitingReceive',
                         },
                       ],
+                    },
+                    after: {
+                      10000: {
+                        target: 'relayingMessageFromFuelBlock',
+                      },
                     },
                   },
                   waitingReceive: {
@@ -318,7 +323,7 @@ export const txFuelToEthMachine = createMachine(
                           onDone: [
                             {
                               cond: FetchMachine.hasError,
-                              // if some problem happened with the transaction, move to prec state to try a new transaction
+                              // if some problem happened with the transaction, move to prev state to try a new transaction
                               target:
                                 '#(machine).submittingToBridge.checkingSettlement.checkingRelayed.checkingHasRelayedInEth',
                             },
