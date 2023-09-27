@@ -1,10 +1,19 @@
+import { bn } from 'fuels';
 import { isAddress } from 'viem';
+import type { PublicClient, WalletClient } from 'viem';
 import type { BridgeAsset } from '~/systems/Bridge';
 import { db } from '~/systems/Core/utils/database';
+
+import { EthConnectorService } from './connectors';
 
 export type AssetServiceInputs = {
   addAsset: { asset: BridgeAsset };
   removeAsset: { address?: string };
+  faucetErc20: {
+    address?: string;
+    walletClient: WalletClient;
+    publicClient: PublicClient;
+  };
 };
 
 export class AssetService {
@@ -44,5 +53,39 @@ export class AssetService {
     return db.transaction('r', db.assets, async () => {
       return db.assets.toArray();
     });
+  }
+
+  static async faucetErc20(input: AssetServiceInputs['faucetErc20']) {
+    const { address, walletClient, publicClient } = input;
+
+    if (!address || !isAddress(address || '')) {
+      throw new Error('Invalid address');
+    }
+    if (!walletClient) {
+      throw new Error('Missing wallet client');
+    }
+    if (!publicClient) {
+      throw new Error('Missing public client');
+    }
+
+    const erc20 = EthConnectorService.connectToErc20({
+      walletClient,
+      address: address as `0x${string}`,
+    });
+
+    console.log(`erc20`, erc20);
+
+    const erc20MintHash = await erc20.write.mint(
+      [walletClient.account?.address, bn.parseUnits('1000000', 18)],
+      {
+        account: walletClient.account,
+      }
+    );
+
+    const receipt = await publicClient.waitForTransactionReceipt({
+      hash: erc20MintHash,
+    });
+
+    console.log(`receipt`, receipt);
   }
 }

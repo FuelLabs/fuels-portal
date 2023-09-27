@@ -21,6 +21,9 @@ type MachineServices = {
   removeAsset: {
     data: boolean;
   };
+  faucetErc20: {
+    data: boolean;
+  };
 };
 
 type AssetListMachineEvents =
@@ -30,6 +33,10 @@ type AssetListMachineEvents =
     }
   | {
       type: 'REMOVE_ASSET';
+      input: { address?: string };
+    }
+  | {
+      type: 'FAUCET_ERC20';
       input: { address?: string };
     };
 
@@ -66,6 +73,9 @@ export const ethAssetListMachine = createMachine(
           REMOVE_ASSET: {
             target: 'removing',
           },
+          FAUCET_ERC20: {
+            target: 'fauceting',
+          },
         },
       },
       adding: {
@@ -90,6 +100,20 @@ export const ethAssetListMachine = createMachine(
           onDone: [
             {
               target: 'fetchingAssets',
+            },
+          ],
+        },
+      },
+      fauceting: {
+        tags: ['loading'],
+        invoke: {
+          src: 'faucetErc20',
+          data: {
+            input: (_: MachineContext, ev: AssetListMachineEvents) => ev.input,
+          },
+          onDone: [
+            {
+              target: 'idle',
             },
           ],
         },
@@ -138,6 +162,20 @@ export const ethAssetListMachine = createMachine(
           }
 
           await AssetService.removeAsset(input);
+          return true;
+        },
+      }),
+      faucetErc20: FetchMachine.create<
+        AssetServiceInputs['faucetErc20'],
+        MachineServices['faucetErc20']['data']
+      >({
+        showError: true,
+        async fetch({ input }) {
+          if (!input) {
+            throw new Error('Missing data');
+          }
+
+          await AssetService.faucetErc20(input);
           return true;
         },
       }),

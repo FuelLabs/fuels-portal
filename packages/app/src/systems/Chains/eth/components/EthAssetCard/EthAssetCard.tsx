@@ -11,6 +11,7 @@ type EthAssetCardProps = {
   onAdd?: () => void;
   onPress?: () => void;
   onRemove?: () => void;
+  onFaucet?: () => void;
   isRemoveDisabled?: boolean;
   removeToolTip?: string;
 };
@@ -20,6 +21,7 @@ export const EthAssetCard = ({
   name,
   hash,
   onAdd,
+  onFaucet,
   onPress,
   onRemove,
   isRemoveDisabled,
@@ -36,12 +38,24 @@ export const EthAssetCard = ({
           <AssetLogo asset={{ address: hash, image: imageSrc }} size={20} />
           <Text color="intentsPrimary12">{name}</Text>
         </Box.Flex>
+        {onFaucet && (
+          <IconButton
+            aria-label="AddEthAsset"
+            variant="link"
+            icon="Coins"
+            tooltip="Get some tokens"
+            onPress={onFaucet}
+            size="lg"
+            css={styles.cardAction}
+          />
+        )}
         {onAdd && (
           <IconButton
             aria-label="AddEthAsset"
             variant="link"
             icon="CirclePlus"
             onPress={onAdd}
+            tooltip="Add asset"
             intent="primary"
             size="lg"
             css={styles.cardAction}

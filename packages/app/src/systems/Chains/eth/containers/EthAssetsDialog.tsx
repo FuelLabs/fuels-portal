@@ -125,38 +125,51 @@ export function EthAssetsDialog() {
           <>
             {doesAssetExist &&
               !(showCustomTokenButton || showUseTokenButton) &&
-              assets.map((asset, i) => (
-                <EthAssetCard
-                  key={`${asset.address || ''}${asset.symbol || ''}${String(
-                    i
-                  )}`}
-                  imageSrc={asset.image}
-                  hash={asset.address}
-                  name={asset.symbol || ''}
-                  onPress={
-                    !editable
-                      ? () => {
-                          bridgeHandlers.changeAssetAddress({
-                            assetAddress: asset.address,
-                          });
-                        }
-                      : undefined
-                  }
-                  onRemove={
-                    editable
-                      ? () => {
-                          handlers.removeAsset({ address: asset.address });
-                        }
-                      : undefined
-                  }
-                  isRemoveDisabled={asset.address === undefined}
-                  removeToolTip={
-                    asset.address === undefined
-                      ? 'ETH is a native asset.  It can not be removed'
-                      : undefined
-                  }
-                />
-              ))}
+              assets.map((asset, i) => {
+                const isEth = asset.address === undefined;
+
+                return (
+                  <EthAssetCard
+                    key={`${asset.address || ''}${asset.symbol || ''}${String(
+                      i
+                    )}`}
+                    imageSrc={asset.image}
+                    hash={asset.address}
+                    name={asset.symbol || ''}
+                    onPress={
+                      !editable
+                        ? () => {
+                            bridgeHandlers.changeAssetAddress({
+                              assetAddress: asset.address,
+                            });
+                          }
+                        : undefined
+                    }
+                    onRemove={
+                      editable
+                        ? () => {
+                            handlers.removeAsset({ address: asset.address });
+                          }
+                        : undefined
+                    }
+                    onFaucet={
+                      !isEth
+                        ? () => {
+                            handlers.faucetErc20({
+                              address: asset.address,
+                            });
+                          }
+                        : undefined
+                    }
+                    isRemoveDisabled={isEth}
+                    removeToolTip={
+                      isEth
+                        ? 'ETH is a native asset.  It can not be removed'
+                        : undefined
+                    }
+                  />
+                );
+              })}
           </>
         </CardList>
       </Dialog.Description>
