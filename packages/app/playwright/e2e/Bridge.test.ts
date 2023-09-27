@@ -120,7 +120,7 @@ test.describe('Bridge', () => {
       ).toBe(depositAmount);
 
       // Go to transaction page
-      const transactionList = page.locator('a').getByText('Transactions');
+      const transactionList = page.locator('a').getByText('History');
       await transactionList.click();
 
       // check the transaction is there
@@ -142,12 +142,12 @@ test.describe('Bridge', () => {
 
     await test.step('Withdraw from Fuel to ETH', async () => {
       // Go to transaction page
-      const transactionList = page.locator('a').getByText('Transactions');
+      const transactionList = page.locator('a').getByText('History');
 
       // Go to the bridge page
       bridgePage = page
         .locator('div')
-        .filter({ hasText: 'BridgeTransactions' })
+        .filter({ hasText: 'BridgeHistory' })
         .getByRole('link', { name: 'Bridge ' });
       await bridgePage.first().click();
 
