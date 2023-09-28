@@ -7,7 +7,7 @@ console.log(`path.resolve('./src/views/')`, path.resolve('./src/views/'));
 const handlebarOptions = {
   viewEngine: {
     partialDirs: path.resolve('./src/views/'),
-    defaultLayout: false as unknown as string,
+    defaultLayout: false as unknown as string, // false is a valid express-handlebars type, but somehow nodemailer-express-handlebars only accepts string
   },
   viewPath: path.resolve('./src/views/'),
 };
