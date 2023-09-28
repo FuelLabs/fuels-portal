@@ -1,4 +1,16 @@
 import nodemailer from 'nodemailer';
+import hbs from 'nodemailer-express-handlebars';
+import path from 'path';
+
+console.log(`path.resolve('./src/views/')`, path.resolve('./src/views/'));
+
+const handlebarOptions = {
+  viewEngine: {
+    partialDirs: path.resolve('./src/views/'),
+    defaultLayout: false as unknown as string,
+  },
+  viewPath: path.resolve('./src/views/'),
+};
 
 export default class MailService {
   private transporter?: nodemailer.Transporter;
@@ -27,22 +39,29 @@ export default class MailService {
         pass: process.env.EMAIL_PASS,
       },
     });
+    this.transporter.use('compile', hbs(handlebarOptions));
   }
 
-  async sendMail(options: {
-    from?: string;
-    to: string;
-    subject: string;
-    text: string;
-    html: string;
-  }) {
-    const info = await this.transporter?.sendMail({
+  async sendMail(
+    options: {
+      from?: string;
+      to: string;
+      subject: string;
+    },
+    context: {
+      address: string;
+      transactionId: string;
+      completeWithdrawLink: string;
+    }
+  ) {
+    const mailOptions = {
       from: options.from,
       to: options.to,
+      template: 'email',
       subject: options.subject,
-      text: options.text,
-      html: options.html,
-    });
+      context,
+    };
+    const info = await this.transporter?.sendMail(mailOptions);
     console.log(`ethereal url: ${nodemailer.getTestMessageUrl(info)}`);
     return info;
   }
