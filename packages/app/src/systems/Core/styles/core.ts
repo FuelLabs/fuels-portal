@@ -1,7 +1,7 @@
 import { cssObj } from '@fuel-ui/css';
 
 export const scrollable = (
-  regularColor: string = '$gray1',
+  regularColor: string = '$gray8',
   hoverColor: string = '$gray10'
 ) =>
   cssObj({
