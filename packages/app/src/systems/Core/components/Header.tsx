@@ -1,3 +1,4 @@
+import { cssObj } from '@fuel-ui/css';
 import { Nav } from '@fuel-ui/react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { IS_PREVIEW } from '~/config';
@@ -37,7 +38,7 @@ export function Header() {
         )}
         <Nav.ThemeToggle />
       </Nav.Desktop>
-      <Nav.Mobile>
+      <Nav.Mobile css={styles.menu} data-preview={IS_PREVIEW}>
         <Nav.MobileContent>
           <Nav.Logo />
           <Nav.ThemeToggle />
@@ -64,3 +65,11 @@ export function Header() {
     </Nav>
   );
 }
+
+const styles = {
+  menu: cssObj({
+    '&[data-preview="false"] [aria-label="Toggle Menu"]': {
+      display: 'none',
+    },
+  }),
+};
