@@ -109,6 +109,9 @@ const txEthToFuelSelectors = {
     const { ethTxId } = state.context;
     return ethTxId;
   },
+  isLoadingReceipts: (state: TxEthToFuelMachineState) => {
+    return state.matches('checkingSettlement.gettingReceiptsInfo');
+  },
 };
 
 export function useTxEthToFuel({ id }: { id: string }) {
@@ -120,28 +123,39 @@ export function useTxEthToFuel({ id }: { id: string }) {
     bridgeTxsSelectors.txEthToFuel(txId)
   );
 
-  const { steps, status, amount, date, assetId, erc20Token, ethTxId } =
-    useMemo(() => {
-      if (!txEthToFuelState) return {};
+  const {
+    steps,
+    status,
+    amount,
+    date,
+    assetId,
+    erc20Token,
+    ethTxId,
+    isLoadingReceipts,
+  } = useMemo(() => {
+    if (!txEthToFuelState) return {};
 
-      const steps = txEthToFuelSelectors.steps(txEthToFuelState);
-      const status = txEthToFuelSelectors.status(txEthToFuelState);
-      const amount = txEthToFuelSelectors.amount(txEthToFuelState);
-      const date = txEthToFuelSelectors.blockDate(txEthToFuelState);
-      const assetId = txEthToFuelSelectors.assetId(txEthToFuelState);
-      const erc20Token = txEthToFuelSelectors.erc20Token(txEthToFuelState);
-      const ethTxId = txEthToFuelSelectors.ethTxId(txEthToFuelState);
+    const steps = txEthToFuelSelectors.steps(txEthToFuelState);
+    const status = txEthToFuelSelectors.status(txEthToFuelState);
+    const amount = txEthToFuelSelectors.amount(txEthToFuelState);
+    const date = txEthToFuelSelectors.blockDate(txEthToFuelState);
+    const assetId = txEthToFuelSelectors.assetId(txEthToFuelState);
+    const erc20Token = txEthToFuelSelectors.erc20Token(txEthToFuelState);
+    const ethTxId = txEthToFuelSelectors.ethTxId(txEthToFuelState);
+    const isLoadingReceipts =
+      txEthToFuelSelectors.isLoadingReceipts(txEthToFuelState);
 
-      return {
-        steps,
-        status,
-        amount,
-        date,
-        assetId,
-        erc20Token,
-        ethTxId,
-      };
-    }, [txEthToFuelState]);
+    return {
+      steps,
+      status,
+      amount,
+      date,
+      assetId,
+      erc20Token,
+      ethTxId,
+      isLoadingReceipts,
+    };
+  }, [txEthToFuelState]);
 
   const { asset } = useAsset({
     address: assetId ? parseFuelAddressToEth(assetId) : '',
@@ -183,5 +197,6 @@ export function useTxEthToFuel({ id }: { id: string }) {
     shouldShowConfirmButton,
     amount,
     asset: assetAmount,
+    isLoadingReceipts,
   };
 }

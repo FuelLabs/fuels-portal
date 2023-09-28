@@ -168,9 +168,18 @@ export class TxEthToFuelService {
           amount,
         ]);
 
-        // TODO: apply workaround logic to use waitTransactionReceipt together
-        const approveTxHashReceipt =
-          await ethPublicClient.getTransactionReceipt({ hash: approveTxHash });
+        let approveTxHashReceipt;
+        try {
+          approveTxHashReceipt = await ethPublicClient.getTransactionReceipt({
+            hash: approveTxHash,
+          });
+        } catch (err: unknown) {
+          // workaround in place because waitForTransactionReceipt stop working after first time using it
+          approveTxHashReceipt =
+            await ethPublicClient.waitForTransactionReceipt({
+              hash: approveTxHash,
+            });
+        }
 
         if (approveTxHashReceipt.status !== 'success') {
           throw new Error('Failed to approve Token for transfer');

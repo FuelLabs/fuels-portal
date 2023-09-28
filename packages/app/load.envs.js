@@ -30,6 +30,13 @@ function getBridgeTokenContracts() {
     return body;
   }
 
+  if (process.env.VITE_ETH_CHAIN === 'sepolia') {
+    return {
+      ETH_ERC20: '0xC6387efAD0F184a90B34f397C3d6Fd63135ef790',
+      FUEL_TokenContract:
+        '0x5ed7bee1e80a64e5163a1c93ff8a2bb806fdff3b7e97808f275c2ba7e3faa2cd',
+    };
+  }
   return {};
 }
 
