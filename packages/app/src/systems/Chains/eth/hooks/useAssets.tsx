@@ -4,7 +4,19 @@ import { Services, store } from '~/store';
 import type { EthAssetListMachineState } from '../machines';
 
 const selectors = {
-  assetList: (state: EthAssetListMachineState) => state.context.assetList || [],
+  assetList: (query?: string) => (state: EthAssetListMachineState) => {
+    if (query) {
+      const queriedAssets = state.context.assetList?.filter(
+        (asset) =>
+          asset.address?.toLowerCase().startsWith(query.toLowerCase()) ||
+          asset.symbol?.toLowerCase().startsWith(query.toLowerCase())
+      );
+
+      return queriedAssets;
+    }
+
+    return state.context.assetList;
+  },
   isLoading: (state: EthAssetListMachineState) => {
     return state.hasTag('loading');
   },
@@ -13,10 +25,19 @@ const selectors = {
   },
 };
 
-export const useAssets = () => {
+type UseAssetParams = {
+  assetQuery: string;
+};
+
+export const useAssets = (params?: UseAssetParams) => {
+  const { assetQuery } = params || {};
   const assetList = store.useSelector(
     Services.ethAssetList,
-    selectors.assetList
+    selectors.assetList()
+  );
+  const filteredAssetList = store.useSelector(
+    Services.ethAssetList,
+    selectors.assetList(assetQuery)
   );
   const isLoading = store.useSelector(
     Services.ethAssetList,
@@ -38,8 +59,15 @@ export const useAssets = () => {
     store.faucetErc20({ address, walletClient, publicClient });
   }
 
+  const isSearchResultsEmpty =
+    !!assetList?.length &&
+    !filteredAssetList?.length &&
+    assetQuery &&
+    !isLoading;
+  const showAssetList = assetList?.length && !isLoading;
+
   return {
-    assets: assetList || [],
+    assets: filteredAssetList || [],
     handlers: {
       addAsset: store.addAsset,
       removeAsset: store.removeAsset,
@@ -47,5 +75,7 @@ export const useAssets = () => {
     },
     isLoading,
     isLoadingFaucet,
+    isSearchResultsEmpty,
+    showAssetList,
   };
 };

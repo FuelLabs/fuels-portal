@@ -12,3 +12,7 @@ export function parseFuelAddressToEth(address?: string) {
 export function isErc20Address(address?: string) {
   return address && isAddress(address);
 }
+
+export function isSameEthAddress(address1?: string, address2?: string) {
+  return parseFuelAddressToEth(address1) === parseFuelAddressToEth(address2);
+}

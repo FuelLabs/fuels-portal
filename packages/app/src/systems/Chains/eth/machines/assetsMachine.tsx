@@ -143,7 +143,7 @@ export const ethAssetListMachine = createMachine(
 
           if (VITE_ETH_ERC20) {
             defaultAssets.push({
-              symbol: 'LFBG',
+              symbol: 'TKN',
               decimals: 18,
               address: VITE_ETH_ERC20,
             });
