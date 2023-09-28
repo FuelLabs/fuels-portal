@@ -1,14 +1,13 @@
 import { useMemo } from 'react';
 import { isAddress } from 'viem';
 import { useToken } from 'wagmi';
-import { store } from '~/store';
 
 import { useAssets } from './useAssets';
 import { useEthAccountConnection } from './useEthAccountConnection';
 
 export const useManageEthAssets = ({ assetQuery }: { assetQuery: string }) => {
   const { walletClient, publicClient } = useEthAccountConnection();
-  const { assets, handlers } = useAssets();
+  const { assets, isLoadingFaucet, handlers } = useAssets();
 
   const { data, isError, isLoading } = useToken({
     address: isAddress(assetQuery) ? (assetQuery as `0x${string}`) : undefined,
@@ -32,7 +31,7 @@ export const useManageEthAssets = ({ assetQuery }: { assetQuery: string }) => {
   }, [assets, assetQuery]);
 
   function faucetErc20({ address }: { address?: string }) {
-    store.faucetErc20({ address, walletClient, publicClient });
+    handlers.faucetErc20({ address, walletClient, publicClient });
   }
 
   return {
@@ -50,5 +49,6 @@ export const useManageEthAssets = ({ assetQuery }: { assetQuery: string }) => {
     assetInfo: data,
     isLoading,
     doesAssetExist,
+    isLoadingFaucet,
   };
 };

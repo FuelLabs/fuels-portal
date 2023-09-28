@@ -38,6 +38,7 @@ export function EthAssetsDialog() {
     assetInfo,
     isLoading,
     doesAssetExist,
+    isLoadingFaucet,
   } = useManageEthAssets({ assetQuery });
 
   const onSubmitToken = () => {
@@ -163,6 +164,7 @@ export function EthAssetsDialog() {
                           }
                         : undefined
                     }
+                    isFaucetLoading={isFaucetable && isLoadingFaucet}
                     isRemoveDisabled={isEth}
                     removeToolTip={
                       isEth

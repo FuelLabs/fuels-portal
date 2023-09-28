@@ -13,6 +13,7 @@ type EthAssetCardProps = {
   onPress?: () => void;
   onRemove?: () => void;
   onFaucet?: () => void;
+  isFaucetLoading?: boolean;
   isRemoveDisabled?: boolean;
   removeToolTip?: string;
 };
@@ -23,6 +24,7 @@ export const EthAssetCard = ({
   hash,
   onAdd,
   onFaucet,
+  isFaucetLoading,
   onPress,
   onRemove,
   isRemoveDisabled,
@@ -60,6 +62,8 @@ export const EthAssetCard = ({
             tooltip="Get some tokens"
             onPress={onFaucet}
             size="lg"
+            isLoading={isFaucetLoading}
+            loadingText=" "
             css={styles.cardAction}
           />
         )}

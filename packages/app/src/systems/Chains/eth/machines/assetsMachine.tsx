@@ -107,7 +107,7 @@ export const ethAssetListMachine = createMachine(
         },
       },
       fauceting: {
-        tags: ['loading'],
+        tags: ['loadingFaucet'],
         invoke: {
           src: 'faucetErc20',
           data: {
