@@ -78,7 +78,7 @@ const styles = {
     ...coreStyles.scrollable(),
   }),
   content: cssObj({
-    padding: '$16 $4 $4',
+    padding: '$16 $4 $4 $4',
     maxWidth: 955,
     margin: '0 auto',
   }),
