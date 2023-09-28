@@ -25,7 +25,7 @@ export function Ecosystem() {
   return (
     <Layout {...animations.slideInTop()}>
       <Layout.Content>
-        <Box.Stack gap="$12" grow={1}>
+        <Box.Stack gap="$12" grow={1} css={styles.content}>
           <Box.Flex css={styles.headingWrapper}>
             <Box.Stack gap="$2" wrap="wrap">
               <Heading as="h2" css={styles.heading}>
@@ -65,6 +65,9 @@ export function Ecosystem() {
 }
 
 const styles = {
+  content: cssObj({
+    paddingBottom: '$20',
+  }),
   heading: cssObj({
     margin: 0,
   }),
