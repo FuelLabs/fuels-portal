@@ -4,7 +4,6 @@ import {
   FuelConnectorProvider,
 } from '@fuel-wallet/react';
 import type { ReactNode } from 'react';
-import { IS_TEST } from '~/config';
 
 import { useTheme } from '../hooks';
 
@@ -18,9 +17,7 @@ export function FuelConnectProvider({ children }: ProvidersProps) {
   return (
     <FuelConnectorProvider
       theme={theme}
-      connectors={[
-        IS_TEST ? FUEL_WALLET_CONNECTOR : FUEL_WALLET_DEVELOPMENT_CONNECTOR,
-      ]}
+      connectors={[FUEL_WALLET_CONNECTOR, FUEL_WALLET_DEVELOPMENT_CONNECTOR]}
     >
       {children}
     </FuelConnectorProvider>
