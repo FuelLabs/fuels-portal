@@ -76,6 +76,21 @@ export const OnRemove = () => {
   );
 };
 
+export const OnFaucet = () => {
+  return (
+    <CardList css={styles.storybook}>
+      <EthAssetCard
+        imageSrc={ethLogoSrc}
+        name="ETH"
+        onFaucet={() => {
+          // eslint-disable-next-line no-console
+          console.log('faucet');
+        }}
+      />
+    </CardList>
+  );
+};
+
 export const OnRemoveDisabled = () => {
   return (
     <CardList css={styles.storybook}>

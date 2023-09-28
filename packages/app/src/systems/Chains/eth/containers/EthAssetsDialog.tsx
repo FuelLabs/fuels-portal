@@ -3,9 +3,7 @@ import {
   Box,
   CardList,
   Dialog,
-  Icon,
   Text,
-  Button,
   Form,
   Input,
   IconButton,
@@ -13,13 +11,11 @@ import {
 } from '@fuel-ui/react';
 import { useState } from 'react';
 import { Controller, useWatch } from 'react-hook-form';
-import { store } from '~/store';
+import { VITE_ETH_ERC20 } from '~/config';
 import { useBridge } from '~/systems/Bridge/hooks';
-import { shortAddress } from '~/systems/Core';
 
 import { EthAssetCard } from '../components';
-import { useManageEthAssets, useSetAddressForm } from '../hooks';
-import type { SetAddressFormValues } from '../hooks';
+import { useAssets, useFaucetErc20, useSetAddressForm } from '../hooks';
 
 export function EthAssetsDialog() {
   const { handlers: bridgeHandlers } = useBridge();
@@ -32,29 +28,14 @@ export function EthAssetsDialog() {
   const {
     assets,
     handlers,
-    showCustomTokenButton,
-    showUseTokenButton,
-    assetInfo,
     isLoading,
-    doesAssetExist,
-  } = useManageEthAssets({ assetQuery });
-
-  const onSubmitToken = () => {
-    handlers.addAsset({
-      asset: {
-        address: assetInfo?.address,
-        decimals: assetInfo?.decimals,
-        symbol: assetInfo?.symbol,
-      },
-    });
-    form.resetField('address');
-  };
-
-  const onSubmitCustomToken = (data: SetAddressFormValues) => {
-    store.openAddAssetsDialog({
-      assetAddress: data.address,
-    });
-  };
+    isLoadingFaucet,
+    isSearchResultsEmpty,
+    showAssetList,
+  } = useAssets({ assetQuery });
+  const {
+    handlers: { faucetErc20 },
+  } = useFaucetErc20();
 
   return (
     <>
@@ -74,7 +55,7 @@ export function EthAssetsDialog() {
           </Text>
         </Box.Flex>
       </Dialog.Heading>
-      <Dialog.Description css={styles.dialogDescription}>
+      <Dialog.Description>
         <Box.Flex align="center" css={styles.controllerWrapper}>
           <Controller
             name="address"
@@ -93,39 +74,21 @@ export function EthAssetsDialog() {
                       </Input.ElementRight>
                     )}
                   </Input>
-                  {!doesAssetExist &&
-                    !(showCustomTokenButton || showUseTokenButton) &&
-                    !isLoading && (
-                      <Form.HelperText>{`No asset found for your search "${assetQuery}"`}</Form.HelperText>
-                    )}
+                  {!!isSearchResultsEmpty && (
+                    <Form.HelperText>{`No asset found for your search "${assetQuery}"`}</Form.HelperText>
+                  )}
                 </Form.Control>
               );
             }}
           />
         </Box.Flex>
         <CardList isClickable={!editable}>
-          <>
-            {showUseTokenButton && (
-              <EthAssetCard
-                name={assetInfo?.symbol || ''}
-                onAdd={form.handleSubmit(onSubmitToken)}
-                hash={assetInfo?.address}
-              />
-            )}
-          </>
-          <>
-            {showCustomTokenButton && (
-              <EthAssetCard
-                name={shortAddress(form.getValues('address'))}
-                onAdd={form.handleSubmit(onSubmitCustomToken)}
-                hash={assetQuery}
-              />
-            )}
-          </>
-          <>
-            {doesAssetExist &&
-              !(showCustomTokenButton || showUseTokenButton) &&
-              assets.map((asset, i) => (
+          {showAssetList &&
+            assets.map((asset, i) => {
+              const isEth = asset.address === undefined;
+              const isFaucetable = asset.address === VITE_ETH_ERC20;
+
+              return (
                 <EthAssetCard
                   key={`${asset.address || ''}${asset.symbol || ''}${String(
                     i
@@ -149,17 +112,29 @@ export function EthAssetsDialog() {
                         }
                       : undefined
                   }
-                  isRemoveDisabled={asset.address === undefined}
+                  onFaucet={
+                    isFaucetable && faucetErc20
+                      ? () => {
+                          faucetErc20({
+                            address: asset.address,
+                          });
+                        }
+                      : undefined
+                  }
+                  isFaucetLoading={isFaucetable && isLoadingFaucet}
+                  isRemoveDisabled={isEth}
                   removeToolTip={
-                    asset.address === undefined
+                    isEth
                       ? 'ETH is a native asset.  It can not be removed'
                       : undefined
                   }
                 />
-              ))}
-          </>
+              );
+            })}
         </CardList>
       </Dialog.Description>
+      {/*
+      Keeping this comment here as we may need this component / design later when refactoring assets package
       {!editable && (
         <Dialog.Footer css={styles.dialogFooter}>
           <Button variant="link" onPress={() => setEditable(true)}>
@@ -167,7 +142,7 @@ export function EthAssetsDialog() {
             <Text color="intentsBase10">Manage token list</Text>
           </Button>
         </Dialog.Footer>
-      )}
+      )} */}
     </>
   );
 }
@@ -176,11 +151,8 @@ const styles = {
   actionButton: cssObj({
     width: '100%',
   }),
-  dialogDescription: cssObj({
-    pb: '$5',
-  }),
   controllerWrapper: cssObj({
-    pb: '$5',
+    pb: '$2',
   }),
   dialogFooter: cssObj({
     borderTop: '1px solid $border',

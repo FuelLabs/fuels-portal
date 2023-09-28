@@ -7,11 +7,14 @@ import { calculateDateDiff } from '~/systems/Core';
 
 import type { BridgeAsset } from '../../types';
 
+import { InfoTestLoader } from './InfoTestLoader';
+
 type BridgeTxOverviewProps = {
   transactionId: BigNumberish;
   date?: Date;
   isDeposit?: boolean;
   asset?: BridgeAsset;
+  isLoading?: boolean;
 };
 
 export const BridgeTxOverview = ({
@@ -19,6 +22,7 @@ export const BridgeTxOverview = ({
   date,
   isDeposit,
   asset,
+  isLoading,
 }: BridgeTxOverviewProps) => {
   return (
     <Box.Stack css={styles.stack}>
@@ -30,7 +34,9 @@ export const BridgeTxOverview = ({
       </Box.Flex>
       <Box.Flex css={styles.txItem}>
         <Text css={styles.labelText}>Age</Text>
-        <Text css={styles.infoText}>{calculateDateDiff(date)}</Text>
+        <Text css={styles.infoText}>
+          {isLoading ? <InfoTestLoader /> : calculateDateDiff(date)}
+        </Text>
       </Box.Flex>
       <Box.Flex css={styles.txItem}>
         <Text css={styles.labelText}>Direction</Text>
@@ -53,11 +59,17 @@ export const BridgeTxOverview = ({
       <Box.Flex css={styles.txItem}>
         <Text css={styles.labelText}>Asset</Text>
         <Box.Flex css={styles.directionInfo}>
-          <AssetLogo asset={asset || {}} alt={`Asset ${asset?.symbol}`} />
-          <Text aria-label="Asset amount" css={styles.infoText}>
-            {asset?.amount}
-          </Text>
-          <Text css={styles.infoText}>{asset?.symbol}</Text>
+          {isLoading ? (
+            <InfoTestLoader />
+          ) : (
+            <>
+              <AssetLogo asset={asset || {}} alt={`Asset ${asset?.symbol}`} />
+              <Text aria-label="Asset amount" css={styles.infoText}>
+                {asset?.amount}
+              </Text>
+              <Text css={styles.infoText}>{asset?.symbol}</Text>
+            </>
+          )}
         </Box.Flex>
       </Box.Flex>
     </Box.Stack>

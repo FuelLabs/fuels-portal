@@ -1,5 +1,6 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, CardList, IconButton, Text } from '@fuel-ui/react';
+import { Box, CardList, Copyable, IconButton, Text } from '@fuel-ui/react';
+import { shortAddress } from '~/systems/Core';
 
 import { AssetLogo } from '../AssetLogo';
 import { RemoveAssetDialog } from '../RemoveAssetDialog';
@@ -11,6 +12,8 @@ type EthAssetCardProps = {
   onAdd?: () => void;
   onPress?: () => void;
   onRemove?: () => void;
+  onFaucet?: () => void;
+  isFaucetLoading?: boolean;
   isRemoveDisabled?: boolean;
   removeToolTip?: string;
 };
@@ -20,6 +23,8 @@ export const EthAssetCard = ({
   name,
   hash,
   onAdd,
+  onFaucet,
+  isFaucetLoading,
   onPress,
   onRemove,
   isRemoveDisabled,
@@ -32,16 +37,43 @@ export const EthAssetCard = ({
       css={styles.cardListItem}
     >
       <Box.Flex align="center" justify="space-between" css={{ width: '$full' }}>
-        <Box.Flex gap="$2" align="center">
-          <AssetLogo asset={{ address: hash, image: imageSrc }} size={20} />
-          <Text color="intentsPrimary12">{name}</Text>
+        <Box.Flex gap="$3" align="center">
+          <AssetLogo asset={{ address: hash, image: imageSrc }} size={30} />
+          <Box.Flex direction="column" gap="$0">
+            <Text color="intentsPrimary12">{name}</Text>
+            {!!hash && (
+              <Copyable
+                value={hash || ''}
+                iconProps={{ size: 'xs' }}
+                css={{ gap: '$0' }}
+              >
+                <Text color="intentsBase10" fontSize="xs">
+                  {shortAddress(hash)}
+                </Text>
+              </Copyable>
+            )}
+          </Box.Flex>
         </Box.Flex>
+        {onFaucet && (
+          <IconButton
+            aria-label="AddEthAsset"
+            variant="link"
+            icon="Coins"
+            tooltip="Get some tokens"
+            onPress={onFaucet}
+            size="lg"
+            isLoading={isFaucetLoading}
+            loadingText=" "
+            css={styles.cardAction}
+          />
+        )}
         {onAdd && (
           <IconButton
             aria-label="AddEthAsset"
             variant="link"
             icon="CirclePlus"
             onPress={onAdd}
+            tooltip="Add asset"
             intent="primary"
             size="lg"
             css={styles.cardAction}
