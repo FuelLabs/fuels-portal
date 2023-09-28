@@ -8,10 +8,17 @@ import { useTxEthToFuel } from '../hooks';
 
 export function TxEthToFuelDialog() {
   const { metadata } = useOverlay<{ txId: string }>();
-  const { steps, date, asset, handlers, shouldShowConfirmButton, status } =
-    useTxEthToFuel({
-      id: metadata.txId,
-    });
+  const {
+    steps,
+    date,
+    asset,
+    handlers,
+    shouldShowConfirmButton,
+    status,
+    isLoadingReceipts,
+  } = useTxEthToFuel({
+    id: metadata.txId,
+  });
 
   return (
     <>
@@ -30,6 +37,7 @@ export function TxEthToFuelDialog() {
             date={date}
             isDeposit={true}
             asset={asset}
+            isLoading={isLoadingReceipts}
           />
         </Box.Stack>
       </Dialog.Description>
