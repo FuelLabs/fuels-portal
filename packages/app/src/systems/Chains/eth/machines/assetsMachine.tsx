@@ -1,5 +1,7 @@
+import { toast } from '@fuel-ui/react';
 import type { StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
+import { VITE_ETH_ERC20 } from '~/config';
 import type { BridgeAsset } from '~/systems/Bridge';
 import { FetchMachine } from '~/systems/Core/machines';
 
@@ -21,6 +23,9 @@ type MachineServices = {
   removeAsset: {
     data: boolean;
   };
+  faucetErc20: {
+    data: boolean;
+  };
 };
 
 type AssetListMachineEvents =
@@ -30,6 +35,10 @@ type AssetListMachineEvents =
     }
   | {
       type: 'REMOVE_ASSET';
+      input: { address?: string };
+    }
+  | {
+      type: 'FAUCET_ERC20';
       input: { address?: string };
     };
 
@@ -66,6 +75,9 @@ export const ethAssetListMachine = createMachine(
           REMOVE_ASSET: {
             target: 'removing',
           },
+          FAUCET_ERC20: {
+            target: 'fauceting',
+          },
         },
       },
       adding: {
@@ -94,6 +106,21 @@ export const ethAssetListMachine = createMachine(
           ],
         },
       },
+      fauceting: {
+        tags: ['loadingFaucet'],
+        invoke: {
+          src: 'faucetErc20',
+          data: {
+            input: (_: MachineContext, ev: AssetListMachineEvents) => ev.input,
+          },
+          onDone: [
+            {
+              actions: ['notifyFaucetSuccess'],
+              target: 'idle',
+            },
+          ],
+        },
+      },
     },
   },
   {
@@ -101,6 +128,9 @@ export const ethAssetListMachine = createMachine(
       assignAssets: assign({
         assetList: (_, ev) => ev.data,
       }),
+      notifyFaucetSuccess: () => {
+        toast.success('Added tokens to your wallet');
+      },
     },
     services: {
       fetchAssets: FetchMachine.create<
@@ -109,8 +139,17 @@ export const ethAssetListMachine = createMachine(
       >({
         showError: true,
         async fetch() {
+          const defaultAssets = [...AssetList];
+
+          if (VITE_ETH_ERC20) {
+            defaultAssets.push({
+              symbol: 'TKN',
+              decimals: 18,
+              address: VITE_ETH_ERC20,
+            });
+          }
           const assets = await AssetService.getAssets();
-          return [...AssetList, ...assets];
+          return [...defaultAssets, ...assets];
         },
       }),
       addAsset: FetchMachine.create<
@@ -138,6 +177,20 @@ export const ethAssetListMachine = createMachine(
           }
 
           await AssetService.removeAsset(input);
+          return true;
+        },
+      }),
+      faucetErc20: FetchMachine.create<
+        AssetServiceInputs['faucetErc20'],
+        MachineServices['faucetErc20']['data']
+      >({
+        showError: true,
+        async fetch({ input }) {
+          if (!input) {
+            throw new Error('Missing data');
+          }
+
+          await AssetService.faucetErc20(input);
           return true;
         },
       }),

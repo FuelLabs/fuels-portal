@@ -19,6 +19,7 @@
     "@ethersproject/providers": "^5.7.2",
     "@ethersproject/sha2": "^5.7.0",
     "@fuel-bridge/solidity-contracts": "0.1.1",
+    "@fuel-bridge/message-predicates": "0.1.1",
     "@fuel-ui/css": "0.21.0",
     "@fuel-ui/react": "0.21.0",
     "@fuel-wallet/sdk": "0.13.0",

@@ -1,3 +1,7 @@
+import {
+  contractMessagePredicate,
+  contractMessageScript,
+} from '@fuel-bridge/message-predicates';
 import type {
   Message,
   WalletUnlocked as FuelWallet,
@@ -17,11 +21,6 @@ import {
 } from 'fuels';
 
 import { resourcesToInputs } from './transaction';
-
-const contractMessagePredicate =
-  '0x1a405000910000206144000b6148000542411480504cc04c72580020295134165b501012615c000772680002595d7001616171015b61a0106165711a5b6400125b5c100b240400002400000009e68fb304ff158f1ae4a1f7675d19fc83d1843b9263f79a1c2350dbf9ea41dc';
-const contractMessageScript =
-  '0x1a40500091000050504500205049102461540117614c011d5050c02c60453020604940042d45540a24000000b93e6a3d';
 
 function getCommonRelayableMessages(provider: Provider) {
   // Create a predicate for common messages
@@ -48,7 +47,7 @@ function getCommonRelayableMessages(provider: Provider) {
         // get resources to fund the transaction
         const resources = await relayer.getResourcesToSpend([
           {
-            amount: bn.parseUnits('5'),
+            amount: bn(100),
             assetId: ZeroBytes32,
           },
         ]);
