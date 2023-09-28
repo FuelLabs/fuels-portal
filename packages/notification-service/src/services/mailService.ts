@@ -2,8 +2,6 @@ import nodemailer from 'nodemailer';
 import hbs from 'nodemailer-express-handlebars';
 import path from 'path';
 
-console.log(`path.resolve('./src/views/')`, path.resolve('./src/views/'));
-
 const handlebarOptions = {
   viewEngine: {
     partialDirs: path.resolve('./src/views/'),
