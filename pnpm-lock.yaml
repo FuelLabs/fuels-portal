@@ -153,6 +153,9 @@ importers:
       '@ethersproject/sha2':
         specifier: ^5.7.0
         version: 5.7.0
+      '@fuel-bridge/message-predicates':
+        specifier: 0.1.1
+        version: 0.1.1
       '@fuel-bridge/solidity-contracts':
         specifier: 0.1.1
         version: 0.1.1(ethers@5.7.2)(hardhat@2.13.0)
@@ -3186,6 +3189,10 @@ packages:
       command-exists: 1.2.9
       ts-interface-checker: 0.1.13
     dev: true
+
+  /@fuel-bridge/message-predicates@0.1.1:
+    resolution: {integrity: sha512-yuqZkC4g1DDXXIRDTEFTW//+qe6QBaLG15lXteNYtdKvdkJNVmgWw9Veh1FIMtyGI7i84gw58hDHauoihfGrbw==}
+    dev: false
 
   /@fuel-bridge/solidity-contracts@0.0.2-next-9ebbea2(ethers@5.7.2)(hardhat@2.13.0):
     resolution: {integrity: sha512-NC1wCDnCLxp64ZH7tsQo+uuygubScdtG+n6ok3iIl+NlR5805ZsV5MsGELkqxnpeUPDjWVwU5P37aGdaB9IPaA==}
