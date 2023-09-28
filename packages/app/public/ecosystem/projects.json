@@ -55,15 +55,6 @@
   },
   {
     "isLive": false,
-    "name": "Capitalist Pigs",
-    "url": "https://capitalistpi.gs/",
-    "tags": ["DeFi", "Gaming", "NFTs"],
-    "description": "",
-    "github": "",
-    "image": ""
-  },
-  {
-    "isLive": false,
     "name": "Composability Labs (Swaylend)",
     "url": "https://github.com/compolabs",
     "tags": ["DEX (Orderbook)", "DeFi", "Infrastructure Tooling or Platform"],
