@@ -1,3 +1,4 @@
+import { fungibleTokenABI } from '@fuel-bridge/fungible-token';
 import type { FuelWalletLocked } from '@fuel-wallet/sdk';
 import type { BN, MessageProof } from 'fuels';
 import {
@@ -8,22 +9,30 @@ import {
   ZeroBytes32,
   getReceiptsMessageOut,
   getTransactionsSummaries,
+  BaseAssetId,
+  Contract,
+  TransactionStatus,
 } from 'fuels';
 import type { WalletClient } from 'viem';
 import type { PublicClient as EthPublicClient } from 'wagmi';
 import { VITE_ETH_FUEL_MESSAGE_PORTAL } from '~/config';
+import type { BridgeAsset } from '~/systems/Bridge';
 
 import { FUEL_MESSAGE_PORTAL } from '../../eth/contracts/FuelMessagePortal';
 import { EthConnectorService } from '../../eth/services';
+import { parseEthAddressToFuel } from '../../eth/utils/address';
 import { createRelayMessageParams } from '../../eth/utils/relayMessage';
-import { getBlock } from '../utils';
+import { getBlock, getTokenId } from '../utils';
 
 export type TxFuelToEthInputs = {
-  create: {
+  startBase: {
     amount?: BN;
     fuelWallet?: FuelWalletLocked;
     ethAddress?: string;
   };
+  startFungibleToken: {
+    fuelAsset?: BridgeAsset;
+  } & TxFuelToEthInputs['startBase'];
   waitTxResult: {
     fuelTxId: string;
     fuelProvider?: FuelProvider;
@@ -63,7 +72,7 @@ export type TxFuelToEthInputs = {
 };
 
 export class TxFuelToEthService {
-  static async create(input: TxFuelToEthInputs['create']) {
+  static assertStartBase(input: TxFuelToEthInputs['startBase']) {
     if (!input?.fuelWallet) {
       throw new Error('Need to connect Fuel Wallet');
     }
@@ -73,20 +82,85 @@ export class TxFuelToEthService {
     if (!input?.ethAddress) {
       throw new Error('Need ETH address to send');
     }
+  }
+
+  static assertStartFungibleToken(
+    input: TxFuelToEthInputs['startFungibleToken']
+  ) {
+    TxFuelToEthService.assertStartBase(input);
+    if (!input?.fuelAsset?.address) {
+      throw new Error('Need Fuel asset');
+    }
+  }
+
+  static async start(input: TxFuelToEthInputs['startFungibleToken']) {
+    if (input?.fuelAsset?.address !== BaseAssetId) {
+      return TxFuelToEthService.startFungibleToken(input);
+    }
+
+    return TxFuelToEthService.startBase(input);
+  }
+
+  static async startBase(input: TxFuelToEthInputs['startBase']) {
+    TxFuelToEthService.assertStartBase(input);
 
     const { amount, fuelWallet, ethAddress } = input;
-    const gasLimit = (await fuelWallet.provider.getChain()).consensusParameters
-      .maxGasPerTx;
-    const txFuel = await fuelWallet.withdrawToBaseLayer(
-      FuelAddress.fromString(ethAddress),
-      amount,
-      // TODO: remove this once fuel-core is fixed (max_gas considering metered_bytes as well)
-      {
-        gasLimit: gasLimit.sub(10_000).toNumber(),
-      }
-    );
 
-    return txFuel.id;
+    if (fuelWallet && ethAddress && amount) {
+      const { maxGasPerTx } = fuelWallet.provider.getGasConfig();
+
+      const txFuel = await fuelWallet.withdrawToBaseLayer(
+        FuelAddress.fromString(ethAddress),
+        amount,
+        // TODO: remove this once fuel-core is fixed (max_gas considering metered_bytes as well)
+        {
+          gasLimit: maxGasPerTx.sub(10_000).toNumber(),
+        }
+      );
+
+      return txFuel.id;
+    }
+  }
+
+  static async startFungibleToken(
+    input: TxFuelToEthInputs['startFungibleToken']
+  ) {
+    TxFuelToEthService.assertStartFungibleToken(input);
+
+    const { amount, fuelWallet, ethAddress, fuelAsset } = input;
+
+    if (fuelAsset?.address && fuelWallet && amount) {
+      const ethAddressInFuel = parseEthAddressToFuel(ethAddress);
+      const fungibleToken = new Contract(
+        fuelAsset.address,
+        fungibleTokenABI,
+        fuelWallet
+      );
+      const fuelTestTokenId = getTokenId(fungibleToken);
+      const { maxGasPerTx, minGasPrice } = fuelWallet.provider.getGasConfig();
+      const withdrawScope = fungibleToken.functions
+        .withdraw(ethAddressInFuel)
+        .callParams({
+          forward: {
+            amount: bn.parseUnits(amount.format(), fuelAsset.decimals),
+            assetId: fuelTestTokenId,
+          },
+        })
+        .txParams({
+          gasPrice: minGasPrice,
+          // TODO: remove this once fuel-core is fixed (max_gas considering metered_bytes as well)
+          gasLimit: maxGasPerTx.sub(10_000).toNumber(),
+        });
+
+      const fWithdrawTx = await withdrawScope.call();
+      const fWithdrawTxResult = fWithdrawTx.transactionResult;
+      if (fWithdrawTxResult.status !== TransactionStatus.success) {
+        console.log(fWithdrawTxResult);
+        throw new Error('Failed to withdraw tokens to Ethereum');
+      }
+
+      return fWithdrawTxResult.id;
+    }
   }
 
   static async waitTxResult(input: TxFuelToEthInputs['waitTxResult']) {

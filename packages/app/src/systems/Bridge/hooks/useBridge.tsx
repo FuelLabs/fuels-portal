@@ -94,7 +94,11 @@ export function useBridge() {
     balance: fuelBalance,
     wallet: fuelWallet,
     asset: fuelAsset,
-  } = useFuelAccountConnection();
+  } = useFuelAccountConnection({
+    erc20Address: assetAddress?.startsWith('0x')
+      ? (assetAddress as `0x${string}`)
+      : undefined,
+  });
 
   const isDeposit = isFuelChain(toNetwork);
   const isWithdraw = isFuelChain(fromNetwork);
@@ -190,18 +194,6 @@ export function useBridge() {
     return false;
   }
 
-  function openAssetsDialog(network?: SupportedChain) {
-    if (isEthChain(network)) {
-      return store.openEthAssetsDialog();
-    }
-
-    if (isFuelChain(network)) {
-      // TODO: implement it when include withdraw from ERC-20 token
-    }
-
-    return undefined;
-  }
-
   function getAsset(network?: SupportedChain) {
     if (isEthChain(network)) {
       return ethAsset;
@@ -232,7 +224,7 @@ export function useBridge() {
       connectTo: () => connectNetwork(toNetwork),
       changeAssetAmount: store.changeAssetAmount,
       changeAssetAddress: store.changeAssetAddress,
-      openAssetsDialog: () => openAssetsDialog(fromNetwork),
+      openAssetsDialog: store.openEthAssetsDialog,
     },
     fuelAddress,
     ethAddress,

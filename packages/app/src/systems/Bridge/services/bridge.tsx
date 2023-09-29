@@ -31,7 +31,7 @@ export type PossibleBridgeInputs = {
   ethAsset?: BridgeAsset;
   fuelAsset?: BridgeAsset;
 } & Omit<TxEthToFuelInputs['startErc20'], 'amount'> &
-  Omit<TxFuelToEthInputs['create'], 'amount'>;
+  Omit<TxFuelToEthInputs['startFungibleToken'], 'amount'>;
 export type BridgeInputs = {
   bridge: FromToNetworks & PossibleBridgeInputs;
   fetchTxs: {
@@ -53,6 +53,7 @@ export class BridgeService {
       fuelWallet,
       ethAddress,
       ethAsset,
+      fuelAsset,
     } = input;
 
     if (!fromNetwork || !toNetwork) {
@@ -98,10 +99,11 @@ export class BridgeService {
     }
 
     if (isFuelChain(fromNetwork) && isEthChain(toNetwork)) {
-      const txId = await TxFuelToEthService.create({
+      const txId = await TxFuelToEthService.start({
         amount: assetAmount,
         fuelWallet,
         ethAddress,
+        fuelAsset,
       });
 
       if (txId) {

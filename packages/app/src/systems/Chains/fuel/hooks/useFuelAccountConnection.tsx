@@ -8,14 +8,20 @@ import {
   useConnector,
   useFuel,
 } from '@fuel-wallet/react';
-import { Address } from 'fuels';
+import { Address, BaseAssetId } from 'fuels';
 import { useMemo } from 'react';
+import { VITE_ETH_ERC20, VITE_FUEL_FUNGIBLE_TOKEN_ID } from '~/config';
 import { store } from '~/store';
 
-import { ETH_SYMBOL, EthTxCache, ethLogoSrc } from '../../eth';
-import { FUEL_UNITS, FuelTxCache } from '../utils';
+import { EthTxCache, isSameEthAddress } from '../../eth';
+import { FUEL_ASSETS } from '../utils/assets';
+import { FuelTxCache } from '../utils/txCache';
 
-export const useFuelAccountConnection = () => {
+export const useFuelAccountConnection = (props?: {
+  erc20Address?: `0x${string}`;
+}) => {
+  const { erc20Address } = props || {};
+
   const { fuel } = useFuel();
   const { account } = useAccount();
   const { balance } = useBalance({ address: account || '' });
@@ -25,16 +31,19 @@ export const useFuelAccountConnection = () => {
   const { provider } = useProvider();
   const { wallet } = useWallet({ address: account || '' });
 
-  // TODO: replace here when we support multiple assets (ERC-20)
-  const asset = {
-    // TODO: replace with ETH_ASSET_ID from asset-list package after this task gets done
-    // https://linear.app/fuel-network/issue/FRO-144/make-asset-list-package-public-and-publish-in-npm
-    address:
-      '0x0000000000000000000000000000000000000000000000000000000000000000',
-    decimals: FUEL_UNITS,
-    symbol: ETH_SYMBOL,
-    image: ethLogoSrc,
-  };
+  // TODO: remove this workaround when we refactor assets to use package @fuels/assets
+  // https://linear.app/fuel-network/issue/FRO-144/make-asset-list-package-public-and-publish-in-npm
+  const asset = useMemo(() => {
+    if (!erc20Address)
+      return FUEL_ASSETS.find((asset) => asset.address === BaseAssetId);
+
+    if (isSameEthAddress(erc20Address, VITE_ETH_ERC20))
+      return FUEL_ASSETS.find(
+        (asset) => asset.address === VITE_FUEL_FUNGIBLE_TOKEN_ID
+      );
+
+    return undefined;
+  }, [erc20Address]);
 
   const address = useMemo(
     () => (account ? Address.fromString(account) : undefined),

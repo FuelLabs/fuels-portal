@@ -1,12 +1,19 @@
-import { fromTai64ToUnix, getReceiptsMessageOut } from 'fuels';
+import {
+  BaseAssetId,
+  ReceiptType,
+  fromTai64ToUnix,
+  getReceiptsMessageOut,
+  hexlify,
+} from 'fuels';
 import { useMemo } from 'react';
+import { VITE_ETH_ERC20, VITE_FUEL_FUNGIBLE_TOKEN_ID } from '~/config';
 import { store, Services } from '~/store';
 import type { BridgeAsset, BridgeTxsMachineState } from '~/systems/Bridge';
 
+import { isSameEthAddress, parseFuelAddressToEth } from '../..';
 import { useEthAccountConnection } from '../../eth/hooks';
-import { ETH_SYMBOL } from '../../eth/utils/chain';
-import { ethLogoSrc } from '../../eth/utils/logo';
 import type { TxFuelToEthMachineState } from '../machines';
+import { FUEL_ASSETS } from '../utils/assets';
 
 const bridgeTxsSelectors = {
   txFuelToEth: (txId?: string) => (state: BridgeTxsMachineState) => {
@@ -103,23 +110,52 @@ const txFuelToEthSelectors = {
     const fuelTxResult = state.context.fuelTxResult;
     return fuelTxResult;
   },
-  asset: (state: TxFuelToEthMachineState) => {
+  asset: (state: TxFuelToEthMachineState): BridgeAsset => {
     const fuelTxResult = state.context.fuelTxResult;
 
     const messageOutReceipt = getReceiptsMessageOut(
       fuelTxResult?.receipts || []
     )[0];
 
-    const amountSent = messageOutReceipt?.amount;
-    const asset: BridgeAsset = {
-      amount: amountSent?.format({
-        precision: 9,
-      }),
-      image: ethLogoSrc,
-      symbol: ETH_SYMBOL,
-    };
+    if (messageOutReceipt) {
+      const burnReceipt = fuelTxResult?.receipts?.find(
+        (receipt) => receipt.type === ReceiptType.Burn
+      );
+      if (burnReceipt) {
+        const receipt = burnReceipt as Extract<
+          typeof burnReceipt,
+          { type: ReceiptType.Burn }
+        >;
+        const amount = receipt.val;
+        const ethAssetId = messageOutReceipt.data
+          ? parseFuelAddressToEth(
+              hexlify(messageOutReceipt.data).replace('0x', '').slice(72, 136)
+            )
+          : undefined;
 
-    return asset;
+        if (isSameEthAddress(ethAssetId, VITE_ETH_ERC20)) {
+          const asset = FUEL_ASSETS.find(
+            (asset) => asset.address === VITE_FUEL_FUNGIBLE_TOKEN_ID
+          );
+
+          return {
+            ...asset,
+            amount: amount.format({
+              precision: asset?.decimals,
+            }),
+          };
+        }
+      }
+    }
+
+    const asset = FUEL_ASSETS.find((asset) => asset.address === BaseAssetId);
+
+    return {
+      ...asset,
+      amount: messageOutReceipt?.amount?.format({
+        precision: asset?.decimals,
+      }),
+    };
   },
 };
 
