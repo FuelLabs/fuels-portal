@@ -13,5 +13,8 @@
   },
   "[prisma]": {
     "editor.defaultFormatter": "ms-vsliveshare.vsliveshare"
+  },
+  "[handlebars]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
   }
 }

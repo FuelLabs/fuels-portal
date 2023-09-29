@@ -13,6 +13,8 @@ import { FUEL_MESSAGE_PORTAL } from '~/contracts/FuelMessagePortal';
 
 import MailService from '../services/mailService';
 
+import { shortAddress } from './address';
+
 export const handleNewEthBlock = async (
   prisma: PrismaClient,
   fuelProviderUrl: string,
@@ -150,13 +152,18 @@ export const handleNewEthBlock = async (
             dbTransaction &&
             !dbTransaction.emailSent
           ) {
-            await mailService.sendMail({
-              from: process.env.FROM_EMAIL,
-              to: dbTransaction.address.withdrawer.email,
-              subject: 'Withdraw Notification',
-              text: `Your transaction ${w.tranasction.id} is ready for withdrawal`,
-              html: `<p>Your transaction ${w.tranasction.id} is ready for withdrawal<p>`,
-            });
+            await mailService.sendMail(
+              {
+                from: process.env.FROM_EMAIL,
+                to: dbTransaction.address.withdrawer.email,
+                subject: 'Withdraw Notification',
+              },
+              {
+                address: shortAddress(dbTransaction.address.address),
+                transactionId: shortAddress(w.tranasction.id),
+                completeWithdrawLink: process.env.WITHDRAW_LINK!,
+              }
+            );
             // Update the email is sent
             await prisma.transaction.update({
               where: { transactionId: dbTransaction.transactionId },
