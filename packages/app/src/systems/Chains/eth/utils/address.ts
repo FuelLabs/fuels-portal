@@ -6,7 +6,7 @@ export function parseEthAddressToFuel(address?: string) {
 }
 
 export function parseFuelAddressToEth(address?: string) {
-  return bn(address).toHex(20) as `0x${string};`;
+  return bn(address, 'hex').toHex(20) as `0x${string};`;
 }
 
 export function isErc20Address(address?: string) {

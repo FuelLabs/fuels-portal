@@ -94,6 +94,7 @@ export const bridgeMachine = createMachine(
               ethPublicClient: ev.input.ethPublicClient,
               fuelWallet: ev.input.fuelWallet,
               ethAddress: ev.input.ethAddress,
+              fuelAsset: ev.input.fuelAsset,
             }),
           },
           onDone: [

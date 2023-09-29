@@ -11,7 +11,7 @@ import { FetchMachine } from '~/systems/Core/machines';
 
 import type { TxFuelToEthInputs } from '../services';
 import { TxFuelToEthService } from '../services';
-import { FuelTxCache } from '../utils';
+import { FuelTxCache } from '../utils/txCache';
 
 type MachineContext = {
   fuelProvider?: FuelProvider;
