@@ -118,7 +118,7 @@ export const txFuelToEthMachine = createMachine(
               ],
             },
             after: {
-              10000: {
+              5000: {
                 target: 'waitingFuelTxResult',
               },
             },
@@ -292,6 +292,7 @@ export const txFuelToEthMachine = createMachine(
                       onDone: [
                         {
                           cond: FetchMachine.hasError,
+                          target: 'waitingEthWalletApproval',
                         },
                         {
                           actions: ['assignTxHashMessageRelayed'],
@@ -299,11 +300,6 @@ export const txFuelToEthMachine = createMachine(
                           target: 'waitingReceive',
                         },
                       ],
-                    },
-                    after: {
-                      10000: {
-                        target: 'relayingMessageFromFuelBlock',
-                      },
                     },
                   },
                   waitingReceive: {
