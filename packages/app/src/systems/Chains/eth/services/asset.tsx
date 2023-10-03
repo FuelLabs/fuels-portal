@@ -73,8 +73,6 @@ export class AssetService {
       address: address as `0x${string}`,
     });
 
-    console.log(`erc20`, erc20);
-
     const erc20MintHash = await erc20.write.mint(
       [walletClient.account?.address, bn.parseUnits('1000000', 18)],
       {
@@ -82,10 +80,8 @@ export class AssetService {
       }
     );
 
-    const receipt = await publicClient.waitForTransactionReceipt({
+    await publicClient.waitForTransactionReceipt({
       hash: erc20MintHash,
     });
-
-    console.log(`receipt`, receipt);
   }
 }

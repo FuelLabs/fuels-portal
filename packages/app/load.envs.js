@@ -53,8 +53,9 @@ function getBridgeSolidityContracts() {
   if (process.env.VITE_ETH_CHAIN === 'sepolia') {
     return {
       FuelChainState: '0xbe7aB12653e705642eb42EF375fd0d35Cfc45b03',
-      FuelMessagePortal: '0x03f2901Db5723639978deBed3aBA66d4EA03aF73',
-      FuelERC20Gateway: '0x0C817d089c693Ea435a95c52409984F45847F53c',
+      FuelMessagePortal: '0x4Fb47B49389FBad9d3c9CB830cF4cfa5EA1ECCeA',
+      FuelERC20Gateway: '0x3e004c820426850798BBdAF817063a8045714553',
+      FuelERC721Gateway: '0x08a9D33975f78D6FBd45aCedBfdaD7526EECf66d',
     };
   }
 }

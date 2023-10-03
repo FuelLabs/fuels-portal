@@ -273,7 +273,7 @@ export class TxEthToFuelService {
           sender,
           recipient: FuelAddress.fromB256(recipient),
           assetId: isErc20Deposit
-            ? decodeMessageSentData.erc20Deposit(data).tokenId
+            ? decodeMessageSentData.erc20Deposit(data).tokenAddress
             : undefined,
         };
       } catch (_) {
@@ -291,10 +291,10 @@ export class TxEthToFuelService {
           topics: receipt.logs[i].topics,
         }) as unknown as { args: FuelERC20GatewayArgs['Deposit'] };
 
-        if (isErc20Address(depositEvent.args.tokenId)) {
-          const { amount, tokenId } = depositEvent.args;
+        if (isErc20Address(depositEvent.args.tokenAddress)) {
+          const { amount, tokenAddress } = depositEvent.args;
           const erc20Token = await fetchToken({
-            address: tokenId,
+            address: tokenAddress,
           });
 
           receiptsInfo = {

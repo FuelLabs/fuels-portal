@@ -4,8 +4,8 @@ export type FuelERC20GatewayArgs = {
   Deposit: {
     amount: bigint;
     sender: `0x${string}`;
-    tokenId: `0x${string}`;
-    fuelTokenId: `0x${string}`;
+    tokenAddress: `0x${string}`;
+    fuelContractId: `0x${string}`;
   };
 };
 
