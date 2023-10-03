@@ -252,8 +252,8 @@ export class TxFuelToEthService {
     }
 
     const { fuelTxId, fuelProvider, messageId, fuelBlockHashCommited } = input;
-
-    const withdrawMessageProof = await fuelProvider.getMessageProof(
+    const provider = await FuelProvider.create(fuelProvider.url);
+    const withdrawMessageProof = await provider.getMessageProof(
       fuelTxId,
       messageId,
       fuelBlockHashCommited
