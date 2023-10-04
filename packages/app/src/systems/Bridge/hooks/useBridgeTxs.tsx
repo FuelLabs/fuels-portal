@@ -30,7 +30,6 @@ export const useBridgeTxs = () => {
   useEffect(() => {
     if (!fuelProvider || !ethPublicClient || !fuelAddress) return;
 
-    console.log('calling fetch again');
     store.fetchTxs({ fuelProvider, ethPublicClient, fuelAddress });
   }, [fuelProvider?.url, ethPublicClient.chain.id, fuelAddress?.toAddress()]);
 
