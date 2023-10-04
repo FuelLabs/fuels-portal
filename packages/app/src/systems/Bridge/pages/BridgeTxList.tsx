@@ -37,7 +37,7 @@ export const BridgeTxList = () => {
       {shouldShowEmpty && <BridgeListEmpty />}
       {shouldShowList && (
         <CardList isClickable css={styles.cardList}>
-          {bridgeTxs.map((txDatum, index) => {
+          {bridgeTxs?.map((txDatum, index) => {
             if (
               isEthChain(txDatum.fromNetwork) &&
               isFuelChain(txDatum.toNetwork)
