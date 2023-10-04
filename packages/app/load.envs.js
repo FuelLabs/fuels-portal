@@ -34,7 +34,7 @@ function getBridgeTokenContracts() {
     return {
       ETH_ERC20: '0xC6387efAD0F184a90B34f397C3d6Fd63135ef790',
       FUEL_TokenContract:
-        '0x5ed7bee1e80a64e5163a1c93ff8a2bb806fdff3b7e97808f275c2ba7e3faa2cd',
+        '0x8b1264d86b349f54fb9fb3643cd16cc218fba91c8669628b9fd261a6d4278e0a',
     };
   }
   return {};
