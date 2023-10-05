@@ -12,7 +12,6 @@ import {
 } from '~/config';
 import type { Asset } from '~/systems/Assets/services/asset';
 
-import { FUEL_UNITS } from '../../fuel/utils/chain';
 import { relayCommonMessage } from '../../fuel/utils/relayMessage';
 import type { FuelERC20GatewayArgs } from '../contracts/FuelErc20Gateway';
 import { FUEL_ERC_20_GATEWAY } from '../contracts/FuelErc20Gateway';
@@ -65,7 +64,7 @@ export type TxEthToFuelInputs = {
 
 export type GetReceiptsInfoReturn = {
   erc20Token?: FetchTokenResult;
-  amount?: string;
+  amount?: BN;
   sender?: string;
   recipient?: FuelAddress;
   nonce?: BN;
@@ -270,7 +269,7 @@ export class TxEthToFuelService {
         receiptsInfo = {
           ...receiptsInfo,
           nonce: bn(nonce.toString()),
-          amount: bn(amount.toString()).format({ precision: FUEL_UNITS }),
+          amount: bn(amount.toString()),
           sender,
           recipient: FuelAddress.fromB256(recipient),
           assetId: isErc20Deposit
@@ -300,10 +299,7 @@ export class TxEthToFuelService {
 
           receiptsInfo = {
             ...receiptsInfo,
-            amount: bn(amount.toString()).format({
-              units: erc20Token.decimals,
-              precision: FUEL_UNITS,
-            }),
+            amount: bn(amount.toString()),
             erc20Token,
           };
         }

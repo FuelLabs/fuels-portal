@@ -28,7 +28,7 @@ type MachineContext = {
   ethPublicClient?: PublicClient;
   ethDepositBlockHeight?: string;
   erc20Token?: FetchTokenResult;
-  amount?: string;
+  amount?: BN;
   fuelRecipient?: FuelAddress;
   blockDate?: Date;
   assetId?: string;

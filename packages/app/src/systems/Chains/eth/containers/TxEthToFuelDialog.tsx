@@ -16,6 +16,7 @@ export function TxEthToFuelDialog() {
     shouldShowConfirmButton,
     status,
     isLoadingReceipts,
+    amount,
   } = useTxEthToFuel({
     id: metadata.txId,
   });
@@ -38,6 +39,7 @@ export function TxEthToFuelDialog() {
             isDeposit={true}
             asset={asset}
             isLoading={isLoadingReceipts}
+            amount={amount}
           />
         </Box.Stack>
       </Dialog.Description>

@@ -1,12 +1,13 @@
 import { useMemo } from 'react';
 import { store, Services } from '~/store';
+import { getAssetNetwork } from '~/systems/Assets/utils';
 import type { BridgeTxsMachineState } from '~/systems/Bridge';
 
+import { useAsset } from '../../../Assets/hooks/useAsset';
+import { FUEL_CHAIN } from '../../config';
 import { useFuelAccountConnection } from '../../fuel';
 import type { TxEthToFuelMachineState } from '../machines';
 import { isErc20Address, parseFuelAddressToEth } from '../utils';
-
-import { useAsset } from '../../../Assets/hooks/useAsset';
 
 const bridgeTxsSelectors = {
   txEthToFuel: (txId?: `0x${string}`) => (state: BridgeTxsMachineState) => {
@@ -158,16 +159,16 @@ export function useTxEthToFuel({ id }: { id: string }) {
   }, [txEthToFuelState]);
 
   const { asset } = useAsset({
-    address: assetId ? parseFuelAddressToEth(assetId) : '',
+    ethTokenId: assetId ? parseFuelAddressToEth(assetId) : '',
   });
-  const assetAmount = useMemo(() => {
-    if (!asset || !amount) return undefined;
+  const assetFuelNetwork = asset
+    ? getAssetNetwork({ asset, chainId: FUEL_CHAIN.id, networkType: 'fuel' })
+    : undefined;
+  const formattedAmount = amount?.format({
+    precision: assetFuelNetwork?.decimals,
+  });
 
-    return {
-      ...asset,
-      amount,
-    };
-  }, [asset, amount]);
+  console.log(`formattedAmount`, formattedAmount);
 
   function relayMessageToFuel() {
     if (!ethTxId || !fuelWallet) return;
@@ -195,8 +196,8 @@ export function useTxEthToFuel({ id }: { id: string }) {
     steps,
     status,
     shouldShowConfirmButton,
-    amount,
-    asset: assetAmount,
+    amount: formattedAmount,
+    asset,
     isLoadingReceipts,
   };
 }

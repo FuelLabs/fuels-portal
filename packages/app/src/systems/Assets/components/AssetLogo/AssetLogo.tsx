@@ -43,8 +43,6 @@ export const AssetLogo = ({
 
   if (!image && !address) return null;
 
-  console.log(`address`, address);
-
   return (
     <>
       {image ? (
