@@ -1,4 +1,4 @@
-import { useAssets } from './useAssets';
+import { useAssets } from '../../../Assets/hooks/useAssets';
 import { useEthAccountConnection } from './useEthAccountConnection';
 
 export const useFaucetErc20 = () => {

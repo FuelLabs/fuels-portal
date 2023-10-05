@@ -2,20 +2,20 @@ import { cssObj } from '@fuel-ui/css';
 import { CardList } from '@fuel-ui/react';
 import { ethLogoSrc } from '~/systems/Chains';
 
-import { EthAssetCard } from './EthAssetCard';
+import { AssetCard } from './AssetCard';
 
 export default {
-  component: EthAssetCard,
-  title: 'EthAssetCard',
+  component: AssetCard,
+  title: 'AssetCard',
   parameters: {
     layout: 'fullscreen',
   },
 };
-
+// TODO: fix stories
 export const Usage = () => {
   return (
     <CardList css={styles.storybook}>
-      <EthAssetCard imageSrc={ethLogoSrc} name="ETH" />
+      <AssetCard imageSrc={ethLogoSrc} name="ETH" />
     </CardList>
   );
 };
@@ -23,10 +23,7 @@ export const Usage = () => {
 export const AvatarUsage = () => {
   return (
     <CardList css={styles.storybook}>
-      <EthAssetCard
-        name="ETH"
-        hash="0x15db4a4d9e35fa8c0b5f92b13924d1610c5d618e"
-      />
+      <AssetCard name="ETH" hash="0x15db4a4d9e35fa8c0b5f92b13924d1610c5d618e" />
     </CardList>
   );
 };
@@ -34,7 +31,7 @@ export const AvatarUsage = () => {
 export const OnPress = () => {
   return (
     <CardList css={styles.storybook}>
-      <EthAssetCard
+      <AssetCard
         imageSrc={ethLogoSrc}
         name="ETH"
         onPress={() => {
@@ -49,7 +46,7 @@ export const OnPress = () => {
 export const OnAdd = () => {
   return (
     <CardList css={styles.storybook}>
-      <EthAssetCard
+      <AssetCard
         imageSrc={ethLogoSrc}
         name="ETH"
         onAdd={() => {
@@ -64,7 +61,7 @@ export const OnAdd = () => {
 export const OnRemove = () => {
   return (
     <CardList css={styles.storybook}>
-      <EthAssetCard
+      <AssetCard
         imageSrc={ethLogoSrc}
         name="ETH"
         onRemove={() => {
@@ -79,7 +76,7 @@ export const OnRemove = () => {
 export const OnFaucet = () => {
   return (
     <CardList css={styles.storybook}>
-      <EthAssetCard
+      <AssetCard
         imageSrc={ethLogoSrc}
         name="ETH"
         onFaucet={() => {
@@ -94,7 +91,7 @@ export const OnFaucet = () => {
 export const OnRemoveDisabled = () => {
   return (
     <CardList css={styles.storybook}>
-      <EthAssetCard
+      <AssetCard
         imageSrc={ethLogoSrc}
         name="ETH"
         onRemove={() => {

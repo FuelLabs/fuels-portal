@@ -13,11 +13,14 @@ import { useState } from 'react';
 import { Controller, useWatch } from 'react-hook-form';
 import { VITE_ETH_ERC20 } from '~/config';
 import { useBridge } from '~/systems/Bridge/hooks';
+import { ETH_CHAIN } from '~/systems/Chains';
 
-import { EthAssetCard } from '../components';
-import { useAssets, useFaucetErc20, useSetAddressForm } from '../hooks';
+import { useFaucetErc20, useSetAddressForm } from '../../Chains/eth/hooks';
+import { AssetCard } from '../components/AssetCard';
+import { useAssets } from '../hooks';
+import { getAssetNetwork } from '../utils';
 
-export function EthAssetsDialog() {
+export function AssetsDialog() {
   const { handlers: bridgeHandlers } = useBridge();
   const [editable, setEditable] = useState(false);
 
@@ -27,7 +30,6 @@ export function EthAssetsDialog() {
 
   const {
     assets,
-    handlers,
     isLoading,
     isLoadingFaucet,
     isSearchResultsEmpty,
@@ -66,7 +68,7 @@ export function EthAssetsDialog() {
                   <Input size="md" css={styles.headerInput}>
                     <Input.Field
                       {...props.field}
-                      placeholder="Search or paste custom address"
+                      placeholder="Type here to search"
                     />
                     {isLoading && (
                       <Input.ElementRight>
@@ -85,30 +87,26 @@ export function EthAssetsDialog() {
         <CardList isClickable={!editable}>
           {showAssetList &&
             assets.map((asset, i) => {
-              const isEth = asset.address === undefined;
-              const isFaucetable = asset.address === VITE_ETH_ERC20;
+              const ethAssetNetwork = getAssetNetwork({
+                asset,
+                chainId: ETH_CHAIN.id,
+                networkType: 'ethereum',
+              });
+
+              const isFaucetable = ethAssetNetwork.address === VITE_ETH_ERC20;
 
               return (
-                <EthAssetCard
-                  key={`${asset.address || ''}${asset.symbol || ''}${String(
-                    i
-                  )}`}
-                  imageSrc={asset.image}
-                  hash={asset.address}
-                  name={asset.symbol || ''}
+                <AssetCard
+                  key={`${ethAssetNetwork.address || ''}${
+                    asset.symbol || ''
+                  }${String(i)}`}
+                  asset={asset}
                   onPress={
                     !editable
                       ? () => {
                           bridgeHandlers.changeAssetAddress({
-                            assetAddress: asset.address,
+                            asset,
                           });
-                        }
-                      : undefined
-                  }
-                  onRemove={
-                    editable
-                      ? () => {
-                          handlers.removeAsset({ address: asset.address });
                         }
                       : undefined
                   }
@@ -116,18 +114,12 @@ export function EthAssetsDialog() {
                     isFaucetable && faucetErc20
                       ? () => {
                           faucetErc20({
-                            address: asset.address,
+                            address: ethAssetNetwork.address,
                           });
                         }
                       : undefined
                   }
                   isFaucetLoading={isFaucetable && isLoadingFaucet}
-                  isRemoveDisabled={isEth}
-                  removeToolTip={
-                    isEth
-                      ? 'ETH is a native asset.  It can not be removed'
-                      : undefined
-                  }
                 />
               );
             })}

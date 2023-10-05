@@ -10,7 +10,7 @@ import {
   VITE_ETH_FUEL_MESSAGE_PORTAL,
   VITE_FUEL_FUNGIBLE_TOKEN_ID,
 } from '~/config';
-import type { BridgeAsset } from '~/systems/Bridge';
+import type { Asset } from '~/systems/Assets/services/asset';
 
 import { FUEL_UNITS } from '../../fuel/utils/chain';
 import { relayCommonMessage } from '../../fuel/utils/relayMessage';
@@ -33,12 +33,12 @@ export type TxEthToFuelInputs = {
     ethPublicClient?: PublicClient;
   };
   startErc20: {
-    ethAsset?: BridgeAsset;
+    ethAssetAddress?: string;
   } & TxEthToFuelInputs['startEth'];
   createErc20Contract: {
     ethWalletClient?: WalletClient;
     ethPublicClient?: PublicClient;
-    ethAsset?: BridgeAsset;
+    asset?: Asset;
   };
   getReceiptsInfo: {
     ethTxId?: `0x${string}`;
@@ -89,19 +89,20 @@ export class TxEthToFuelService {
 
   static assertStartErc20(input: TxEthToFuelInputs['startErc20']) {
     TxEthToFuelService.assertStartEth(input);
-    if (!input?.ethAsset) {
-      throw new Error('Need ETH asset');
+    if (!input?.ethAssetAddress) {
+      throw new Error('Need asset to send');
     }
+
     if (
-      !input?.ethAsset?.address?.startsWith('0x') ||
-      !isErc20Address(input.ethAsset.address)
+      !input?.ethAssetAddress.startsWith('0x') ||
+      !isErc20Address(input.ethAssetAddress)
     ) {
-      throw new Error('Not valid ETH asset');
+      throw new Error('Not valid asset');
     }
   }
 
   static async start(input: TxEthToFuelInputs['startErc20']) {
-    if (isErc20Address(input?.ethAsset?.address)) {
+    if (isErc20Address(input?.ethAssetAddress)) {
       return TxEthToFuelService.startErc20(input);
     }
 
@@ -148,18 +149,18 @@ export class TxEthToFuelService {
         ethWalletClient,
         fuelAddress,
         amount,
-        ethAsset,
+        ethAssetAddress,
         ethPublicClient,
       } = input;
 
       if (
-        isErc20Address(ethAsset?.address) &&
+        isErc20Address(ethAssetAddress) &&
         ethWalletClient &&
         fuelAddress &&
         ethPublicClient
       ) {
         const erc20Token = EthConnectorService.connectToErc20({
-          address: ethAsset?.address as `0x${string}`,
+          address: ethAssetAddress as `0x${string}`,
           walletClient: ethWalletClient,
         });
 
@@ -190,7 +191,7 @@ export class TxEthToFuelService {
         });
         const depositTxHash = await fuelErc20Gateway.write.deposit([
           fuelAddress.toB256() as `0x${string}`,
-          ethAsset?.address,
+          ethAssetAddress,
           FuelAddress.fromString(VITE_FUEL_FUNGIBLE_TOKEN_ID).toB256(),
           amount,
         ]);

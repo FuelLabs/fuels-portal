@@ -6,7 +6,7 @@ import { useFuelAccountConnection } from '../../fuel';
 import type { TxEthToFuelMachineState } from '../machines';
 import { isErc20Address, parseFuelAddressToEth } from '../utils';
 
-import { useAsset } from './useAsset';
+import { useAsset } from '../../../Assets/hooks/useAsset';
 
 const bridgeTxsSelectors = {
   txEthToFuel: (txId?: `0x${string}`) => (state: BridgeTxsMachineState) => {

@@ -1,1 +1,1 @@
-export * from './EthAssetCard';
+export * from '../../../Assets/components/AssetCard';

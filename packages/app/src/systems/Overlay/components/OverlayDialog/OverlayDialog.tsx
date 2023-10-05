@@ -1,7 +1,7 @@
 import { cssObj } from '@fuel-ui/css';
 import { Dialog } from '@fuel-ui/react';
 import {
-  EthAssetsDialog,
+  AssetsDialog,
   TxEthToFuelDialog,
   TxFuelToEthDialog,
   AddAssetFormDialog,
@@ -23,7 +23,7 @@ export function OverlayDialog() {
       <Dialog.Content css={styles.content}>
         {overlay.is('tx.fromEth.toFuel') && <TxEthToFuelDialog />}
         {overlay.is('tx.fromFuel.toEth') && <TxFuelToEthDialog />}
-        {overlay.is('eth.assets') && <EthAssetsDialog />}
+        {overlay.is('eth.assets') && <AssetsDialog />}
         {overlay.is('eth.assets.add') && <AddAssetFormDialog />}
       </Dialog.Content>
     </Dialog>

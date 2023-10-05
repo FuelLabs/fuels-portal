@@ -3,14 +3,15 @@ import type { BridgeMachine, BridgeTxsMachine } from '~/systems/Bridge';
 import type { EcosystemMachine } from '~/systems/Ecosystem';
 import type { OverlayMachine } from '~/systems/Overlay';
 
-import type { EthAssetListMachine } from '../Chains';
+import type { AssetsMachine } from '../Assets/machines/assetsMachine';
+
 
 export enum Services {
   overlay = 'overlay',
   bridge = 'bridge',
   bridgeTxs = 'bridgeTxs',
   ecosystem = 'ecosystem',
-  ethAssetList = 'ethAssetList',
+  assets = 'assets',
 }
 
 export type StoreMachines = {
@@ -18,7 +19,7 @@ export type StoreMachines = {
   bridge: BridgeMachine;
   bridgeTxs: BridgeTxsMachine;
   ecosystem: EcosystemMachine;
-  ethAssetList: EthAssetListMachine;
+  assets: AssetsMachine;
 };
 
 export type Store = StoreClass<StoreMachines>;

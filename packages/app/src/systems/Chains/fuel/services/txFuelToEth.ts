@@ -1,5 +1,6 @@
 import { fungibleTokenABI } from '@fuel-bridge/fungible-token';
 import type { FuelWalletLocked } from '@fuel-wallet/sdk';
+import type { Fuel } from '@fuels/assets';
 import type { BN, MessageProof } from 'fuels';
 import {
   bn,
@@ -16,7 +17,6 @@ import {
 import type { WalletClient } from 'viem';
 import type { PublicClient as EthPublicClient } from 'wagmi';
 import { VITE_ETH_FUEL_MESSAGE_PORTAL } from '~/config';
-import type { BridgeAsset } from '~/systems/Bridge';
 
 import { FUEL_MESSAGE_PORTAL } from '../../eth/contracts/FuelMessagePortal';
 import { EthConnectorService } from '../../eth/services';
@@ -31,7 +31,7 @@ export type TxFuelToEthInputs = {
     ethAddress?: string;
   };
   startFungibleToken: {
-    fuelAsset?: BridgeAsset;
+    fuelAsset?: Fuel;
   } & TxFuelToEthInputs['startBase'];
   waitTxResult: {
     fuelTxId: string;
@@ -88,13 +88,13 @@ export class TxFuelToEthService {
     input: TxFuelToEthInputs['startFungibleToken']
   ) {
     TxFuelToEthService.assertStartBase(input);
-    if (!input?.fuelAsset?.address) {
+    if (!input?.fuelAsset?.assetId) {
       throw new Error('Need Fuel asset');
     }
   }
 
   static async start(input: TxFuelToEthInputs['startFungibleToken']) {
-    if (input?.fuelAsset?.address !== BaseAssetId) {
+    if (input?.fuelAsset?.assetId !== BaseAssetId) {
       return TxFuelToEthService.startFungibleToken(input);
     }
 
@@ -129,10 +129,10 @@ export class TxFuelToEthService {
 
     const { amount, fuelWallet, ethAddress, fuelAsset } = input;
 
-    if (fuelAsset?.address && fuelWallet && amount) {
+    if (fuelAsset?.assetId && fuelWallet && amount) {
       const ethAddressInFuel = parseEthAddressToFuel(ethAddress);
       const fungibleToken = new Contract(
-        fuelAsset.address,
+        fuelAsset.assetId,
         fungibleTokenABI,
         fuelWallet
       );

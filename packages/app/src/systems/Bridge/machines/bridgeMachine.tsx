@@ -2,6 +2,7 @@ import type { BN } from 'fuels';
 import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
 import { store } from '~/store';
+import type { Asset } from '~/systems/Assets/services/asset';
 import type { FromToNetworks } from '~/systems/Chains';
 import { FetchMachine } from '~/systems/Core/machines';
 
@@ -10,7 +11,7 @@ import type { BridgeInputs, PossibleBridgeInputs } from '../services';
 
 type MachineContext = {
   assetAmount?: BN;
-  assetAddress?: string;
+  asset?: Asset;
 } & Partial<FromToNetworks>;
 
 type MachineServices = {
@@ -36,8 +37,8 @@ export type BridgeMachineEvents =
       input: FromToNetworks;
     }
   | {
-      type: 'CHANGE_ASSET_ADDRESS';
-      input: { assetAddress?: string };
+      type: 'CHANGE_ASSET';
+      input: { asset?: Asset };
     }
   | {
       type: 'CHANGE_ASSET_AMOUNT';
@@ -69,8 +70,8 @@ export const bridgeMachine = createMachine(
           CHANGE_ASSET_AMOUNT: {
             actions: ['assignAssetAmount'],
           },
-          CHANGE_ASSET_ADDRESS: {
-            actions: ['assignAssetAddress', 'closeOverlay'],
+          CHANGE_ASSET: {
+            actions: ['assignAsset', 'closeOverlay'],
           },
           START_BRIDGING: {
             target: 'bridging',
@@ -89,7 +90,7 @@ export const bridgeMachine = createMachine(
               toNetwork: ctx.toNetwork,
               assetAmount: ctx.assetAmount,
               fuelAddress: ev.input.fuelAddress,
-              ethAsset: ev.input.ethAsset,
+              asset: ev.input.asset,
               ethWalletClient: ev.input.ethWalletClient,
               ethPublicClient: ev.input.ethPublicClient,
               fuelWallet: ev.input.fuelWallet,
@@ -122,8 +123,8 @@ export const bridgeMachine = createMachine(
       assignAssetAmount: assign({
         assetAmount: (_, ev) => ev.input.assetAmount,
       }),
-      assignAssetAddress: assign({
-        assetAddress: (_, ev) => ev.input.assetAddress,
+      assignAsset: assign({
+        asset: (_, ev) => ev.input.asset,
       }),
       clearAssetAmmount: assign({
         assetAmount: undefined,
