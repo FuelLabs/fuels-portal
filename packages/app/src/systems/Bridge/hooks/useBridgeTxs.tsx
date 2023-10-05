@@ -9,7 +9,7 @@ import type { BridgeTxsMachineState } from '../machines';
 
 const selectors = {
   bridgeTxs: (state: BridgeTxsMachineState) => {
-    return state.context.bridgeTxs || [];
+    return state.context.bridgeTxs;
   },
   isLoading: (state: BridgeTxsMachineState) => {
     return state.hasTag('isLoading');
@@ -31,14 +31,19 @@ export const useBridgeTxs = () => {
     if (!fuelProvider || !ethPublicClient || !fuelAddress) return;
 
     store.fetchTxs({ fuelProvider, ethPublicClient, fuelAddress });
-  }, [fuelProvider, ethPublicClient, fuelAddress]);
+  }, [fuelProvider?.url, ethPublicClient.chain.id, fuelAddress?.toAddress()]);
 
   return {
     bridgeTxs,
     isLoading,
     shouldShowNotConnected:
-      !(isConnected ?? hasWallet) && !isLoading && bridgeTxs.length === 0,
-    shouldShowEmpty: isConnected && !isLoading && bridgeTxs.length === 0,
-    shouldShowList: !isLoading && isConnected && (bridgeTxs.length || 0) > 0,
+      !(isConnected ?? hasWallet) &&
+      !isLoading &&
+      bridgeTxs &&
+      bridgeTxs.length === 0,
+    shouldShowEmpty:
+      isConnected && !isLoading && bridgeTxs && bridgeTxs.length === 0,
+    shouldShowList:
+      !isLoading && isConnected && ((bridgeTxs && bridgeTxs.length) || 0) > 0,
   };
 };
