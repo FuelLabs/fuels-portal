@@ -34,7 +34,7 @@ function getBridgeTokenContracts() {
     return {
       ETH_ERC20: '0xC6387efAD0F184a90B34f397C3d6Fd63135ef790',
       FUEL_TokenContract:
-        '0x5ed7bee1e80a64e5163a1c93ff8a2bb806fdff3b7e97808f275c2ba7e3faa2cd',
+        '0x70334f1a53724b25ebc733777224c86abd46995243831b3668936ce5beaef66d',
     };
   }
   return {};
@@ -54,7 +54,8 @@ function getBridgeSolidityContracts() {
     return {
       FuelChainState: '0xbe7aB12653e705642eb42EF375fd0d35Cfc45b03',
       FuelMessagePortal: '0x03f2901Db5723639978deBed3aBA66d4EA03aF73',
-      FuelERC20Gateway: '0x0C817d089c693Ea435a95c52409984F45847F53c',
+      FuelERC20Gateway: '0x07cf0FF4fdD5d73C4ea5E96bb2cFaa324A348269',
+      FuelERC721Gateway: '0x88Fb3447a32cF50B9f50c7a5695cbE78b1C236B1',
     };
   }
 }

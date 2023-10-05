@@ -23,10 +23,16 @@ async function main() {
     pk_eth_deployer: PK_ETH_WALLET,
   });
   const ETHToken = await getOrDeployECR20Contract(env);
-  const FuelToken = await getOrDeployFuelTokenContract(env, ETHToken, {
-    gasPrice: 1,
-    gasLimit: 1_000_000,
-  });
+  const FuelToken = await getOrDeployFuelTokenContract(
+    env,
+    ETHToken,
+    env.eth.fuelERC20Gateway,
+    {
+      gasPrice: 1,
+      gasLimit: 1_000_000,
+    },
+    9
+  );
   await startServer({
     ETH_ERC20: ETHToken.address,
     FUEL_TokenContract: FuelToken.id.toB256(),

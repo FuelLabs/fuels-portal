@@ -114,11 +114,11 @@ importers:
   docker/erc20-deployer/deployer:
     dependencies:
       '@fuel-bridge/solidity-contracts':
-        specifier: 0.1.1
-        version: 0.1.1(ethers@5.7.2)(hardhat@2.13.0)
+        specifier: 0.2.2
+        version: 0.2.2(chai@4.3.10)(ethers@5.7.2)(hardhat@2.13.0)
       '@fuel-bridge/test-utils':
-        specifier: 0.1.1
-        version: 0.1.1(ethers@5.7.2)(fuels@0.60.0)
+        specifier: 0.2.2
+        version: 0.2.2(ethers@5.7.2)(fuels@0.60.0)
       ethers:
         specifier: 5.7.2
         version: 5.7.2
@@ -154,14 +154,14 @@ importers:
         specifier: ^5.7.0
         version: 5.7.0
       '@fuel-bridge/fungible-token':
-        specifier: 0.1.1
-        version: 0.1.1
+        specifier: 0.2.2
+        version: 0.2.2
       '@fuel-bridge/message-predicates':
-        specifier: 0.1.1
-        version: 0.1.1
+        specifier: 0.2.2
+        version: 0.2.2
       '@fuel-bridge/solidity-contracts':
-        specifier: 0.1.1
-        version: 0.1.1(ethers@5.7.2)(hardhat@2.13.0)
+        specifier: 0.2.2
+        version: 0.2.2(chai@4.3.10)(ethers@5.7.2)(hardhat@2.13.0)
       '@fuel-ui/css':
         specifier: 0.21.0
         version: 0.21.0
@@ -3202,12 +3202,12 @@ packages:
       ts-interface-checker: 0.1.13
     dev: true
 
-  /@fuel-bridge/fungible-token@0.1.1:
-    resolution: {integrity: sha512-ZcfPYc4wn+lHIMTtcse9c7TVfJQhN30VWWEQnbXduADPfYkwALzsYwXogVcmMqckbYCezvdkB8BkO5fOiVGklg==}
+  /@fuel-bridge/fungible-token@0.2.2:
+    resolution: {integrity: sha512-SzwdnHClKtBSHISbbNJ7fQaZYl50If9Rkft/N1+USPjEFe1MAd3D5THUjkg9IeffuAONIHakWp27P5+9effFxg==}
     dev: false
 
-  /@fuel-bridge/message-predicates@0.1.1:
-    resolution: {integrity: sha512-yuqZkC4g1DDXXIRDTEFTW//+qe6QBaLG15lXteNYtdKvdkJNVmgWw9Veh1FIMtyGI7i84gw58hDHauoihfGrbw==}
+  /@fuel-bridge/message-predicates@0.2.2:
+    resolution: {integrity: sha512-FTB226yFoVarvvMn6EI9sZ4ZzzTZ9etCFC+UZKQOrdLvhP1kE0lK192BHc3syyN2JCcfw+IVGWrSfClHkYNcmA==}
     dev: false
 
   /@fuel-bridge/solidity-contracts@0.0.2-next-9ebbea2(ethers@5.7.2)(hardhat@2.13.0):
@@ -3233,14 +3233,15 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@fuel-bridge/solidity-contracts@0.1.1(ethers@5.7.2)(hardhat@2.13.0):
-    resolution: {integrity: sha512-1Yto+1GfEUYcjGhnU9OW+CE0T5UO3k2FO/Rv1825hgjL8ppGCaBmk9D9LZ/j748zT9xUywnbbq762hiihXU1RQ==}
+  /@fuel-bridge/solidity-contracts@0.2.2(chai@4.3.10)(ethers@5.7.2)(hardhat@2.13.0):
+    resolution: {integrity: sha512-GXFMQ0jBlDqbjxaasUJJ/PApC88swHZklQGJbSiURqykG173J17veDMTxTGWKokX+ZtzGdz8+vEKpXskqa/cjg==}
     dependencies:
       '@ethersproject/abi': 5.7.0
       '@ethersproject/abstract-provider': 5.7.0
       '@ethersproject/bytes': 5.7.0
       '@ethersproject/providers': 5.7.2
       '@fuel-contracts/merkle-sol': 0.1.4
+      '@nomicfoundation/hardhat-chai-matchers': 1.0.6(@nomiclabs/hardhat-ethers@2.2.3)(chai@4.3.10)(ethers@5.7.2)(hardhat@2.13.0)
       '@nomiclabs/hardhat-ethers': 2.2.3(ethers@5.7.2)(hardhat@2.13.0)
       '@nomiclabs/hardhat-etherscan': 3.1.7(hardhat@2.13.0)
       '@openzeppelin/contracts': 4.9.3
@@ -3249,6 +3250,7 @@ packages:
     transitivePeerDependencies:
       - '@nomiclabs/harhdat-etherscan'
       - bufferutil
+      - chai
       - encoding
       - ethers
       - hardhat
@@ -3256,8 +3258,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@fuel-bridge/test-utils@0.1.1(ethers@5.7.2)(fuels@0.60.0):
-    resolution: {integrity: sha512-4DqnlaRdHBl3Ynm7u6G1Er159Xygbx0UbmHASHOyEDz/+JoGhlckq9TunXsVMiErhjYq3fbMWL8s4ozkGfuNGQ==}
+  /@fuel-bridge/test-utils@0.2.2(ethers@5.7.2)(fuels@0.60.0):
+    resolution: {integrity: sha512-Zm0+iJpYrOX4VwswKF0/+t5+4hk4n4JwLr5lsgBC7veKWvZKOmzatPZmS54uC2HL0xcznt+8WXYwMtItEbemng==}
     peerDependencies:
       ethers: '>=5.7.2'
       fuels: '>=0.58.0'
@@ -4966,6 +4968,25 @@ packages:
       rustbn.js: 0.2.0
     transitivePeerDependencies:
       - supports-color
+
+  /@nomicfoundation/hardhat-chai-matchers@1.0.6(@nomiclabs/hardhat-ethers@2.2.3)(chai@4.3.10)(ethers@5.7.2)(hardhat@2.13.0):
+    resolution: {integrity: sha512-f5ZMNmabZeZegEfuxn/0kW+mm7+yV7VNDxLpMOMGXWFJ2l/Ct3QShujzDRF9cOkK9Ui/hbDeOWGZqyQALDXVCQ==}
+    peerDependencies:
+      '@nomiclabs/hardhat-ethers': ^2.0.0
+      chai: ^4.2.0
+      ethers: ^5.0.0
+      hardhat: ^2.9.4
+    dependencies:
+      '@ethersproject/abi': 5.7.0
+      '@nomiclabs/hardhat-ethers': 2.2.3(ethers@5.7.2)(hardhat@2.13.0)
+      '@types/chai-as-promised': 7.1.6
+      chai: 4.3.10
+      chai-as-promised: 7.1.1(chai@4.3.10)
+      deep-eql: 4.1.3
+      ethers: 5.7.2
+      hardhat: 2.13.0(ts-node@10.9.1)(typescript@4.9.5)
+      ordinal: 1.0.3
+    dev: false
 
   /@nomicfoundation/hardhat-ethers@3.0.4(ethers@6.7.1)(hardhat@2.13.0):
     resolution: {integrity: sha512-k9qbLoY7qn6C6Y1LI0gk2kyHXil2Tauj4kGzQ8pgxYXIGw8lWn8tuuL72E11CrlKaXRUvOgF0EXrv/msPI2SbA==}
@@ -10013,6 +10034,16 @@ packages:
       '@types/node': 18.15.3
     dev: true
 
+  /@types/chai-as-promised@7.1.6:
+    resolution: {integrity: sha512-cQLhk8fFarRVZAXUQV1xEnZgMoPxqKojBvRkqPCKPQCzEhpbbSKl1Uu75kDng7k5Ln6LQLUmNBjLlFthCgm1NA==}
+    dependencies:
+      '@types/chai': 4.3.6
+    dev: false
+
+  /@types/chai@4.3.6:
+    resolution: {integrity: sha512-VOVRLM1mBxIRxydiViqPcKn6MIxZytrbMpd6RJLIWKxUNr3zux8no0Oc7kJx0WAPIitgZ0gkrDS+btlqQpubpw==}
+    dev: false
+
   /@types/chrome@0.0.243:
     resolution: {integrity: sha512-4PHv0kxxxpZFHWPBiJJ9TWH8kbx0567j1b2djnhpJjpiSGNI7UKkz7dSEECBtQ0B3N5nQTMwSB/5IopkWGAbEA==}
     dependencies:
@@ -12161,6 +12192,10 @@ packages:
       util: 0.12.5
     dev: true
 
+  /assertion-error@1.1.0:
+    resolution: {integrity: sha512-jgsaNduz+ndvGyFt3uSuWqvy4lCnIJiovtouQN5JZHOKCS2QuhEdbcQHFhVksz2N2U9hXJo8odG7ETyWlEeuDw==}
+    dev: false
+
   /assign-symbols@1.0.0:
     resolution: {integrity: sha512-Q+JC7Whu8HhmTdBph/Tq59IoRtoy6KAm5zzPv00WdujX82lbAL8K7WVjne7vdCsAmbF4AYaDOPyO3k0kl8qIrw==}
     engines: {node: '>=0.10.0'}
@@ -13061,6 +13096,28 @@ packages:
     dependencies:
       nofilter: 3.1.0
 
+  /chai-as-promised@7.1.1(chai@4.3.10):
+    resolution: {integrity: sha512-azL6xMoi+uxu6z4rhWQ1jbdUhOMhis2PvscD/xjLqNMkv3BPPp2JyyuTHOrf9BOosGpNQ11v6BKv/g57RXbiaA==}
+    peerDependencies:
+      chai: '>= 2.1.2 < 5'
+    dependencies:
+      chai: 4.3.10
+      check-error: 1.0.3
+    dev: false
+
+  /chai@4.3.10:
+    resolution: {integrity: sha512-0UXG04VuVbruMUYbJ6JctvH0YnC/4q3/AkT18q4NaITo91CUm0liMS9VqzT9vZhVQ/1eqPanMWjBM+Juhfb/9g==}
+    engines: {node: '>=4'}
+    dependencies:
+      assertion-error: 1.1.0
+      check-error: 1.0.3
+      deep-eql: 4.1.3
+      get-func-name: 2.0.2
+      loupe: 2.3.6
+      pathval: 1.1.1
+      type-detect: 4.0.8
+    dev: false
+
   /chalk@1.1.3:
     resolution: {integrity: sha512-U3lRVLMSlsCfjqYPbLyVv11M9CPW4I728d6TCKMAOJueEeB9/8o+eSsMnxPJD+Q+K909sdESg7C+tIkoH6on1A==}
     engines: {node: '>=0.10.0'}
@@ -13115,6 +13172,12 @@ packages:
   /character-reference-invalid@1.1.4:
     resolution: {integrity: sha512-mKKUkUbhPpQlCOfIuZkvSEgktjPFIsZKRRbC6KWVEMvlzblj3i3asQv5ODsrwt0N3pHAEvjP8KTQPHkp0+6jOg==}
     dev: true
+
+  /check-error@1.0.3:
+    resolution: {integrity: sha512-iKEoDYaRmd1mxM90a2OEfWhjsjPpYPuQ+lMYsoxB126+t8fw7ySEO48nmDg5COTjxDI65/Y2OWpeEHk3ZOe8zg==}
+    dependencies:
+      get-func-name: 2.0.2
+    dev: false
 
   /check-more-types@2.24.0:
     resolution: {integrity: sha512-Pj779qHxV2tuapviy1bSZNEL1maXr13bPYpsvSDB68HlYcYuhlDrmGd63i0JHMCLKzc7rUSNIrpdJlhVlNwrxA==}
@@ -14084,6 +14147,13 @@ packages:
   /dedent@0.7.0:
     resolution: {integrity: sha512-Q6fKUPqnAHAyhiUgFU7BUzLiv0kd8saH9al7tnu5Q/okj6dnupxyTgFIBjVzJATdfIAm9NAsvXNzjaKa+bxVyA==}
     dev: true
+
+  /deep-eql@4.1.3:
+    resolution: {integrity: sha512-WaEtAOpRA1MQ0eohqZjpGD8zdI0Ovsm8mmFhaDN8dvDZzyoUMcYDnf5Y6iu7HTXxf8JDS23qWa4a+hKCDyOPzw==}
+    engines: {node: '>=6'}
+    dependencies:
+      type-detect: 4.0.8
+    dev: false
 
   /deep-equal@2.2.1:
     resolution: {integrity: sha512-lKdkdV6EOGoVn65XaOsPdH4rMxTZOnmFyuIkMjM1i5HHCbfjC97dawgTAy0deYNfuqUqW+Q5VrVaQYtUpSd6yQ==}
@@ -16571,6 +16641,10 @@ packages:
   /get-caller-file@2.0.5:
     resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==}
     engines: {node: 6.* || 8.* || >= 10.*}
+
+  /get-func-name@2.0.2:
+    resolution: {integrity: sha512-8vXOvuE167CtIc3OyItco7N/dpRtBbYOsPsXCz7X/PMnlGjYjSGuZJgM1Y7mmew7BKf9BqvLX2tnOVy1BBUsxQ==}
+    dev: false
 
   /get-intrinsic@1.2.1:
     resolution: {integrity: sha512-2DcsyfABl+gVHEfCOaTrWgyt+tb6MSEGmKq+kI5HwLbIYgjgmMcV8KQ41uaKz1xxUcn9tJtgFbQUEVcEbd0FYw==}
@@ -19697,6 +19771,12 @@ packages:
       signal-exit: 3.0.7
     dev: true
 
+  /loupe@2.3.6:
+    resolution: {integrity: sha512-RaPMZKiMy8/JruncMU5Bt6na1eftNoo++R4Y+N2FrxkDVTrGvcyzFTsaGif4QTeKESheMGegbhw6iUAq+5A8zA==}
+    dependencies:
+      get-func-name: 2.0.2
+    dev: false
+
   /lower-case@2.0.2:
     resolution: {integrity: sha512-7fm3l3NAF9WfN6W3JOmf5drwpVqX78JtoGJ3A6W0a6ZnldM41w2fV5D490psKFTpMds8TJse/eHLFFsNHHjHgg==}
     dependencies:
@@ -20695,6 +20775,10 @@ packages:
       wcwidth: 1.0.1
     dev: true
 
+  /ordinal@1.0.3:
+    resolution: {integrity: sha512-cMddMgb2QElm8G7vdaa02jhUNbTSrhsgAGUz1OokD83uJTwSUn+nKoNoKVVaRa08yF6sgfO7Maou1+bgLd9rdQ==}
+    dev: false
+
   /os-filter-obj@2.0.0:
     resolution: {integrity: sha512-uksVLsqG3pVdzzPvmAHpBK0wKxYItuzZr7SziusRPoz67tGV8rL1szZ6IdeUrbqLjGDwApBtN29eEE3IqGHOjg==}
     engines: {node: '>=4'}
@@ -21057,6 +21141,10 @@ packages:
   /pathe@1.1.1:
     resolution: {integrity: sha512-d+RQGp0MAYTIaDBIMmOfMwz3E+LOZnxx1HZd5R18mmCZY0QBlK0LDZfPc8FW8Ed2DlvsuE6PRjroDY+wg4+j/Q==}
     dev: true
+
+  /pathval@1.1.1:
+    resolution: {integrity: sha512-Dp6zGqpTdETdR63lehJYPeIOqpiNBNtc7BpWSLrOje7UaIsE5aY92r/AunQA7rsXvet3lrJ3JnZX29UPTKXyKQ==}
+    dev: false
 
   /pbkdf2@3.1.2:
     resolution: {integrity: sha512-iuh7L6jA7JEGu2WxDwtQP1ddOpaJNC4KlDEFfdQajSGgGPNi4OyDc2R7QnbY2bR9QjBVGwgvTdNJZoE7RaxUMA==}
@@ -24455,7 +24543,6 @@ packages:
   /type-detect@4.0.8:
     resolution: {integrity: sha512-0fr/mIH1dlO+x7TlcMy+bIDqKPsw/70tVyeHW787goQjhmqaZe10uwLujubK9q9Lg6Fiho1KUKDYz0Z7k7g5/g==}
     engines: {node: '>=4'}
-    dev: true
 
   /type-fest@0.16.0:
     resolution: {integrity: sha512-eaBzG6MxNzEn9kiwvtre90cXaNLkmadMWa1zQMs3XORCXNbsH/OewwbxC5ia9dCxIxnTAsSxXJaa/p5y8DlvJg==}
