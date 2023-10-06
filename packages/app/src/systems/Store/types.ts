@@ -5,7 +5,6 @@ import type { OverlayMachine } from '~/systems/Overlay';
 
 import type { AssetsMachine } from '../Assets/machines/assetsMachine';
 
-
 export enum Services {
   overlay = 'overlay',
   bridge = 'bridge',
