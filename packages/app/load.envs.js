@@ -89,7 +89,7 @@ if (bridgeSolidityContracts && bridgeSolidityContracts.FuelMessagePortal) {
 }
 const bridgeTokenContracts = getBridgeTokenContracts();
 if (bridgeTokenContracts) {
-  process.env.VITE_FUEL_FUNGIBLE_TOKEN_ID =
+  process.env.VITE_FUEL_FUNGIBLE_CONTRACT_ID =
     bridgeTokenContracts.FUEL_TokenContract;
   process.env.VITE_ETH_ERC20 = bridgeTokenContracts.ETH_ERC20;
 }

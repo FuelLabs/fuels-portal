@@ -1,9 +1,8 @@
 import { Image, Avatar } from '@fuel-ui/react';
 import { useMemo } from 'react';
-import { ETH_CHAIN, FUEL_CHAIN } from '~/systems/Chains/config';
 
 import type { Asset } from '../../services';
-import { getAssetNetwork } from '../../utils';
+import { getAssetEth, getAssetFuel } from '../../utils';
 
 type EthAssetLogoProps = {
   asset?: Asset;
@@ -25,19 +24,11 @@ export const AssetLogo = ({
 
     if (!asset) return {};
 
-    const ethNetwork = getAssetNetwork({
-      asset,
-      chainId: ETH_CHAIN.id,
-      networkType: 'ethereum',
-    });
-    const fuelNetwork = getAssetNetwork({
-      asset,
-      chainId: FUEL_CHAIN.chainId,
-      networkType: 'fuel',
-    });
+    const ethAsset = getAssetEth(asset);
+    const fuelAsset = getAssetFuel(asset);
 
     return {
-      address: ethNetwork?.address || fuelNetwork?.assetId,
+      address: ethAsset?.address || fuelAsset?.assetId || fuelAsset?.contractId,
     };
   }, [asset?.symbol]);
 

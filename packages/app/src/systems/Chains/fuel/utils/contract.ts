@@ -1,7 +1,8 @@
-import { concat, sha256 } from 'ethers/lib/utils';
-import type { Contract } from 'fuels';
-import { ZeroBytes32 } from 'fuels';
+import { ZeroBytes32, hash, concat } from 'fuels';
 
-export function getTokenId(contract: Contract, subId = ZeroBytes32) {
-  return sha256(concat([contract.id.toHexString(), subId]));
+export function getContractTokenId(
+  contractId: `0x${string}`,
+  subId = ZeroBytes32
+) {
+  return hash(concat([contractId, subId]));
 }

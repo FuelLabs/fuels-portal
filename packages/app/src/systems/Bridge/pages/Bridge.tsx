@@ -1,9 +1,8 @@
 import { cssObj } from '@fuel-ui/css';
 import { Card, Box, Text, InputAmount, Alert, Link } from '@fuel-ui/react';
 import { motion, useAnimationControls } from 'framer-motion';
-import { getAssetNetwork } from '~/systems/Assets/utils';
+import { getAssetEth } from '~/systems/Assets/utils';
 import {
-  ETH_CHAIN,
   EthAccountConnection,
   FuelAccountConnection,
   isEthChain,
@@ -30,10 +29,7 @@ export const Bridge = () => {
 
   if (!fromNetwork || !toNetwork) return null;
 
-  const ethAssetAddress = asset
-    ? getAssetNetwork({ asset, chainId: ETH_CHAIN.id, networkType: 'ethereum' })
-        .address
-    : undefined;
+  const ethAssetAddress = asset ? getAssetEth(asset)?.address : undefined;
 
   return (
     <Card>

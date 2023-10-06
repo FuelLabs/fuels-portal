@@ -1,7 +1,6 @@
 import type { BN } from 'fuels';
 import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
-import { store } from '~/store';
 import type { Asset } from '~/systems/Assets/services/asset';
 import type { FromToNetworks } from '~/systems/Chains';
 import { FetchMachine } from '~/systems/Core/machines';
@@ -71,7 +70,7 @@ export const bridgeMachine = createMachine(
             actions: ['assignAssetAmount'],
           },
           CHANGE_ASSET: {
-            actions: ['assignAsset', 'closeOverlay'],
+            actions: ['assignAsset'],
           },
           START_BRIDGING: {
             target: 'bridging',
@@ -115,11 +114,10 @@ export const bridgeMachine = createMachine(
   },
   {
     actions: {
-      assignNetworks: assign((ctx, ev) => ({
-        ...ctx,
-        fromNetwork: ev.input.fromNetwork,
-        toNetwork: ev.input.toNetwork,
-      })),
+      assignNetworks: assign({
+        fromNetwork: (_, ev) => ev.input.fromNetwork,
+        toNetwork: (_, ev) => ev.input.toNetwork,
+      }),
       assignAssetAmount: assign({
         assetAmount: (_, ev) => ev.input.assetAmount,
       }),
@@ -129,9 +127,6 @@ export const bridgeMachine = createMachine(
       clearAssetAmmount: assign({
         assetAmount: undefined,
       }),
-      closeOverlay: () => {
-        store.closeOverlay();
-      },
     },
     services: {
       bridge: FetchMachine.create<BridgeInputs['bridge'], void>({

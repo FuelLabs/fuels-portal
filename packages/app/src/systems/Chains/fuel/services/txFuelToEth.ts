@@ -22,7 +22,7 @@ import { FUEL_MESSAGE_PORTAL } from '../../eth/contracts/FuelMessagePortal';
 import { EthConnectorService } from '../../eth/services';
 import { parseEthAddressToFuel } from '../../eth/utils/address';
 import { createRelayMessageParams } from '../../eth/utils/relayMessage';
-import { getBlock, getTokenId } from '../utils';
+import { getBlock, getContractTokenId } from '../utils';
 
 export type TxFuelToEthInputs = {
   startBase: {
@@ -88,13 +88,13 @@ export class TxFuelToEthService {
     input: TxFuelToEthInputs['startFungibleToken']
   ) {
     TxFuelToEthService.assertStartBase(input);
-    if (!input?.fuelAsset?.assetId) {
+    if (!input?.fuelAsset?.contractId) {
       throw new Error('Need Fuel asset');
     }
   }
 
   static async start(input: TxFuelToEthInputs['startFungibleToken']) {
-    if (input?.fuelAsset && input?.fuelAsset.assetId !== BaseAssetId) {
+    if (input?.fuelAsset && input?.fuelAsset.contractId !== BaseAssetId) {
       return TxFuelToEthService.startFungibleToken(input);
     }
 
@@ -129,21 +129,23 @@ export class TxFuelToEthService {
 
     const { amount, fuelWallet, ethAddress, fuelAsset } = input;
 
-    if (fuelAsset?.assetId && fuelWallet && amount) {
+    if (fuelAsset?.contractId && fuelWallet && amount) {
       const ethAddressInFuel = parseEthAddressToFuel(ethAddress);
       const fungibleToken = new Contract(
-        fuelAsset.assetId,
+        fuelAsset.contractId,
         fungibleTokenABI,
         fuelWallet
       );
-      const fuelTestTokenId = getTokenId(fungibleToken);
+      const fuelTestAssetId = getContractTokenId(
+        fuelAsset.contractId as `0x${string}`
+      );
       const { maxGasPerTx, minGasPrice } = fuelWallet.provider.getGasConfig();
       const withdrawScope = fungibleToken.functions
         .withdraw(ethAddressInFuel)
         .callParams({
           forward: {
             amount: bn.parseUnits(amount.format(), fuelAsset.decimals),
-            assetId: fuelTestTokenId,
+            assetId: fuelTestAssetId,
           },
         })
         .txParams({

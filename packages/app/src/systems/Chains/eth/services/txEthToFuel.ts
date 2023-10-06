@@ -8,7 +8,7 @@ import { fetchToken } from 'wagmi/actions';
 import {
   VITE_ETH_FUEL_ERC20_GATEWAY,
   VITE_ETH_FUEL_MESSAGE_PORTAL,
-  VITE_FUEL_FUNGIBLE_TOKEN_ID,
+  VITE_FUEL_FUNGIBLE_CONTRACT_ID,
 } from '~/config';
 import type { Asset } from '~/systems/Assets/services/asset';
 
@@ -70,7 +70,6 @@ export type GetReceiptsInfoReturn = {
   nonce?: BN;
   ethDepositBlockHeight?: string;
   blockDate?: Date;
-  assetId?: string;
 };
 
 export class TxEthToFuelService {
@@ -191,7 +190,7 @@ export class TxEthToFuelService {
         const depositTxHash = await fuelErc20Gateway.write.deposit([
           fuelAddress.toB256() as `0x${string}`,
           ethAssetAddress,
-          FuelAddress.fromString(VITE_FUEL_FUNGIBLE_TOKEN_ID).toB256(),
+          FuelAddress.fromString(VITE_FUEL_FUNGIBLE_CONTRACT_ID).toB256(),
           amount,
         ]);
 
@@ -257,14 +256,7 @@ export class TxEthToFuelService {
           topics: receipt.logs[i].topics,
         }) as unknown as { args: FuelMessagePortalArgs['MessageSent'] };
 
-        const { amount, sender, nonce, recipient, data } =
-          messageSentEvent.args;
-
-        // TODO: get predicate root contract address from FuelMessagePortal contract
-        // we can get also from predicateRoot from the contract (search for CONTRACT_MESSAGE_PREDICATE)
-        const isErc20Deposit =
-          recipient ===
-          '0x86a8f7487cb0d3faca1895173d5ff35c1e839bd2ab88657eede9933ea8988815';
+        const { amount, sender, nonce, recipient } = messageSentEvent.args;
 
         receiptsInfo = {
           ...receiptsInfo,
@@ -272,9 +264,6 @@ export class TxEthToFuelService {
           amount: bn(amount.toString()),
           sender,
           recipient: FuelAddress.fromB256(recipient),
-          assetId: isErc20Deposit
-            ? decodeMessageSentData.erc20Deposit(data).tokenAddress
-            : undefined,
         };
       } catch (_) {
         /* empty */

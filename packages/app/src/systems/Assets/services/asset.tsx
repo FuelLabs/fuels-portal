@@ -12,7 +12,7 @@ export type AssetServiceInputs = {
   };
 };
 
-export type Asset = Omit<Omit<FuelsAsset, 'icon'>, 'assetId'> & {
+export type Asset = Omit<FuelsAsset, 'icon'> & {
   icon: string | null;
 };
 

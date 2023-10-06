@@ -12,13 +12,13 @@ import {
 import { useState } from 'react';
 import { Controller, useWatch } from 'react-hook-form';
 import { VITE_ETH_ERC20 } from '~/config';
+import { store } from '~/store';
 import { useBridge } from '~/systems/Bridge/hooks';
-import { ETH_CHAIN } from '~/systems/Chains';
 
 import { useFaucetErc20, useSetAddressForm } from '../../Chains/eth/hooks';
 import { AssetCard } from '../components/AssetCard';
 import { useAssets } from '../hooks';
-import { getAssetNetwork } from '../utils';
+import { getAssetEth } from '../utils';
 
 export function AssetsDialog() {
   const { handlers: bridgeHandlers } = useBridge();
@@ -87,18 +87,14 @@ export function AssetsDialog() {
         <CardList isClickable={!editable}>
           {showAssetList &&
             assets.map((asset, i) => {
-              const ethAssetNetwork = getAssetNetwork({
-                asset,
-                chainId: ETH_CHAIN.id,
-                networkType: 'ethereum',
-              });
+              const ethAsset = getAssetEth(asset);
 
-              const isFaucetable = ethAssetNetwork.address === VITE_ETH_ERC20;
+              const isFaucetable = ethAsset?.address === VITE_ETH_ERC20;
 
               return (
                 <AssetCard
-                  key={`${ethAssetNetwork.address || ''}${
-                    asset.symbol || ''
+                  key={`${ethAsset.address || ''}${
+                    ethAsset.symbol || ''
                   }${String(i)}`}
                   asset={asset}
                   onPress={
@@ -107,6 +103,7 @@ export function AssetsDialog() {
                           bridgeHandlers.changeAsset({
                             asset,
                           });
+                          store.closeOverlay();
                         }
                       : undefined
                   }
@@ -114,7 +111,7 @@ export function AssetsDialog() {
                     isFaucetable && faucetErc20
                       ? () => {
                           faucetErc20({
-                            address: ethAssetNetwork.address,
+                            address: ethAsset.address,
                           });
                         }
                       : undefined

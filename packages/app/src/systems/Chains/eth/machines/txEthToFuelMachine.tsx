@@ -31,7 +31,6 @@ type MachineContext = {
   amount?: BN;
   fuelRecipient?: FuelAddress;
   blockDate?: Date;
-  assetId?: string;
   fuelRelayedTx?: TransactionResult;
 };
 
@@ -341,7 +340,6 @@ export const txEthToFuelMachine = createMachine(
           fuelRecipient: ev.data?.recipient,
           ethDepositBlockHeight: ev.data?.ethDepositBlockHeight,
           blockDate: ev.data?.blockDate,
-          assetId: ev.data?.assetId,
         };
       }),
       assignFuelMessage: assign({

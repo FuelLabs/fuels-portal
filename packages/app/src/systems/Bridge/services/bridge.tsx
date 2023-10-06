@@ -7,7 +7,7 @@ import type {
 import type { PublicClient, WalletClient } from 'wagmi';
 import { store } from '~/store';
 import type { Asset } from '~/systems/Assets/services/asset';
-import { getAssetNetwork } from '~/systems/Assets/utils';
+import { getAssetEth, getAssetFuel } from '~/systems/Assets/utils';
 import type {
   FromToNetworks,
   TxEthToFuelInputs,
@@ -71,25 +71,18 @@ export class BridgeService {
         precision: DECIMAL_UNITS,
         units: DECIMAL_UNITS,
       });
-      const assetNetwork = getAssetNetwork({
-        asset,
-        chainId: ETH_CHAIN.id,
-        networkType: 'ethereum',
-      });
+      const assetEth = getAssetEth(asset);
 
-      if (!assetNetwork || !assetNetwork.address) {
+      if (!assetEth || !assetEth.address) {
         throw new Error('Asset for ETH network not found');
       }
 
-      const amountEthUnits = bn.parseUnits(
-        amountFormatted,
-        assetNetwork.decimals
-      );
+      const amountEthUnits = bn.parseUnits(amountFormatted, assetEth.decimals);
       const txId = await TxEthToFuelService.start({
         amount: amountEthUnits.toHex(),
         ethWalletClient,
         fuelAddress,
-        ethAssetAddress: assetNetwork.address,
+        ethAssetAddress: assetEth.address,
         ethPublicClient,
       });
 
@@ -111,16 +104,12 @@ export class BridgeService {
     }
 
     if (isFuelChain(fromNetwork) && isEthChain(toNetwork)) {
-      const assetNetwork = getAssetNetwork({
-        asset,
-        chainId: FUEL_CHAIN.chainId,
-        networkType: 'fuel',
-      });
+      const fuelAsset = getAssetFuel(asset);
       const txId = await TxFuelToEthService.start({
         amount: assetAmount,
         fuelWallet,
         ethAddress,
-        fuelAsset: assetNetwork,
+        fuelAsset,
       });
 
       if (txId) {
