@@ -42,10 +42,8 @@ export class AssetService {
       }
     );
 
-    const receipt = await publicClient.waitForTransactionReceipt({
+    await publicClient.waitForTransactionReceipt({
       hash: erc20MintHash,
     });
-
-    console.log(`receipt`, receipt);
   }
 }

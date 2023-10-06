@@ -94,7 +94,7 @@ export class TxFuelToEthService {
   }
 
   static async start(input: TxFuelToEthInputs['startFungibleToken']) {
-    if (input?.fuelAsset?.assetId !== BaseAssetId) {
+    if (input?.fuelAsset && input?.fuelAsset.assetId !== BaseAssetId) {
       return TxFuelToEthService.startFungibleToken(input);
     }
 

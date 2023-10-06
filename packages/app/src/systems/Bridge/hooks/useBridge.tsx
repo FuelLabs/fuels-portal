@@ -92,7 +92,6 @@ export function useBridge() {
       : undefined,
   });
 
-  console.log(`fuelAssetAddress`, fuelAssetAddress);
   const {
     account: fuelAccount,
     address: fuelAddress,

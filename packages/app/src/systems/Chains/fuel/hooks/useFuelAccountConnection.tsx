@@ -20,7 +20,11 @@ export const useFuelAccountConnection = (props?: { assetId?: string }) => {
 
   const { fuel } = useFuel();
   const { account } = useAccount();
-  const { balance } = useBalance({ address: account || '', assetId });
+  const { balance } = useBalance({
+    address: account || '',
+    // TODO: remove this when fix https://linear.app/fuel-network/issue/FRO-613/balance-is-zero-for-token-on-fuel-side
+    assetId: assetId ? undefined : undefined,
+  });
   const { isConnected } = useIsConnected();
   const { connect, error, isConnecting } = useConnector();
   const { disconnect } = useDisconnect();
