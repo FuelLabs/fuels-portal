@@ -145,11 +145,8 @@ test.describe('Bridge', () => {
       const transactionList = page.locator('button').getByText('History');
 
       // Go to the bridge page
-      bridgePage = page
-        .locator('div')
-        .filter({ hasText: 'BridgeHistory' })
-        .getByRole('link', { name: 'Bridge ' });
-      await bridgePage.first().click();
+      bridgePage = page.locator('button').getByText('Bridge');
+      await bridgePage.click();
 
       // Go to the withdraw page
       const withdrawPage = getButtonByText(page, 'Withdraw from Fuel');
