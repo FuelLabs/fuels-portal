@@ -1,5 +1,11 @@
 import { cssObj } from '@fuel-ui/css';
 
+export const SCROLL_WIDTH = `14px`;
+
+export const scrollableContent = cssObj({
+  width: `calc(100vw - ${SCROLL_WIDTH})`,
+});
+
 export const scrollable = (
   regularColor: string = '$gray8',
   hoverColor: string = '$gray10'
@@ -10,7 +16,7 @@ export const scrollable = (
     scrollBehavior: 'smooth',
 
     '&::-webkit-scrollbar': {
-      width: '14px',
+      width: SCROLL_WIDTH,
       backgroundColor: 'transparent',
     },
     '&::-webkit-scrollbar-track': {
@@ -29,5 +35,6 @@ export const scrollable = (
   });
 
 export const coreStyles = {
+  scrollableContent,
   scrollable,
 };

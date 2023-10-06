@@ -21,14 +21,16 @@ export function Header() {
         {IS_PREVIEW && (
           <Nav.Menu>
             <Nav.MenuItem
-              href="#"
+              as="div"
+              css={styles.menuItem}
               onClick={() => navigate(Pages.bridge)}
               isActive={isLinkActive(Pages.bridge)}
             >
               Bridge
             </Nav.MenuItem>
             <Nav.MenuItem
-              href="#"
+              as="div"
+              css={styles.menuItem}
               onClick={() => navigate(Pages.ecosystem)}
               isActive={isLinkActive(Pages.ecosystem)}
             >
@@ -46,14 +48,16 @@ export function Header() {
         {IS_PREVIEW && (
           <Nav.Menu>
             <Nav.MenuItem
-              href="#"
+              as="div"
+              css={styles.menuItem}
               onClick={() => navigate(Pages.bridge)}
               isActive={isLinkActive(Pages.bridge)}
             >
               Bridge
             </Nav.MenuItem>
             <Nav.MenuItem
-              href="#"
+              as="div"
+              css={styles.menuItem}
               onClick={() => navigate(Pages.ecosystem)}
               isActive={isLinkActive(Pages.ecosystem)}
             >
@@ -67,6 +71,9 @@ export function Header() {
 }
 
 const styles = {
+  menuItem: cssObj({
+    cursor: 'pointer',
+  }),
   menu: cssObj({
     '&[data-preview="false"] [aria-label="Toggle Menu"]': {
       display: 'none',
