@@ -102,7 +102,6 @@ export const assetsMachine = createMachine(
             defaultAssets.push({
               icon: null,
               name: 'Test Token',
-              description: 'Test Token',
               symbol: 'TKN',
               networks: [
                 {

@@ -1,7 +1,9 @@
 import { cssObj } from '@fuel-ui/css';
 import { Card, Box, Text, InputAmount, Alert, Link } from '@fuel-ui/react';
 import { motion, useAnimationControls } from 'framer-motion';
+import { getAssetNetwork } from '~/systems/Assets/utils';
 import {
+  ETH_CHAIN,
   EthAccountConnection,
   FuelAccountConnection,
   isEthChain,
@@ -27,6 +29,11 @@ export const Bridge = () => {
   const toControls = useAnimationControls();
 
   if (!fromNetwork || !toNetwork) return null;
+
+  const ethAssetAddress = asset
+    ? getAssetNetwork({ asset, chainId: ETH_CHAIN.id, networkType: 'ethereum' })
+        .address
+    : undefined;
 
   return (
     <Card>
@@ -58,8 +65,8 @@ export const Bridge = () => {
               balance={assetBalance}
               asset={{
                 name: asset?.symbol,
-                imageUrl: asset?.image,
-                address: asset?.address,
+                imageUrl: asset?.icon || '',
+                address: ethAssetAddress,
               }}
               value={assetAmount}
               onChange={(val) =>

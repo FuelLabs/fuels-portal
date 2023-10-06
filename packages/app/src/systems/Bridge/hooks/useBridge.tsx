@@ -3,6 +3,7 @@ import { bn, DECIMAL_UNITS } from 'fuels';
 import { useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Services, store } from '~/store';
+import { getAssetNetwork } from '~/systems/Assets/utils';
 import type { SupportedChain } from '~/systems/Chains';
 import {
   useFuelAccountConnection,
@@ -69,6 +70,15 @@ export function useBridge() {
   const assetAmount = store.useSelector(Services.bridge, selectors.assetAmount);
   const asset = store.useSelector(Services.bridge, selectors.asset);
 
+  const ethAssetAddress = asset
+    ? getAssetNetwork({ asset, chainId: ETH_CHAIN.id, networkType: 'ethereum' })
+        .address
+    : undefined;
+  const fuelAssetAddress = asset
+    ? getAssetNetwork({ asset, chainId: FUEL_CHAIN.id, networkType: 'fuel' })
+        .assetId
+    : undefined;
+
   const {
     address: ethAddress,
     handlers: ethHandlers,
@@ -77,11 +87,12 @@ export function useBridge() {
     walletClient: ethWalletClient,
     publicClient: ethPublicClient,
   } = useEthAccountConnection({
-    erc20Address: assetAddress?.startsWith('0x')
-      ? (assetAddress as `0x${string}`)
+    erc20Address: ethAssetAddress?.startsWith('0x')
+      ? (ethAssetAddress as `0x${string}`)
       : undefined,
   });
 
+  console.log(`fuelAssetAddress`, fuelAssetAddress);
   const {
     account: fuelAccount,
     address: fuelAddress,
@@ -90,8 +101,8 @@ export function useBridge() {
     balance: fuelBalance,
     wallet: fuelWallet,
   } = useFuelAccountConnection({
-    erc20Address: assetAddress?.startsWith('0x')
-      ? (assetAddress as `0x${string}`)
+    assetId: fuelAssetAddress?.startsWith('0x')
+      ? (fuelAssetAddress as `0x${string}`)
       : undefined,
   });
 

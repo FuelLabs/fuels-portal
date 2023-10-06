@@ -4,7 +4,7 @@ import { getAssetNetwork } from '~/systems/Assets/utils';
 import type { BridgeTxsMachineState } from '~/systems/Bridge';
 
 import { useAsset } from '../../../Assets/hooks/useAsset';
-import { FUEL_CHAIN } from '../../config';
+import { ETH_CHAIN, FUEL_CHAIN } from '../../config';
 import { useFuelAccountConnection } from '../../fuel';
 import type { TxEthToFuelMachineState } from '../machines';
 import { isErc20Address, parseFuelAddressToEth } from '../utils';
@@ -164,11 +164,14 @@ export function useTxEthToFuel({ id }: { id: string }) {
   const assetFuelNetwork = asset
     ? getAssetNetwork({ asset, chainId: FUEL_CHAIN.id, networkType: 'fuel' })
     : undefined;
+  const assetEthNetwork = asset
+    ? getAssetNetwork({ asset, chainId: ETH_CHAIN.id, networkType: 'ethereum' })
+    : undefined;
   const formattedAmount = amount?.format({
+    units: assetEthNetwork?.decimals,
     precision: assetFuelNetwork?.decimals,
+    minPrecision: 3,
   });
-
-  console.log(`formattedAmount`, formattedAmount);
 
   function relayMessageToFuel() {
     if (!ethTxId || !fuelWallet) return;

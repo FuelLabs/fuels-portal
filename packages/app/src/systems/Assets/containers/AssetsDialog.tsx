@@ -104,7 +104,7 @@ export function AssetsDialog() {
                   onPress={
                     !editable
                       ? () => {
-                          bridgeHandlers.changeAssetAddress({
+                          bridgeHandlers.changeAsset({
                             asset,
                           });
                         }
