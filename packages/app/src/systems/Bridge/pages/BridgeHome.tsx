@@ -48,7 +48,8 @@ const styles = {
   heading: cssObj({
     mt: 0,
     mb: '$4',
-    ml: '$1',
+    // Align title with the content of the page
+    ml: -2,
   }),
   tabs: cssObj({
     ml: 0,

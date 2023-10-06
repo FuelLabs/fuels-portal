@@ -15,7 +15,7 @@ export const BridgeButton = () => {
       size="lg"
       aria-label={text}
     >
-      <b>{text}</b>
+      {text}
     </Button>
   );
 };

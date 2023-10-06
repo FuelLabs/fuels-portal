@@ -26,7 +26,7 @@ export const BridgeTxListNotConnected = ({
               intent="primary"
               css={styles.connectButton}
             >
-              <b>Connect Fuel Wallet</b>
+              Connect Fuel Wallet
             </Button>
           </Box.Flex>
         </Box.Stack>
