@@ -4,6 +4,9 @@ export const SCROLL_WIDTH = `14px`;
 
 export const scrollableContent = cssObj({
   width: `calc(100vw - ${SCROLL_WIDTH})`,
+  maxWidth: `calc(100vw - ${SCROLL_WIDTH})`,
+  paddingLeft: SCROLL_WIDTH,
+  boxSizing: 'border-box',
 });
 
 export const scrollable = (
@@ -12,7 +15,6 @@ export const scrollable = (
 ) =>
   cssObj({
     overflowY: 'overlay',
-    overflowX: 'hidden',
     scrollBehavior: 'smooth',
 
     '&::-webkit-scrollbar': {

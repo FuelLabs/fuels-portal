@@ -10,7 +10,9 @@ export function Header() {
   const location = useLocation();
   const navigate = useNavigate();
   const isLinkActive = (url: string) => {
-    return removeTrailingSlash(location.pathname) === removeTrailingSlash(url);
+    return removeTrailingSlash(location.pathname).startsWith(
+      removeTrailingSlash(url)
+    );
   };
 
   return (
