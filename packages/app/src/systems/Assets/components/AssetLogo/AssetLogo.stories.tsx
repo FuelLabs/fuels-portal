@@ -1,6 +1,6 @@
 import { cssObj } from '@fuel-ui/css';
 import { CardList } from '@fuel-ui/react';
-import { ETH_ASSET } from '~/systems/Chains';
+import assetList from '@fuels/assets';
 
 import { AssetLogo } from './AssetLogo';
 
@@ -15,7 +15,7 @@ export default {
 export const ETH = () => {
   return (
     <CardList css={styles.storybook}>
-      <AssetLogo asset={ETH_ASSET} />
+      <AssetLogo asset={assetList[0]} />
     </CardList>
   );
 };
@@ -23,15 +23,20 @@ export const ETH = () => {
 export const Big = () => {
   return (
     <CardList css={styles.storybook}>
-      <AssetLogo asset={ETH_ASSET} size={40} />
+      <AssetLogo asset={assetList[0]} size={40} />
     </CardList>
   );
 };
 
+const generatedAsset = {
+  ...assetList[0],
+  icon: null,
+  networks: [{ ...assetList[0].networks[0], address: '0x123123123123' }],
+};
 export const Generated = () => {
   return (
     <CardList css={styles.storybook}>
-      <AssetLogo asset={{ address: '0x123' }} />
+      <AssetLogo asset={generatedAsset} />
     </CardList>
   );
 };
