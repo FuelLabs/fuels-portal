@@ -8,7 +8,6 @@ import { fetchToken } from 'wagmi/actions';
 import {
   VITE_ETH_FUEL_ERC20_GATEWAY,
   VITE_ETH_FUEL_MESSAGE_PORTAL,
-  VITE_FUEL_FUNGIBLE_CONTRACT_ID,
 } from '~/config';
 import type { Asset } from '~/systems/Assets/services/asset';
 
@@ -33,6 +32,7 @@ export type TxEthToFuelInputs = {
   };
   startErc20: {
     ethAssetAddress?: string;
+    fuelContractId?: string;
   } & TxEthToFuelInputs['startEth'];
   createErc20Contract: {
     ethWalletClient?: WalletClient;
@@ -90,12 +90,18 @@ export class TxEthToFuelService {
     if (!input?.ethAssetAddress) {
       throw new Error('Need asset to send');
     }
+    if (!input?.fuelContractId) {
+      throw new Error('Need contract ID of Fuel asset');
+    }
 
     if (
       !input?.ethAssetAddress.startsWith('0x') ||
       !isErc20Address(input.ethAssetAddress)
     ) {
       throw new Error('Not valid asset');
+    }
+    if (!input?.fuelContractId.startsWith('0x')) {
+      throw new Error('Not valid Fuel contract id');
     }
   }
 
@@ -149,6 +155,7 @@ export class TxEthToFuelService {
         amount,
         ethAssetAddress,
         ethPublicClient,
+        fuelContractId,
       } = input;
 
       if (
@@ -190,7 +197,7 @@ export class TxEthToFuelService {
         const depositTxHash = await fuelErc20Gateway.write.deposit([
           fuelAddress.toB256() as `0x${string}`,
           ethAssetAddress,
-          FuelAddress.fromString(VITE_FUEL_FUNGIBLE_CONTRACT_ID).toB256(),
+          fuelContractId,
           amount,
         ]);
 

@@ -2,7 +2,11 @@ import { toast } from '@fuel-ui/react';
 import assetList from '@fuels/assets';
 import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
-import { VITE_ETH_ERC20, VITE_FUEL_FUNGIBLE_CONTRACT_ID } from '~/config';
+import {
+  VITE_ETH_ERC20,
+  VITE_FUEL_FUNGIBLE_CONTRACT_ID,
+  VITE_FUEL_FUNGIBLE_ASSET_ID,
+} from '~/config';
 import { getContractTokenId } from '~/systems/Chains';
 import { ETH_CHAIN, FUEL_CHAIN } from '~/systems/Chains/config';
 import { FetchMachine } from '~/systems/Core/machines/fetchMachine';
@@ -116,9 +120,11 @@ export const assetsMachine = createMachine(
                   chainId: FUEL_CHAIN.id,
                   decimals: 9,
                   contractId: VITE_FUEL_FUNGIBLE_CONTRACT_ID,
-                  assetId: getContractTokenId(
-                    VITE_FUEL_FUNGIBLE_CONTRACT_ID as `0x${string}`
-                  ),
+                  assetId:
+                    VITE_FUEL_FUNGIBLE_ASSET_ID ||
+                    getContractTokenId(
+                      VITE_FUEL_FUNGIBLE_CONTRACT_ID as `0x${string}`
+                    ),
                 },
               ],
             });

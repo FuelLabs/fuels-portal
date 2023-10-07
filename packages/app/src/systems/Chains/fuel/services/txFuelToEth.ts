@@ -10,7 +10,6 @@ import {
   ZeroBytes32,
   getReceiptsMessageOut,
   getTransactionsSummaries,
-  BaseAssetId,
   Contract,
   TransactionStatus,
 } from 'fuels';
@@ -94,7 +93,7 @@ export class TxFuelToEthService {
   }
 
   static async start(input: TxFuelToEthInputs['startFungibleToken']) {
-    if (input?.fuelAsset && input?.fuelAsset.contractId !== BaseAssetId) {
+    if (input?.fuelAsset?.contractId) {
       return TxFuelToEthService.startFungibleToken(input);
     }
 
@@ -136,9 +135,9 @@ export class TxFuelToEthService {
         fungibleTokenABI,
         fuelWallet
       );
-      const fuelTestAssetId = getContractTokenId(
-        fuelAsset.contractId as `0x${string}`
-      );
+      const fuelTestAssetId =
+        fuelAsset.assetId ||
+        getContractTokenId(fuelAsset.contractId as `0x${string}`);
       const { maxGasPerTx, minGasPrice } = fuelWallet.provider.getGasConfig();
       const withdrawScope = fungibleToken.functions
         .withdraw(ethAddressInFuel)

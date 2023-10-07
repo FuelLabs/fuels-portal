@@ -73,12 +73,14 @@ export class BridgeService {
       });
 
       const assetEth = getAssetEth(asset);
+      const assetFuel = getAssetFuel(asset);
       const amountEthUnits = bn.parseUnits(amountFormatted, assetEth.decimals);
       const txId = await TxEthToFuelService.start({
         amount: amountEthUnits.toHex(),
         ethWalletClient,
         fuelAddress,
         ethAssetAddress: assetEth.address,
+        fuelContractId: assetFuel.contractId,
         ethPublicClient,
       });
 
