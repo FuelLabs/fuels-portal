@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
+import { isSameEthAddress } from '~/systems/Chains/eth/utils/address';
 
-import { isSameEthAddress } from '../../Chains/eth/utils';
 import type { Asset } from '../services/asset';
 import { getAssetEth, getAssetFuel } from '../utils';
 

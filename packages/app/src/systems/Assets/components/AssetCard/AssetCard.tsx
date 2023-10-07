@@ -1,7 +1,7 @@
 import { cssObj } from '@fuel-ui/css';
 import { Box, CardList, IconButton, Text } from '@fuel-ui/react';
+import { RemoveAssetDialog } from '~/systems/Chains/eth/components';
 
-import { RemoveAssetDialog } from '../../../Chains/eth/components/RemoveAssetDialog';
 import type { Asset } from '../../services';
 import { AssetLogo } from '../AssetLogo';
 
