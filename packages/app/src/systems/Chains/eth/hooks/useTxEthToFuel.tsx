@@ -155,7 +155,8 @@ export function useTxEthToFuel({ id }: { id: string }) {
   const assetEthNetwork = asset ? getAssetEth(asset) : undefined;
   const assetFuelNetwork = asset ? getAssetFuel(asset) : undefined;
   const formattedAmount = amount?.format({
-    units: assetEthNetwork?.decimals,
+    // if it's erc20 token, the value is bigger and we should use ETH decimals of the token
+    units: erc20Token ? assetEthNetwork?.decimals : undefined,
     precision: assetFuelNetwork?.decimals,
     minPrecision: 3,
   });

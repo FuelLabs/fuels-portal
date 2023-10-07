@@ -1,1 +1,1 @@
-export * from '../../../Assets/components/AssetCard';
+export * from './RemoveAssetDialog';

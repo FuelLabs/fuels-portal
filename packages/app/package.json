@@ -21,7 +21,7 @@
     "@fuel-ui/react": "0.21.0",
     "@fuel-wallet/react": "0.13.0",
     "@fuel-wallet/sdk": "0.13.0",
-    "@fuels/assets": "0.0.12",
+    "@fuels/assets": "0.1.0",
     "@fuels/react-xstore": "0.0.8",
     "@hookform/resolvers": "^3.1.1",
     "@tanstack/react-query": "^4.29.5",

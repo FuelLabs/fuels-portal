@@ -1,7 +1,7 @@
 import { cssObj } from '@fuel-ui/css';
 import { Dialog } from '@fuel-ui/react';
+import { AssetsDialog } from '~/systems/Assets/containers';
 import {
-  AssetsDialog,
   TxEthToFuelDialog,
   TxFuelToEthDialog,
   AddAssetFormDialog,

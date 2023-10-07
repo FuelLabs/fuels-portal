@@ -25,6 +25,7 @@ export function AddAssetFormDialog() {
   const { control } = form;
 
   const onSubmit = (_: AddAssetFormValues) => {
+    // this code will be needed in next PR when implementing asset crud
     // handlers.addAsset({
     //   asset: {
     //     address: metadata.assetAddress,

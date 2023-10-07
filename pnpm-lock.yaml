@@ -163,8 +163,8 @@ importers:
         specifier: 0.13.0
         version: 0.13.0(dexie@3.2.4)(fuels@0.60.0)
       '@fuels/assets':
-        specifier: 0.0.12
-        version: 0.0.12
+        specifier: 0.1.0
+        version: 0.1.0
       '@fuels/react-xstore':
         specifier: 0.0.8
         version: 0.0.8(@types/react@18.0.27)(@xstate/react@3.2.1)(react-dom@18.2.0)(react@18.2.0)(ws@8.13.0)(xstate@4.37.2)
@@ -4017,8 +4017,8 @@ packages:
       - dexie
     dev: false
 
-  /@fuels/assets@0.0.12:
-    resolution: {integrity: sha512-kErMHC+j/9CHrSNQLIuqDonIoeWfYtjJOJtdj5fq7oTCLMAtvrTCIm/iqjfVeclM3d8IFg5nJ8CRyk2dxIG0Og==}
+  /@fuels/assets@0.1.0:
+    resolution: {integrity: sha512-oeSi0ECt23yuDBmNpZcJP1menCyGl97IXk2JqRtuG+rnXDJHuZdQUQ23UGyoanY8a6IKkeqvXgHtwFEjPIjhiQ==}
     dev: false
 
   /@fuels/eslint-plugin@0.0.8(@testing-library/dom@9.3.1)(eslint@8.33.0)(typescript@4.9.5):

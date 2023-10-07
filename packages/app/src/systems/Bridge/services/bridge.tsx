@@ -71,12 +71,8 @@ export class BridgeService {
         precision: DECIMAL_UNITS,
         units: DECIMAL_UNITS,
       });
+
       const assetEth = getAssetEth(asset);
-
-      if (!assetEth || !assetEth.address) {
-        throw new Error('Asset for ETH network not found');
-      }
-
       const amountEthUnits = bn.parseUnits(amountFormatted, assetEth.decimals);
       const txId = await TxEthToFuelService.start({
         amount: amountEthUnits.toHex(),
