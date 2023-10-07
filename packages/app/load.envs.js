@@ -92,6 +92,6 @@ if (bridgeTokenContracts) {
   process.env.VITE_FUEL_FUNGIBLE_CONTRACT_ID =
     bridgeTokenContracts.FUEL_TokenContract;
   process.env.VITE_FUEL_FUNGIBLE_ASSET_ID =
-    bridgeTokenContracts.FUEL_TokenAsset;
+    bridgeTokenContracts.FUEL_TokenAsset || '';
   process.env.VITE_ETH_ERC20 = bridgeTokenContracts.ETH_ERC20;
 }
