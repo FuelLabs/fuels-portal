@@ -1,6 +1,7 @@
 import {
   getOrDeployECR20Contract,
   getOrDeployFuelTokenContract,
+  getTokenId,
   setupEnvironment,
 } from '@fuel-bridge/test-utils';
 import { createServer } from 'http';
@@ -33,9 +34,11 @@ async function main() {
     },
     9
   );
+  const tokenId = getTokenId(FuelToken);
   await startServer({
     ETH_ERC20: ETHToken.address,
     FUEL_TokenContract: FuelToken.id.toB256(),
+    FUEL_TokenAsset: tokenId,
   });
 }
 

@@ -6,6 +6,8 @@ import type {
 } from 'fuels';
 import type { PublicClient, WalletClient } from 'wagmi';
 import { store } from '~/store';
+import type { Asset } from '~/systems/Assets/services/asset';
+import { getAssetEth, getAssetFuel } from '~/systems/Assets/utils';
 import type {
   FromToNetworks,
   TxEthToFuelInputs,
@@ -21,15 +23,14 @@ import {
   FUEL_CHAIN,
 } from '~/systems/Chains';
 
-import type { BridgeAsset, BridgeTx } from '../types';
+import type { BridgeTx } from '../types';
 
 export type PossibleBridgeInputs = {
   assetAmount?: BN;
   ethWalletClient?: WalletClient;
   ethPublicClient?: PublicClient;
   fuelAddress?: FuelAddress;
-  ethAsset?: BridgeAsset;
-  fuelAsset?: BridgeAsset;
+  asset?: Asset;
 } & Omit<TxEthToFuelInputs['startErc20'], 'amount'> &
   Omit<TxFuelToEthInputs['startFungibleToken'], 'amount'>;
 export type BridgeInputs = {
@@ -52,8 +53,7 @@ export class BridgeService {
       fuelAddress,
       fuelWallet,
       ethAddress,
-      ethAsset,
-      fuelAsset,
+      asset,
     } = input;
 
     if (!fromNetwork || !toNetwork) {
@@ -62,22 +62,25 @@ export class BridgeService {
     if (!assetAmount || assetAmount.isZero()) {
       throw new Error('Need to inform amount to be transfered');
     }
+    if (!asset) {
+      throw new Error('Need to inform asset to be transfered');
+    }
 
     if (isEthChain(fromNetwork) && isFuelChain(toNetwork)) {
-      if (!ethAsset) {
-        throw new Error('Need to inform asset to be transfered');
-      }
-
       const amountFormatted = assetAmount.format({
         precision: DECIMAL_UNITS,
         units: DECIMAL_UNITS,
       });
-      const amountEthUnits = bn.parseUnits(amountFormatted, ethAsset.decimals);
+
+      const assetEth = getAssetEth(asset);
+      const assetFuel = getAssetFuel(asset);
+      const amountEthUnits = bn.parseUnits(amountFormatted, assetEth.decimals);
       const txId = await TxEthToFuelService.start({
         amount: amountEthUnits.toHex(),
         ethWalletClient,
         fuelAddress,
-        ethAsset,
+        ethAssetAddress: assetEth.address,
+        fuelContractId: assetFuel.contractId,
         ethPublicClient,
       });
 
@@ -99,6 +102,7 @@ export class BridgeService {
     }
 
     if (isFuelChain(fromNetwork) && isEthChain(toNetwork)) {
+      const fuelAsset = getAssetFuel(asset);
       const txId = await TxFuelToEthService.start({
         amount: assetAmount,
         fuelWallet,

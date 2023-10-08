@@ -1,26 +1,26 @@
 import type { PublicClient, WalletClient } from 'viem';
 import { Services, store } from '~/store';
 
-import type { EthAssetListMachineState } from '../machines';
+import type { AssetsMachineState } from '../machines/assetsMachine';
 
 const selectors = {
-  assetList: (query?: string) => (state: EthAssetListMachineState) => {
+  assets: (query?: string) => (state: AssetsMachineState) => {
     if (query) {
-      const queriedAssets = state.context.assetList?.filter(
+      const queriedAssets = state.context.assets?.filter(
         (asset) =>
-          asset.address?.toLowerCase().startsWith(query.toLowerCase()) ||
-          asset.symbol?.toLowerCase().startsWith(query.toLowerCase())
+          asset.symbol?.toLowerCase().startsWith(query.toLowerCase()) ||
+          asset.name?.toLowerCase().startsWith(query.toLowerCase())
       );
 
       return queriedAssets;
     }
 
-    return state.context.assetList;
+    return state.context.assets;
   },
-  isLoading: (state: EthAssetListMachineState) => {
+  isLoading: (state: AssetsMachineState) => {
     return state.hasTag('loading');
   },
-  isLoadingFaucet: (state: EthAssetListMachineState) => {
+  isLoadingFaucet: (state: AssetsMachineState) => {
     return state.hasTag('loadingFaucet');
   },
 };
@@ -31,20 +31,14 @@ type UseAssetParams = {
 
 export const useAssets = (params?: UseAssetParams) => {
   const { assetQuery } = params || {};
-  const assetList = store.useSelector(
-    Services.ethAssetList,
-    selectors.assetList()
-  );
+  const assetList = store.useSelector(Services.assets, selectors.assets());
   const filteredAssetList = store.useSelector(
-    Services.ethAssetList,
-    selectors.assetList(assetQuery)
+    Services.assets,
+    selectors.assets(assetQuery)
   );
-  const isLoading = store.useSelector(
-    Services.ethAssetList,
-    selectors.isLoading
-  );
+  const isLoading = store.useSelector(Services.assets, selectors.isLoading);
   const isLoadingFaucet = store.useSelector(
-    Services.ethAssetList,
+    Services.assets,
     selectors.isLoadingFaucet
   );
   function faucetErc20({
@@ -69,8 +63,6 @@ export const useAssets = (params?: UseAssetParams) => {
   return {
     assets: filteredAssetList || [],
     handlers: {
-      addAsset: store.addAsset,
-      removeAsset: store.removeAsset,
       faucetErc20,
     },
     isLoading,

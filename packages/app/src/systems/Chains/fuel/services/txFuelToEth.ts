@@ -1,5 +1,6 @@
 import { fungibleTokenABI } from '@fuel-bridge/fungible-token';
 import type { FuelWalletLocked } from '@fuel-wallet/sdk';
+import type { Fuel } from '@fuels/assets';
 import type { BN, MessageProof } from 'fuels';
 import {
   bn,
@@ -9,20 +10,18 @@ import {
   ZeroBytes32,
   getReceiptsMessageOut,
   getTransactionsSummaries,
-  BaseAssetId,
   Contract,
   TransactionStatus,
 } from 'fuels';
 import type { WalletClient } from 'viem';
 import type { PublicClient as EthPublicClient } from 'wagmi';
 import { VITE_ETH_FUEL_MESSAGE_PORTAL } from '~/config';
-import type { BridgeAsset } from '~/systems/Bridge';
 
 import { FUEL_MESSAGE_PORTAL } from '../../eth/contracts/FuelMessagePortal';
 import { EthConnectorService } from '../../eth/services';
 import { parseEthAddressToFuel } from '../../eth/utils/address';
 import { createRelayMessageParams } from '../../eth/utils/relayMessage';
-import { getBlock, getTokenId } from '../utils';
+import { getBlock, getContractTokenId } from '../utils';
 
 export type TxFuelToEthInputs = {
   startBase: {
@@ -31,7 +30,7 @@ export type TxFuelToEthInputs = {
     ethAddress?: string;
   };
   startFungibleToken: {
-    fuelAsset?: BridgeAsset;
+    fuelAsset?: Fuel;
   } & TxFuelToEthInputs['startBase'];
   waitTxResult: {
     fuelTxId: string;
@@ -88,13 +87,13 @@ export class TxFuelToEthService {
     input: TxFuelToEthInputs['startFungibleToken']
   ) {
     TxFuelToEthService.assertStartBase(input);
-    if (!input?.fuelAsset?.address) {
+    if (!input?.fuelAsset?.contractId) {
       throw new Error('Need Fuel asset');
     }
   }
 
   static async start(input: TxFuelToEthInputs['startFungibleToken']) {
-    if (input?.fuelAsset?.address !== BaseAssetId) {
+    if (input?.fuelAsset?.contractId) {
       return TxFuelToEthService.startFungibleToken(input);
     }
 
@@ -129,21 +128,23 @@ export class TxFuelToEthService {
 
     const { amount, fuelWallet, ethAddress, fuelAsset } = input;
 
-    if (fuelAsset?.address && fuelWallet && amount) {
+    if (fuelAsset?.contractId && fuelWallet && amount) {
       const ethAddressInFuel = parseEthAddressToFuel(ethAddress);
       const fungibleToken = new Contract(
-        fuelAsset.address,
+        fuelAsset.contractId,
         fungibleTokenABI,
         fuelWallet
       );
-      const fuelTestTokenId = getTokenId(fungibleToken);
+      const fuelTestAssetId =
+        fuelAsset.assetId ||
+        getContractTokenId(fuelAsset.contractId as `0x${string}`);
       const { maxGasPerTx, minGasPrice } = fuelWallet.provider.getGasConfig();
       const withdrawScope = fungibleToken.functions
         .withdraw(ethAddressInFuel)
         .callParams({
           forward: {
             amount: bn.parseUnits(amount.format(), fuelAsset.decimals),
-            assetId: fuelTestTokenId,
+            assetId: fuelTestAssetId,
           },
         })
         .txParams({
