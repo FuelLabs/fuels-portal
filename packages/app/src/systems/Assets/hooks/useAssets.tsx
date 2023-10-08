@@ -6,8 +6,10 @@ import type { AssetsMachineState } from '../machines/assetsMachine';
 const selectors = {
   assets: (query?: string) => (state: AssetsMachineState) => {
     if (query) {
-      const queriedAssets = state.context.assets?.filter((asset) =>
-        asset.symbol?.toLowerCase().startsWith(query.toLowerCase())
+      const queriedAssets = state.context.assets?.filter(
+        (asset) =>
+          asset.symbol?.toLowerCase().startsWith(query.toLowerCase()) ||
+          asset.name?.toLowerCase().startsWith(query.toLowerCase())
       );
 
       return queriedAssets;

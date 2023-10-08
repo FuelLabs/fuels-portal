@@ -1,18 +1,11 @@
 import { toast } from '@fuel-ui/react';
-import assetList from '@fuels/assets';
 import type { InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine } from 'xstate';
-import {
-  VITE_ETH_ERC20,
-  VITE_FUEL_FUNGIBLE_CONTRACT_ID,
-  VITE_FUEL_FUNGIBLE_ASSET_ID,
-} from '~/config';
-import { getContractTokenId } from '~/systems/Chains';
-import { ETH_CHAIN, FUEL_CHAIN } from '~/systems/Chains/config';
 import { FetchMachine } from '~/systems/Core/machines/fetchMachine';
 
 import type { Asset, AssetServiceInputs } from '../services/asset';
 import { AssetService } from '../services/asset';
+import { defaultAssets } from '../utils/defaultAssets';
 
 export type MachineContext = {
   assets?: Asset[];
@@ -101,34 +94,7 @@ export const assetsMachine = createMachine(
       >({
         showError: true,
         async fetch() {
-          const defaultAssets: Asset[] = [...assetList];
-
-          if (VITE_ETH_ERC20) {
-            defaultAssets.push({
-              icon: null,
-              name: 'Test Token',
-              symbol: 'TKN',
-              networks: [
-                {
-                  type: 'ethereum',
-                  chainId: ETH_CHAIN.id,
-                  decimals: 18,
-                  address: VITE_ETH_ERC20,
-                },
-                {
-                  type: 'fuel',
-                  chainId: FUEL_CHAIN.id,
-                  decimals: 9,
-                  contractId: VITE_FUEL_FUNGIBLE_CONTRACT_ID,
-                  assetId:
-                    VITE_FUEL_FUNGIBLE_ASSET_ID ||
-                    getContractTokenId(
-                      VITE_FUEL_FUNGIBLE_CONTRACT_ID as `0x${string}`
-                    ),
-                },
-              ],
-            });
-          }
+          // TODO: fetch from service when add support to custom assets
           return defaultAssets;
         },
       }),

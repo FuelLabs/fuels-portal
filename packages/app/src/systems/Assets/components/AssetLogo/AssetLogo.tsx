@@ -18,21 +18,18 @@ export const AssetLogo = ({
   size = DEFAULT_SIZE,
 }: EthAssetLogoProps) => {
   const { image, address } = useMemo(() => {
-    if (asset?.icon) {
+    if (!asset) return {};
+    if (asset.icon) {
       return { image: asset.icon };
     }
-
-    if (!asset) return {};
 
     const ethAsset = getAssetEth(asset);
     const fuelAsset = getAssetFuel(asset);
 
     return {
-      address: ethAsset?.address || fuelAsset?.assetId || fuelAsset?.contractId,
+      address: ethAsset?.address || fuelAsset?.assetId,
     };
   }, [asset?.symbol]);
-
-  if (!image && !address) return null;
 
   return (
     <>
