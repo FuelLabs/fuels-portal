@@ -8,7 +8,8 @@ interface ImportMetaEnv {
   readonly VITE_ETH_FUEL_ERC20_GATEWAY: string;
   readonly VITE_ETH_FUEL_CHAIN_STATE: string;
   readonly VITE_ETH_ERC20: string;
-  readonly VITE_FUEL_FUNGIBLE_TOKEN_ID: string;
+  readonly VITE_FUEL_FUNGIBLE_CONTRACT_ID: string;
+  readonly VITE_FUEL_FUNGIBLE_ASSET_ID: string;
   readonly VITE_ETH_CHAIN: string;
   readonly VITE_FUEL_CHAIN: string;
   readonly VITE_FUEL_VERSION: string;

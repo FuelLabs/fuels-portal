@@ -1,21 +1,21 @@
 import { cssObj } from '@fuel-ui/css';
 import { CardList } from '@fuel-ui/react';
-import { ethLogoSrc } from '~/systems/Chains';
+import assetList from '@fuels/assets';
 
-import { EthAssetCard } from './EthAssetCard';
+import { AssetCard } from './AssetCard';
 
 export default {
-  component: EthAssetCard,
-  title: 'EthAssetCard',
+  component: AssetCard,
+  title: 'AssetCard',
   parameters: {
     layout: 'fullscreen',
   },
 };
-
+// TODO: fix stories
 export const Usage = () => {
   return (
     <CardList css={styles.storybook}>
-      <EthAssetCard imageSrc={ethLogoSrc} name="ETH" />
+      <AssetCard asset={assetList[0]} />
     </CardList>
   );
 };
@@ -23,10 +23,7 @@ export const Usage = () => {
 export const AvatarUsage = () => {
   return (
     <CardList css={styles.storybook}>
-      <EthAssetCard
-        name="ETH"
-        hash="0x15db4a4d9e35fa8c0b5f92b13924d1610c5d618e"
-      />
+      <AssetCard asset={assetList[0]} />
     </CardList>
   );
 };
@@ -34,9 +31,8 @@ export const AvatarUsage = () => {
 export const OnPress = () => {
   return (
     <CardList css={styles.storybook}>
-      <EthAssetCard
-        imageSrc={ethLogoSrc}
-        name="ETH"
+      <AssetCard
+        asset={assetList[0]}
         onPress={() => {
           // eslint-disable-next-line no-console
           console.log('press');
@@ -49,9 +45,8 @@ export const OnPress = () => {
 export const OnAdd = () => {
   return (
     <CardList css={styles.storybook}>
-      <EthAssetCard
-        imageSrc={ethLogoSrc}
-        name="ETH"
+      <AssetCard
+        asset={assetList[0]}
         onAdd={() => {
           // eslint-disable-next-line no-console
           console.log('add');
@@ -64,9 +59,8 @@ export const OnAdd = () => {
 export const OnRemove = () => {
   return (
     <CardList css={styles.storybook}>
-      <EthAssetCard
-        imageSrc={ethLogoSrc}
-        name="ETH"
+      <AssetCard
+        asset={assetList[0]}
         onRemove={() => {
           // eslint-disable-next-line no-console
           console.log('remove');
@@ -79,9 +73,8 @@ export const OnRemove = () => {
 export const OnFaucet = () => {
   return (
     <CardList css={styles.storybook}>
-      <EthAssetCard
-        imageSrc={ethLogoSrc}
-        name="ETH"
+      <AssetCard
+        asset={assetList[0]}
         onFaucet={() => {
           // eslint-disable-next-line no-console
           console.log('faucet');
@@ -94,9 +87,8 @@ export const OnFaucet = () => {
 export const OnRemoveDisabled = () => {
   return (
     <CardList css={styles.storybook}>
-      <EthAssetCard
-        imageSrc={ethLogoSrc}
-        name="ETH"
+      <AssetCard
+        asset={assetList[0]}
         onRemove={() => {
           // eslint-disable-next-line no-console
           console.log('remove');

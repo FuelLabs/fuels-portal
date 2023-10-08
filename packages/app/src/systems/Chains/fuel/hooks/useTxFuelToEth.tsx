@@ -1,19 +1,19 @@
 import {
-  BaseAssetId,
   ReceiptType,
   fromTai64ToUnix,
   getReceiptsMessageOut,
   hexlify,
 } from 'fuels';
 import { useMemo } from 'react';
-import { VITE_ETH_ERC20, VITE_FUEL_FUNGIBLE_TOKEN_ID } from '~/config';
 import { store, Services } from '~/store';
-import type { BridgeAsset, BridgeTxsMachineState } from '~/systems/Bridge';
+import { useAssets } from '~/systems/Assets';
+import type { Asset } from '~/systems/Assets/services/asset';
+import { getAssetEth } from '~/systems/Assets/utils';
+import type { BridgeTxsMachineState } from '~/systems/Bridge';
 
-import { isSameEthAddress, parseFuelAddressToEth } from '../..';
 import { useEthAccountConnection } from '../../eth/hooks';
+import { isSameEthAddress, parseFuelAddressToEth } from '../../eth/utils';
 import type { TxFuelToEthMachineState } from '../machines';
-import { FUEL_ASSETS } from '../utils/assets';
 
 const bridgeTxsSelectors = {
   txFuelToEth: (txId?: string) => (state: BridgeTxsMachineState) => {
@@ -110,7 +110,7 @@ const txFuelToEthSelectors = {
     const fuelTxResult = state.context.fuelTxResult;
     return fuelTxResult;
   },
-  asset: (state: TxFuelToEthMachineState): BridgeAsset => {
+  assetAmount: (assets: Asset[]) => (state: TxFuelToEthMachineState) => {
     const fuelTxResult = state.context.fuelTxResult;
 
     const messageOutReceipt = getReceiptsMessageOut(
@@ -132,56 +132,72 @@ const txFuelToEthSelectors = {
               hexlify(messageOutReceipt.data).replace('0x', '').slice(72, 136)
             )
           : undefined;
+        const ethAsset = assets
+          .map((asset) => ({
+            asset,
+            ethNetwork: getAssetEth(asset),
+          }))
+          .find(({ ethNetwork }) => {
+            return isSameEthAddress(ethNetwork?.address, ethAssetId);
+          });
 
-        if (isSameEthAddress(ethAssetId, VITE_ETH_ERC20)) {
-          const asset = FUEL_ASSETS.find(
-            (asset) => asset.address === VITE_FUEL_FUNGIBLE_TOKEN_ID
-          );
-
-          return {
-            ...asset,
-            amount: amount.format({
-              precision: asset?.decimals,
-            }),
-          };
-        }
+        return {
+          asset: ethAsset?.asset,
+          amount: amount.format({
+            precision: ethAsset?.ethNetwork?.decimals,
+          }),
+        };
       }
     }
 
-    const asset = FUEL_ASSETS.find((asset) => asset.address === BaseAssetId);
+    const asset = assets.find((asset) => asset.symbol === 'ETH');
+
+    if (!asset) return undefined;
+
+    const ethNetwork = getAssetEth(asset);
 
     return {
-      ...asset,
+      asset,
       amount: messageOutReceipt?.amount?.format({
-        precision: asset?.decimals,
+        precision: ethNetwork?.decimals,
       }),
     };
+  },
+  isLoadingTxResult: (state: TxFuelToEthMachineState) => {
+    return state.matches('submittingToBridge.waitingFuelTxResult');
   },
 };
 
 export function useTxFuelToEth({ txId }: { txId: string }) {
   const { walletClient: ethWalletClient } = useEthAccountConnection();
+  const { assets } = useAssets();
 
   const txFuelToEthState = store.useSelector(
     Services.bridgeTxs,
     bridgeTxsSelectors.txFuelToEth(txId)
   );
 
-  const { steps, status, fuelTxResult, asset } = useMemo(() => {
-    if (!txFuelToEthState) return {};
+  const { steps, status, fuelTxResult, asset, amount, isLoadingTxResult } =
+    useMemo(() => {
+      if (!txFuelToEthState) return {};
 
-    const steps = txFuelToEthSelectors.steps(txFuelToEthState);
-    const status = txFuelToEthSelectors.status(txFuelToEthState);
-    const fuelTxResult = txFuelToEthSelectors.fuelTxResult(txFuelToEthState);
-    const asset = txFuelToEthSelectors.asset(txFuelToEthState);
+      const steps = txFuelToEthSelectors.steps(txFuelToEthState);
+      const status = txFuelToEthSelectors.status(txFuelToEthState);
+      const fuelTxResult = txFuelToEthSelectors.fuelTxResult(txFuelToEthState);
+      const assetAmount =
+        txFuelToEthSelectors.assetAmount(assets)(txFuelToEthState);
+      const isLoadingTxResult =
+        txFuelToEthSelectors.isLoadingTxResult(txFuelToEthState);
 
-    return {
-      steps,
-      status,
-      fuelTxResult,
-      asset,
-    };
-  }, [txFuelToEthState]);
+      return {
+        steps,
+        status,
+        fuelTxResult,
+        asset: assetAmount?.asset,
+        amount: assetAmount?.amount,
+        isLoadingTxResult,
+      };
+    }, [txFuelToEthState, assets]);
 
   // TODO: remove this conversion when sdk already returns the date in unix format
   const date = useMemo(
@@ -212,7 +228,9 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
     fuelTxResult,
     date,
     asset,
+    amount,
     steps,
     status,
+    isLoadingTxResult,
   };
 }

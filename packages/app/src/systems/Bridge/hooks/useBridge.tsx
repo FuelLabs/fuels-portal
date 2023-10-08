@@ -3,6 +3,8 @@ import { bn, DECIMAL_UNITS } from 'fuels';
 import { useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Services, store } from '~/store';
+import { useAsset } from '~/systems/Assets/hooks/useAsset';
+import { getAssetEth, getAssetFuel } from '~/systems/Assets/utils';
 import type { SupportedChain } from '~/systems/Chains';
 import {
   useFuelAccountConnection,
@@ -59,18 +61,19 @@ const selectors = {
     },
   isLoading: (state: BridgeMachineState) => state.matches('bridging'),
   assetAmount: (state: BridgeMachineState) => state.context?.assetAmount,
-  assetAddress: (state: BridgeMachineState) => state.context?.assetAddress,
+  asset: (state: BridgeMachineState) => state.context?.asset,
 };
 
 export function useBridge() {
+  const { asset: ethAsset } = useAsset();
   const fromNetwork = store.useSelector(Services.bridge, selectors.fromNetwork);
   const toNetwork = store.useSelector(Services.bridge, selectors.toNetwork);
   const isLoading = store.useSelector(Services.bridge, selectors.isLoading);
   const assetAmount = store.useSelector(Services.bridge, selectors.assetAmount);
-  const assetAddress = store.useSelector(
-    Services.bridge,
-    selectors.assetAddress
-  );
+  const asset = store.useSelector(Services.bridge, selectors.asset);
+
+  const ethAssetAddress = asset ? getAssetEth(asset).address : undefined;
+  const fuelAssetAddress = asset ? getAssetFuel(asset).assetId : undefined;
 
   const {
     address: ethAddress,
@@ -79,10 +82,9 @@ export function useBridge() {
     balance: ethBalance,
     walletClient: ethWalletClient,
     publicClient: ethPublicClient,
-    asset: ethAsset,
   } = useEthAccountConnection({
-    erc20Address: assetAddress?.startsWith('0x')
-      ? (assetAddress as `0x${string}`)
+    erc20Address: ethAssetAddress?.startsWith('0x')
+      ? (ethAssetAddress as `0x${string}`)
       : undefined,
   });
 
@@ -93,10 +95,9 @@ export function useBridge() {
     isConnecting: fuelIsConnecting,
     balance: fuelBalance,
     wallet: fuelWallet,
-    asset: fuelAsset,
   } = useFuelAccountConnection({
-    erc20Address: assetAddress?.startsWith('0x')
-      ? (assetAddress as `0x${string}`)
+    assetId: fuelAssetAddress?.startsWith('0x')
+      ? (fuelAssetAddress as `0x${string}`)
       : undefined,
   });
 
@@ -140,6 +141,8 @@ export function useBridge() {
 
   // this effect is responsible to react to url changes (from/to params) and inform the machine that it changed
   useEffect(() => {
+    if (!asset) return;
+
     if (!fromInputNetwork || !toInputNetwork) {
       goToDeposit();
     } else {
@@ -148,7 +151,14 @@ export function useBridge() {
         toNetwork: toInputNetwork,
       });
     }
-  }, [fromInputNetwork, toInputNetwork]);
+  }, [asset, fromInputNetwork, toInputNetwork]);
+
+  // this effect is responsible for setting the initial asset
+  useEffect(() => {
+    if (!asset && ethAsset) {
+      store.changeAsset({ asset: ethAsset });
+    }
+  }, [asset, ethAsset]);
 
   function goToDeposit() {
     const searchParams = new URLSearchParams(location.search);
@@ -194,18 +204,6 @@ export function useBridge() {
     return false;
   }
 
-  function getAsset(network?: SupportedChain) {
-    if (isEthChain(network)) {
-      return ethAsset;
-    }
-
-    if (isFuelChain(network)) {
-      return fuelAsset;
-    }
-
-    return undefined;
-  }
-
   return {
     handlers: {
       goToDeposit,
@@ -216,15 +214,14 @@ export function useBridge() {
           ethWalletClient,
           fuelWallet,
           ethAddress,
-          ethAsset,
-          fuelAsset,
+          asset,
           ethPublicClient,
         }),
       connectFrom: () => connectNetwork(fromNetwork),
       connectTo: () => connectNetwork(toNetwork),
       changeAssetAmount: store.changeAssetAmount,
-      changeAssetAddress: store.changeAssetAddress,
-      openAssetsDialog: store.openEthAssetsDialog,
+      changeAsset: store.changeAsset,
+      openAssetsDialog: store.openAssetsDialog,
     },
     fuelAddress,
     ethAddress,
@@ -238,6 +235,6 @@ export function useBridge() {
     status,
     assetAmount,
     assetBalance,
-    asset: getAsset(fromNetwork),
+    asset,
   };
 }

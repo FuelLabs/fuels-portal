@@ -1,14 +1,12 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, CardList, Copyable, IconButton, Text } from '@fuel-ui/react';
-import { shortAddress } from '~/systems/Core';
+import { Box, CardList, IconButton, Text } from '@fuel-ui/react';
+import { RemoveAssetDialog } from '~/systems/Chains/eth/components';
 
+import type { Asset } from '../../services';
 import { AssetLogo } from '../AssetLogo';
-import { RemoveAssetDialog } from '../RemoveAssetDialog';
 
-type EthAssetCardProps = {
-  imageSrc?: string;
-  name: string;
-  hash?: string;
+type AssetCardProps = {
+  asset: Asset;
   onAdd?: () => void;
   onPress?: () => void;
   onRemove?: () => void;
@@ -18,10 +16,8 @@ type EthAssetCardProps = {
   removeToolTip?: string;
 };
 
-export const EthAssetCard = ({
-  imageSrc,
-  name,
-  hash,
+export const AssetCard = ({
+  asset,
   onAdd,
   onFaucet,
   isFaucetLoading,
@@ -29,7 +25,7 @@ export const EthAssetCard = ({
   onRemove,
   isRemoveDisabled,
   removeToolTip,
-}: EthAssetCardProps) => {
+}: AssetCardProps) => {
   return (
     <CardList.Item
       onPress={onPress}
@@ -38,20 +34,9 @@ export const EthAssetCard = ({
     >
       <Box.Flex align="center" justify="space-between" css={{ width: '$full' }}>
         <Box.Flex gap="$3" align="center">
-          <AssetLogo asset={{ address: hash, image: imageSrc }} size={30} />
+          <AssetLogo asset={asset} size={30} />
           <Box.Flex direction="column" gap="$0">
-            <Text color="intentsPrimary12">{name}</Text>
-            {!!hash && (
-              <Copyable
-                value={hash || ''}
-                iconProps={{ size: 'xs' }}
-                css={{ gap: '$0' }}
-              >
-                <Text color="intentsBase10" fontSize="xs">
-                  {shortAddress(hash)}
-                </Text>
-              </Copyable>
-            )}
+            <Text color="intentsPrimary12">{asset.symbol}</Text>
           </Box.Flex>
         </Box.Flex>
         {onFaucet && (
@@ -80,7 +65,7 @@ export const EthAssetCard = ({
           />
         )}
         {onRemove && (
-          <RemoveAssetDialog assetSymbol={name} onConfirm={onRemove}>
+          <RemoveAssetDialog assetSymbol={asset.symbol} onConfirm={onRemove}>
             <IconButton
               aria-label="RemoveEthAsset"
               isDisabled={isRemoveDisabled}
