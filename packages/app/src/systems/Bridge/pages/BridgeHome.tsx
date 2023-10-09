@@ -27,7 +27,7 @@ export const BridgeHome = ({ children }: BridgeHomeProps) => {
         </Heading>
         <FuelVersionDialog isOpen={!(isCompatible ?? true)} />
         <Tabs
-          defaultValue={location.pathname}
+          defaultValue={location.pathname.replace(/\/$/, '')}
           onValueChange={(path) => navigate(path)}
         >
           <Tabs.List css={styles.tabs}>
