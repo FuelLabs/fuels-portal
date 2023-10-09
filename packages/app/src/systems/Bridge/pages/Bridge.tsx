@@ -11,6 +11,7 @@ import {
 
 import { BridgeButton, BridgeTabs } from '../containers';
 import { useBridge } from '../hooks';
+import { useWithdrawDelay } from '../hooks/useWithdrawDelay';
 
 export const Bridge = () => {
   const {
@@ -26,6 +27,7 @@ export const Bridge = () => {
 
   const fromControls = useAnimationControls();
   const toControls = useAnimationControls();
+  const { timeToWithdrawFormatted } = useWithdrawDelay();
 
   if (!fromNetwork || !toNetwork) return null;
 
@@ -74,10 +76,9 @@ export const Bridge = () => {
           <BridgeButton />
           <Alert status="warning">
             <Alert.Description>
-              {/* TODO: get it from contract constant to show exact time, instead of hardcoded "7 days" */}
-              Any assets deposited to Fuel takes 7 days to withdraw back to
-              Ethereum. Learn more about our architecture and security in
-              our&nbsp;
+              Any assets deposited to Fuel can take up to{' '}
+              {timeToWithdrawFormatted} to withdraw back to Ethereum. Learn more
+              about our architecture and security in our&nbsp;
               <Link href="https://docs.fuel.network/" isExternal>
                 docs
               </Link>

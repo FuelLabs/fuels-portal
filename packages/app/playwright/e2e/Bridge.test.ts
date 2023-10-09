@@ -52,7 +52,7 @@ test.describe('Bridge', () => {
     await test.step('Connect to metamask', async () => {
       await page.bringToFront();
       // Go to the bridge page
-      bridgePage = page.locator('a').getByText('Bridge');
+      bridgePage = page.locator('[role="link"]').getByText('Bridge');
       await bridgePage.click();
 
       // Connect metamask
@@ -120,7 +120,7 @@ test.describe('Bridge', () => {
       ).toBe(depositAmount);
 
       // Go to transaction page
-      const transactionList = page.locator('a').getByText('History');
+      const transactionList = page.locator('button').getByText('History');
       await transactionList.click();
 
       // check the transaction is there
@@ -142,14 +142,11 @@ test.describe('Bridge', () => {
 
     await test.step('Withdraw from Fuel to ETH', async () => {
       // Go to transaction page
-      const transactionList = page.locator('a').getByText('History');
+      const transactionList = page.locator('button').getByText('History');
 
       // Go to the bridge page
-      bridgePage = page
-        .locator('div')
-        .filter({ hasText: 'BridgeHistory' })
-        .getByRole('link', { name: 'Bridge ' });
-      await bridgePage.first().click();
+      bridgePage = page.locator('button').getByText('Bridge');
+      await bridgePage.click();
 
       // Go to the withdraw page
       const withdrawPage = getButtonByText(page, 'Withdraw from Fuel');

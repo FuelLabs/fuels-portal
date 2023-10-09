@@ -16,6 +16,9 @@ const globalStyles = cssObj({
     '--colors-inputBaseBg': 'var(--colors-dialogBg)',
     '--colors-cardBg': 'var(--colors-intentsBase1)',
   },
+  'h2, h3, h4': {
+    fontWeight: '$base',
+  },
 });
 
 loadIcons(icons);

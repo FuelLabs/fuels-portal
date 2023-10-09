@@ -18,8 +18,9 @@ const selectors = {
 
 export const useBridgeTxs = () => {
   const {
-    isConnected,
     hasWallet,
+    isConnected,
+    isLoadingConnection,
     provider: fuelProvider,
     address: fuelAddress,
   } = useFuelAccountConnection();
@@ -32,15 +33,12 @@ export const useBridgeTxs = () => {
 
     store.fetchTxs({ fuelProvider, ethPublicClient, fuelAddress });
   }, [fuelProvider?.url, ethPublicClient.chain.id, fuelAddress?.toAddress()]);
-
   return {
     bridgeTxs,
     isLoading,
-    shouldShowNotConnected:
-      !(isConnected ?? hasWallet) &&
-      !isLoading &&
-      bridgeTxs &&
-      bridgeTxs.length === 0,
+    shouldShowNotConnected: hasWallet
+      ? !isLoadingConnection && !isConnected && !isLoading
+      : !hasWallet,
     shouldShowEmpty:
       isConnected && !isLoading && bridgeTxs && bridgeTxs.length === 0,
     shouldShowList:
