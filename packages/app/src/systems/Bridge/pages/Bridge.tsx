@@ -76,9 +76,9 @@ export const Bridge = () => {
           <BridgeButton />
           <Alert status="warning">
             <Alert.Description>
-              Any assets deposited to Fuel takes {timeToWithdrawFormatted} to
-              withdraw back to Ethereum. Learn more about our architecture and
-              security in our&nbsp;
+              Any assets deposited to Fuel can take up to{' '}
+              {timeToWithdrawFormatted} to withdraw back to Ethereum. Learn more
+              about our architecture and security in our&nbsp;
               <Link href="https://docs.fuel.network/" isExternal>
                 docs
               </Link>
