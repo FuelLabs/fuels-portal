@@ -32,6 +32,9 @@ export const ProjectItem: ProjectItemComponent = ({
   description,
   image,
   url,
+  twitter,
+  discord,
+  status,
   github,
   isLive,
 }: ProjectItemProps) => {
@@ -62,6 +65,30 @@ export const ProjectItem: ProjectItemComponent = ({
                 {name}
               </Text>
               <Box.Flex>
+                {twitter && (
+                  <Tooltip content={twitter}>
+                    <ButtonLink
+                      as="a"
+                      href={twitter}
+                      color="intentsBase12"
+                      size="sm"
+                    >
+                      <Icon icon="BrandX" size={20} stroke={1} />
+                    </ButtonLink>
+                  </Tooltip>
+                )}
+                {discord && (
+                  <Tooltip content={discord}>
+                    <ButtonLink
+                      as="a"
+                      href={discord}
+                      color="intentsBase12"
+                      size="sm"
+                    >
+                      <Icon icon="BrandDiscord" size={20} stroke={1} />
+                    </ButtonLink>
+                  </Tooltip>
+                )}
                 {github && (
                   <Tooltip content={github}>
                     <ButtonLink
@@ -103,6 +130,25 @@ export const ProjectItem: ProjectItemComponent = ({
               </Tag>
             ) : null}
           </Box.Flex>
+          <Box.Flex
+            align="center"
+            justify="flex-end"
+            wrap="wrap"
+            css={styles.statusContainer}
+          >
+            {status &&
+              status.map((s, index) => (
+                <Tag
+                  key={index}
+                  intent="base"
+                  size="xs"
+                  css={styles.tag}
+                  variant="ghost"
+                >
+                  {s}
+                </Tag>
+              ))}
+          </Box.Flex>
         </Box.Stack>
       </Card.Body>
     </MotionCard>
@@ -120,8 +166,11 @@ const styles = {
   }),
   details: cssObj({
     flex: 1,
-    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   }),
+
   link: cssObj({
     textDecoration: 'underline',
     padding: '0',
@@ -140,6 +189,7 @@ const styles = {
     borderRadius: '$sm',
     padding: '0 $1',
     backgroundColor: '$gray5',
+    marginRight: '8px',
   }),
   title: cssObj({
     width: '100%',
@@ -151,6 +201,13 @@ const styles = {
     gap: '$4',
     justifyContent: 'flex-start',
     padding: '$6',
+  }),
+  statusContainer: cssObj({
+    display: 'flex',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
+    flexWrap: 'wrap',
+    marginTop: 'auto',
   }),
 };
 
