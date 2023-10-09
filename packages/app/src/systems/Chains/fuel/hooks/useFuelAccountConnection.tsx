@@ -6,7 +6,6 @@ import {
   useBalance,
   useWallet,
   useConnector,
-  useFuel,
 } from '@fuel-wallet/react';
 import { Address } from 'fuels';
 import { useMemo } from 'react';
@@ -15,16 +14,17 @@ import { store } from '~/store';
 import { EthTxCache } from '../../eth';
 import { FuelTxCache } from '../utils/txCache';
 
+import { useHasFuelWallet } from './useHasFuelWallet';
+
 export const useFuelAccountConnection = (props?: { assetId?: string }) => {
   const { assetId } = props || {};
-
-  const { fuel } = useFuel();
   const { account } = useAccount();
   const { balance } = useBalance({
     address: account || '',
     assetId,
   });
-  const { isConnected } = useIsConnected();
+  const { hasWallet } = useHasFuelWallet();
+  const { isConnected, isLoading: isLoadingConnection } = useIsConnected();
   const { connect, error, isConnecting } = useConnector();
   const { disconnect } = useDisconnect();
   const { provider } = useProvider();
@@ -34,7 +34,6 @@ export const useFuelAccountConnection = (props?: { assetId?: string }) => {
     () => (account ? Address.fromString(account) : undefined),
     [account]
   );
-  const hasWallet = Boolean(fuel);
 
   function handleConnect() {
     connect();
@@ -50,11 +49,12 @@ export const useFuelAccountConnection = (props?: { assetId?: string }) => {
       },
       closeDialog: store.closeOverlay,
     },
-    hasWallet,
     account,
     address,
     isConnected,
     error,
+    hasWallet,
+    isLoadingConnection,
     isConnecting,
     provider,
     balance,
