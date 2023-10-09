@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
 import { store, Services } from '~/store';
+import { getAssetEth, getAssetFuel } from '~/systems/Assets/utils';
 import type { BridgeTxsMachineState } from '~/systems/Bridge';
 
+import { useAsset } from '../../../Assets/hooks/useAsset';
 import { useFuelAccountConnection } from '../../fuel';
 import type { TxEthToFuelMachineState } from '../machines';
-import { isErc20Address, parseFuelAddressToEth } from '../utils';
-
-import { useAsset } from './useAsset';
+import { isErc20Address } from '../utils';
 
 const bridgeTxsSelectors = {
   txEthToFuel: (txId?: `0x${string}`) => (state: BridgeTxsMachineState) => {
@@ -96,11 +96,6 @@ const txEthToFuelSelectors = {
 
     return blockDate;
   },
-  assetId: (state: TxEthToFuelMachineState) => {
-    const { assetId } = state.context;
-
-    return assetId;
-  },
   erc20Token: (state: TxEthToFuelMachineState) => {
     const { erc20Token } = state.context;
     return erc20Token;
@@ -128,7 +123,6 @@ export function useTxEthToFuel({ id }: { id: string }) {
     status,
     amount,
     date,
-    assetId,
     erc20Token,
     ethTxId,
     isLoadingReceipts,
@@ -139,7 +133,6 @@ export function useTxEthToFuel({ id }: { id: string }) {
     const status = txEthToFuelSelectors.status(txEthToFuelState);
     const amount = txEthToFuelSelectors.amount(txEthToFuelState);
     const date = txEthToFuelSelectors.blockDate(txEthToFuelState);
-    const assetId = txEthToFuelSelectors.assetId(txEthToFuelState);
     const erc20Token = txEthToFuelSelectors.erc20Token(txEthToFuelState);
     const ethTxId = txEthToFuelSelectors.ethTxId(txEthToFuelState);
     const isLoadingReceipts =
@@ -150,7 +143,6 @@ export function useTxEthToFuel({ id }: { id: string }) {
       status,
       amount,
       date,
-      assetId,
       erc20Token,
       ethTxId,
       isLoadingReceipts,
@@ -158,16 +150,16 @@ export function useTxEthToFuel({ id }: { id: string }) {
   }, [txEthToFuelState]);
 
   const { asset } = useAsset({
-    address: assetId ? parseFuelAddressToEth(assetId) : '',
+    ethTokenId: erc20Token?.address,
   });
-  const assetAmount = useMemo(() => {
-    if (!asset || !amount) return undefined;
-
-    return {
-      ...asset,
-      amount,
-    };
-  }, [asset, amount]);
+  const assetEthNetwork = asset ? getAssetEth(asset) : undefined;
+  const assetFuelNetwork = asset ? getAssetFuel(asset) : undefined;
+  const formattedAmount = amount?.format({
+    // if it's erc20 token, the value is bigger and we should use ETH decimals of the token
+    units: erc20Token ? assetEthNetwork?.decimals : undefined,
+    precision: assetFuelNetwork?.decimals,
+    minPrecision: 3,
+  });
 
   function relayMessageToFuel() {
     if (!ethTxId || !fuelWallet) return;
@@ -195,8 +187,8 @@ export function useTxEthToFuel({ id }: { id: string }) {
     steps,
     status,
     shouldShowConfirmButton,
-    amount,
-    asset: assetAmount,
+    amount: formattedAmount,
+    asset,
     isLoadingReceipts,
   };
 }

@@ -1,5 +1,6 @@
 import { cssObj } from '@fuel-ui/css';
 import { Box, Button, Dialog, Text } from '@fuel-ui/react';
+import { useAsset } from '~/systems/Assets/hooks/useAsset';
 import { BridgeTxOverview, BridgeSteps } from '~/systems/Bridge';
 import { shortAddress } from '~/systems/Core';
 import { useOverlay } from '~/systems/Overlay';
@@ -7,6 +8,7 @@ import { useOverlay } from '~/systems/Overlay';
 import { useTxEthToFuel } from '../hooks';
 
 export function TxEthToFuelDialog() {
+  const { asset: ethAsset } = useAsset();
   const { metadata } = useOverlay<{ txId: string }>();
   const {
     steps,
@@ -16,6 +18,7 @@ export function TxEthToFuelDialog() {
     shouldShowConfirmButton,
     status,
     isLoadingReceipts,
+    amount,
   } = useTxEthToFuel({
     id: metadata.txId,
   });
@@ -38,6 +41,8 @@ export function TxEthToFuelDialog() {
             isDeposit={true}
             asset={asset}
             isLoading={isLoadingReceipts}
+            amount={amount}
+            ethAsset={ethAsset}
           />
         </Box.Stack>
       </Dialog.Description>

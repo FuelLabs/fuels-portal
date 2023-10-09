@@ -35,7 +35,7 @@ export function overlayEvents(store: Store) {
         },
       });
     },
-    openEthAssetsDialog() {
+    openAssetsDialog() {
       store.send(Services.overlay, {
         type: 'OPEN',
         input: {
