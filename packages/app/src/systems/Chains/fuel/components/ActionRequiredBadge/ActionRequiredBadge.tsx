@@ -4,7 +4,7 @@ import { Badge, Text } from '@fuel-ui/react';
 export const ActionRequiredBadge = () => {
   return (
     <Text>
-      <Badge css={styles.actionBadge} intent={'primary'}>
+      <Badge css={styles.actionBadge} intent="primary">
         Action Required
       </Badge>
     </Text>
