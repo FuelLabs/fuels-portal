@@ -18,7 +18,7 @@ export function useWithdrawDelay() {
         fuelChainState.read.BLOCKS_PER_COMMIT_INTERVAL(),
         fuelChainState.read.TIME_TO_FINALIZE(),
       ])) as [bigint, bigint];
-      // It's safe to conver bigint to number in this case as the values of
+      // It's safe to convert bigint to number in this case as the values of
       // blockPerCommitInterval and timeToFinalize are not too big.
       const totalTimeInSeconds =
         Number(blockPerCommitInterval) + Number(timeToFinalize);
