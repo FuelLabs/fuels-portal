@@ -26,10 +26,10 @@ export function useWithdrawDelay() {
       const futureDate = addSeconds(currentDate, totalTimeInSeconds);
 
       return {
-        timeToWidrawFormatted: formatDistanceToNow(futureDate, {
+        timeToWithdrawFormatted: formatDistanceToNow(futureDate, {
           addSuffix: false,
         }),
-        timeToWidrawSeconds: totalTimeInSeconds,
+        timeToWithdrawSeconds: totalTimeInSeconds,
       };
     },
   });

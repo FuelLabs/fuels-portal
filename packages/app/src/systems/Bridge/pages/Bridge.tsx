@@ -26,7 +26,7 @@ export const Bridge = () => {
 
   const fromControls = useAnimationControls();
   const toControls = useAnimationControls();
-  const { timeToWidrawFormatted } = useWithdrawDelay();
+  const { timeToWithdrawFormatted } = useWithdrawDelay();
 
   if (!fromNetwork || !toNetwork) return null;
 
@@ -73,7 +73,7 @@ export const Bridge = () => {
           <BridgeButton />
           <Alert status="warning">
             <Alert.Description>
-              Any assets deposited to Fuel takes {timeToWidrawFormatted} to
+              Any assets deposited to Fuel takes {timeToWithdrawFormatted} to
               withdraw back to Ethereum. Learn more about our architecture and
               security in our&nbsp;
               <Link href="https://docs.fuel.network/" isExternal>
