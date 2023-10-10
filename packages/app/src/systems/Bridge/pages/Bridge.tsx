@@ -79,7 +79,10 @@ export const Bridge = () => {
               Any assets deposited to Fuel can take up to{' '}
               {timeToWithdrawFormatted} to withdraw back to Ethereum. Learn more
               about our architecture and security in our&nbsp;
-              <Link href="https://docs.fuel.network/" isExternal>
+              <Link
+                href="https://github.com/FuelLabs/fuel-bridge/blob/main/docs/ARCHITECTURE.md"
+                isExternal
+              >
                 docs
               </Link>
             </Alert.Description>
