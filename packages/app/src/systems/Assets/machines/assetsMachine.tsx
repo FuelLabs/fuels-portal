@@ -22,7 +22,7 @@ type MachineServices = {
 
 type MachineEvents = {
   type: 'FAUCET_ERC20';
-  input: { address?: string };
+  input: AssetServiceInputs['faucetErc20'];
 };
 
 export const assetsMachine = createMachine(
@@ -70,6 +70,10 @@ export const assetsMachine = createMachine(
           },
           onDone: [
             {
+              target: 'idle',
+              cond: FetchMachine.hasError,
+            },
+            {
               actions: ['notifyFaucetSuccess'],
               target: 'idle',
             },
@@ -103,6 +107,7 @@ export const assetsMachine = createMachine(
         MachineServices['faucetErc20']['data']
       >({
         showError: true,
+        maxAttempts: 1,
         async fetch({ input }) {
           if (!input) {
             throw new Error('Missing data');
