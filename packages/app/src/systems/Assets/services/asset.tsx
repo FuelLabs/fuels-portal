@@ -7,8 +7,8 @@ import { EthConnectorService } from '~/systems/Chains/eth';
 export type AssetServiceInputs = {
   faucetErc20: {
     address?: string;
-    walletClient: WalletClient;
-    publicClient: PublicClient;
+    walletClient?: WalletClient;
+    publicClient?: PublicClient;
   };
 };
 
