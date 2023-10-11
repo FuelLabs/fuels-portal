@@ -313,6 +313,18 @@
   },
   {
     "isLive": false,
+    "name": "Ruscet Exchange",
+    "url": "https://github.com/ruscet",
+    "tags": ["DeFi"],
+    "description": "The permissionless, hyper-efficient exchange on Fuel.",
+    "github": "https://github.com/ruscet",
+    "twitter": "https://twitter.com/ruscet_",
+    "discord": "https://discord.gg/g3eqZsA39z",
+    "image": "ruscet",
+    "status": ["Stealth-Mode"]
+  },
+  {
+    "isLive": false,
     "name": "Thunder",
     "url": "https://beta.thundernft.market/",
     "tags": ["Marketplace", "NFTs"],
