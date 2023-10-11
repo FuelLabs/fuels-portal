@@ -160,7 +160,7 @@ const styles = {
     transition: 'transform 0.2s ease-in-out, border 0.2s ease-in-out',
     '&:hover': {
       cursor: 'pointer',
-      border: '1px solid $intentsBase12',
+      border: '1px solid #00F58C',
       transform: 'scale(1.02)',
     },
   }),

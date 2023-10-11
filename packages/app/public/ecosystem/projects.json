@@ -45,7 +45,7 @@
     "twitter": "https://twitter.com/Artdao_xyz",
     "discord": "",
     "image": "artdao",
-    "status": ["Building"]
+    "status": ["Stealth-Mode"]
   },
   {
     "isLive": false,
@@ -66,10 +66,10 @@
     "tags": ["DeFi", "Wallet"],
     "description": "Bsafe is a multisign tool created to simplify asset management!",
     "github": "",
-    "twitter": "",
+    "twitter": "https://twitter.com/Bsafe_Fuel",
     "discord": "",
     "image": "bsafe",
-    "status": ["Building"]
+    "status": ["Building", "Beta-4"]
   },
   {
     "isLive": false,
@@ -79,7 +79,7 @@
     "description": "Modularity maxis, building DeFi infrastructure.",
     "github": "https://github.com/compolabs",
     "twitter": "https://twitter.com/compolabs",
-    "discord": "",
+    "discord": "https://discord.gg/phcHhUHssg",
     "image": "compolabs",
     "status": ["Building"]
   },
@@ -103,7 +103,7 @@
     "description": "Elix Finance is a hybrid automated market maker featuring automated concentrated liquidity.",
     "github": "https://github.com/elixfinance",
     "twitter": "https://twitter.com/elixfinance",
-    "discord": "",
+    "discord": "https://discord.gg/avrdk2tAY6",
     "image": "elix",
     "status": ["Building"]
   },
@@ -115,7 +115,7 @@
     "description": "Fluid is the native decentralized stablecoin on Fuel.",
     "github": "",
     "twitter": "https://twitter.com/Fluid_Protocol",
-    "discord": "",
+    "discord": "https://discord.gg/fluidprotocol",
     "image": "fluid",
     "status": ["Building"]
   },
@@ -127,9 +127,9 @@
     "description": "Fuelart is a next gen NFT marketplace built on Fuel.",
     "github": "",
     "twitter": "https://twitter.com/fuel_art",
-    "discord": "",
+    "discord": "https://discord.gg/sj9PujpSzJ",
     "image": "fuelart",
-    "status": ["Building"]
+    "status": ["Building", "Beta-3"]
   },
   {
     "isLive": false,
@@ -139,9 +139,9 @@
     "description": "Fuelet is the leading account abstraction and non-custodial wallet on Fuel.",
     "github": "https://github.com/fuelet",
     "twitter": "https://twitter.com/FueletWallet",
-    "discord": "",
+    "discord": "https://discord.gg/fueletwallet",
     "image": "fuelet",
-    "status": ["Beta-4"]
+    "status": ["Building", "Beta-4"]
   },
   {
     "isLive": false,
@@ -187,7 +187,7 @@
     "description": "Nomen is the native name system of Fuel.",
     "github": "",
     "twitter": "https://twitter.com/fuelnomen",
-    "discord": "",
+    "discord": "https://discord.gg/xPC87HyJ5n",
     "image": "fuelnomen",
     "status": ["Building"]
   },
@@ -223,7 +223,7 @@
     "description": "PlayEstates brings real estate on-chain and makes RWA ownership easy and affordable.",
     "github": "",
     "twitter": "https://twitter.com/playestates",
-    "discord": "",
+    "discord": "https://discord.gg/playestates",
     "image": "playestates",
     "status": ["Building"]
   },
@@ -283,7 +283,7 @@
     "description": "Smart Money is a truly decentralized lending and borrowing protocol on Fuel.",
     "github": "https://github.com/SmartMoney-Labs",
     "twitter": "https://twitter.com/smartmoney_labs",
-    "discord": "",
+    "discord": "https://discord.gg/jFMuUcFe2G",
     "image": "smartmoney",
     "status": ["Building"]
   },
@@ -295,7 +295,7 @@
     "description": "Spark is a predicate-based central limit order book.",
     "github": "https://github.com/compolabs/spark",
     "twitter": "https://twitter.com/allsparkgg",
-    "discord": "",
+    "discord": "https://discord.gg/Nz9VZQrSNH",
     "image": "spark",
     "status": ["Building"]
   },
@@ -307,7 +307,7 @@
     "description": "Swaylend is the first lending protocol on Fuel.",
     "github": "https://github.com/compolabs/sway-lend",
     "twitter": "https://twitter.com/swaylend",
-    "discord": "",
+    "discord": "https://discord.gg/phcHhUHssg",
     "image": "swaylend",
     "status": ["Building"]
   },
@@ -319,7 +319,7 @@
     "description": "Thunder is the superior NFT marketplace on Fuel.",
     "github": "",
     "twitter": "https://twitter.com/ThunderbyFuel",
-    "discord": "",
+    "discord": "https://discord.gg/thundernftmarket",
     "image": "thunder",
     "status": ["Building"]
   },
@@ -331,7 +331,7 @@
     "description": "RWA (Real World Asset) bridge solution that verifies assets in the digital and the physical world.",
     "github": "",
     "twitter": "https://twitter.com/0xUNIC",
-    "discord": "",
+    "discord": "https://discord.gg/bkED7VZzWK",
     "image": "unic",
     "status": ["Building"]
   },
@@ -355,7 +355,7 @@
     "description": "A novel omnichain stablecoin that makes CDPs as efficient and powerful as possible.",
     "github": "",
     "twitter": "https://twitter.com/YamaFinance",
-    "discord": "",
+    "discord": "https://discord.gg/4tBE8w4SYW",
     "image": "yama",
     "status": ["Building"]
   },
