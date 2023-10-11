@@ -71,6 +71,8 @@ export const AccountConnectionInput = ({
                   variant="link"
                   onPress={onDisconnect}
                   css={styles.disconnectButton}
+                  rightIcon="X"
+                  iconSize={13}
                 >
                   Disconnect
                 </Button>
