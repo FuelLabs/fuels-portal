@@ -32,13 +32,8 @@ export const BridgeTxOverview = ({
     <Box.Stack css={styles.stack}>
       <Box.Flex css={styles.txItem}>
         <Text css={styles.labelText}>ID</Text>
-        <Link
-          href={explorerLink}
-          isExternal
-          css={styles.infoText}
-          aria-label="Transaction ID"
-        >
-          {transactionId.toString()}
+        <Link href={explorerLink} isExternal css={styles.infoText}>
+          <Box aria-label="Transaction ID">{transactionId.toString()}</Box>
         </Link>
       </Box.Flex>
       <Box.Flex css={styles.txItem}>
