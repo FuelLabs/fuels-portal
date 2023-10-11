@@ -1,13 +1,13 @@
 import { fungibleTokenABI } from '@fuel-bridge/fungible-token';
 import type { FuelWalletLocked } from '@fuel-wallet/sdk';
 import type { Fuel } from '@fuels/assets';
+import { addSeconds } from 'date-fns';
 import type { BN, MessageProof } from 'fuels';
 import {
   bn,
   TransactionResponse,
   Address as FuelAddress,
   Provider as FuelProvider,
-  ZeroBytes32,
   getReceiptsMessageOut,
   getTransactionsSummaries,
   Contract,
@@ -17,6 +17,7 @@ import type { WalletClient } from 'viem';
 import type { PublicClient as EthPublicClient } from 'wagmi';
 import { VITE_ETH_FUEL_MESSAGE_PORTAL } from '~/config';
 
+import { FUEL_CHAIN_STATE } from '../../eth/contracts/FuelChainState';
 import { FUEL_MESSAGE_PORTAL } from '../../eth/contracts/FuelMessagePortal';
 import { EthConnectorService } from '../../eth/services';
 import { parseEthAddressToFuel } from '../../eth/utils/address';
@@ -209,8 +210,10 @@ export class TxFuelToEthService {
       publicClient: ethPublicClient,
     });
 
-    const blocksPerCommitInterval =
-      (await fuelChainState.read.BLOCKS_PER_COMMIT_INTERVAL()) as bigint;
+    const [blocksPerCommitInterval, timeToFinalize] = await Promise.all([
+      fuelChainState.read.BLOCKS_PER_COMMIT_INTERVAL(),
+      fuelChainState.read.TIME_TO_FINALIZE(),
+    ]);
 
     // Add + 1 to the block height to wait the next block
     // that enable to proof the message
@@ -219,15 +222,13 @@ export class TxFuelToEthService {
     // We need to divide the desired block by the BLOCKS_PER_COMMIT_INTERVAL
     // and round up. Ex.: 225/100 sould be on the slot 3
     const { mod, div } = bn(nextBlockHeight).divmod(
-      blocksPerCommitInterval.toString()
+      (blocksPerCommitInterval as bigint).toString()
     );
     const commitHeight = mod.isZero() ? div : div.add(1);
 
     const commitHashAtL1 = await fuelChainState.read.blockHashAtCommit([
       commitHeight.toString(),
     ]);
-    const isBlock = commitHashAtL1 !== ZeroBytes32;
-    if (!isBlock) return undefined;
 
     const block = await getBlock({
       providerUrl: fuelProvider.url,
@@ -235,7 +236,24 @@ export class TxFuelToEthService {
     });
     const isCommited = bn(block?.header.height).gte(nextBlockHeight);
 
-    return isCommited ? (commitHashAtL1 as string) : undefined;
+    if (isCommited) {
+      return {
+        blockHashCommited: commitHashAtL1 as `0x${string}`,
+      };
+    }
+
+    const lastBlockCommited = await FUEL_CHAIN_STATE.getLastBlockCommited({
+      ethPublicClient,
+    });
+    const dateLastCommit = new Date(Number(lastBlockCommited.timestamp) * 1000);
+    const estimatedFinishDate = addSeconds(
+      dateLastCommit,
+      Number(timeToFinalize) * 2
+    );
+
+    return {
+      estimatedFinishDate,
+    };
   }
 
   static async getMessageProof(input: TxFuelToEthInputs['getMessageProof']) {
@@ -284,7 +302,26 @@ export class TxFuelToEthService {
       messageProof.commitBlockHeader.height.toString(),
     ]);
 
-    return !!isFinalized;
+    if (isFinalized) {
+      return {
+        isFinalized: true,
+      };
+    }
+
+    const timeToFinalize = await fuelChainState.read.TIME_TO_FINALIZE();
+
+    const lastBlockCommited = await FUEL_CHAIN_STATE.getLastBlockCommited({
+      ethPublicClient,
+    });
+    const dateLastCommit = new Date(Number(lastBlockCommited.timestamp) * 1000);
+    const estimatedFinishDate = addSeconds(
+      dateLastCommit,
+      Number(timeToFinalize)
+    );
+
+    return {
+      estimatedFinishDate,
+    };
   }
 
   static async getMessageRelayed(
