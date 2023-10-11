@@ -19,6 +19,7 @@ export function TxEthToFuelDialog() {
     status,
     isLoadingReceipts,
     amount,
+    explorerLink,
   } = useTxEthToFuel({
     id: metadata.txId,
   });
@@ -43,6 +44,7 @@ export function TxEthToFuelDialog() {
             isLoading={isLoadingReceipts}
             amount={amount}
             ethAsset={ethAsset}
+            explorerLink={explorerLink}
           />
         </Box.Stack>
       </Dialog.Description>

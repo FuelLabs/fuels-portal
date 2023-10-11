@@ -105,7 +105,7 @@ test.describe('Bridge', () => {
 
       // check the popup is correct
       const transactionID = (
-        await getByAriaLabel(page, 'Transaction ID').innerHTML()
+        await getByAriaLabel(page, 'Transaction ID').innerText()
       ).trim();
       const assetAmount = getByAriaLabel(page, 'Asset amount');
       expect((await assetAmount.innerHTML()).trim()).toBe(depositAmount);
@@ -169,7 +169,7 @@ test.describe('Bridge', () => {
 
       // Check the popup is correct
       const transactionID = (
-        await getByAriaLabel(page, 'Transaction ID').innerHTML()
+        await getByAriaLabel(page, 'Transaction ID').innerText()
       ).trim();
       const assetAmountWithdraw = getByAriaLabel(page, 'Asset amount');
       expect((await assetAmountWithdraw.innerHTML()).trim()).toBe(
