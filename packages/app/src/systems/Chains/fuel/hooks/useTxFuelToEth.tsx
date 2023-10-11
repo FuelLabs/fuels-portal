@@ -1,3 +1,4 @@
+import { formatDistanceToNowStrict } from 'date-fns';
 import {
   ReceiptType,
   fromTai64ToUnix,
@@ -65,11 +66,19 @@ const txFuelToEthSelectors = {
   },
   steps: (state: TxFuelToEthMachineState) => {
     const status = txFuelToEthSelectors.status(state);
+    const estimatedTimeRemaining =
+      txFuelToEthSelectors.estimatedTimeRemaining(state);
 
     function getConfirmStatusText() {
       if (status.isWaitingEthWalletApproval) return 'Action required';
       if (status.isConfirmTransactionDone) return 'Done!';
       return 'Action';
+    }
+
+    function getSettlementStatusText() {
+      if (status.isSettlementDone) return 'Done!';
+      if (estimatedTimeRemaining) return `~${estimatedTimeRemaining} left`;
+      return 'Waiting';
     }
 
     const steps = [
@@ -83,8 +92,7 @@ const txFuelToEthSelectors = {
       },
       {
         name: 'Settlement',
-        // TODO: put correct time left '~XX days left', how? waiting for message Proof in this stage
-        status: status.isSettlementDone ? 'Done!' : 'Waiting',
+        status: getSettlementStatusText(),
         isLoading: status.isSettlementLoading,
         isDone: status.isSettlementDone,
         isSelected: status.isSettlementSelected,
@@ -166,6 +174,15 @@ const txFuelToEthSelectors = {
   isLoadingTxResult: (state: TxFuelToEthMachineState) => {
     return state.matches('submittingToBridge.waitingFuelTxResult');
   },
+  estimatedTimeRemaining: (state: TxFuelToEthMachineState) => {
+    const estimatedFinishDate = state.context.estimatedFinishDate;
+    if (!estimatedFinishDate) return undefined;
+
+    return formatDistanceToNowStrict(estimatedFinishDate, {
+      addSuffix: false,
+      roundingMethod: 'ceil',
+    });
+  },
 };
 
 export function useTxFuelToEth({ txId }: { txId: string }) {
@@ -177,27 +194,37 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
     bridgeTxsSelectors.txFuelToEth(txId)
   );
 
-  const { steps, status, fuelTxResult, asset, amount, isLoadingTxResult } =
-    useMemo(() => {
-      if (!txFuelToEthState) return {};
+  const {
+    steps,
+    status,
+    fuelTxResult,
+    asset,
+    amount,
+    isLoadingTxResult,
+    estimatedTimeRemaining,
+  } = useMemo(() => {
+    if (!txFuelToEthState) return {};
 
-      const steps = txFuelToEthSelectors.steps(txFuelToEthState);
-      const status = txFuelToEthSelectors.status(txFuelToEthState);
-      const fuelTxResult = txFuelToEthSelectors.fuelTxResult(txFuelToEthState);
-      const assetAmount =
-        txFuelToEthSelectors.assetAmount(assets)(txFuelToEthState);
-      const isLoadingTxResult =
-        txFuelToEthSelectors.isLoadingTxResult(txFuelToEthState);
+    const steps = txFuelToEthSelectors.steps(txFuelToEthState);
+    const status = txFuelToEthSelectors.status(txFuelToEthState);
+    const fuelTxResult = txFuelToEthSelectors.fuelTxResult(txFuelToEthState);
+    const assetAmount =
+      txFuelToEthSelectors.assetAmount(assets)(txFuelToEthState);
+    const isLoadingTxResult =
+      txFuelToEthSelectors.isLoadingTxResult(txFuelToEthState);
+    const estimatedTimeRemaining =
+      txFuelToEthSelectors.estimatedTimeRemaining(txFuelToEthState);
 
-      return {
-        steps,
-        status,
-        fuelTxResult,
-        asset: assetAmount?.asset,
-        amount: assetAmount?.amount,
-        isLoadingTxResult,
-      };
-    }, [txFuelToEthState, assets]);
+    return {
+      steps,
+      status,
+      fuelTxResult,
+      asset: assetAmount?.asset,
+      amount: assetAmount?.amount,
+      isLoadingTxResult,
+      estimatedTimeRemaining,
+    };
+  }, [txFuelToEthState, assets]);
 
   // TODO: remove this conversion when sdk already returns the date in unix format
   const date = useMemo(
@@ -232,5 +259,6 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
     steps,
     status,
     isLoadingTxResult,
+    estimatedTimeRemaining,
   };
 }
