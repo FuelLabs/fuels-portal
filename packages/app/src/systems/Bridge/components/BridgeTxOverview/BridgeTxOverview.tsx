@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, Text, FuelLogo, Icon } from '@fuel-ui/react';
+import { Box, Text, FuelLogo, Icon, Link } from '@fuel-ui/react';
 import type { BigNumberish } from 'fuels';
 import { AssetLogo } from '~/systems/Assets/components/AssetLogo';
 import type { Asset } from '~/systems/Assets/services/asset';
@@ -15,6 +15,7 @@ type BridgeTxOverviewProps = {
   ethAsset?: Asset;
   isLoading?: boolean;
   amount?: string;
+  explorerLink?: string;
 };
 
 export const BridgeTxOverview = ({
@@ -25,14 +26,20 @@ export const BridgeTxOverview = ({
   ethAsset,
   isLoading,
   amount,
+  explorerLink,
 }: BridgeTxOverviewProps) => {
   return (
     <Box.Stack css={styles.stack}>
       <Box.Flex css={styles.txItem}>
         <Text css={styles.labelText}>ID</Text>
-        <Text css={styles.infoText} aria-label="Transaction ID">
+        <Link
+          href={explorerLink}
+          isExternal
+          css={styles.infoText}
+          aria-label="Transaction ID"
+        >
           {transactionId.toString()}
-        </Text>
+        </Link>
       </Box.Flex>
       <Box.Flex css={styles.txItem}>
         <Text css={styles.labelText}>Age</Text>

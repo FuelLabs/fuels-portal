@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { store, Services } from '~/store';
 import { getAssetEth, getAssetFuel } from '~/systems/Assets/utils';
 import type { BridgeTxsMachineState } from '~/systems/Bridge';
+import { useExplorerLink } from '~/systems/Bridge/hooks/useExplorerLink';
 
 import { useAsset } from '../../../Assets/hooks/useAsset';
 import { useFuelAccountConnection } from '../../fuel';
@@ -112,6 +113,10 @@ const txEthToFuelSelectors = {
 export function useTxEthToFuel({ id }: { id: string }) {
   const { wallet: fuelWallet } = useFuelAccountConnection();
   const txId = id.startsWith('0x') ? (id as `0x${string}`) : undefined;
+  const { href: explorerLink } = useExplorerLink({
+    network: 'ethereum',
+    id: txId,
+  });
 
   const txEthToFuelState = store.useSelector(
     Services.bridgeTxs,
@@ -190,5 +195,6 @@ export function useTxEthToFuel({ id }: { id: string }) {
     amount: formattedAmount,
     asset,
     isLoadingReceipts,
+    explorerLink,
   };
 }
