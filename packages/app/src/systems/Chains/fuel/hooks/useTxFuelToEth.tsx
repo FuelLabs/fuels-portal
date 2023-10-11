@@ -11,10 +11,13 @@ import { useAssets } from '~/systems/Assets';
 import type { Asset } from '~/systems/Assets/services/asset';
 import { getAssetEth } from '~/systems/Assets/utils';
 import type { BridgeTxsMachineState } from '~/systems/Bridge';
+import { useExplorerLink } from '~/systems/Bridge/hooks/useExplorerLink';
 
 import { useEthAccountConnection } from '../../eth/hooks';
 import { isSameEthAddress, parseFuelAddressToEth } from '../../eth/utils';
 import type { TxFuelToEthMachineState } from '../machines';
+
+import { useFuelAccountConnection } from './useFuelAccountConnection';
 
 const bridgeTxsSelectors = {
   txFuelToEth: (txId?: string) => (state: BridgeTxsMachineState) => {
@@ -187,7 +190,13 @@ const txFuelToEthSelectors = {
 
 export function useTxFuelToEth({ txId }: { txId: string }) {
   const { walletClient: ethWalletClient } = useEthAccountConnection();
+  const { provider: fuelProvider } = useFuelAccountConnection();
   const { assets } = useAssets();
+  const { href: explorerLink } = useExplorerLink({
+    network: 'fuel',
+    providerUrl: fuelProvider?.url || '',
+    id: txId,
+  });
 
   const txFuelToEthState = store.useSelector(
     Services.bridgeTxs,
@@ -260,5 +269,6 @@ export function useTxFuelToEth({ txId }: { txId: string }) {
     status,
     isLoadingTxResult,
     estimatedTimeRemaining,
+    explorerLink,
   };
 }
