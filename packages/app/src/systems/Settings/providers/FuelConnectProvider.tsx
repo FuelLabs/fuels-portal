@@ -4,7 +4,7 @@ import {
   FuelConnectorProvider,
 } from '@fuel-wallet/react';
 import type { ReactNode } from 'react';
-import { IS_PREVIEW, IS_DEVELOPMENT } from '~/config';
+import { IS_PREVIEW, IS_TEST } from '~/config';
 
 import { useTheme } from '../hooks';
 
@@ -13,7 +13,7 @@ type ProvidersProps = {
 };
 
 const connectors =
-  IS_PREVIEW && !IS_DEVELOPMENT
+  IS_PREVIEW && !IS_TEST
     ? [FUEL_WALLET_CONNECTOR, FUEL_WALLET_DEVELOPMENT_CONNECTOR]
     : [FUEL_WALLET_CONNECTOR];
 
