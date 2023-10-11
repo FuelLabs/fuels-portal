@@ -5,6 +5,8 @@ import { AssetLogo } from '~/systems/Assets/components/AssetLogo';
 import type { Asset } from '~/systems/Assets/services/asset';
 import { calculateDateDiff, shortAddress } from '~/systems/Core';
 
+import { ItemLoader } from './ItemLoader';
+
 type BridgeTxItemProps = {
   date?: Date;
   fromLogo: ReactNode;
@@ -14,6 +16,7 @@ type BridgeTxItemProps = {
   status: ReactNode;
   txId?: string;
   amount?: string;
+  isLoading?: boolean;
 };
 
 export const BridgeTxItem = ({
@@ -25,6 +28,7 @@ export const BridgeTxItem = ({
   status,
   txId,
   amount,
+  isLoading,
 }: BridgeTxItemProps) => {
   return (
     <CardList.Item
@@ -38,13 +42,23 @@ export const BridgeTxItem = ({
         {toLogo}
       </Box.Flex>
       <Box.Flex align="center" gap="$1">
-        <AssetLogo asset={asset} alt={asset?.symbol} />
-        <Text fontSize="sm" css={styles.assetAmountText}>
-          {amount} {asset?.symbol}
-        </Text>
+        {isLoading ? (
+          <ItemLoader />
+        ) : (
+          <>
+            <AssetLogo asset={asset} alt={asset?.symbol} />
+            <Text fontSize="sm" css={styles.assetAmountText}>
+              {amount} {asset?.symbol}
+            </Text>
+          </>
+        )}
       </Box.Flex>
       <Box.Flex css={styles.statusTime} justify={'space-between'}>
-        <Text css={styles.ageText}>{calculateDateDiff(date)}</Text>
+        {isLoading ? (
+          <ItemLoader />
+        ) : (
+          <Text css={styles.ageText}>{calculateDateDiff(date)}</Text>
+        )}
         <Box.Flex css={styles.statusColumn} align="center" justify="flex-end">
           {status}
         </Box.Flex>
@@ -55,8 +69,7 @@ export const BridgeTxItem = ({
 
 const styles = cssObj({
   cardItem: cssObj({
-    // This mean height ensure that the component will
-    // have the same size of the loader
+    // This minHeight ensures component size equals loader size
     minHeight: 24,
     gap: '$6',
     alignItems: 'center',

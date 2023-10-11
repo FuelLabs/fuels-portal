@@ -5,7 +5,7 @@ import { AssetLogo } from '~/systems/Assets/components/AssetLogo';
 import type { Asset } from '~/systems/Assets/services/asset';
 import { calculateDateDiff } from '~/systems/Core';
 
-import { InfoTestLoader } from './InfoTestLoader';
+import { InfoTextLoader } from './InfoTextLoader';
 
 type BridgeTxOverviewProps = {
   transactionId: BigNumberish;
@@ -39,7 +39,7 @@ export const BridgeTxOverview = ({
       <Box.Flex css={styles.txItem}>
         <Text css={styles.labelText}>Age</Text>
         <Text css={styles.infoText}>
-          {isLoading ? <InfoTestLoader /> : calculateDateDiff(date)}
+          {isLoading ? <InfoTextLoader /> : calculateDateDiff(date)}
         </Text>
       </Box.Flex>
       <Box.Flex css={styles.txItem}>
@@ -64,7 +64,7 @@ export const BridgeTxOverview = ({
         <Text css={styles.labelText}>Asset</Text>
         <Box.Flex css={styles.directionInfo}>
           {isLoading ? (
-            <InfoTestLoader />
+            <InfoTextLoader />
           ) : (
             <>
               <AssetLogo asset={asset} alt={`Asset ${asset?.symbol}`} />

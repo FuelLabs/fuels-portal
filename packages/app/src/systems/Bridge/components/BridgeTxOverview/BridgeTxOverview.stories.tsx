@@ -22,6 +22,7 @@ export const Usage = () => {
         isDeposit={true}
         amount="1.500"
         asset={assetList[0]}
+        ethAsset={assetList[0]}
       />
     </Box.Flex>
   );
@@ -35,6 +36,23 @@ export const Withdrawal = () => {
         date={new Date()}
         asset={assetList[0]}
         amount="1.500"
+        ethAsset={assetList[0]}
+      />
+    </Box.Flex>
+  );
+};
+
+export const Loading = () => {
+  return (
+    <Box.Flex align="center" justify="center" css={styles.storybook}>
+      <BridgeTxOverview
+        transactionId={bn(1234567876543456)}
+        date={new Date()}
+        isDeposit={true}
+        amount="1.500"
+        asset={assetList[0]}
+        ethAsset={assetList[0]}
+        isLoading
       />
     </Box.Flex>
   );

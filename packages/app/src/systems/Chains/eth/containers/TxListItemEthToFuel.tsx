@@ -11,9 +11,10 @@ type TxListItemEthToFuelProps = {
 
 export const TxListItemEthToFuel = ({ txHash }: TxListItemEthToFuelProps) => {
   const { asset: ethAsset } = useAsset();
-  const { steps, date, handlers, asset, status, amount } = useTxEthToFuel({
-    id: txHash,
-  });
+  const { steps, date, handlers, asset, status, amount, isLoadingReceipts } =
+    useTxEthToFuel({
+      id: txHash,
+    });
 
   const bridgeTxStatus = steps?.find(({ isSelected }) => !!isSelected);
 
@@ -55,6 +56,7 @@ export const TxListItemEthToFuel = ({ txHash }: TxListItemEthToFuelProps) => {
       status={getStatusComponent()}
       txId={txHash}
       amount={amount}
+      isLoading={isLoadingReceipts}
     />
   );
 };
