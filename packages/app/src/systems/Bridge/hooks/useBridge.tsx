@@ -115,7 +115,7 @@ export function useBridge() {
     }
 
     if (isFuelChain(fromNetwork)) {
-      return fuelBalance;
+      return fuelBalance || bn(0);
     }
 
     return bn(0);
