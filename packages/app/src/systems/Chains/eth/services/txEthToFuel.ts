@@ -340,7 +340,9 @@ export class TxEthToFuelService {
 
     const { ethTxNonce, fuelProvider, fuelRecipient } = input;
 
-    const messages = await fuelProvider.getMessages(fuelRecipient, {
+    // TODO: should use the fuelProvider from input when wallet gets updated with new SDK
+    const provider = await FuelProvider.create(fuelProvider.url);
+    const messages = await provider.getMessages(fuelRecipient, {
       first: 1000,
     });
     const fuelMessage = messages.find((message) => {
@@ -361,7 +363,9 @@ export class TxEthToFuelService {
     }
     const { fuelWallet, fuelMessage } = input;
 
-    const { maxGasPerTx } = await fuelWallet.provider.getGasConfig();
+    // TODO: should use the fuelProvider from input when wallet gets updated with new SDK
+    const provider = await FuelProvider.create(fuelWallet.provider.url);
+    const { maxGasPerTx } = await provider.getGasConfig();
     const txMessageRelayed = await relayCommonMessage({
       relayer: fuelWallet,
       message: fuelMessage,
