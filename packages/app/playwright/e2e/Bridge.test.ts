@@ -39,6 +39,10 @@ test.describe('Bridge', () => {
     await page.goto('/');
   });
 
+  test.afterAll(async ({ context }) => {
+    await context.close();
+  });
+
   test('e2e', async ({ context, page }) => {
     await test.step('Check if fuel is available', async () => {
       const hasFuel = await page.evaluate(() => {
