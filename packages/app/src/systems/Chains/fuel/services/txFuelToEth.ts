@@ -107,7 +107,9 @@ export class TxFuelToEthService {
     const { amount, fuelWallet, ethAddress } = input;
 
     if (fuelWallet && ethAddress && amount) {
-      const { maxGasPerTx } = fuelWallet.provider.getGasConfig();
+      // TODO: should use the fuelProvider from input when wallet gets updated with new SDK
+      const provider = await FuelProvider.create(fuelWallet.provider.url);
+      const { maxGasPerTx } = provider.getGasConfig();
 
       const txFuel = await fuelWallet.withdrawToBaseLayer(
         FuelAddress.fromString(ethAddress),
@@ -139,7 +141,10 @@ export class TxFuelToEthService {
       const fuelTestAssetId =
         fuelAsset.assetId ||
         getContractTokenId(fuelAsset.contractId as `0x${string}`);
-      const { maxGasPerTx, minGasPrice } = fuelWallet.provider.getGasConfig();
+
+      // TODO: should use the fuelProvider from input when wallet gets updated with new SDK
+      const provider = await FuelProvider.create(fuelWallet.provider.url);
+      const { maxGasPerTx, minGasPrice } = provider.getGasConfig();
       const withdrawScope = fungibleToken.functions
         .withdraw(ethAddressInFuel)
         .callParams({
