@@ -182,7 +182,6 @@ const txFuelToEthSelectors = {
     if (!estimatedFinishDate) return undefined;
 
     return formatDistanceToNowStrict(estimatedFinishDate, {
-      addSuffix: false,
       roundingMethod: 'ceil',
     });
   },
