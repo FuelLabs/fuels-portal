@@ -11,6 +11,7 @@ type AssetCardProps = {
   onPress?: () => void;
   onRemove?: () => void;
   onFaucet?: () => void;
+  onAddToWallet?: () => void;
   isFaucetLoading?: boolean;
   isRemoveDisabled?: boolean;
   removeToolTip?: string;
@@ -23,6 +24,7 @@ export const AssetCard = ({
   isFaucetLoading,
   onPress,
   onRemove,
+  onAddToWallet,
   isRemoveDisabled,
   removeToolTip,
 }: AssetCardProps) => {
@@ -77,6 +79,18 @@ export const AssetCard = ({
               css={styles.cardAction}
             />
           </RemoveAssetDialog>
+        )}
+        {onAddToWallet && (
+          <IconButton
+            aria-label="AddAssetToWallet"
+            variant="link"
+            icon="CirclePlus"
+            onPress={onAddToWallet}
+            tooltip="Add to wallet"
+            intent="primary"
+            size="lg"
+            css={styles.cardAction}
+          />
         )}
       </Box.Flex>
     </CardList.Item>
