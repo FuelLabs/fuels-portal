@@ -1,3 +1,4 @@
+import { toast } from '@fuel-ui/react';
 import { bn, DECIMAL_UNITS, fromTai64ToUnix } from 'fuels';
 import type {
   Address as FuelAddress,
@@ -95,6 +96,10 @@ export class BridgeService {
           store.openTxEthToFuel({
             txId,
           });
+          toast.success(
+            'Deposit successfully initiated.  You may now close the poup.',
+            { duration: 5000 }
+          );
         }
       }
 
@@ -120,6 +125,10 @@ export class BridgeService {
           store.openTxFuelToEth({
             txId,
           });
+          toast.success(
+            'Withdraw successfully initiated.  You may now close the poup.',
+            { duration: 5000 }
+          );
         }
 
         return;
