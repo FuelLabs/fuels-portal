@@ -18,23 +18,35 @@ test.describe('Token List', () => {
       await hasDropdownSymbol(page, 'ETH');
     });
 
-    await test.step('Check if we can switch asset on deposit page', async () => {
+    await test.step('Check if we can switch assets on deposit page', async () => {
       const assetDropdown = getByAriaLabel(page, 'Coin Selector');
       await assetDropdown.click();
 
       await hasText(page, 'Select token');
       // Check that assets are displayed
-      const ethAsset = page.getByRole('button', { name: 'AssetLogo ETH' });
+      let ethAsset = page.getByRole('button', { name: 'AssetLogo ETH' });
       expect(await ethAsset.innerText()).toBe('ETH');
-      const tknAsset = page.getByRole('button', { name: 'TKN' });
+      let tknAsset = page.getByRole('button', { name: 'TKN' });
       expect(await tknAsset.innerText()).toBe('TKN');
       await tknAsset.click();
 
       await hasDropdownSymbol(page, 'TKN');
+
+      await assetDropdown.click();
+
+      await hasText(page, 'Select token');
+      // Check that assets are displayed
+      ethAsset = page.getByRole('button', { name: 'AssetLogo ETH' });
+      expect(await ethAsset.innerText()).toBe('ETH');
+      tknAsset = page.getByRole('button', { name: 'TKN' });
+      expect(await tknAsset.innerText()).toBe('TKN');
+      await ethAsset.click();
+
+      await hasDropdownSymbol(page, 'ETH');
     });
 
     await test.step('Check if we can switch asset on withdraw page', async () => {
-      await hasDropdownSymbol(page, 'TKN');
+      await hasDropdownSymbol(page, 'ETH');
 
       // Go to withdraw page
       const withdrawPageButton = getButtonByText(page, 'Withdraw from Fuel');
@@ -45,13 +57,42 @@ test.describe('Token List', () => {
 
       await hasText(page, 'Select token');
       // Check that assets are displayed
-      const ethAsset = page.getByRole('button', { name: 'AssetLogo ETH' });
+      let ethAsset = page.getByRole('button', { name: 'AssetLogo ETH' });
       expect(await ethAsset.innerText()).toBe('ETH');
-      const tknAsset = page.getByRole('button', { name: 'TKN' });
+      let tknAsset = page.getByRole('button', { name: 'TKN' });
+      expect(await tknAsset.innerText()).toBe('TKN');
+      await tknAsset.click();
+
+      await hasDropdownSymbol(page, 'TKN');
+
+      await assetDropdown.click();
+
+      await hasText(page, 'Select token');
+      // Check that assets are displayed
+      ethAsset = page.getByRole('button', { name: 'AssetLogo ETH' });
+      expect(await ethAsset.innerText()).toBe('ETH');
+      tknAsset = page.getByRole('button', { name: 'TKN' });
       expect(await tknAsset.innerText()).toBe('TKN');
       await ethAsset.click();
 
       await hasDropdownSymbol(page, 'ETH');
+    });
+
+    await test.step('Check if selected asset persists between tabs', async () => {
+      const assetDropdown = getByAriaLabel(page, 'Coin Selector');
+      await assetDropdown.click();
+
+      const tknAsset = page.getByRole('button', { name: 'TKN' });
+      expect(await tknAsset.innerText()).toBe('TKN');
+      await tknAsset.click();
+
+      await hasDropdownSymbol(page, 'TKN');
+
+      // Go to Deposit tab
+      const depositPageButton = getButtonByText(page, 'Deposit to Fuel');
+      await depositPageButton.click();
+
+      await hasDropdownSymbol(page, 'TKN');
     });
   });
 });
