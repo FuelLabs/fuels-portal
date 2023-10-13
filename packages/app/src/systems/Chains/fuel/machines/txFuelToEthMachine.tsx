@@ -163,13 +163,13 @@ export const txFuelToEthMachine = createMachine(
                       cond: FetchMachine.hasError,
                     },
                     {
-                      actions: ['assignEstimatedFinishDate'],
-                      cond: 'hasEstimatedFinishDate',
-                    },
-                    {
                       actions: ['assignFuelBlockHashCommited'],
                       cond: 'hasBlockCommited',
                       target: 'checkingMessageProof',
+                    },
+                    {
+                      actions: ['assignEstimatedFinishDate'],
+                      cond: 'hasEstimatedFinishDate',
                     },
                   ],
                 },
@@ -224,12 +224,12 @@ export const txFuelToEthMachine = createMachine(
                       cond: FetchMachine.hasError,
                     },
                     {
-                      actions: ['assignEstimatedFinishDate'],
-                      cond: 'hasEstimatedFinishDate',
-                    },
-                    {
                       cond: 'hasBlockFinalized',
                       target: 'checkingRelayed',
+                    },
+                    {
+                      actions: ['assignEstimatedFinishDate'],
+                      cond: 'hasEstimatedFinishDate',
                     },
                   ],
                 },
@@ -389,8 +389,8 @@ export const txFuelToEthMachine = createMachine(
         fuelBlockHashCommited: (_, ev) => ev.data.blockHashCommited,
       }),
       assignEstimatedFinishDate: assign({
-        estimatedFinishDate: (_, ev) => {
-          return ev.data.estimatedFinishDate;
+        estimatedFinishDate: (ctx, ev) => {
+          return ev.data.estimatedFinishDate || ctx.estimatedFinishDate;
         },
       }),
       setFuelToEthTxDone: (ctx) => {
