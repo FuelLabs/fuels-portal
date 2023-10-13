@@ -110,12 +110,12 @@ export function useBridge() {
         const formattedUnits = `${intPart}.${
           decimalPart?.slice(0, DECIMAL_UNITS) || '0'
         }`;
-        return ethBalance ? bn.parseUnits(formattedUnits) : bn(0);
+        return bn.parseUnits(formattedUnits);
       }
     }
 
     if (isFuelChain(fromNetwork)) {
-      return fuelBalance;
+      return fuelBalance || bn(0);
     }
 
     return bn(0);
