@@ -157,8 +157,8 @@ importers:
         specifier: 0.21.1
         version: 0.21.1(@types/react-dom@18.0.10)(@types/react@18.0.27)(csstype@3.1.2)
       '@fuel-wallet/react':
-        specifier: 0.13.0
-        version: 0.13.0(@fuel-ui/css@0.21.1)(@fuel-ui/react@0.21.1)(dexie@3.2.4)(fuels@0.60.0)(react-dom@18.2.0)
+        specifier: 0.13.2
+        version: 0.13.2(@fuel-ui/css@0.21.1)(@fuel-ui/react@0.21.1)(dexie@3.2.4)(fuels@0.60.0)(react-dom@18.2.0)
       '@fuel-wallet/sdk':
         specifier: 0.13.0
         version: 0.13.0(dexie@3.2.4)(fuels@0.60.0)
@@ -172,8 +172,8 @@ importers:
         specifier: ^3.1.1
         version: 3.1.1(react-hook-form@7.45.2)
       '@tanstack/react-query':
-        specifier: ^4.29.5
-        version: 4.29.5(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^4.36.1
+        version: 4.36.1(react-dom@18.2.0)(react@18.2.0)
       '@xstate/react':
         specifier: ^3.2.1
         version: 3.2.1(@types/react@18.0.27)(react@18.2.0)(xstate@4.37.2)
@@ -3981,17 +3981,17 @@ packages:
       - immer
     dev: false
 
-  /@fuel-wallet/react@0.13.0(@fuel-ui/css@0.21.1)(@fuel-ui/react@0.21.1)(dexie@3.2.4)(fuels@0.60.0)(react-dom@18.2.0):
-    resolution: {integrity: sha512-E0oQda8jUGL9rLzvUTVpqvPzS1fOd2C1wkD4jNgFNcoZ1xlC7O3A+0OCP2K0El0jWUV1yPTYhDz211CK3xHncg==}
+  /@fuel-wallet/react@0.13.2(@fuel-ui/css@0.21.1)(@fuel-ui/react@0.21.1)(dexie@3.2.4)(fuels@0.60.0)(react-dom@18.2.0):
+    resolution: {integrity: sha512-R5sYJTyugz+5yCYyFW2gdRQkbZSe/Y1wmqyHb3w44aG713G3gIut4F4vL80JnDPK0sj3JX3pEdNyxXtGg3AQOw==}
     peerDependencies:
-      '@fuel-ui/css': 0.21.0
-      '@fuel-ui/react': 0.21.0
+      '@fuel-ui/css': 0.21.1
+      '@fuel-ui/react': 0.21.1
       fuels: '>=0.58.0'
     dependencies:
       '@fuel-ui/css': 0.21.1
       '@fuel-ui/react': 0.21.1(@types/react-dom@18.0.10)(@types/react@18.0.27)(csstype@3.1.2)
-      '@fuel-wallet/sdk': 0.13.0(dexie@3.2.4)(fuels@0.60.0)
-      '@tanstack/react-query': 4.29.5(react-dom@18.2.0)(react@18.2.0)
+      '@fuel-wallet/sdk': 0.13.2(dexie@3.2.4)(fuels@0.60.0)
+      '@tanstack/react-query': 4.36.1(react-dom@18.2.0)(react@18.2.0)
       compare-versions: 6.1.0
       fuels: 0.60.0
       react: 18.2.0
@@ -4012,6 +4012,22 @@ packages:
       fuels: 0.60.0
       json-rpc-2.0: 1.6.0
       uuid: 9.0.0
+      xstate: 4.38.2
+    transitivePeerDependencies:
+      - dexie
+    dev: false
+
+  /@fuel-wallet/sdk@0.13.2(dexie@3.2.4)(fuels@0.60.0):
+    resolution: {integrity: sha512-JzjxBopnJKGTjJ2JeU8GLtXp/YzaQI0kwxQXmE2ZWdbyBVwMiS1jRKawWq4gjXxXKUssctl7E7ncqXimCOxW9g==}
+    peerDependencies:
+      fuels: '>=0.58.0'
+    dependencies:
+      '@types/chrome': 0.0.246
+      dexie-observable: 4.0.1-beta.13(dexie@3.2.4)
+      events: 3.3.0
+      fuels: 0.60.0
+      json-rpc-2.0: 1.6.0
+      uuid: 9.0.1
       xstate: 4.38.2
     transitivePeerDependencies:
       - dexie
@@ -9773,8 +9789,8 @@ packages:
     resolution: {integrity: sha512-Recc1d5rjHesKhzlH3Aw66v+vQxtB9OHEXP/vxgEcEJ0DwEpfe3EQ4id20vuBJHY2XRjfgWGmUs6ZgK6PSsTXA==}
     dev: false
 
-  /@tanstack/query-core@4.29.5:
-    resolution: {integrity: sha512-xXIiyQ/4r9KfaJ3k6kejqcaqFXXBTzN2aOJ5H1J6aTJE9hl/nbgAdfF6oiIu0CD5xowejJEJ6bBg8TO7BN4NuQ==}
+  /@tanstack/query-core@4.36.1:
+    resolution: {integrity: sha512-DJSilV5+ytBP1FbFcEJovv4rnnm/CokuVvrBEtW/Va9DvuJ3HksbXUJEpI0aV1KtuL4ZoO9AVE6PyNLzF7tLeA==}
     dev: false
 
   /@tanstack/query-persist-client-core@4.29.15:
@@ -9789,17 +9805,17 @@ packages:
       '@tanstack/query-persist-client-core': 4.29.15
     dev: false
 
-  /@tanstack/react-query-persist-client@4.29.15(@tanstack/react-query@4.29.5):
+  /@tanstack/react-query-persist-client@4.29.15(@tanstack/react-query@4.36.1):
     resolution: {integrity: sha512-sYISV7iFMhFXwHoc9B94ZrCGPyZKPA0CCLqkP4f4Ll9XzsMijYlDUD2C9Wm56aYi3bS+LYy2oSxrMNLqtW4HYw==}
     peerDependencies:
       '@tanstack/react-query': 4.29.15
     dependencies:
       '@tanstack/query-persist-client-core': 4.29.15
-      '@tanstack/react-query': 4.29.5(react-dom@18.2.0)(react@18.2.0)
+      '@tanstack/react-query': 4.36.1(react-dom@18.2.0)(react@18.2.0)
     dev: false
 
-  /@tanstack/react-query@4.29.5(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-F87cibC3s3eG0Q90g2O+hqntpCrudKFnR8P24qkH9uccEhXErnJxBC/AAI4cJRV2bfMO8IeGZQYf3WyYgmSg0w==}
+  /@tanstack/react-query@4.36.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-y7ySVHFyyQblPl3J3eQBWpXZkliroki3ARnBKsdJchlgt7yJLRDUcf4B8soufgiYt3pEQIkBWBx1N9/ZPIeUWw==}
     peerDependencies:
       react: '*'
       react-dom: '*'
@@ -9812,7 +9828,7 @@ packages:
       react-native:
         optional: true
     dependencies:
-      '@tanstack/query-core': 4.29.5
+      '@tanstack/query-core': 4.36.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       use-sync-external-store: 1.2.0(react@18.2.0)
@@ -10038,6 +10054,13 @@ packages:
 
   /@types/chrome@0.0.243:
     resolution: {integrity: sha512-4PHv0kxxxpZFHWPBiJJ9TWH8kbx0567j1b2djnhpJjpiSGNI7UKkz7dSEECBtQ0B3N5nQTMwSB/5IopkWGAbEA==}
+    dependencies:
+      '@types/filesystem': 0.0.32
+      '@types/har-format': 1.2.11
+    dev: false
+
+  /@types/chrome@0.0.246:
+    resolution: {integrity: sha512-MxGxEomGxsJiL9xe/7ZwVgwdn8XVKWbPvxpVQl3nWOjrS0Ce63JsfzxUc4aU3GvRcUPYsfufHmJ17BFyKxeA4g==}
     dependencies:
       '@types/filesystem': 0.0.32
       '@types/har-format': 1.2.11
@@ -25015,6 +25038,11 @@ packages:
     resolution: {integrity: sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==}
     hasBin: true
 
+  /uuid@9.0.1:
+    resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
+    hasBin: true
+    dev: false
+
   /v8-compile-cache-lib@3.0.1:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}
 
@@ -25189,8 +25217,8 @@ packages:
         optional: true
     dependencies:
       '@tanstack/query-sync-storage-persister': 4.29.15
-      '@tanstack/react-query': 4.29.5(react-dom@18.2.0)(react@18.2.0)
-      '@tanstack/react-query-persist-client': 4.29.15(@tanstack/react-query@4.29.5)
+      '@tanstack/react-query': 4.36.1(react-dom@18.2.0)(react@18.2.0)
+      '@tanstack/react-query-persist-client': 4.29.15(@tanstack/react-query@4.36.1)
       '@wagmi/core': 1.0.6(react@18.2.0)(typescript@4.9.5)(viem@0.3.36)
       abitype: 0.8.1(typescript@4.9.5)
       react: 18.2.0
