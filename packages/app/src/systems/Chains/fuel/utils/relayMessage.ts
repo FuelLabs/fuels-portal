@@ -7,7 +7,6 @@ import type {
   WalletUnlocked as FuelWallet,
   TransactionRequestLike,
   TransactionResponse,
-  Provider,
 } from 'fuels';
 import {
   ZeroBytes32,
@@ -18,6 +17,7 @@ import {
   OutputType,
   Predicate,
   bn,
+  Provider,
 } from 'fuels';
 
 import { resourcesToInputs } from './transaction';
@@ -135,7 +135,10 @@ export async function relayCommonMessage({
   const predicateRoot = message.recipient.toHexString();
 
   // eslint-disable-next-line no-restricted-syntax
-  for (const details of getCommonRelayableMessages(relayer.provider)) {
+
+  // TODO: should use the fuelProvider from input when wallet gets updated with new SDK
+  const provider = await Provider.create(relayer.provider.url);
+  for (const details of getCommonRelayableMessages(provider)) {
     if (details.predicateRoot.toLowerCase() === predicateRoot.toLowerCase()) {
       messageRelayDetails = details;
       break;
