@@ -253,7 +253,7 @@ export class TxFuelToEthService {
     const dateLastCommit = new Date(Number(lastBlockCommited.timestamp) * 1000);
     const estimatedFinishDate = addSeconds(
       dateLastCommit,
-      Number(timeToFinalize) * 2
+      Number(timeToFinalize) * 2 // Multiply by 2 because finalization happens after two commit cycles
     );
 
     return {
