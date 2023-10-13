@@ -30,7 +30,7 @@
     "date-fns": "^2.30.0",
     "dexie": "^3.2.4",
     "framer-motion": "^10.12.16",
-    "fuels": "0.60.0",
+    "fuels": "0.62.0",
     "graphql": "16.2.0",
     "graphql-request": "^6.1.0",
     "graphql-tag": "^2.12.6",
