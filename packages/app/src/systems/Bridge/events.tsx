@@ -2,6 +2,7 @@ import type { FuelWalletLocked as FuelWallet } from '@fuel-wallet/sdk';
 import type { BN } from 'fuels';
 import type { WalletClient } from 'viem';
 
+import type { Asset } from '../Assets';
 import type { FromToNetworks } from '../Chains';
 import type { Store } from '../Store';
 import { Services } from '../Store';
@@ -13,8 +14,8 @@ export function bridgeEvents(store: Store) {
     changeNetworks(input: FromToNetworks) {
       store.send(Services.bridge, { type: 'CHANGE_NETWORKS', input });
     },
-    changeAssetAddress(input: { assetAddress?: string }) {
-      store.send(Services.bridge, { type: 'CHANGE_ASSET_ADDRESS', input });
+    changeAsset(input: { asset?: Asset }) {
+      store.send(Services.bridge, { type: 'CHANGE_ASSET', input });
     },
     startBridging(input: PossibleBridgeInputs) {
       store.send(Services.bridge, { type: 'START_BRIDGING', input });

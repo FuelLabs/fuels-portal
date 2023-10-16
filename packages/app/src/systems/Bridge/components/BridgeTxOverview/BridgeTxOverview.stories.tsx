@@ -1,8 +1,7 @@
 import { cssObj } from '@fuel-ui/css';
 import { Box } from '@fuel-ui/react';
+import assetList from '@fuels/assets';
 import { bn } from 'fuels';
-
-import ethImage from '../../../../../public/eth-logo.svg';
 
 import { BridgeTxOverview } from './BridgeTxOverview';
 
@@ -21,11 +20,9 @@ export const Usage = () => {
         transactionId={bn(1234567876543456)}
         date={new Date()}
         isDeposit={true}
-        asset={{
-          image: ethImage,
-          symbol: 'ETH',
-          amount: '1.500',
-        }}
+        amount="1.500"
+        asset={assetList[0]}
+        ethAsset={assetList[0]}
       />
     </Box.Flex>
   );
@@ -37,11 +34,25 @@ export const Withdrawal = () => {
       <BridgeTxOverview
         transactionId={bn(1234567876543456)}
         date={new Date()}
-        asset={{
-          image: ethImage,
-          symbol: 'ETH',
-          amount: '1.500',
-        }}
+        asset={assetList[0]}
+        amount="1.500"
+        ethAsset={assetList[0]}
+      />
+    </Box.Flex>
+  );
+};
+
+export const Loading = () => {
+  return (
+    <Box.Flex align="center" justify="center" css={styles.storybook}>
+      <BridgeTxOverview
+        transactionId={bn(1234567876543456)}
+        date={new Date()}
+        isDeposit={true}
+        amount="1.500"
+        asset={assetList[0]}
+        ethAsset={assetList[0]}
+        isLoading
       />
     </Box.Flex>
   );

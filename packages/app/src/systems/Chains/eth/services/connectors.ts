@@ -1,6 +1,5 @@
-import type { WalletClient } from 'viem';
+import type { WalletClient, PublicClient } from 'viem';
 import { getContract } from 'viem';
-import type { PublicClient } from 'wagmi';
 import {
   VITE_ETH_FUEL_CHAIN_STATE,
   VITE_ETH_FUEL_ERC20_GATEWAY,

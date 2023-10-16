@@ -1,20 +1,21 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, Text, FuelLogo, Icon } from '@fuel-ui/react';
+import { Box, Text, FuelLogo, Icon, Link } from '@fuel-ui/react';
 import type { BigNumberish } from 'fuels';
-import { AssetLogo } from '~/systems/Chains/eth/components/AssetLogo';
-import { ETH_ASSET } from '~/systems/Chains/eth/utils';
+import { AssetLogo } from '~/systems/Assets/components/AssetLogo';
+import type { Asset } from '~/systems/Assets/services/asset';
 import { calculateDateDiff } from '~/systems/Core';
 
-import type { BridgeAsset } from '../../types';
-
-import { InfoTestLoader } from './InfoTestLoader';
+import { InfoTextLoader } from './InfoTextLoader';
 
 type BridgeTxOverviewProps = {
   transactionId: BigNumberish;
   date?: Date;
   isDeposit?: boolean;
-  asset?: BridgeAsset;
+  asset?: Asset;
+  ethAsset?: Asset;
   isLoading?: boolean;
+  amount?: string;
+  explorerLink?: string;
 };
 
 export const BridgeTxOverview = ({
@@ -22,20 +23,23 @@ export const BridgeTxOverview = ({
   date,
   isDeposit,
   asset,
+  ethAsset,
   isLoading,
+  amount,
+  explorerLink,
 }: BridgeTxOverviewProps) => {
   return (
     <Box.Stack css={styles.stack}>
       <Box.Flex css={styles.txItem}>
         <Text css={styles.labelText}>ID</Text>
-        <Text css={styles.infoText} aria-label="Transaction ID">
-          {transactionId.toString()}
-        </Text>
+        <Link href={explorerLink} isExternal css={styles.infoText}>
+          <Box aria-label="Transaction ID">{transactionId.toString()}</Box>
+        </Link>
       </Box.Flex>
       <Box.Flex css={styles.txItem}>
         <Text css={styles.labelText}>Age</Text>
         <Text css={styles.infoText}>
-          {isLoading ? <InfoTestLoader /> : calculateDateDiff(date)}
+          {isLoading ? <InfoTextLoader /> : calculateDateDiff(date)}
         </Text>
       </Box.Flex>
       <Box.Flex css={styles.txItem}>
@@ -43,7 +47,7 @@ export const BridgeTxOverview = ({
         {isDeposit ? (
           <Box.Flex css={styles.directionInfo}>
             <Text css={styles.subtleText}>(Deposit)</Text>
-            <AssetLogo asset={ETH_ASSET} alt={'Deposit'} />
+            {ethAsset && <AssetLogo asset={ethAsset} alt={'Deposit'} />}
             <Icon icon="ArrowNarrowRight" />
             <FuelLogo size={17} />
           </Box.Flex>
@@ -52,7 +56,7 @@ export const BridgeTxOverview = ({
             <Text css={styles.subtleText}>(Withdrawal)</Text>
             <FuelLogo size={17} />
             <Icon icon="ArrowNarrowRight" />
-            <AssetLogo asset={ETH_ASSET} alt={'withdrawal'} />
+            <AssetLogo asset={ethAsset} alt={'withdrawal'} />
           </Box.Flex>
         )}
       </Box.Flex>
@@ -60,12 +64,12 @@ export const BridgeTxOverview = ({
         <Text css={styles.labelText}>Asset</Text>
         <Box.Flex css={styles.directionInfo}>
           {isLoading ? (
-            <InfoTestLoader />
+            <InfoTextLoader />
           ) : (
             <>
-              <AssetLogo asset={asset || {}} alt={`Asset ${asset?.symbol}`} />
+              <AssetLogo asset={asset} alt={`Asset ${asset?.symbol}`} />
               <Text aria-label="Asset amount" css={styles.infoText}>
-                {asset?.amount}
+                {amount}
               </Text>
               <Text css={styles.infoText}>{asset?.symbol}</Text>
             </>

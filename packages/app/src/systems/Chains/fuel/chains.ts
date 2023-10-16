@@ -7,7 +7,7 @@ export type FuelChain = {
 };
 
 const fuelDev: FuelChain = {
-  id: 1001,
+  id: 10,
   network: 'fuel_devnet',
   name: 'Fuel Devnet',
   testnet: true,
@@ -15,7 +15,7 @@ const fuelDev: FuelChain = {
 };
 
 const fuelBeta4: FuelChain = {
-  id: 1002,
+  id: 0,
   network: 'fuel_beta4',
   name: 'Fuel Beta 4',
   testnet: true,

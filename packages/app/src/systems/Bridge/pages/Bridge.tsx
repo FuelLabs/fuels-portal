@@ -1,6 +1,7 @@
 import { cssObj } from '@fuel-ui/css';
 import { Card, Box, Text, InputAmount, Alert, Link } from '@fuel-ui/react';
 import { motion, useAnimationControls } from 'framer-motion';
+import { getAssetEth } from '~/systems/Assets/utils';
 import {
   EthAccountConnection,
   FuelAccountConnection,
@@ -10,6 +11,7 @@ import {
 
 import { BridgeButton, BridgeTabs } from '../containers';
 import { useBridge } from '../hooks';
+import { useWithdrawDelay } from '../hooks/useWithdrawDelay';
 
 export const Bridge = () => {
   const {
@@ -25,8 +27,11 @@ export const Bridge = () => {
 
   const fromControls = useAnimationControls();
   const toControls = useAnimationControls();
+  const { timeToWithdrawFormatted } = useWithdrawDelay();
 
   if (!fromNetwork || !toNetwork) return null;
+
+  const ethAssetAddress = asset ? getAssetEth(asset)?.address : undefined;
 
   return (
     <Card>
@@ -58,8 +63,8 @@ export const Bridge = () => {
               balance={assetBalance}
               asset={{
                 name: asset?.symbol,
-                imageUrl: asset?.image,
-                address: asset?.address,
+                imageUrl: asset?.icon || '',
+                address: ethAssetAddress,
               }}
               value={assetAmount}
               onChange={(val) =>
@@ -71,11 +76,13 @@ export const Bridge = () => {
           <BridgeButton />
           <Alert status="warning">
             <Alert.Description>
-              {/* TODO: get it from contract constant to show exact time, instead of hardcoded "7 days" */}
-              Any assets deposited to Fuel takes 7 days to withdraw back to
-              Ethereum. Learn more about our architecture and security in
-              our&nbsp;
-              <Link href="https://docs.fuel.network/" isExternal>
+              Any assets deposited to Fuel can take up to{' '}
+              {timeToWithdrawFormatted} to withdraw back to Ethereum. Learn more
+              about our architecture and security in our&nbsp;
+              <Link
+                href="https://github.com/FuelLabs/fuel-bridge/blob/main/docs/ARCHITECTURE.md"
+                isExternal
+              >
                 docs
               </Link>
             </Alert.Description>

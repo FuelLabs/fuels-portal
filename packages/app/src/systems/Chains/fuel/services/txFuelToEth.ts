@@ -1,28 +1,28 @@
 import { fungibleTokenABI } from '@fuel-bridge/fungible-token';
 import type { FuelWalletLocked } from '@fuel-wallet/sdk';
+import type { Fuel } from '@fuels/assets';
+import { addSeconds } from 'date-fns';
 import type { BN, MessageProof } from 'fuels';
 import {
   bn,
   TransactionResponse,
   Address as FuelAddress,
   Provider as FuelProvider,
-  ZeroBytes32,
   getReceiptsMessageOut,
   getTransactionsSummaries,
-  BaseAssetId,
   Contract,
   TransactionStatus,
 } from 'fuels';
 import type { WalletClient } from 'viem';
 import type { PublicClient as EthPublicClient } from 'wagmi';
 import { VITE_ETH_FUEL_MESSAGE_PORTAL } from '~/config';
-import type { BridgeAsset } from '~/systems/Bridge';
 
+import { FUEL_CHAIN_STATE } from '../../eth/contracts/FuelChainState';
 import { FUEL_MESSAGE_PORTAL } from '../../eth/contracts/FuelMessagePortal';
 import { EthConnectorService } from '../../eth/services';
 import { parseEthAddressToFuel } from '../../eth/utils/address';
 import { createRelayMessageParams } from '../../eth/utils/relayMessage';
-import { getBlock, getTokenId } from '../utils';
+import { getBlock, getContractTokenId } from '../utils';
 
 export type TxFuelToEthInputs = {
   startBase: {
@@ -31,7 +31,7 @@ export type TxFuelToEthInputs = {
     ethAddress?: string;
   };
   startFungibleToken: {
-    fuelAsset?: BridgeAsset;
+    fuelAsset?: Fuel;
   } & TxFuelToEthInputs['startBase'];
   waitTxResult: {
     fuelTxId: string;
@@ -88,13 +88,13 @@ export class TxFuelToEthService {
     input: TxFuelToEthInputs['startFungibleToken']
   ) {
     TxFuelToEthService.assertStartBase(input);
-    if (!input?.fuelAsset?.address) {
+    if (!input?.fuelAsset?.contractId) {
       throw new Error('Need Fuel asset');
     }
   }
 
   static async start(input: TxFuelToEthInputs['startFungibleToken']) {
-    if (input?.fuelAsset?.address !== BaseAssetId) {
+    if (input?.fuelAsset?.contractId) {
       return TxFuelToEthService.startFungibleToken(input);
     }
 
@@ -107,7 +107,9 @@ export class TxFuelToEthService {
     const { amount, fuelWallet, ethAddress } = input;
 
     if (fuelWallet && ethAddress && amount) {
-      const { maxGasPerTx } = fuelWallet.provider.getGasConfig();
+      // TODO: should use the fuelProvider from input when wallet gets updated with new SDK
+      const provider = await FuelProvider.create(fuelWallet.provider.url);
+      const { maxGasPerTx } = provider.getGasConfig();
 
       const txFuel = await fuelWallet.withdrawToBaseLayer(
         FuelAddress.fromString(ethAddress),
@@ -129,21 +131,26 @@ export class TxFuelToEthService {
 
     const { amount, fuelWallet, ethAddress, fuelAsset } = input;
 
-    if (fuelAsset?.address && fuelWallet && amount) {
+    if (fuelAsset?.contractId && fuelWallet && amount) {
       const ethAddressInFuel = parseEthAddressToFuel(ethAddress);
       const fungibleToken = new Contract(
-        fuelAsset.address,
+        fuelAsset.contractId,
         fungibleTokenABI,
         fuelWallet
       );
-      const fuelTestTokenId = getTokenId(fungibleToken);
-      const { maxGasPerTx, minGasPrice } = fuelWallet.provider.getGasConfig();
+      const fuelTestAssetId =
+        fuelAsset.assetId ||
+        getContractTokenId(fuelAsset.contractId as `0x${string}`);
+
+      // TODO: should use the fuelProvider from input when wallet gets updated with new SDK
+      const provider = await FuelProvider.create(fuelWallet.provider.url);
+      const { maxGasPerTx, minGasPrice } = provider.getGasConfig();
       const withdrawScope = fungibleToken.functions
         .withdraw(ethAddressInFuel)
         .callParams({
           forward: {
             amount: bn.parseUnits(amount.format(), fuelAsset.decimals),
-            assetId: fuelTestTokenId,
+            assetId: fuelTestAssetId,
           },
         })
         .txParams({
@@ -208,8 +215,10 @@ export class TxFuelToEthService {
       publicClient: ethPublicClient,
     });
 
-    const blocksPerCommitInterval =
-      (await fuelChainState.read.BLOCKS_PER_COMMIT_INTERVAL()) as bigint;
+    const [blocksPerCommitInterval, timeToFinalize] = await Promise.all([
+      fuelChainState.read.BLOCKS_PER_COMMIT_INTERVAL(),
+      fuelChainState.read.TIME_TO_FINALIZE(),
+    ]);
 
     // Add + 1 to the block height to wait the next block
     // that enable to proof the message
@@ -218,15 +227,13 @@ export class TxFuelToEthService {
     // We need to divide the desired block by the BLOCKS_PER_COMMIT_INTERVAL
     // and round up. Ex.: 225/100 sould be on the slot 3
     const { mod, div } = bn(nextBlockHeight).divmod(
-      blocksPerCommitInterval.toString()
+      (blocksPerCommitInterval as bigint).toString()
     );
     const commitHeight = mod.isZero() ? div : div.add(1);
 
     const commitHashAtL1 = await fuelChainState.read.blockHashAtCommit([
       commitHeight.toString(),
     ]);
-    const isBlock = commitHashAtL1 !== ZeroBytes32;
-    if (!isBlock) return undefined;
 
     const block = await getBlock({
       providerUrl: fuelProvider.url,
@@ -234,7 +241,24 @@ export class TxFuelToEthService {
     });
     const isCommited = bn(block?.header.height).gte(nextBlockHeight);
 
-    return isCommited ? (commitHashAtL1 as string) : undefined;
+    if (isCommited) {
+      return {
+        blockHashCommited: commitHashAtL1 as `0x${string}`,
+      };
+    }
+
+    const lastBlockCommited = await FUEL_CHAIN_STATE.getLastBlockCommited({
+      ethPublicClient,
+    });
+    const dateLastCommit = new Date(Number(lastBlockCommited.timestamp) * 1000);
+    const estimatedFinishDate = addSeconds(
+      dateLastCommit,
+      Number(timeToFinalize) * 2
+    );
+
+    return {
+      estimatedFinishDate,
+    };
   }
 
   static async getMessageProof(input: TxFuelToEthInputs['getMessageProof']) {
@@ -283,7 +307,26 @@ export class TxFuelToEthService {
       messageProof.commitBlockHeader.height.toString(),
     ]);
 
-    return !!isFinalized;
+    if (isFinalized) {
+      return {
+        isFinalized: true,
+      };
+    }
+
+    const timeToFinalize = await fuelChainState.read.TIME_TO_FINALIZE();
+
+    const lastBlockCommited = await FUEL_CHAIN_STATE.getLastBlockCommited({
+      ethPublicClient,
+    });
+    const dateLastCommit = new Date(Number(lastBlockCommited.timestamp) * 1000);
+    const estimatedFinishDate = addSeconds(
+      dateLastCommit,
+      Number(timeToFinalize)
+    );
+
+    return {
+      estimatedFinishDate,
+    };
   }
 
   static async getMessageRelayed(

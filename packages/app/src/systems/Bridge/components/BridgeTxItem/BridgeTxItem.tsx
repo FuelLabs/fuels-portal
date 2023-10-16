@@ -1,19 +1,22 @@
 import { cssObj } from '@fuel-ui/css';
 import { Box, Text, Icon, CardList } from '@fuel-ui/react';
 import type { ReactNode } from 'react';
-import { AssetLogo } from '~/systems/Chains/eth/components/AssetLogo';
+import { AssetLogo } from '~/systems/Assets/components/AssetLogo';
+import type { Asset } from '~/systems/Assets/services/asset';
 import { calculateDateDiff, shortAddress } from '~/systems/Core';
 
-import type { BridgeAsset } from '../../types';
+import { ItemLoader } from './ItemLoader';
 
 type BridgeTxItemProps = {
   date?: Date;
   fromLogo: ReactNode;
   toLogo: ReactNode;
-  asset?: BridgeAsset;
+  asset?: Asset;
   onClick: () => void;
   status: ReactNode;
   txId?: string;
+  amount?: string;
+  isLoading?: boolean;
 };
 
 export const BridgeTxItem = ({
@@ -24,6 +27,8 @@ export const BridgeTxItem = ({
   toLogo,
   status,
   txId,
+  amount,
+  isLoading,
 }: BridgeTxItemProps) => {
   return (
     <CardList.Item
@@ -37,13 +42,23 @@ export const BridgeTxItem = ({
         {toLogo}
       </Box.Flex>
       <Box.Flex align="center" gap="$1">
-        <AssetLogo asset={asset || {}} alt={asset?.symbol} />
-        <Text fontSize="sm" css={styles.assetAmountText}>
-          {asset?.amount} {asset?.symbol}
-        </Text>
+        {isLoading ? (
+          <ItemLoader />
+        ) : (
+          <>
+            <AssetLogo asset={asset} alt={asset?.symbol} />
+            <Text fontSize="sm" css={styles.assetAmountText}>
+              {amount} {asset?.symbol}
+            </Text>
+          </>
+        )}
       </Box.Flex>
       <Box.Flex css={styles.statusTime} justify={'space-between'}>
-        <Text css={styles.ageText}>{calculateDateDiff(date)}</Text>
+        {isLoading ? (
+          <ItemLoader />
+        ) : (
+          <Text css={styles.ageText}>{calculateDateDiff(date)}</Text>
+        )}
         <Box.Flex css={styles.statusColumn} align="center" justify="flex-end">
           {status}
         </Box.Flex>
@@ -54,8 +69,7 @@ export const BridgeTxItem = ({
 
 const styles = cssObj({
   cardItem: cssObj({
-    // This mean height ensure that the component will
-    // have the same size of the loader
+    // This minHeight ensures component size equals loader size
     minHeight: 24,
     gap: '$6',
     alignItems: 'center',

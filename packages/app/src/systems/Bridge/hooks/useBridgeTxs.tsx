@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Services, store } from '~/store';
 import {
   useEthAccountConnection,
@@ -6,6 +6,8 @@ import {
 } from '~/systems/Chains';
 
 import type { BridgeTxsMachineState } from '../machines';
+
+const MAX_BY_PAGE = 15;
 
 const selectors = {
   bridgeTxs: (state: BridgeTxsMachineState) => {
@@ -18,11 +20,13 @@ const selectors = {
 
 export const useBridgeTxs = () => {
   const {
-    isConnected,
     hasWallet,
+    isConnected,
+    isLoadingConnection,
     provider: fuelProvider,
     address: fuelAddress,
   } = useFuelAccountConnection();
+  const [amountTxsToShow, setAmountTxsToShow] = useState(MAX_BY_PAGE);
   const { publicClient: ethPublicClient } = useEthAccountConnection();
   const bridgeTxs = store.useSelector(Services.bridgeTxs, selectors.bridgeTxs);
   const isLoading = store.useSelector(Services.bridgeTxs, selectors.isLoading);
@@ -33,14 +37,19 @@ export const useBridgeTxs = () => {
     store.fetchTxs({ fuelProvider, ethPublicClient, fuelAddress });
   }, [fuelProvider?.url, ethPublicClient.chain.id, fuelAddress?.toAddress()]);
 
+  const paginatedBridgeTxs = bridgeTxs?.slice(0, amountTxsToShow);
+  const hasMorePages = (bridgeTxs?.length || 0) > amountTxsToShow;
+
   return {
-    bridgeTxs,
+    handlers: {
+      showMore: () => setAmountTxsToShow(amountTxsToShow + MAX_BY_PAGE),
+    },
+    bridgeTxs: paginatedBridgeTxs,
     isLoading,
-    shouldShowNotConnected:
-      !(isConnected ?? hasWallet) &&
-      !isLoading &&
-      bridgeTxs &&
-      bridgeTxs.length === 0,
+    hasMorePages,
+    shouldShowNotConnected: hasWallet
+      ? !isLoadingConnection && !isConnected && !isLoading
+      : !hasWallet,
     shouldShowEmpty:
       isConnected && !isLoading && bridgeTxs && bridgeTxs.length === 0,
     shouldShowList:
