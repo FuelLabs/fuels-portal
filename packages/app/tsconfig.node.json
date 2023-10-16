@@ -8,5 +8,10 @@
     "resolveJsonModule": true,
     "types": ["@fuel-wallet/sdk"]
   },
-  "include": ["load.envs.js", "playwright/**/*.ts", "vite.config.ts"]
+  "include": [
+    "load.envs.js",
+    "playwright/**/*.ts",
+    "vite.config.ts",
+    "src/systems/Chains/eth/contracts/**/*.ts"
+  ]
 }
