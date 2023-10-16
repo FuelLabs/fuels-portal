@@ -26,6 +26,9 @@ import '../../load.envs';
 
 const { FUEL_PROVIDER_URL, VITE_ETH_ERC20 } = process.env;
 
+const ASSET_ID =
+  '0x9507512b43cae331c49e86eb76c52cb5fad8a4ec5b811efcbb499b56816fc18a';
+
 test.describe('Bridge', () => {
   let client: PublicClient;
   let account: HDAccount;
@@ -136,9 +139,7 @@ test.describe('Bridge', () => {
     });
 
     await test.step('Deposit TKN to Fuel', async () => {
-      const assetId =
-        '0x9507512b43cae331c49e86eb76c52cb5fad8a4ec5b811efcbb499b56816fc18a';
-      const preDepositBalanceFuel = await fuelWallet.getBalance(assetId);
+      const preDepositBalanceFuel = await fuelWallet.getBalance(ASSET_ID);
       const preDepositBalanceEth = await erc20Contract.read.balanceOf([
         account.address,
       ]);
@@ -151,7 +152,7 @@ test.describe('Bridge', () => {
       await depositButton.click();
 
       // Timeout needed until https://github.com/Synthetixio/synpress/issues/795 is fixed
-      await page.waitForTimeout(10000);
+      await page.waitForTimeout(7500);
       await metamask.confirmPermissionToSpend();
       await metamask.confirmTransaction();
 
@@ -161,9 +162,6 @@ test.describe('Bridge', () => {
       const postDepositBalanceEth = await erc20Contract.read.balanceOf([
         account.address,
       ]);
-
-      console.log(`preDepositBalanceEth`, preDepositBalanceEth.toString());
-      console.log(`postDepositBalanceEth`, postDepositBalanceEth.toString());
 
       expect(
         parseFloat(
@@ -210,7 +208,7 @@ test.describe('Bridge', () => {
       await page.locator(':nth-match(:text("Done"), 4)').waitFor();
       await closeTransactionPopup(page);
 
-      const postDepositBalanceFuel = await fuelWallet.getBalance(assetId);
+      const postDepositBalanceFuel = await fuelWallet.getBalance(ASSET_ID);
 
       expect(
         postDepositBalanceFuel
@@ -223,109 +221,109 @@ test.describe('Bridge', () => {
       await statusLocator.innerText();
     });
 
-    // await test.step('Withdraw from Fuel to ETH', async () => {
-    //   // Go to transaction page
-    //   const transactionList = page.locator('button').getByText('History');
+    await test.step('Withdraw from Fuel to ETH', async () => {
+      // Go to the bridge page
+      bridgePage = page.locator('button').getByText('Bridge');
+      await bridgePage.click();
 
-    //   // Go to the bridge page
-    //   bridgePage = page.locator('button').getByText('Bridge');
-    //   await bridgePage.click();
+      // Go to the withdraw page
+      const withdrawPage = getButtonByText(page, 'Withdraw from Fuel');
+      await withdrawPage.click();
 
-    //   // Go to the withdraw page
-    //   const withdrawPage = getButtonByText(page, 'Withdraw from Fuel');
-    //   await withdrawPage.click();
+      const preWithdrawBalanceFuel = await fuelWallet.getBalance(ASSET_ID);
+      const preWithdrawBalanceEth = await erc20Contract.read.balanceOf([
+        account.address,
+      ]);
 
-    //   const preWithdrawBalanceFuel = await fuelWallet.getBalance(BaseAssetId);
-    //   const prevWithdrawBalanceEth = await client.getBalance({
-    //     address: account.address,
-    //   });
+      // Withdraw asset
+      const withdrawAmount = '0.012345';
+      const withdrawInput = page.locator('input');
+      await withdrawInput.fill(withdrawAmount);
+      const withdrawButton = getByAriaLabel(page, 'Withdraw');
+      await withdrawButton.click();
+      await walletApprove(context);
 
-    //   // Withdraw asset
-    //   const withdrawAmount = '0.012345';
-    //   const withdrawInput = page.locator('input');
-    //   await withdrawInput.fill(withdrawAmount);
-    //   const withdrawButton = getByAriaLabel(page, 'Withdraw');
-    //   await withdrawButton.click();
-    //   await walletApprove(context);
+      await page.locator(':text("Action Required")').waitFor();
 
-    //   await page.locator(':text("Action Required")').waitFor();
+      // Check the popup is correct
+      const transactionID = (
+        await getByAriaLabel(page, 'Transaction ID').innerText()
+      ).trim();
+      const assetAmountWithdraw = getByAriaLabel(page, 'Asset amount');
+      expect((await assetAmountWithdraw.innerHTML()).trim()).toBe(
+        withdrawAmount
+      );
+      await closeTransactionPopup(page);
 
-    //   // Check the popup is correct
-    //   const transactionID = (
-    //     await getByAriaLabel(page, 'Transaction ID').innerText()
-    //   ).trim();
-    //   const assetAmountWithdraw = getByAriaLabel(page, 'Asset amount');
-    //   expect((await assetAmountWithdraw.innerHTML()).trim()).toBe(
-    //     withdrawAmount
-    //   );
-    //   await closeTransactionPopup(page);
+      // Go to transaction page
+      const transactionList = page.locator('button').getByText('History');
+      await transactionList.click();
 
-    //   // Go to the transaction page
-    //   await transactionList.click();
+      // Wait for transactions to get fetched and sorted
+      await page.waitForTimeout(2000);
 
-    //   // Wait for transactions to get fetched and sorted
-    //   await page.waitForTimeout(2000);
+      // Check the transaction is there
+      const withdrawLocator = getByAriaLabel(
+        page,
+        `Transaction ID: ${transactionID}`
+      );
 
-    //   // Check the transaction is there
-    //   const withdrawLocator = getByAriaLabel(
-    //     page,
-    //     `Transaction ID: ${transactionID}`
-    //   );
+      const actionRequiredLocator =
+        withdrawLocator.getByText('Action Required');
+      await actionRequiredLocator.innerText();
+      const assetAmountLocator = withdrawLocator.getByText(
+        `${withdrawAmount} TKN`
+      );
+      await assetAmountLocator.innerText();
 
-    //   const assetAmountLocator = withdrawLocator.getByText(
-    //     `${withdrawAmount} ETH`
-    //   );
-    //   await assetAmountLocator.innerText();
+      await assetAmountLocator.click();
+      // await page.waitForTimeout(10000);
+      const confirmButton = getButtonByText(page, 'Confirm Transaction');
+      await confirmButton.click();
 
-    //   await assetAmountLocator.click();
-    //   await page.waitForTimeout(10000);
-    //   const confirmButton = getButtonByText(page, 'Confirm Transaction');
-    //   await confirmButton.click();
+      // For some reason we need this even if we wait for load state on the metamask notification page
+      await page.waitForTimeout(3000);
 
-    //   // For some reason we need this even if we wait for load state on the metamask notification page
-    //   await page.waitForTimeout(3000);
+      let metamaskNotificationPage = context
+        .pages()
+        .find((p) => p.url().includes('notification'));
+      if (!metamaskNotificationPage) {
+        metamaskNotificationPage = await context.waitForEvent('page', {
+          predicate: (page) => page.url().includes('notification'),
+        });
+      }
+      const proceedAnyways = metamaskNotificationPage.getByText(
+        'I want to proceed anyway'
+      );
+      const count = await proceedAnyways.count();
+      if (count) {
+        await proceedAnyways.click();
+      }
 
-    //   let metamaskNotificationPage = context
-    //     .pages()
-    //     .find((p) => p.url().includes('notification'));
-    //   if (!metamaskNotificationPage) {
-    //     metamaskNotificationPage = await context.waitForEvent('page', {
-    //       predicate: (page) => page.url().includes('notification'),
-    //     });
-    //   }
-    //   const proceedAnyways = metamaskNotificationPage.getByText(
-    //     'I want to proceed anyway'
-    //   );
-    //   const count = await proceedAnyways.count();
-    //   if (count) {
-    //     await proceedAnyways.click();
-    //   }
+      // Timeout needed until https://github.com/Synthetixio/synpress/issues/795 is fixed
+      await page.waitForTimeout(5000);
+      await metamask.confirmTransaction();
 
-    //   // Timeout needed until https://github.com/Synthetixio/synpress/issues/795 is fixed
-    //   await page.waitForTimeout(10000);
-    //   await metamask.confirmTransaction();
+      await closeTransactionPopup(page);
 
-    //   await closeTransactionPopup(page);
+      const postWithdrawBalanceEth = await erc20Contract.read.balanceOf([
+        account.address,
+      ]);
+      const postWithdrawBalanceFuel = await fuelWallet.getBalance(ASSET_ID);
 
-    //   const postWithdrawBalanceEth = await client.getBalance({
-    //     address: account.address,
-    //   });
-    //   const postWithdrawBalanceFuel = await fuelWallet.getBalance(BaseAssetId);
+      expect(
+        parseFloat(
+          bn(postWithdrawBalanceEth.toString())
+            .sub(bn(preWithdrawBalanceEth.toString()))
+            .format({ precision: 6, units: 18 })
+        )
+      ).toBeCloseTo(parseFloat(withdrawAmount));
 
-    //   // We only divide by 15 bc bigint does not support decimals
-    //   expect(
-    //     parseFloat(
-    //       bn(postWithdrawBalanceEth.toString())
-    //         .sub(bn(prevWithdrawBalanceEth.toString()))
-    //         .format({ precision: 6, units: 18 })
-    //     )
-    //   ).toBeCloseTo(0.0122);
-
-    //   expect(
-    //     preWithdrawBalanceFuel
-    //       .sub(postWithdrawBalanceFuel)
-    //       .format({ precision: 6, units: 9 })
-    //   ).toBe('0.012345');
-    // });
+      expect(
+        preWithdrawBalanceFuel
+          .sub(postWithdrawBalanceFuel)
+          .format({ precision: 6, units: 9 })
+      ).toBe(withdrawAmount);
+    });
   });
 });
