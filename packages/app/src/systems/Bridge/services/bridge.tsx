@@ -126,7 +126,7 @@ export class BridgeService {
             txId,
           });
           toast.success(
-            'Withdraw successfully initiated.  You may now close the poup.',
+            'Withdraw successfully initiated. You may now close the popup.',
             { duration: 5000 }
           );
         }
