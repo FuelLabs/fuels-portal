@@ -1,4 +1,5 @@
 import {
+  FUELET_CONNECTOR,
   FUEL_WALLET_CONNECTOR,
   FUEL_WALLET_DEVELOPMENT_CONNECTOR,
   FuelConnectorProvider,
@@ -15,7 +16,7 @@ type ProvidersProps = {
 const connectors =
   IS_PREVIEW && !IS_TEST
     ? [FUEL_WALLET_CONNECTOR, FUEL_WALLET_DEVELOPMENT_CONNECTOR]
-    : [FUEL_WALLET_CONNECTOR];
+    : [FUEL_WALLET_CONNECTOR, FUELET_CONNECTOR];
 
 export function FuelConnectProvider({ children }: ProvidersProps) {
   const { theme } = useTheme();
