@@ -1,3 +1,4 @@
+import type { FuelWalletLocked as FuelWallet } from '@fuel-wallet/sdk';
 import { useMemo } from 'react';
 import { store, Services } from '~/store';
 import { getAssetEth, getAssetFuel } from '~/systems/Assets/utils';
@@ -171,7 +172,8 @@ export function useTxEthToFuel({ id }: { id: string }) {
 
     store.relayMessageEthToFuel({
       input: {
-        fuelWallet,
+        // TODO: remove this workaround when we get versions organized and using the same version
+        fuelWallet: fuelWallet as unknown as FuelWallet,
       },
       ethTxId,
     });
