@@ -241,6 +241,7 @@ test.describe('Bridge', () => {
       await withdrawInput.fill(withdrawAmount);
       const withdrawButton = getByAriaLabel(page, 'Withdraw');
       await withdrawButton.click();
+      await page.waitForTimeout(2500);
       await walletApprove(context);
 
       await page.locator(':text("Action Required")').waitFor();
