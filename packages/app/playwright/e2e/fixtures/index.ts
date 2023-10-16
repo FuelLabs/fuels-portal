@@ -59,8 +59,4 @@ export const test = base.extend<{
   },
 });
 
-test.afterAll(async ({ context }) => {
-  await context.close();
-});
-
 export const expect = test.expect;
