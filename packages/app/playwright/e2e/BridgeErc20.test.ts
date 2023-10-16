@@ -24,10 +24,8 @@ import { closeTransactionPopup } from './utils/bridge';
 
 import '../../load.envs';
 
-const { FUEL_PROVIDER_URL, VITE_ETH_ERC20 } = process.env;
-
-const ASSET_ID =
-  '0x9507512b43cae331c49e86eb76c52cb5fad8a4ec5b811efcbb499b56816fc18a';
+const { FUEL_PROVIDER_URL, VITE_ETH_ERC20, VITE_FUEL_FUNGIBLE_ASSET_ID } =
+  process.env;
 
 test.describe('Bridge', () => {
   let client: PublicClient;
@@ -139,7 +137,9 @@ test.describe('Bridge', () => {
     });
 
     await test.step('Deposit TKN to Fuel', async () => {
-      const preDepositBalanceFuel = await fuelWallet.getBalance(ASSET_ID);
+      const preDepositBalanceFuel = await fuelWallet.getBalance(
+        VITE_FUEL_FUNGIBLE_ASSET_ID
+      );
       const preDepositBalanceEth = await erc20Contract.read.balanceOf([
         account.address,
       ]);
@@ -208,7 +208,9 @@ test.describe('Bridge', () => {
       await page.locator(':nth-match(:text("Done"), 4)').waitFor();
       await closeTransactionPopup(page);
 
-      const postDepositBalanceFuel = await fuelWallet.getBalance(ASSET_ID);
+      const postDepositBalanceFuel = await fuelWallet.getBalance(
+        VITE_FUEL_FUNGIBLE_ASSET_ID
+      );
 
       expect(
         postDepositBalanceFuel
@@ -230,7 +232,9 @@ test.describe('Bridge', () => {
       const withdrawPage = getButtonByText(page, 'Withdraw from Fuel');
       await withdrawPage.click();
 
-      const preWithdrawBalanceFuel = await fuelWallet.getBalance(ASSET_ID);
+      const preWithdrawBalanceFuel = await fuelWallet.getBalance(
+        VITE_FUEL_FUNGIBLE_ASSET_ID
+      );
       const preWithdrawBalanceEth = await erc20Contract.read.balanceOf([
         account.address,
       ]);
@@ -310,7 +314,9 @@ test.describe('Bridge', () => {
       const postWithdrawBalanceEth = await erc20Contract.read.balanceOf([
         account.address,
       ]);
-      const postWithdrawBalanceFuel = await fuelWallet.getBalance(ASSET_ID);
+      const postWithdrawBalanceFuel = await fuelWallet.getBalance(
+        VITE_FUEL_FUNGIBLE_ASSET_ID
+      );
 
       expect(
         parseFloat(
