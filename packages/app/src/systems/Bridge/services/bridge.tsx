@@ -97,7 +97,7 @@ export class BridgeService {
             txId,
           });
           toast.success(
-            'Deposit successfully initiated.  You may now close the poup.',
+            'Deposit successfully initiated. You may now close the popup.',
             { duration: 5000 }
           );
         }
