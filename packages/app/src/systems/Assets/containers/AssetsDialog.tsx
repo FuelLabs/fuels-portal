@@ -16,15 +16,22 @@ import { store } from '~/store';
 import { useBridge } from '~/systems/Bridge/hooks';
 import { useFuelAccountConnection } from '~/systems/Chains';
 
-import { useFaucetErc20, useSetAddressForm } from '../../Chains/eth/hooks';
+import {
+  useEthAccountConnection,
+  useFaucetErc20,
+  useSetAddressForm,
+} from '../../Chains/eth/hooks';
 import { AssetCard } from '../components/AssetCard';
 import { useAssets } from '../hooks';
 import { getAssetEth, getAssetFuel } from '../utils';
 
 export function AssetsDialog() {
   const {
-    handlers: { addAsset },
+    handlers: { addAsset: addAssetFuel },
   } = useFuelAccountConnection();
+  const {
+    handlers: { addAsset: addAssetEth },
+  } = useEthAccountConnection();
   const { handlers: bridgeHandlers } = useBridge();
   const [editable, setEditable] = useState(false);
 
@@ -95,6 +102,7 @@ export function AssetsDialog() {
               const fuelAsset = getAssetFuel(asset);
 
               const isFaucetable = ethAsset?.address === VITE_ETH_ERC20;
+              const isETH = !ethAsset?.address;
 
               return (
                 <AssetCard
@@ -122,7 +130,18 @@ export function AssetsDialog() {
                       : undefined
                   }
                   isFaucetLoading={isFaucetable && isLoadingFaucet}
-                  onAddToWallet={() => addAsset(fuelAsset)}
+                  onAddToWallet={
+                    isETH
+                      ? undefined
+                      : async () => {
+                          try {
+                            await addAssetEth(ethAsset);
+                          } catch (e) {
+                            /* empty */
+                          }
+                          addAssetFuel(fuelAsset);
+                        }
+                  }
                 />
               );
             })}
