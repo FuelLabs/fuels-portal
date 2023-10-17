@@ -88,8 +88,6 @@ test.describe('Bridge', () => {
       await page.waitForTimeout(2000);
       await metamask.confirmTransaction();
 
-      await page.screenshot({ fullPage: true, path: 'temp.png' });
-
       // Check steps
       await page.locator(':nth-match(:text("Done"), 4)').waitFor();
 
