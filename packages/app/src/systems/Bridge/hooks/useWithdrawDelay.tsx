@@ -27,7 +27,6 @@ export function useWithdrawDelay() {
 
       return {
         timeToWithdrawFormatted: formatDistanceToNowStrict(futureDate, {
-          unit: 'minute',
           roundingMethod: 'ceil',
         }),
         timeToWithdrawSeconds: totalTimeInSeconds,
