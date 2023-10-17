@@ -38,13 +38,18 @@ export const AssetCard = ({
         <Box.Flex gap="$3" align="center">
           <AssetLogo asset={asset} size={30} />
           <Box.Flex direction="column" gap="$0">
-            <Text color="intentsPrimary12">{asset.symbol}</Text>
+            <Text
+              color="intentsPrimary12"
+              aria-label={`${asset.symbol} symbol`}
+            >
+              {asset.symbol}
+            </Text>
           </Box.Flex>
         </Box.Flex>
         <Box.Flex gap="$2">
           {onFaucet && (
             <IconButton
-              aria-label="AddEthAsset"
+              aria-label="Faucet Eth Asset"
               variant="link"
               icon="Coins"
               tooltip="Get some tokens"
@@ -57,7 +62,7 @@ export const AssetCard = ({
           )}
           {onAdd && (
             <IconButton
-              aria-label="AddEthAsset"
+              aria-label="Add Eth Asset"
               variant="link"
               icon="CirclePlus"
               onPress={onAdd}
@@ -70,7 +75,7 @@ export const AssetCard = ({
           {onRemove && (
             <RemoveAssetDialog assetSymbol={asset.symbol} onConfirm={onRemove}>
               <IconButton
-                aria-label="RemoveEthAsset"
+                aria-label="Remove Eth Asset"
                 isDisabled={isRemoveDisabled}
                 tooltip={removeToolTip}
                 variant="link"
@@ -83,7 +88,7 @@ export const AssetCard = ({
           )}
           {onAddToWallet && (
             <IconButton
-              aria-label="AddAssetToWallet"
+              aria-label="Add Asset To Wallet"
               variant="link"
               icon="Wallet"
               onPress={onAddToWallet}
