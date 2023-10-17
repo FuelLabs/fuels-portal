@@ -37,4 +37,28 @@ export const FUEL_CHAIN_STATE = {
 
     return lastBlockCommited;
   },
+  getBlockCommited: async ({
+    ethPublicClient,
+    fuelBlockHashCommited,
+  }: {
+    ethPublicClient: PublicClient;
+    fuelBlockHashCommited: string;
+  }) => {
+    const logs = await FUEL_CHAIN_STATE.getCommitSubmitted({ ethPublicClient });
+    let ethBlockHash: `0x${string}` | null = null;
+    for (let i = logs.length - 1; i >= 0; i--) {
+      const log = logs[i];
+      const args = log.args as unknown as { blockHash: string };
+      if (args.blockHash === fuelBlockHashCommited) {
+        ethBlockHash = log.blockHash;
+        break;
+      }
+    }
+
+    const block = await ethPublicClient.getBlock({
+      blockHash: ethBlockHash === null ? undefined : ethBlockHash,
+    });
+
+    return block;
+  },
 };

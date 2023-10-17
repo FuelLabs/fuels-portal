@@ -51,6 +51,8 @@ export type TxFuelToEthInputs = {
   waitBlockFinalization: {
     messageProof?: MessageProof;
     ethPublicClient: EthPublicClient;
+    fuelBlockHashCommited: string;
+    fuelProvider: FuelProvider;
   };
   getMessageRelayed: {
     messageProof: MessageProof;
@@ -297,7 +299,7 @@ export class TxFuelToEthService {
       throw new Error('Need to connect ETH Wallet');
     }
 
-    const { ethPublicClient, messageProof } = input;
+    const { ethPublicClient, messageProof, fuelBlockHashCommited } = input;
 
     const fuelChainState = EthConnectorService.connectToFuelChainState({
       publicClient: ethPublicClient,
@@ -316,10 +318,11 @@ export class TxFuelToEthService {
 
     const timeToFinalize = await fuelChainState.read.TIME_TO_FINALIZE();
 
-    const lastBlockCommited = await FUEL_CHAIN_STATE.getLastBlockCommited({
+    const lastBlock = await FUEL_CHAIN_STATE.getBlockCommited({
       ethPublicClient,
+      fuelBlockHashCommited,
     });
-    const dateLastCommit = new Date(Number(lastBlockCommited.timestamp) * 1000);
+    const dateLastCommit = new Date(Number(lastBlock.timestamp) * 1000);
     const estimatedFinishDate = addSeconds(
       dateLastCommit,
       Number(timeToFinalize)

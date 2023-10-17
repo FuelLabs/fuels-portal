@@ -217,6 +217,8 @@ export const txFuelToEthMachine = createMachine(
                     input: (ctx: MachineContext) => ({
                       messageProof: ctx.messageProof,
                       ethPublicClient: ctx.ethPublicClient,
+                      fuelBlockHashCommited: ctx.fuelBlockHashCommited,
+                      fuelProvider: ctx.fuelProvider,
                     }),
                   },
                   onDone: [
