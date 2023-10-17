@@ -163,13 +163,13 @@ export const txFuelToEthMachine = createMachine(
                       cond: FetchMachine.hasError,
                     },
                     {
+                      actions: ['assignEstimatedFinishDate'],
+                      cond: 'hasEstimatedFinishDate',
+                    },
+                    {
                       actions: ['assignFuelBlockHashCommited'],
                       cond: 'hasBlockCommited',
                       target: 'checkingMessageProof',
-                    },
-                    {
-                      actions: ['assignEstimatedFinishDate'],
-                      cond: 'hasEstimatedFinishDate',
                     },
                   ],
                 },
@@ -224,12 +224,12 @@ export const txFuelToEthMachine = createMachine(
                       cond: FetchMachine.hasError,
                     },
                     {
-                      cond: 'hasBlockFinalized',
-                      target: 'checkingRelayed',
-                    },
-                    {
                       actions: ['assignEstimatedFinishDate'],
                       cond: 'hasEstimatedFinishDate',
+                    },
+                    {
+                      cond: 'hasBlockFinalized',
+                      target: 'checkingRelayed',
                     },
                   ],
                 },
@@ -389,8 +389,8 @@ export const txFuelToEthMachine = createMachine(
         fuelBlockHashCommited: (_, ev) => ev.data.blockHashCommited,
       }),
       assignEstimatedFinishDate: assign({
-        estimatedFinishDate: (ctx, ev) => {
-          return ev.data.estimatedFinishDate || ctx.estimatedFinishDate;
+        estimatedFinishDate: (_, ev) => {
+          return ev.data.estimatedFinishDate;
         },
       }),
       setFuelToEthTxDone: (ctx) => {
@@ -404,8 +404,7 @@ export const txFuelToEthMachine = createMachine(
       hasMessageProof: (ctx, ev) => !!ctx.messageProof || !!ev?.data,
       hasBlockCommited: (ctx, ev) =>
         !!ctx.fuelBlockHashCommited || !!ev?.data?.blockHashCommited,
-      hasEstimatedFinishDate: (ctx, ev) =>
-        !!ctx.estimatedFinishDate || !!ev?.data?.estimatedFinishDate,
+      hasEstimatedFinishDate: (_, ev) => !!ev?.data?.estimatedFinishDate,
       hasBlockFinalized: (_, ev) => !!ev?.data?.isFinalized,
       hasTxHashMessageRelayed: (ctx, ev) =>
         !!ctx.txHashMessageRelayed || !!ev?.data,
