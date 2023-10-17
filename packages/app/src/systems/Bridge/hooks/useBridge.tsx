@@ -1,3 +1,4 @@
+import type { FuelWalletLocked } from '@fuel-wallet/sdk';
 import type { BN } from 'fuels';
 import { bn, DECIMAL_UNITS } from 'fuels';
 import { useEffect, useMemo } from 'react';
@@ -110,12 +111,12 @@ export function useBridge() {
         const formattedUnits = `${intPart}.${
           decimalPart?.slice(0, DECIMAL_UNITS) || '0'
         }`;
-        return ethBalance ? bn.parseUnits(formattedUnits) : bn(0);
+        return bn.parseUnits(formattedUnits);
       }
     }
 
     if (isFuelChain(fromNetwork)) {
-      return fuelBalance;
+      return fuelBalance || bn(0);
     }
 
     return bn(0);
@@ -212,7 +213,8 @@ export function useBridge() {
         store.startBridging({
           fuelAddress,
           ethWalletClient,
-          fuelWallet,
+          // TODO: remove this workaround when we get versions organized and using the same version
+          fuelWallet: fuelWallet as unknown as FuelWalletLocked,
           ethAddress,
           asset,
           ethPublicClient,
