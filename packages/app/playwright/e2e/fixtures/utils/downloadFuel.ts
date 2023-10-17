@@ -6,7 +6,7 @@ import path from 'path';
 
 export async function downloadFuel(version: string) {
   const tempDirPath = tmpdir();
-  const extensionUrl = `https://github.com/FuelLabs/fuels-wallet/releases/download/v${version}/fuel-wallet-chrome-${version}.zip`;
+  const extensionUrl = `https://github.com/FuelLabs/fuels-wallet/releases/download/v${version}/fuel-wallet-${version}.zip`;
   const zipFile = path.join(tempDirPath, './fuel-wallet.zip');
   const zipFileStream = createWriteStream(zipFile);
 
