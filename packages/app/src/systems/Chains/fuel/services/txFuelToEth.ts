@@ -251,10 +251,11 @@ export class TxFuelToEthService {
       ethPublicClient,
     });
     const dateLastCommit = new Date(Number(lastBlockCommited.timestamp) * 1000);
-    const estimatedFinishDate = addSeconds(
-      dateLastCommit,
-      Number(timeToFinalize) * 2 // Multiply by 2 because finalization happens after two commit cycles
-    );
+    // It's safe to convert bigint to number in this case as the values of
+    // blockPerCommitInterval and timeToFinalize are not too big.
+    const totalTimeInSeconds =
+      Number(blocksPerCommitInterval) + Number(timeToFinalize);
+    const estimatedFinishDate = addSeconds(dateLastCommit, totalTimeInSeconds);
 
     return {
       estimatedFinishDate,

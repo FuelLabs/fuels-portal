@@ -14,20 +14,20 @@ export function useWithdrawDelay() {
 
   const { data, ...params } = useQuery({
     queryFn: async () => {
-      const [blockPerCommitInterval, timeToFinalize] = (await Promise.all([
+      const [blocksPerCommitInterval, timeToFinalize] = (await Promise.all([
         fuelChainState.read.BLOCKS_PER_COMMIT_INTERVAL(),
         fuelChainState.read.TIME_TO_FINALIZE(),
       ])) as [bigint, bigint];
       // It's safe to convert bigint to number in this case as the values of
       // blockPerCommitInterval and timeToFinalize are not too big.
       const totalTimeInSeconds =
-        Number(blockPerCommitInterval) + Number(timeToFinalize);
+        Number(blocksPerCommitInterval) + Number(timeToFinalize);
       const currentDate = new Date();
       const futureDate = addSeconds(currentDate, totalTimeInSeconds);
 
       return {
         timeToWithdrawFormatted: formatDistanceToNowStrict(futureDate, {
-          addSuffix: false,
+          unit: 'minute',
           roundingMethod: 'ceil',
         }),
         timeToWithdrawSeconds: totalTimeInSeconds,
