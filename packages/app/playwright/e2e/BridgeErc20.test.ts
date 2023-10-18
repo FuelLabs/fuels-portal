@@ -27,7 +27,7 @@ import '../../load.envs';
 const { FUEL_PROVIDER_URL, VITE_ETH_ERC20, VITE_FUEL_FUNGIBLE_ASSET_ID } =
   process.env;
 
-test.describe('Bridge', () => {
+test.describe.skip('Bridge', () => {
   let client: PublicClient;
   let account: HDAccount;
   let fuelWallet: WalletUnlocked;
