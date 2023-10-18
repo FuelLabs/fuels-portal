@@ -136,8 +136,7 @@ export function AssetsDialog() {
                   isFaucetLoading={isFaucetable && isLoadingFaucet}
                   onAddToWallet={
                     shouldShowAddToWallet
-                      ? undefined
-                      : async () => {
+                      ? async () => {
                           try {
                             await addAssetEth(ethAsset);
                           } catch (e) {
@@ -145,6 +144,7 @@ export function AssetsDialog() {
                           }
                           addAssetFuel(fuelAsset);
                         }
+                      : undefined
                   }
                 />
               );
