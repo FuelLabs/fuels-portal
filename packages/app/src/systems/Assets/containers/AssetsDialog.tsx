@@ -28,9 +28,11 @@ import { getAssetEth, getAssetFuel } from '../utils';
 export function AssetsDialog() {
   const {
     handlers: { addAsset: addAssetFuel },
+    isConnected: isConnectedFuel,
   } = useFuelAccountConnection();
   const {
     handlers: { addAsset: addAssetEth },
+    isConnected: isConnectedEth,
   } = useEthAccountConnection();
   const { handlers: bridgeHandlers } = useBridge();
   const [editable, setEditable] = useState(false);
@@ -103,6 +105,8 @@ export function AssetsDialog() {
 
               const isFaucetable = ethAsset?.address === VITE_ETH_ERC20;
               const isETH = !ethAsset?.address;
+              const shouldShowAddToWallet =
+                !isETH && (isConnectedEth || isConnectedFuel);
 
               return (
                 <AssetCard
@@ -131,7 +135,7 @@ export function AssetsDialog() {
                   }
                   isFaucetLoading={isFaucetable && isLoadingFaucet}
                   onAddToWallet={
-                    isETH
+                    shouldShowAddToWallet
                       ? undefined
                       : async () => {
                           try {
