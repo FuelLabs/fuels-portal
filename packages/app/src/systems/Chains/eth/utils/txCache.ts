@@ -1,5 +1,6 @@
 const BLOCK_DATE_KEY_SUBSTRING = 'ethBlockDate-';
 const HASH_DONE_KEY_SUBSTRING = 'ethToFuelTx';
+const TX_CREATED_KEY_SUBSTRING = 'ethTxCreated';
 
 export const EthTxCache = {
   getBlockDate: (blockHash: string) => {
@@ -27,6 +28,15 @@ export const EthTxCache = {
       }
     });
   },
+  setTxIsCreated: (txId: string) => {
+    localStorage.setItem(generateTxCreatedKey(txId), 'true');
+  },
+  removeTxCreated: (txId: string) => {
+    localStorage.removeItem(generateTxCreatedKey(txId));
+  },
+  getTxIsCreated: (txId: string) => {
+    return localStorage.getItem(generateTxCreatedKey(txId)) === 'true';
+  },
 };
 
 const generateBlockDateKey = (blockHash: string) => {
@@ -35,4 +45,8 @@ const generateBlockDateKey = (blockHash: string) => {
 
 const generateHashDoneKey = (blockhash: string) => {
   return `${HASH_DONE_KEY_SUBSTRING}${blockhash}-done`;
+};
+
+const generateTxCreatedKey = (txId: string) => {
+  return `${TX_CREATED_KEY_SUBSTRING}-${txId}`;
 };

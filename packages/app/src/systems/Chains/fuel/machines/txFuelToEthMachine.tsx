@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import { toast } from '@fuel-ui/react';
 import type {
   Provider as FuelProvider,
   MessageProof,
@@ -118,7 +119,11 @@ export const txFuelToEthMachine = createMachine(
                   cond: FetchMachine.hasError,
                 },
                 {
-                  actions: ['assignFuelTxResult', 'assignMessageId'],
+                  actions: [
+                    'assignFuelTxResult',
+                    'assignMessageId',
+                    'notifyFuelTxSuccess',
+                  ],
                   cond: 'hasMessageId',
                   target: 'checkingDoneCache',
                 },
@@ -398,6 +403,15 @@ export const txFuelToEthMachine = createMachine(
       setFuelToEthTxDone: (ctx) => {
         if (ctx.fuelTxId) {
           FuelTxCache.setTxIsDone(ctx.fuelTxId);
+        }
+      },
+      notifyFuelTxSuccess: (ctx) => {
+        if (ctx.fuelTxId && FuelTxCache.getTxIsCreated(ctx.fuelTxId)) {
+          toast.success(
+            'Withdraw successfully initiated. You may now close the popup.',
+            { duration: 5000 }
+          );
+          FuelTxCache.removeTxCreated(ctx.fuelTxId);
         }
       },
     },

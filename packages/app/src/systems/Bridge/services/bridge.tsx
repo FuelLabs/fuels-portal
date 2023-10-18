@@ -21,6 +21,8 @@ import {
   getBlockDate,
   ETH_CHAIN,
   FUEL_CHAIN,
+  EthTxCache,
+  FuelTxCache,
 } from '~/systems/Chains';
 
 import type { BridgeTx } from '../types';
@@ -95,6 +97,7 @@ export class BridgeService {
           store.openTxEthToFuel({
             txId,
           });
+          EthTxCache.setTxIsCreated(txId);
         }
       }
 
@@ -120,6 +123,7 @@ export class BridgeService {
           store.openTxFuelToEth({
             txId,
           });
+          FuelTxCache.setTxIsCreated(txId);
         }
 
         return;
