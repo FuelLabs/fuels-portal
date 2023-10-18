@@ -79,6 +79,11 @@ test.describe('Bridge', () => {
       await walletConnect(context);
     });
 
+    const INITIATE_DEPOSIT =
+      'Deposit successfully initiated. You may now close the popup.';
+    const INITIATE_WITHDRAW =
+      'Withdraw successfully initiated. You may now close the popup.';
+
     await test.step('Deposit ETH to Fuel', async () => {
       const preDepositBalanceFuel = await fuelWallet.getBalance(BaseAssetId);
       const prevDepositBalanceEth = await client.getBalance({
@@ -95,6 +100,9 @@ test.describe('Bridge', () => {
       // Timeout needed until https://github.com/Synthetixio/synpress/issues/795 is fixed
       await page.waitForTimeout(2000);
       await metamask.confirmTransaction();
+
+      await page.locator(':nth-match(:text("Done"), 1)').waitFor();
+      await hasText(page, INITIATE_DEPOSIT);
 
       // Check steps
       await page.locator(':nth-match(:text("Done"), 3)').waitFor();
@@ -148,7 +156,7 @@ test.describe('Bridge', () => {
       await statusLocator.innerText();
     });
 
-    await test.step('Withdraw from Fuel to ETH', async () => {
+    await test.step('Withdraw ETH from Fuel to ETH', async () => {
       // Go to transaction page
       const transactionList = page.locator('button').getByText('History');
 
@@ -172,6 +180,9 @@ test.describe('Bridge', () => {
       const withdrawButton = getByAriaLabel(page, 'Withdraw');
       await withdrawButton.click();
       await walletApprove(context);
+
+      await page.locator(':nth-match(:text("Done"), 1)').waitFor();
+      await hasText(page, INITIATE_WITHDRAW);
 
       await page.locator(':text("Action Required")').waitFor();
 
@@ -320,6 +331,9 @@ test.describe('Bridge', () => {
       await metamask.confirmPermissionToSpend();
       await metamask.confirmTransaction();
 
+      await page.locator(':nth-match(:text("Done"), 1)').waitFor();
+      await hasText(page, INITIATE_DEPOSIT);
+
       // Check steps
       await page.locator(':nth-match(:text("Done"), 2)').waitFor();
 
@@ -387,7 +401,7 @@ test.describe('Bridge', () => {
       await statusLocator.innerText();
     });
 
-    await test.step('Withdraw from Fuel to ETH', async () => {
+    await test.step('Withdraw TKN from Fuel to ETH', async () => {
       // Go to the bridge page
       bridgePage = page.locator('button').getByText('Bridge');
       await bridgePage.click();
@@ -411,6 +425,9 @@ test.describe('Bridge', () => {
       await withdrawButton.click();
       await page.waitForTimeout(2500);
       await walletApprove(context);
+
+      await page.locator(':nth-match(:text("Done"), 1)').waitFor();
+      await hasText(page, INITIATE_WITHDRAW);
 
       await page.locator(':text("Action Required")').waitFor();
 
