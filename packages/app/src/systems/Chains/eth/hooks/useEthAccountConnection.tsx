@@ -8,6 +8,7 @@ import {
   usePublicClient,
   useWalletClient,
 } from 'wagmi';
+import type { AssetEth } from '~/systems/Assets/utils';
 
 import { parseEthAddressToFuel } from '../utils';
 
@@ -29,10 +30,24 @@ export function useEthAccountConnection(props?: {
   const { disconnect } = useDisconnect();
   const paddedAddress = parseEthAddressToFuel(address);
 
+  async function addAsset(asset: AssetEth) {
+    if (asset.address && walletClient) {
+      await walletClient?.watchAsset({
+        type: 'ERC20',
+        options: {
+          address: asset.address,
+          decimals: asset.decimals,
+          symbol: asset.symbol,
+        },
+      });
+    }
+  }
+
   return {
     handlers: {
       connect: () => setOpen(true),
       disconnect,
+      addAsset,
     },
     address,
     paddedAddress,

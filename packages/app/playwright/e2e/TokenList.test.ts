@@ -24,9 +24,10 @@ test.describe('Token List', () => {
 
       await hasText(page, 'Select token');
       // Check that assets are displayed
-      let ethAsset = page.getByRole('button', { name: 'AssetLogo ETH' });
+      let ethAsset, tknAsset;
+      ethAsset = getByAriaLabel(page, 'ETH symbol');
       expect(await ethAsset.innerText()).toBe('ETH');
-      let tknAsset = page.getByRole('button', { name: 'TKN' });
+      tknAsset = getByAriaLabel(page, 'TKN symbol');
       expect(await tknAsset.innerText()).toBe('TKN');
       await tknAsset.click();
 
@@ -36,9 +37,9 @@ test.describe('Token List', () => {
 
       await hasText(page, 'Select token');
       // Check that assets are displayed
-      ethAsset = page.getByRole('button', { name: 'AssetLogo ETH' });
+      ethAsset = getByAriaLabel(page, 'ETH symbol');
       expect(await ethAsset.innerText()).toBe('ETH');
-      tknAsset = page.getByRole('button', { name: 'TKN' });
+      tknAsset = getByAriaLabel(page, 'TKN symbol');
       expect(await tknAsset.innerText()).toBe('TKN');
       await ethAsset.click();
 
@@ -57,9 +58,10 @@ test.describe('Token List', () => {
 
       await hasText(page, 'Select token');
       // Check that assets are displayed
-      let ethAsset = page.getByRole('button', { name: 'AssetLogo ETH' });
+      let ethAsset, tknAsset;
+      ethAsset = getByAriaLabel(page, 'ETH symbol');
       expect(await ethAsset.innerText()).toBe('ETH');
-      let tknAsset = page.getByRole('button', { name: 'TKN' });
+      tknAsset = getByAriaLabel(page, 'TKN symbol');
       expect(await tknAsset.innerText()).toBe('TKN');
       await tknAsset.click();
 
@@ -69,9 +71,9 @@ test.describe('Token List', () => {
 
       await hasText(page, 'Select token');
       // Check that assets are displayed
-      ethAsset = page.getByRole('button', { name: 'AssetLogo ETH' });
+      ethAsset = getByAriaLabel(page, 'ETH symbol');
       expect(await ethAsset.innerText()).toBe('ETH');
-      tknAsset = page.getByRole('button', { name: 'TKN' });
+      tknAsset = getByAriaLabel(page, 'TKN symbol');
       expect(await tknAsset.innerText()).toBe('TKN');
       await ethAsset.click();
 
@@ -82,7 +84,7 @@ test.describe('Token List', () => {
       const assetDropdown = getByAriaLabel(page, 'Coin Selector');
       await assetDropdown.click();
 
-      const tknAsset = page.getByRole('button', { name: 'TKN' });
+      const tknAsset = getByAriaLabel(page, 'TKN symbol');
       expect(await tknAsset.innerText()).toBe('TKN');
       await tknAsset.click();
 
