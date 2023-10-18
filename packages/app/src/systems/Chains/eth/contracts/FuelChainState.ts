@@ -45,18 +45,18 @@ export const FUEL_CHAIN_STATE = {
     fuelBlockHashCommited: string;
   }) => {
     const logs = await FUEL_CHAIN_STATE.getCommitSubmitted({ ethPublicClient });
-    let ethBlockHash: `0x${string}` | null = null;
+    let ethBlockHash: `0x${string}` | undefined = undefined;
     for (let i = logs.length - 1; i >= 0; i--) {
       const log = logs[i];
       const args = log.args as unknown as { blockHash: string };
       if (args.blockHash === fuelBlockHashCommited) {
-        ethBlockHash = log.blockHash;
+        ethBlockHash = log.blockHash as `0x${string}`;
         break;
       }
     }
 
     const block = await ethPublicClient.getBlock({
-      blockHash: ethBlockHash === null ? undefined : ethBlockHash,
+      blockHash: ethBlockHash,
     });
 
     return block;
