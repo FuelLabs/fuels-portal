@@ -23,7 +23,7 @@ export const test = base.extend<{
     const fuelPathExtension = await downloadFuel('0.13.3');
     // download metamask
     const metamaskPath = await prepareMetamask(
-      process.env.META_MASK_VERSION || '10.25.0'
+      process.env.META_MASK_VERSION || '11.2.0'
     );
     // prepare browser args
     const browserArgs = [
