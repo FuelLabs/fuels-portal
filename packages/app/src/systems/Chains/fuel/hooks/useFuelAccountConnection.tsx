@@ -13,9 +13,6 @@ import { useMemo } from 'react';
 import { store } from '~/store';
 import type { AssetFuel } from '~/systems/Assets/utils';
 
-import { EthTxCache } from '../../eth';
-import { FuelTxCache } from '../utils/txCache';
-
 import { useHasFuelWallet } from './useHasFuelWallet';
 
 export const useFuelAccountConnection = (props?: { assetId?: string }) => {
@@ -38,10 +35,6 @@ export const useFuelAccountConnection = (props?: { assetId?: string }) => {
     [account]
   );
 
-  function handleConnect() {
-    connect();
-  }
-
   function addAsset(asset: AssetFuel) {
     const { decimals, assetId, icon, symbol, name } = asset;
 
@@ -56,12 +49,8 @@ export const useFuelAccountConnection = (props?: { assetId?: string }) => {
 
   return {
     handlers: {
-      connect: handleConnect,
-      disconnect: () => {
-        disconnect();
-        EthTxCache.clean();
-        FuelTxCache.clean();
-      },
+      connect,
+      disconnect,
       closeDialog: store.closeOverlay,
       addAsset,
     },
