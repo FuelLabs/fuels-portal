@@ -14,13 +14,26 @@ import { Controller, useWatch } from 'react-hook-form';
 import { VITE_ETH_ERC20 } from '~/config';
 import { store } from '~/store';
 import { useBridge } from '~/systems/Bridge/hooks';
+import { useFuelAccountConnection } from '~/systems/Chains';
 
-import { useFaucetErc20, useSetAddressForm } from '../../Chains/eth/hooks';
+import {
+  useEthAccountConnection,
+  useFaucetErc20,
+  useSetAddressForm,
+} from '../../Chains/eth/hooks';
 import { AssetCard } from '../components/AssetCard';
 import { useAssets } from '../hooks';
-import { getAssetEth } from '../utils';
+import { getAssetEth, getAssetFuel } from '../utils';
 
 export function AssetsDialog() {
+  const {
+    handlers: { addAsset: addAssetFuel },
+    isConnected: isConnectedFuel,
+  } = useFuelAccountConnection();
+  const {
+    handlers: { addAsset: addAssetEth },
+    isConnected: isConnectedEth,
+  } = useEthAccountConnection();
   const { handlers: bridgeHandlers } = useBridge();
   const [editable, setEditable] = useState(false);
 
@@ -88,8 +101,12 @@ export function AssetsDialog() {
           {showAssetList &&
             assets.map((asset, i) => {
               const ethAsset = getAssetEth(asset);
+              const fuelAsset = getAssetFuel(asset);
 
               const isFaucetable = ethAsset?.address === VITE_ETH_ERC20;
+              const isETH = !ethAsset?.address;
+              const shouldShowAddToWallet =
+                !isETH && (isConnectedEth || isConnectedFuel);
 
               return (
                 <AssetCard
@@ -117,6 +134,18 @@ export function AssetsDialog() {
                       : undefined
                   }
                   isFaucetLoading={isFaucetable && isLoadingFaucet}
+                  onAddToWallet={
+                    shouldShowAddToWallet
+                      ? async () => {
+                          try {
+                            await addAssetEth(ethAsset);
+                          } catch (e) {
+                            /* empty */
+                          }
+                          addAssetFuel(fuelAsset);
+                        }
+                      : undefined
+                  }
                 />
               );
             })}

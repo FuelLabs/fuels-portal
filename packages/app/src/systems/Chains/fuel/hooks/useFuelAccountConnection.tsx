@@ -6,10 +6,12 @@ import {
   useBalance,
   useWallet,
   useConnector,
+  useFuel,
 } from '@fuel-wallet/react';
 import { Address } from 'fuels';
 import { useMemo } from 'react';
 import { store } from '~/store';
+import type { AssetFuel } from '~/systems/Assets/utils';
 
 import { EthTxCache } from '../../eth';
 import { FuelTxCache } from '../utils/txCache';
@@ -18,6 +20,7 @@ import { useHasFuelWallet } from './useHasFuelWallet';
 
 export const useFuelAccountConnection = (props?: { assetId?: string }) => {
   const { assetId } = props || {};
+  const { fuel } = useFuel();
   const { account } = useAccount();
   const { balance } = useBalance({
     address: account || '',
@@ -39,6 +42,18 @@ export const useFuelAccountConnection = (props?: { assetId?: string }) => {
     connect();
   }
 
+  function addAsset(asset: AssetFuel) {
+    const { decimals, assetId, icon, symbol, name } = asset;
+
+    fuel?.addAsset({
+      assetId,
+      imageUrl: icon,
+      symbol,
+      decimals,
+      name,
+    });
+  }
+
   return {
     handlers: {
       connect: handleConnect,
@@ -48,6 +63,7 @@ export const useFuelAccountConnection = (props?: { assetId?: string }) => {
         FuelTxCache.clean();
       },
       closeDialog: store.closeOverlay,
+      addAsset,
     },
     account,
     address,

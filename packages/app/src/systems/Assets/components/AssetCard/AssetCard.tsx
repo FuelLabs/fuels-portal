@@ -11,6 +11,7 @@ type AssetCardProps = {
   onPress?: () => void;
   onRemove?: () => void;
   onFaucet?: () => void;
+  onAddToWallet?: () => void;
   isFaucetLoading?: boolean;
   isRemoveDisabled?: boolean;
   removeToolTip?: string;
@@ -23,6 +24,7 @@ export const AssetCard = ({
   isFaucetLoading,
   onPress,
   onRemove,
+  onAddToWallet,
   isRemoveDisabled,
   removeToolTip,
 }: AssetCardProps) => {
@@ -36,48 +38,66 @@ export const AssetCard = ({
         <Box.Flex gap="$3" align="center">
           <AssetLogo asset={asset} size={30} />
           <Box.Flex direction="column" gap="$0">
-            <Text color="intentsPrimary12">{asset.symbol}</Text>
+            <Text
+              color="intentsPrimary12"
+              aria-label={`${asset.symbol} symbol`}
+            >
+              {asset.symbol}
+            </Text>
           </Box.Flex>
         </Box.Flex>
-        {onFaucet && (
-          <IconButton
-            aria-label="AddEthAsset"
-            variant="link"
-            icon="Coins"
-            tooltip="Get some tokens"
-            onPress={onFaucet}
-            size="lg"
-            isLoading={isFaucetLoading}
-            loadingText=" "
-            css={styles.cardAction}
-          />
-        )}
-        {onAdd && (
-          <IconButton
-            aria-label="AddEthAsset"
-            variant="link"
-            icon="CirclePlus"
-            onPress={onAdd}
-            tooltip="Add asset"
-            intent="primary"
-            size="lg"
-            css={styles.cardAction}
-          />
-        )}
-        {onRemove && (
-          <RemoveAssetDialog assetSymbol={asset.symbol} onConfirm={onRemove}>
+        <Box.Flex gap="$2">
+          {onFaucet && (
             <IconButton
-              aria-label="RemoveEthAsset"
-              isDisabled={isRemoveDisabled}
-              tooltip={removeToolTip}
+              aria-label="Faucet Eth Asset"
               variant="link"
-              icon="SquareRoundedX"
-              intent={isRemoveDisabled ? 'base' : 'error'}
+              icon="Coins"
+              tooltip="Get some tokens"
+              onPress={onFaucet}
+              size="lg"
+              isLoading={isFaucetLoading}
+              loadingText=" "
+              css={styles.cardAction}
+            />
+          )}
+          {onAdd && (
+            <IconButton
+              aria-label="Add Eth Asset"
+              variant="link"
+              icon="CirclePlus"
+              onPress={onAdd}
+              tooltip="Add asset"
+              intent="primary"
               size="lg"
               css={styles.cardAction}
             />
-          </RemoveAssetDialog>
-        )}
+          )}
+          {onRemove && (
+            <RemoveAssetDialog assetSymbol={asset.symbol} onConfirm={onRemove}>
+              <IconButton
+                aria-label="Remove Eth Asset"
+                isDisabled={isRemoveDisabled}
+                tooltip={removeToolTip}
+                variant="link"
+                icon="SquareRoundedX"
+                intent={isRemoveDisabled ? 'base' : 'error'}
+                size="lg"
+                css={styles.cardAction}
+              />
+            </RemoveAssetDialog>
+          )}
+          {onAddToWallet && (
+            <IconButton
+              aria-label="Add Asset To Wallet"
+              variant="link"
+              icon="Wallet"
+              onPress={onAddToWallet}
+              tooltip="Add to wallet"
+              size="lg"
+              css={styles.cardAction}
+            />
+          )}
+        </Box.Flex>
       </Box.Flex>
     </CardList.Item>
   );
