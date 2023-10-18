@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import { toast } from '@fuel-ui/react';
 import type { FuelWalletLocked as FuelWallet } from '@fuel-wallet/sdk';
 import type {
   BN,
@@ -108,7 +109,7 @@ export const txEthToFuelMachine = createMachine(
                   cond: FetchMachine.hasError,
                 },
                 {
-                  actions: ['assignReceiptsInfo'],
+                  actions: ['assignReceiptsInfo', 'notifyEthTxSuccess'],
                   cond: 'hasEthTxNonce',
                   target: 'checkingDoneCache',
                 },
@@ -353,6 +354,15 @@ export const txEthToFuelMachine = createMachine(
       assignFuelMessageStatus: assign({
         fuelMessageStatus: (_, ev) => ev.data,
       }),
+      notifyEthTxSuccess: (ctx) => {
+        if (ctx.ethTxId && EthTxCache.getTxIsCreated(ctx.ethTxId)) {
+          toast.success(
+            'Deposit successfully initiated. You may now close the popup.',
+            { duration: 5000 }
+          );
+          EthTxCache.removeTxCreated(ctx.ethTxId);
+        }
+      },
     },
     guards: {
       hasFuelMessage: (ctx, ev) => !!ctx.fuelMessage || !!ev?.data,

@@ -1,4 +1,3 @@
-import { toast } from '@fuel-ui/react';
 import { bn, DECIMAL_UNITS, fromTai64ToUnix } from 'fuels';
 import type {
   Address as FuelAddress,
@@ -22,6 +21,8 @@ import {
   getBlockDate,
   ETH_CHAIN,
   FUEL_CHAIN,
+  EthTxCache,
+  FuelTxCache,
 } from '~/systems/Chains';
 
 import type { BridgeTx } from '../types';
@@ -96,10 +97,7 @@ export class BridgeService {
           store.openTxEthToFuel({
             txId,
           });
-          toast.success(
-            'Deposit successfully initiated. You may now close the popup.',
-            { duration: 5000 }
-          );
+          EthTxCache.setTxIsCreated(txId);
         }
       }
 
@@ -125,10 +123,7 @@ export class BridgeService {
           store.openTxFuelToEth({
             txId,
           });
-          toast.success(
-            'Withdraw successfully initiated. You may now close the popup.',
-            { duration: 5000 }
-          );
+          FuelTxCache.setTxIsCreated(txId);
         }
 
         return;
