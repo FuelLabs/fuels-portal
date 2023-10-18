@@ -159,11 +159,11 @@ importers:
         specifier: 0.21.1
         version: 0.21.1(@types/react-dom@18.0.10)(@types/react@18.0.27)(csstype@3.1.2)
       '@fuel-wallet/react':
-        specifier: 0.13.2
-        version: 0.13.2(@fuel-ui/css@0.21.1)(@fuel-ui/react@0.21.1)(dexie@3.2.4)(fuels@0.62.0)(react-dom@18.2.0)
+        specifier: 0.13.3
+        version: 0.13.3(@fuel-ui/css@0.21.1)(@fuel-ui/react@0.21.1)(dexie@3.2.4)(fuels@0.62.0)(react-dom@18.2.0)
       '@fuel-wallet/sdk':
-        specifier: 0.13.0
-        version: 0.13.0(dexie@3.2.4)(fuels@0.62.0)
+        specifier: 0.13.3
+        version: 0.13.3(dexie@3.2.4)(fuels@0.62.0)
       '@fuels/assets':
         specifier: 0.1.0
         version: 0.1.0
@@ -4361,8 +4361,8 @@ packages:
       - immer
     dev: false
 
-  /@fuel-wallet/react@0.13.2(@fuel-ui/css@0.21.1)(@fuel-ui/react@0.21.1)(dexie@3.2.4)(fuels@0.62.0)(react-dom@18.2.0):
-    resolution: {integrity: sha512-R5sYJTyugz+5yCYyFW2gdRQkbZSe/Y1wmqyHb3w44aG713G3gIut4F4vL80JnDPK0sj3JX3pEdNyxXtGg3AQOw==}
+  /@fuel-wallet/react@0.13.3(@fuel-ui/css@0.21.1)(@fuel-ui/react@0.21.1)(dexie@3.2.4)(fuels@0.62.0)(react-dom@18.2.0):
+    resolution: {integrity: sha512-KIM6y6ZToOdR7pnc4f7Ns7Fp8nIrzFdxr+cU5K3aPWNq39FOIe9ZmSkaCecrlenuiYYWrvMw3atjGG9RDOZaDA==}
     peerDependencies:
       '@fuel-ui/css': 0.21.1
       '@fuel-ui/react': 0.21.1
@@ -4370,7 +4370,7 @@ packages:
     dependencies:
       '@fuel-ui/css': 0.21.1
       '@fuel-ui/react': 0.21.1(@types/react-dom@18.0.10)(@types/react@18.0.27)(csstype@3.1.2)
-      '@fuel-wallet/sdk': 0.13.2(dexie@3.2.4)(fuels@0.62.0)
+      '@fuel-wallet/sdk': 0.13.3(dexie@3.2.4)(fuels@0.62.0)
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0)(react@18.2.0)
       compare-versions: 6.1.0
       fuels: 0.62.0
@@ -4381,24 +4381,8 @@ packages:
       - react-native
     dev: false
 
-  /@fuel-wallet/sdk@0.13.0(dexie@3.2.4)(fuels@0.62.0):
-    resolution: {integrity: sha512-I3UjZtsHP8EC/kaGRCAW/UV3a6om1f8mkqp4ECDx/w9JL75H0q4VII8R6223a1msx0Vk+47mHDv99W8SYLFpHA==}
-    peerDependencies:
-      fuels: '>=0.58.0'
-    dependencies:
-      '@types/chrome': 0.0.243
-      dexie-observable: 4.0.1-beta.13(dexie@3.2.4)
-      events: 3.3.0
-      fuels: 0.62.0
-      json-rpc-2.0: 1.6.0
-      uuid: 9.0.0
-      xstate: 4.38.2
-    transitivePeerDependencies:
-      - dexie
-    dev: false
-
-  /@fuel-wallet/sdk@0.13.2(dexie@3.2.4)(fuels@0.62.0):
-    resolution: {integrity: sha512-JzjxBopnJKGTjJ2JeU8GLtXp/YzaQI0kwxQXmE2ZWdbyBVwMiS1jRKawWq4gjXxXKUssctl7E7ncqXimCOxW9g==}
+  /@fuel-wallet/sdk@0.13.3(dexie@3.2.4)(fuels@0.62.0):
+    resolution: {integrity: sha512-wbbyyAWUJI7jqXhPnENyOxgzuKcyLfANRgBvi2HcVfaRP6jAnhxFCalJFLy1haMuAV4d5sqxSd190zGzW+fYyA==}
     peerDependencies:
       fuels: '>=0.58.0'
     dependencies:
@@ -10430,13 +10414,6 @@ packages:
 
   /@types/chai@4.3.6:
     resolution: {integrity: sha512-VOVRLM1mBxIRxydiViqPcKn6MIxZytrbMpd6RJLIWKxUNr3zux8no0Oc7kJx0WAPIitgZ0gkrDS+btlqQpubpw==}
-    dev: false
-
-  /@types/chrome@0.0.243:
-    resolution: {integrity: sha512-4PHv0kxxxpZFHWPBiJJ9TWH8kbx0567j1b2djnhpJjpiSGNI7UKkz7dSEECBtQ0B3N5nQTMwSB/5IopkWGAbEA==}
-    dependencies:
-      '@types/filesystem': 0.0.32
-      '@types/har-format': 1.2.11
     dev: false
 
   /@types/chrome@0.0.246:
