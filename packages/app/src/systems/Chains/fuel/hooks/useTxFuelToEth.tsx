@@ -1,4 +1,3 @@
-import { formatDistanceToNowStrict } from 'date-fns';
 import {
   ReceiptType,
   fromTai64ToUnix,
@@ -16,6 +15,7 @@ import { useExplorerLink } from '~/systems/Bridge/hooks/useExplorerLink';
 import { useEthAccountConnection } from '../../eth/hooks';
 import { isSameEthAddress, parseFuelAddressToEth } from '../../eth/utils';
 import type { TxFuelToEthMachineState } from '../machines';
+import { distanceToNow } from '../utils';
 
 import { useFuelAccountConnection } from './useFuelAccountConnection';
 
@@ -181,10 +181,7 @@ const txFuelToEthSelectors = {
     const estimatedFinishDate = state.context.estimatedFinishDate;
     if (!estimatedFinishDate) return undefined;
 
-    return formatDistanceToNowStrict(estimatedFinishDate, {
-      addSuffix: false,
-      roundingMethod: 'ceil',
-    });
+    return distanceToNow(estimatedFinishDate);
   },
 };
 

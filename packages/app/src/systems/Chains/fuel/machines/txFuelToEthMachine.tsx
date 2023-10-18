@@ -222,6 +222,8 @@ export const txFuelToEthMachine = createMachine(
                     input: (ctx: MachineContext) => ({
                       messageProof: ctx.messageProof,
                       ethPublicClient: ctx.ethPublicClient,
+                      fuelBlockHashCommited: ctx.fuelBlockHashCommited,
+                      fuelProvider: ctx.fuelProvider,
                     }),
                   },
                   onDone: [
@@ -418,8 +420,7 @@ export const txFuelToEthMachine = createMachine(
       hasMessageProof: (ctx, ev) => !!ctx.messageProof || !!ev?.data,
       hasBlockCommited: (ctx, ev) =>
         !!ctx.fuelBlockHashCommited || !!ev?.data?.blockHashCommited,
-      hasEstimatedFinishDate: (ctx, ev) =>
-        !!ctx.estimatedFinishDate || !!ev?.data?.estimatedFinishDate,
+      hasEstimatedFinishDate: (_, ev) => !!ev?.data?.estimatedFinishDate,
       hasBlockFinalized: (_, ev) => !!ev?.data?.isFinalized,
       hasTxHashMessageRelayed: (ctx, ev) =>
         !!ctx.txHashMessageRelayed || !!ev?.data,
