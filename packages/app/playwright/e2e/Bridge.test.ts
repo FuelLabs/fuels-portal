@@ -254,6 +254,13 @@ test.describe('Bridge', () => {
     });
 
     await test.step('Faucet TKN', async () => {
+      // Go to the bridge page
+      bridgePage = page.locator('button').getByText('Bridge');
+      await bridgePage.click();
+      // Go to the deposit page
+      const depositPage = getButtonByText(page, 'Deposit to Fuel');
+      await depositPage.click();
+
       erc20Contract = getContract({
         abi: ERC_20.abi,
         address: VITE_ETH_ERC20 as `0x${string}`,
@@ -267,7 +274,7 @@ test.describe('Bridge', () => {
       const coinSelector = getByAriaLabel(page, 'Coin Selector');
       await coinSelector.click();
 
-      const faucetButton = getByAriaLabel(page, 'Faucent Eth Asset');
+      const faucetButton = getByAriaLabel(page, 'Faucet Eth Asset');
       await faucetButton.click();
 
       // Timeout needed until https://github.com/Synthetixio/synpress/issues/795 is fixed
