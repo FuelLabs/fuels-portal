@@ -35,10 +35,6 @@ export const useFuelAccountConnection = (props?: { assetId?: string }) => {
     [account]
   );
 
-  function handleConnect() {
-    connect();
-  }
-
   function addAsset(asset: AssetFuel) {
     const { decimals, assetId, icon, symbol, name } = asset;
 
@@ -53,12 +49,11 @@ export const useFuelAccountConnection = (props?: { assetId?: string }) => {
 
   return {
     handlers: {
-      connect: handleConnect,
+      connect,
       disconnect,
       closeDialog: store.closeOverlay,
       addAsset,
     },
-    fuel,
     account,
     address,
     isConnected,

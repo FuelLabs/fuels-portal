@@ -140,7 +140,6 @@ export class BridgeService {
     if (!input?.fuelProvider) {
       throw new Error('Need to inform fuelProvider');
     }
-    console.log(`input?.fuelAddress`, input?.fuelAddress);
     if (!input?.fuelAddress) {
       return undefined;
     }
