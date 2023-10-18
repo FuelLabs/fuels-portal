@@ -135,7 +135,9 @@ export class BridgeService {
     );
   }
 
-  static async fetchTxs(input?: BridgeInputs['fetchTxs']): Promise<BridgeTx[]> {
+  static async fetchTxs(
+    input?: BridgeInputs['fetchTxs']
+  ): Promise<BridgeTx[] | undefined> {
     if (!input?.ethPublicClient) {
       throw new Error('Need to inform ethPublicClient');
     }
@@ -143,7 +145,7 @@ export class BridgeService {
       throw new Error('Need to inform fuelProvider');
     }
     if (!input?.fuelAddress) {
-      throw new Error('Need to inform fuelAddress');
+      return undefined;
     }
 
     const { fuelProvider, ethPublicClient, fuelAddress } = input;
