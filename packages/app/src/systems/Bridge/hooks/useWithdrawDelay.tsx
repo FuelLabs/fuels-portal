@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { addSeconds, formatDistanceToNowStrict } from 'date-fns';
+import { addSeconds } from 'date-fns';
 import { useMemo } from 'react';
 import { usePublicClient } from 'wagmi';
-import { EthConnectorService } from '~/systems/Chains';
+import { EthConnectorService, distanceToNow } from '~/systems/Chains';
 
 export function useWithdrawDelay() {
   const publicClient = usePublicClient();
@@ -26,9 +26,7 @@ export function useWithdrawDelay() {
       const futureDate = addSeconds(currentDate, totalTimeInSeconds);
 
       return {
-        timeToWithdrawFormatted: formatDistanceToNowStrict(futureDate, {
-          roundingMethod: 'ceil',
-        }),
+        timeToWithdrawFormatted: distanceToNow(futureDate),
         timeToWithdrawSeconds: totalTimeInSeconds,
       };
     },
