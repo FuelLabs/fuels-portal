@@ -1,16 +1,10 @@
 import { differenceInSeconds, formatDistanceToNowStrict } from 'date-fns';
 
-export const distanceToNow = (otherDate: Date) => {
-  const difference = differenceInSeconds(otherDate, new Date());
-  if (difference < 3600) {
-    // 3600 seconds = 1 hour
-    return formatDistanceToNowStrict(otherDate, {
-      roundingMethod: 'ceil',
-      unit: 'minute',
-    });
-  }
-  return formatDistanceToNowStrict(otherDate, {
+export const distanceToNow = (fromDate: Date) => {
+  const difference = differenceInSeconds(fromDate, new Date());
+
+  return formatDistanceToNowStrict(fromDate, {
     roundingMethod: 'ceil',
-    unit: 'hour',
+    unit: difference < 3600 ? 'minute' : 'hour',
   });
 };
