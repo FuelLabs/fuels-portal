@@ -199,6 +199,10 @@ test.describe('Bridge', () => {
 
         // Check toast success feedback of tx created
         await hasText(page, INITIATE_WITHDRAW);
+
+        // check time left feedback
+        const stepSettlementLocator = getByAriaLabel(page, ' left');
+        await stepSettlementLocator.innerText();
       });
 
       let transactionID: string;
@@ -493,6 +497,10 @@ test.describe('Bridge', () => {
 
         // Check toast success feedback of tx created
         await hasText(page, INITIATE_WITHDRAW);
+
+        // check time left feedback
+        const stepSettlementLocator = getByAriaLabel(page, ' left');
+        await stepSettlementLocator.innerText();
       });
 
       let transactionID: string;
