@@ -20,7 +20,7 @@ export const test = base.extend<{
     // required for synpress
     global.expect = expect;
     // download fuel wallet
-    const fuelPathExtension = await downloadFuel('0.13.0');
+    const fuelPathExtension = await downloadFuel('0.13.3');
     // download metamask
     const metamaskPath = await prepareMetamask(
       process.env.META_MASK_VERSION || '10.25.0'
@@ -50,6 +50,7 @@ export const test = base.extend<{
     });
     // Set context to playwright
     await use(context);
+    //await context.close();
   },
   extensionId: async ({ context }, use) => {
     let [background] = context.serviceWorkers();

@@ -8,12 +8,12 @@ const hasDropdownSymbol = async (page: Page, symbol: string) => {
   expect(await assetDropdown.innerText()).toBe(symbol);
 };
 
-test.describe('Token List', () => {
+test.describe('Asset List', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/bridge');
   });
 
-  test('e2e token list', async ({ page }) => {
+  test('e2e asset list', async ({ page }) => {
     await test.step('Check if ETH is in the dropdown', async () => {
       await hasDropdownSymbol(page, 'ETH');
     });

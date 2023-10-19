@@ -82,12 +82,14 @@ export async function walletApprove(context: BrowserContext) {
 }
 
 async function getWalletPage(context: BrowserContext) {
-  let walletPage = context.pages().find((p) => p.url().includes('/popup?'));
+  let walletPage = context.pages().find((page) => {
+    const url = page.url();
+    return url.includes('/popup.html?');
+  });
   if (!walletPage) {
     walletPage = await context.waitForEvent('page', {
       predicate: (page) => page.url().includes('/popup'),
     });
   }
-
   return walletPage;
 }
