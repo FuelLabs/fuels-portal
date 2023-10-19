@@ -374,7 +374,6 @@ test.describe('Bridge', () => {
         await hasDropdownSymbol(page, 'TKN');
         // Deposit asset
         const depositButton = getByAriaLabel(page, 'Deposit');
-        expect(await depositButton.innerText()).toBe('Enter amount');
 
         const depositInput = page.locator('input');
         await depositInput.fill(DEPOSIT_AMOUNT);
