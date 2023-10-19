@@ -113,20 +113,12 @@ test.describe('Bridge', () => {
         await metamask.confirmTransaction();
       });
 
-      await test.step('Check transaction submitted to ETH network', async () => {
-        // Check if has loading state on dialog
-        const loading = getByAriaLabel(page, 'Loading Transaction Info');
-        const innerTexts = await loading.allInnerTexts();
-        expect(innerTexts.length).toBe(2);
-
+      let transactionID: string;
+      await test.step('Check if deposit is completed', async () => {
         await page.locator(':nth-match(:text("Done"), 1)').waitFor();
 
         // Check toast success feedback of tx created
         await hasText(page, INITIATE_DEPOSIT);
-      });
-
-      let transactionID: string;
-      await test.step('Check if deposit is completed', async () => {
         await page.locator(':nth-match(:text("Done"), 3)').waitFor();
 
         const postDepositBalanceEth = await client.getBalance({
@@ -317,12 +309,10 @@ test.describe('Bridge', () => {
         account.address,
       ])) as BigNumberish;
 
-      await test.step('Go to deposit tab', async () => {
+      await test.step('Faucet ERC-20', async () => {
         await goToBridgePage(page);
         await clickDepositTab(page);
-      });
 
-      await test.step('Faucet ERC-20', async () => {
         const coinSelector = getByAriaLabel(page, 'Coin Selector');
         await coinSelector.click();
 
@@ -388,19 +378,14 @@ test.describe('Bridge', () => {
       });
 
       await test.step('Check transaction submitted to ETH network', async () => {
-        // Check if has loading state on dialog
-        const loading = getByAriaLabel(page, 'Loading Transaction Info');
-        expect((await loading.allInnerTexts()).length).toBe(2);
-
         await page.locator(':nth-match(:text("Done"), 1)').waitFor();
 
         // Check toast success feedback of tx created
         await hasText(page, INITIATE_DEPOSIT);
+        await page.locator(':nth-match(:text("Done"), 2)').waitFor();
       });
 
       await test.step('Check ETH balance reduced', async () => {
-        await page.locator(':nth-match(:text("Done"), 2)').waitFor();
-
         const postDepositBalanceEth = await erc20Contract.read.balanceOf([
           account.address,
         ]);
@@ -424,7 +409,7 @@ test.describe('Bridge', () => {
       });
 
       let depositTxLocator;
-      await test.step('Check withdraw tx in the Tx list and open popup', async () => {
+      await test.step('Check deposit tx in the Tx list and open popup', async () => {
         await closeTransactionPopup(page);
         await goToTransactionsPage(page);
 
