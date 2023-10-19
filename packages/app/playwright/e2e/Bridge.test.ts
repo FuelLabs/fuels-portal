@@ -603,19 +603,44 @@ test.describe('Bridge', () => {
       });
     });
 
-    await test.step('Validate Bridge Transaction List', async () => {
-      await test.step('Should show correct loading after refresh page', async () => {
-        await page.goto('/bridge');
-        await goToTransactionsPage(page);
+    await test.step('Transaction list should show correct after refresh the page', async () => {
+      await page.goto('/bridge');
+      await goToTransactionsPage(page);
 
-        const loading = getByAriaLabel(page, 'Loading Bridge Transactions');
-        await loading.innerText();
+      const loading = getByAriaLabel(page, 'Loading Bridge Transactions');
+      await loading.innerText();
 
-        await checkTxItemDone(page, depositEthTxId);
-        await checkTxItemDone(page, depositERC20TxId);
-        await checkTxItemDone(page, withdrawEthTxId);
-        await checkTxItemDone(page, withdrawERC20TxId);
-      });
+      await checkTxItemDone(page, depositEthTxId);
+      await checkTxItemDone(page, depositERC20TxId);
+      await checkTxItemDone(page, withdrawEthTxId);
+      await checkTxItemDone(page, withdrawERC20TxId);
+    });
+
+    await test.step('Fuel wallet should be connected after refresh', async () => {
+      await goToBridgePage(page);
+
+      const connectedWallet = getByAriaLabel(
+        page,
+        'Fuel Devnet: Connected Wallet'
+      );
+      const address = await connectedWallet.innerText();
+      const balance = getByAriaLabel(page, 'Balance: ');
+      const balanceText = await balance.innerText();
+
+      console.log(`balanceText`, balanceText);
+      // refresh the page
+      await page.goto('/bridge');
+
+      const connectedWalletAferRefresh = getByAriaLabel(
+        page,
+        'Fuel Devnet: Connected Wallet'
+      );
+      const addressAfterRefresh = await connectedWalletAferRefresh.innerText();
+      const balanceAfterRefresh = getByAriaLabel(page, 'Balance: ');
+      const balanceTextAfterRefresh = await balance.innerText();
+
+      expect(addressAfterRefresh).toEqual(address);
+      expect(balanceTextAfterRefresh).toEqual(balanceAfterRefresh);
     });
   });
 });

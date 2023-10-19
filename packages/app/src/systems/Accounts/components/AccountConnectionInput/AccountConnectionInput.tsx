@@ -76,7 +76,7 @@ export const AccountConnectionInput = ({
                 >
                   Disconnect
                 </Button>
-                <Text>
+                <Text aria-label={`${networkName}: Connected Wallet`}>
                   {shortAddress(account.alias, {
                     minLength: 16,
                   }) ||
