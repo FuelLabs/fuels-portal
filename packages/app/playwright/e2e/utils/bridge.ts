@@ -1,5 +1,6 @@
 import { expect, type Page } from '@playwright/test';
 
+import { shortAddress } from '../../../src/systems/Core/utils';
 import { getButtonByText, getByAriaLabel } from '../../commons';
 
 export async function closeTransactionPopup(page: Page) {
@@ -29,4 +30,16 @@ export const clickDepositTab = async (page: Page) => {
 export const clickWithdrawTab = async (page: Page) => {
   const tab = getButtonByText(page, 'Withdraw from Fuel');
   await tab.click();
+};
+
+export const checkTxItemDone = async (page: Page, txHash: string) => {
+  const listItem = getByAriaLabel(
+    page,
+    `Transaction ID: ${shortAddress(txHash)}`
+  );
+  const listItemText = await listItem.innerText();
+  expect(listItemText).toBeTruthy();
+  const settled = listItem.getByText('Settled');
+  const settledText = await settled.innerText();
+  expect(settledText).toBeTruthy();
 };

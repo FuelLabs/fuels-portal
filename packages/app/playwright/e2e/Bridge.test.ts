@@ -21,6 +21,7 @@ import { ETH_MNEMONIC, FUEL_MNEMONIC } from '../mocks';
 
 import { test, expect } from './fixtures';
 import {
+  checkTxItemDone,
   clickDepositTab,
   clickWithdrawTab,
   closeTransactionPopup,
@@ -93,6 +94,11 @@ test.describe('Bridge', () => {
     const DEPOSIT_AMOUNT = '1.12345';
     const WITHDRAW_AMOUNT = '0.012345';
 
+    let depositEthTxId: string;
+    let withdrawEthTxId: string;
+    let depositERC20TxId: string;
+    let withdrawERC20TxId: string;
+
     await test.step('Deposit ETH to Fuel', async () => {
       const preDepositBalanceFuel = await fuelWallet.getBalance(BaseAssetId);
       const prevDepositBalanceEth = await client.getBalance({
@@ -113,7 +119,6 @@ test.describe('Bridge', () => {
         await metamask.confirmTransaction();
       });
 
-      let transactionID: string;
       await test.step('Check if deposit is completed', async () => {
         await page.locator(':nth-match(:text("Done"), 1)').waitFor();
 
@@ -134,7 +139,7 @@ test.describe('Bridge', () => {
         ).toBeCloseTo(parseFloat(DEPOSIT_AMOUNT));
 
         // check the popup is correct
-        transactionID = (
+        depositEthTxId = (
           await getByAriaLabel(page, 'Transaction ID').innerText()
         ).trim();
         const assetAmount = getByAriaLabel(page, 'Asset amount');
@@ -157,7 +162,7 @@ test.describe('Bridge', () => {
         // check the transaction is there
         const depositLocator = getByAriaLabel(
           page,
-          `Transaction ID: ${transactionID}`
+          `Transaction ID: ${depositEthTxId}`
         );
 
         // check if has correct asset amount
@@ -205,12 +210,11 @@ test.describe('Bridge', () => {
         await stepSettlementLocator.innerText();
       });
 
-      let transactionID: string;
       await test.step('Check if get to relay action', async () => {
         await page.locator(':text("Action Required")').waitFor();
 
         // Check the popup is correct
-        transactionID = (
+        withdrawEthTxId = (
           await getByAriaLabel(page, 'Transaction ID').innerText()
         ).trim();
         const assetAmountWithdraw = getByAriaLabel(page, 'Asset amount');
@@ -230,7 +234,7 @@ test.describe('Bridge', () => {
         // Check the transaction is there
         withdrawTxLocator = getByAriaLabel(
           page,
-          `Transaction ID: ${transactionID}`
+          `Transaction ID: ${withdrawEthTxId}`
         );
 
         const assetAmountLocator = withdrawTxLocator.getByText(
@@ -403,9 +407,8 @@ test.describe('Bridge', () => {
         ).toBeCloseTo(parseFloat(DEPOSIT_AMOUNT));
       });
 
-      let transactionID: string;
       await test.step('Check if deposit reach relay step', async () => {
-        transactionID = (
+        depositERC20TxId = (
           await getByAriaLabel(page, 'Transaction ID').innerText()
         ).trim();
         const assetAmount = getByAriaLabel(page, 'Asset amount');
@@ -420,7 +423,7 @@ test.describe('Bridge', () => {
         // check the transaction is there
         depositTxLocator = getByAriaLabel(
           page,
-          `Transaction ID: ${transactionID}`
+          `Transaction ID: ${depositERC20TxId}`
         );
         // Check that action required is shown
         const actionRequiredLocator =
@@ -503,12 +506,11 @@ test.describe('Bridge', () => {
         await stepSettlementLocator.innerText();
       });
 
-      let transactionID: string;
       await test.step('Check if get to relay action', async () => {
         await page.locator(':text("Action Required")').waitFor();
 
         // Check the popup is correct
-        transactionID = (
+        withdrawERC20TxId = (
           await getByAriaLabel(page, 'Transaction ID').innerText()
         ).trim();
         const assetAmountWithdraw = getByAriaLabel(page, 'Asset amount');
@@ -528,7 +530,7 @@ test.describe('Bridge', () => {
         // Check the transaction is there
         withdrawTxLocator = getByAriaLabel(
           page,
-          `Transaction ID: ${transactionID}`
+          `Transaction ID: ${withdrawERC20TxId}`
         );
 
         const actionRequiredLocator =
@@ -598,6 +600,21 @@ test.describe('Bridge', () => {
         // check if it's settled on the list
         const statusLocator = withdrawTxLocator.getByText(`Settled`);
         await statusLocator.innerText();
+      });
+    });
+
+    await test.step('Validate Bridge Transaction List', async () => {
+      await test.step('Should show correct loading after refresh page', async () => {
+        await page.goto('/bridge');
+        await goToTransactionsPage(page);
+
+        const loading = getByAriaLabel(page, 'Loading Bridge Transactions');
+        await loading.innerText();
+
+        await checkTxItemDone(page, depositEthTxId);
+        await checkTxItemDone(page, depositERC20TxId);
+        await checkTxItemDone(page, withdrawEthTxId);
+        await checkTxItemDone(page, withdrawERC20TxId);
       });
     });
   });
