@@ -46,7 +46,12 @@ export const BridgeSteps = ({ steps }: BridgeStepsProps) => {
             </Box.Flex>
             <Box.Flex align="center" gap="$1">
               {step.isLoading && <Spinner size={14} />}
-              <Text fontSize="sm">{step.status}</Text>
+              <Text
+                fontSize="sm"
+                aria-label={`Step ${step.name?.toString()}: ${step.status}`}
+              >
+                {step.status}
+              </Text>
             </Box.Flex>
           </Box.Flex>
         );

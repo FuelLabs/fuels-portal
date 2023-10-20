@@ -7,7 +7,11 @@ export const BridgeTxItemsLoading = () => {
 
   const currentColors = theme === 'light' ? lightColors : darkColors;
   return (
-    <Box.Stack justify="center" gap="$4">
+    <Box.Stack
+      justify="center"
+      gap="$4"
+      aria-label="Loading Bridge Transactions"
+    >
       <ContentLoader
         speed={2}
         height="58"
