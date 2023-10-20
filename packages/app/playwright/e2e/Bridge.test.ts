@@ -393,7 +393,7 @@ test.describe('Bridge', () => {
         await page.locator(':nth-match(:text("Done"), 2)').waitFor();
       });
 
-      await test.step('Check ETH balance reduced', async () => {
+      await test.step('Check ETH TKN balance reduced', async () => {
         const postDepositBalanceEth = await erc20Contract.read.balanceOf([
           account.address,
         ]);
