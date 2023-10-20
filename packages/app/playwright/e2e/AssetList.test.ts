@@ -1,12 +1,8 @@
-import type { Page } from '@playwright/test';
 import test, { expect } from '@playwright/test';
 
 import { getButtonByText, getByAriaLabel, hasText } from '../commons';
 
-const hasDropdownSymbol = async (page: Page, symbol: string) => {
-  const assetDropdown = getByAriaLabel(page, 'Coin Selector').getByText(symbol);
-  expect(await assetDropdown.innerText()).toBe(symbol);
-};
+import { hasDropdownSymbol } from './utils/bridge';
 
 test.describe('Asset List', () => {
   test.beforeEach(async ({ page }) => {
