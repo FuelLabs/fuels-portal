@@ -196,6 +196,10 @@ test.describe('Bridge', () => {
         'ERC20 deposit requires ETH on Fuel.  Please bridge or faucet ETH to Fuel before bridging ERC20 tokens.'
       );
       await closeTransactionPopup(page);
+      const assetDropdown = getByAriaLabel(page, 'Coin Selector');
+      await assetDropdown.click();
+      const ethAsset = getByAriaLabel(page, 'ETH symbol');
+      await ethAsset.click();
     });
 
     await test.step('Deposit ETH to Fuel', async () => {
@@ -406,6 +410,8 @@ test.describe('Bridge', () => {
     });
 
     await test.step('Deposit TKN to Fuel', async () => {
+      await goToBridgePage(page);
+      await clickDepositTab(page);
       const preDepositBalanceFuel = await fuelWallet.getBalance(
         VITE_FUEL_FUNGIBLE_ASSET_ID
       );
