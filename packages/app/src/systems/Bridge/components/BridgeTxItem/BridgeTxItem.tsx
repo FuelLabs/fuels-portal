@@ -59,7 +59,12 @@ export const BridgeTxItem = ({
         ) : (
           <Text css={styles.ageText}>{calculateDateDiff(date)}</Text>
         )}
-        <Box.Flex css={styles.statusColumn} align="center" justify="flex-end">
+        <Box.Flex
+          css={styles.statusColumn}
+          align="center"
+          justify="flex-end"
+          aria-label={`Transaction Status: ${status?.toString()}`}
+        >
           {status}
         </Box.Flex>
       </Box.Flex>
