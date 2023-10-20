@@ -627,7 +627,6 @@ test.describe('Bridge', () => {
       const balance = getByAriaLabel(page, 'Balance: ');
       const balanceText = await balance.innerText();
 
-      console.log(`balanceText`, balanceText);
       // refresh the page
       await page.goto('/bridge');
 
@@ -637,10 +636,10 @@ test.describe('Bridge', () => {
       );
       const addressAfterRefresh = await connectedWalletAferRefresh.innerText();
       const balanceAfterRefresh = getByAriaLabel(page, 'Balance: ');
-      const balanceTextAfterRefresh = await balance.innerText();
+      const balanceTextAfterRefresh = await balanceAfterRefresh.innerText();
 
       expect(addressAfterRefresh).toEqual(address);
-      expect(balanceTextAfterRefresh).toEqual(balanceAfterRefresh);
+      expect(balanceTextAfterRefresh).toEqual(balanceText);
     });
   });
 });
