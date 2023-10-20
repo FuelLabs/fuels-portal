@@ -284,7 +284,6 @@ test.describe('Bridge', () => {
           BaseAssetId
         );
 
-        // We only divide by 15 bc bigint does not support decimals
         expect(
           parseFloat(
             bn(postWithdrawBalanceEth.toString())
