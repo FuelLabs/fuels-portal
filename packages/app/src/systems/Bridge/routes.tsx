@@ -2,6 +2,7 @@ import { Route } from 'react-router-dom';
 import { Pages } from '~/types';
 
 import { BridgeHome, BridgeTxList, Bridge } from './pages';
+import { Version } from './pages/Version';
 
 export const bridgeRoutes = (
   <>
@@ -21,5 +22,6 @@ export const bridgeRoutes = (
         </BridgeHome>
       }
     />
+    <Route path="version" element={<Version />} />
   </>
 );

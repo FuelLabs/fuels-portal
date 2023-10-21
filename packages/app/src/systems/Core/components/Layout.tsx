@@ -8,8 +8,6 @@ import { OverlayDialog } from '~/systems/Overlay';
 
 import { coreStyles } from '../styles';
 
-import { Header } from './Header';
-
 type ContentProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   as?: any;
@@ -56,7 +54,7 @@ export const Layout: LayoutComponent = ({ title, children }: LayoutProps) => {
         ></link>
       </Helmet>
       <Flex as="main" direction="column" css={styles.root}>
-        <Header />
+        {/* <Header /> */}
         <OverlayDialog />
         <Box css={styles.scrollView}>
           <Box css={coreStyles.scrollableContent}>{children}</Box>
@@ -81,7 +79,7 @@ const styles = {
   }),
   content: cssObj({
     padding: '$16 $4 $4 $4',
-    maxWidth: 955,
-    margin: '0 auto',
+    // maxWidth: 955,
+    // margin: '0 auto',
   }),
 };
