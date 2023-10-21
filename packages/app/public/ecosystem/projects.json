@@ -129,7 +129,7 @@
     "twitter": "https://twitter.com/fuel_art",
     "discord": "https://discord.gg/sj9PujpSzJ",
     "image": "fuelart",
-    "status": ["Building", "Beta-3"]
+    "status": ["Building"]
   },
   {
     "isLive": false,
@@ -290,14 +290,14 @@
   {
     "isLive": false,
     "name": "Spark",
-    "url": "https://allspark.gg/",
+    "url": "https://sprk.fi/",
     "tags": ["DEX (Orderbook)", "DeFi", "Infrastructure Tooling or Platform"],
     "description": "Spark is a predicate-based central limit order book.",
     "github": "https://github.com/compolabs/spark",
-    "twitter": "https://twitter.com/allsparkgg",
+    "twitter": "https://twitter.com/Sprkfi",
     "discord": "https://discord.gg/Nz9VZQrSNH",
     "image": "spark",
-    "status": ["Building"]
+    "status": ["Building", "Beta-4"]
   },
   {
     "isLive": false,
@@ -309,7 +309,7 @@
     "twitter": "https://twitter.com/swaylend",
     "discord": "https://discord.gg/phcHhUHssg",
     "image": "swaylend",
-    "status": ["Building"]
+    "status": ["Building", "Beta-4"]
   },
   {
     "isLive": false,
