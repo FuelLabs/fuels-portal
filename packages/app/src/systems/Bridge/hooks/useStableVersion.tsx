@@ -21,7 +21,7 @@ const REPOS = [
   },
   {
     name: 'sway',
-    version: '0.46.1',
+    version: '0.46.0',
     dependencies: [
       {
         name: 'fuel-core',
@@ -31,12 +31,15 @@ const REPOS = [
   },
   {
     name: 'fuels-ts',
+    version: '0.63.0',
     dependencies: [
       {
         name: 'fuel-core',
+        version: '0.20.7',
       },
       {
         name: 'sway',
+        version: '0.46.0',
       },
     ],
   },
