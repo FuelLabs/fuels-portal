@@ -116,11 +116,11 @@ importers:
   docker/erc20-deployer/deployer:
     dependencies:
       '@fuel-bridge/solidity-contracts':
-        specifier: 0.2.2
-        version: 0.2.2(chai@4.3.10)(ethers@5.7.2)(hardhat@2.18.1)
+        specifier: 0.3.0
+        version: 0.3.0(chai@4.3.10)(ethers@5.7.2)(hardhat@2.18.1)
       '@fuel-bridge/test-utils':
-        specifier: 0.2.2
-        version: 0.2.2(ethers@5.7.2)(fuels@0.63.0)
+        specifier: 0.3.0
+        version: 0.3.0(ethers@5.7.2)(fuels@0.63.0)
       ethers:
         specifier: 5.7.2
         version: 5.7.2
@@ -144,14 +144,14 @@ importers:
   packages/app:
     dependencies:
       '@fuel-bridge/fungible-token':
-        specifier: 0.2.2
-        version: 0.2.2
+        specifier: 0.3.0
+        version: 0.3.0
       '@fuel-bridge/message-predicates':
-        specifier: 0.2.2
-        version: 0.2.2
+        specifier: 0.3.0
+        version: 0.3.0
       '@fuel-bridge/solidity-contracts':
-        specifier: 0.2.2
-        version: 0.2.2(chai@4.3.10)(ethers@5.7.2)(hardhat@2.18.1)
+        specifier: 0.3.0
+        version: 0.3.0(chai@4.3.10)(ethers@5.7.2)(hardhat@2.18.1)
       '@fuel-ts/utils':
         specifier: 0.63.0
         version: 0.63.0
@@ -346,8 +346,8 @@ importers:
   packages/notification-service:
     dependencies:
       '@fuel-bridge/solidity-contracts':
-        specifier: 0.0.2-next-9ebbea2
-        version: 0.0.2-next-9ebbea2(ethers@5.7.2)(hardhat@2.18.1)
+        specifier: 0.3.0
+        version: 0.3.0(chai@4.3.10)(ethers@5.7.2)(hardhat@2.18.1)
       '@prisma/client':
         specifier: 5.1.1
         version: 5.1.1(prisma@5.4.2)
@@ -2673,39 +2673,16 @@ packages:
       ts-interface-checker: 0.1.13
     dev: true
 
-  /@fuel-bridge/fungible-token@0.2.2:
-    resolution: {integrity: sha512-SzwdnHClKtBSHISbbNJ7fQaZYl50If9Rkft/N1+USPjEFe1MAd3D5THUjkg9IeffuAONIHakWp27P5+9effFxg==}
+  /@fuel-bridge/fungible-token@0.3.0:
+    resolution: {integrity: sha512-YRvncQ+6Vg46zh0htbYQXr8ejY1it77WKLVf2vfM3Z8wVSm0K4JpMYhaPWOTVwURW0wo/yfyw/DuiHk1hwsNhg==}
     dev: false
 
-  /@fuel-bridge/message-predicates@0.2.2:
-    resolution: {integrity: sha512-FTB226yFoVarvvMn6EI9sZ4ZzzTZ9etCFC+UZKQOrdLvhP1kE0lK192BHc3syyN2JCcfw+IVGWrSfClHkYNcmA==}
+  /@fuel-bridge/message-predicates@0.3.0:
+    resolution: {integrity: sha512-BGozzku8TIzDioGDPLFUbzhJtfn2YnQVaRqlugytGOkpa3pGGRQ/54y1nw2ZRbka/1oVYtk7MXmewgb9AmvHtA==}
     dev: false
 
-  /@fuel-bridge/solidity-contracts@0.0.2-next-9ebbea2(ethers@5.7.2)(hardhat@2.18.1):
-    resolution: {integrity: sha512-NC1wCDnCLxp64ZH7tsQo+uuygubScdtG+n6ok3iIl+NlR5805ZsV5MsGELkqxnpeUPDjWVwU5P37aGdaB9IPaA==}
-    dependencies:
-      '@ethersproject/abi': 5.7.0
-      '@ethersproject/abstract-provider': 5.7.0
-      '@ethersproject/bytes': 5.7.0
-      '@ethersproject/providers': 5.7.2
-      '@fuel-contracts/merkle-sol': 0.1.4
-      '@nomiclabs/hardhat-ethers': 2.2.3(ethers@5.7.2)(hardhat@2.18.1)
-      '@nomiclabs/hardhat-etherscan': 3.1.7(hardhat@2.18.1)
-      '@openzeppelin/contracts': 4.9.3
-      '@openzeppelin/contracts-upgradeable': 4.9.3
-      '@openzeppelin/hardhat-upgrades': 1.28.0(@nomiclabs/hardhat-ethers@2.2.3)(@nomiclabs/hardhat-etherscan@3.1.7)(ethers@5.7.2)(hardhat@2.18.1)
-    transitivePeerDependencies:
-      - '@nomiclabs/harhdat-etherscan'
-      - bufferutil
-      - encoding
-      - ethers
-      - hardhat
-      - supports-color
-      - utf-8-validate
-    dev: false
-
-  /@fuel-bridge/solidity-contracts@0.2.2(chai@4.3.10)(ethers@5.7.2)(hardhat@2.18.1):
-    resolution: {integrity: sha512-GXFMQ0jBlDqbjxaasUJJ/PApC88swHZklQGJbSiURqykG173J17veDMTxTGWKokX+ZtzGdz8+vEKpXskqa/cjg==}
+  /@fuel-bridge/solidity-contracts@0.3.0(chai@4.3.10)(ethers@5.7.2)(hardhat@2.18.1):
+    resolution: {integrity: sha512-2PFBOsI8Bws7dNbVpGFxigVtv7NiAHr0L94MG8mQ0Z1NErL/nbzwJIBMKe0BqXMRrsjT2ea5fkQ/Pv43XFFrIw==}
     dependencies:
       '@ethersproject/abi': 5.7.0
       '@ethersproject/abstract-provider': 5.7.0
@@ -2729,11 +2706,11 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@fuel-bridge/test-utils@0.2.2(ethers@5.7.2)(fuels@0.63.0):
-    resolution: {integrity: sha512-Zm0+iJpYrOX4VwswKF0/+t5+4hk4n4JwLr5lsgBC7veKWvZKOmzatPZmS54uC2HL0xcznt+8WXYwMtItEbemng==}
+  /@fuel-bridge/test-utils@0.3.0(ethers@5.7.2)(fuels@0.63.0):
+    resolution: {integrity: sha512-ImOGuUiMYudxLcmSAQ8OkHzTkMci+xbIi2dXnEEMSYeHkX7nj1X+J+p+w/20+ckk9avqZMnHkpZaFl0RUFA4iQ==}
     peerDependencies:
       ethers: '>=5.7.2'
-      fuels: '>=0.58.0'
+      fuels: '>=0.63.0'
     dependencies:
       ethers: 5.7.2
       fuels: 0.63.0
