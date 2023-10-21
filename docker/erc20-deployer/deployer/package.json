@@ -7,7 +7,7 @@
     "@fuel-bridge/solidity-contracts": "0.2.2",
     "@fuel-bridge/test-utils": "0.2.2",
     "ethers": "5.7.2",
-    "fuels": "0.60.0"
+    "fuels": "0.63.0"
   },
   "devDependencies": {
     "ts-node": "^10.9.1"
