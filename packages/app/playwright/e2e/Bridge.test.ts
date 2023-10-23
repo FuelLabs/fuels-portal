@@ -647,6 +647,16 @@ test.describe('Bridge', () => {
         const connectButton = getButtonByText(page, 'Connect Fuel Wallet');
         expect(await connectButton.count()).toBe(1);
       });
+
+      await test.step('Change to account 1 should show loading and transactions', async () => {
+        await switchAccount(context, 'Account 1');
+        const loading = getByAriaLabel(page, 'Loading Bridge Transactions');
+        await loading.innerText();
+        await checkTxItemDone(page, depositEthTxId);
+        await checkTxItemDone(page, depositERC20TxId);
+        await checkTxItemDone(page, withdrawEthTxId);
+        await checkTxItemDone(page, withdrawERC20TxId);
+      });
     });
   });
 });
