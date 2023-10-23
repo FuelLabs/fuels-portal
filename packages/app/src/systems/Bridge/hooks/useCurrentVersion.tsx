@@ -16,16 +16,16 @@ async function fetchJsonUrl({ url }: { url: string }) {
 const REPOS = [
   {
     name: 'fuel-core',
-    version: '0.21.0',
+    version: '0.20.8',
     isCorrect: true,
   },
   {
     name: 'sway',
-    version: '0.48.0',
+    version: '0.46.1',
     dependencies: [
       {
         name: 'fuel-core',
-        version: '0.21.0',
+        version: '0.20.7',
       },
     ],
   },
