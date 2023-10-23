@@ -1,5 +1,5 @@
-import { expect} from '@playwright/test';
-import type { BrowserContext, type Page } from '@playwright/test';
+import { expect } from '@playwright/test';
+import type { BrowserContext, Page } from '@playwright/test';
 
 import { shortAddress } from '../../../src/systems/Core/utils';
 import { getButtonByText, getByAriaLabel } from '../../commons';

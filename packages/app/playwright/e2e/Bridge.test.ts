@@ -373,8 +373,6 @@ test.describe('Bridge', () => {
         // Timeout needed until https://github.com/Synthetixio/synpress/issues/795 is fixed
         await page.waitForTimeout(7500);
         await metamask.confirmPermissionToSpend();
-        await page.waitForTimeout(2500);
-        await proceedAnyways(context);
         await metamask.confirmTransaction();
       });
 
@@ -637,6 +635,7 @@ test.describe('Bridge', () => {
       });
 
       await test.step('Change to account 3 should show connect, but not loading', async () => {
+        await switchAccount(context, 'Account 3');
         const loading = getByAriaLabel(page, 'Loading Bridge Transactions');
         expect(await loading.count()).toBe(0);
         const notDetected = page.getByText('Wallet not detected');
