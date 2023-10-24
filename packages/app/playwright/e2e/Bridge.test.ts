@@ -105,58 +105,6 @@ test.describe('Bridge', () => {
     let depositERC20TxId: string;
     let withdrawERC20TxId: string;
 
-    await test.step('Faucet TKN', async () => {
-      erc20Contract = getContract({
-        abi: ERC_20.abi,
-        address: VITE_ETH_ERC20 as `0x${string}`,
-        publicClient: client,
-      });
-      const preFaucetBalance = (await erc20Contract.read.balanceOf([
-        account.address,
-      ])) as BigNumberish;
-
-      await test.step('Faucet ERC-20', async () => {
-        await goToBridgePage(page);
-        await clickDepositTab(page);
-
-        const coinSelector = getByAriaLabel(page, 'Coin Selector');
-        await coinSelector.click();
-
-        const faucetButton = getByAriaLabel(page, 'Faucet Eth Asset');
-        await faucetButton.click();
-      });
-
-      await test.step('Confirm on Metamask', async () => {
-        // Timeout needed until https://github.com/Synthetixio/synpress/issues/795 is fixed
-        await page.waitForTimeout(2000);
-        await metamask.confirmTransaction();
-      });
-
-      let postFaucetBalance;
-      await test.step('Check faucet worked', async () => {
-        postFaucetBalance = await erc20Contract.read.balanceOf([
-          account.address,
-        ]);
-        expect(String(postFaucetBalance)).toBe(
-          bn(preFaucetBalance).add(bn.parseUnits('1000000', 18)).toString()
-        );
-      });
-
-      await test.step('Select TKN', async () => {
-        const tknButton = page.getByRole('button', { name: 'TKN' });
-        await tknButton.click();
-        await hasDropdownSymbol(page, 'TKN');
-      });
-
-      await hasText(
-        page,
-        `Balance: ${format(postFaucetBalance as BigNumberish, {
-          units: 18,
-          precision: 3,
-        })}`
-      );
-    });
-
     await test.step('Deposit TKN before Fuel wallet has ETH', async () => {
       const preDepositBalanceEth = await erc20Contract.read.balanceOf([
         account.address,
@@ -399,6 +347,58 @@ test.describe('Bridge', () => {
         const statusLocator = withdrawTxLocator.getByText(`Settled`);
         await statusLocator.innerText();
       });
+    });
+
+    await test.step('Faucet TKN', async () => {
+      erc20Contract = getContract({
+        abi: ERC_20.abi,
+        address: VITE_ETH_ERC20 as `0x${string}`,
+        publicClient: client,
+      });
+      const preFaucetBalance = (await erc20Contract.read.balanceOf([
+        account.address,
+      ])) as BigNumberish;
+
+      await test.step('Faucet ERC-20', async () => {
+        await goToBridgePage(page);
+        await clickDepositTab(page);
+
+        const coinSelector = getByAriaLabel(page, 'Coin Selector');
+        await coinSelector.click();
+
+        const faucetButton = getByAriaLabel(page, 'Faucet Eth Asset');
+        await faucetButton.click();
+      });
+
+      await test.step('Confirm on Metamask', async () => {
+        // Timeout needed until https://github.com/Synthetixio/synpress/issues/795 is fixed
+        await page.waitForTimeout(2000);
+        await metamask.confirmTransaction();
+      });
+
+      let postFaucetBalance;
+      await test.step('Check faucet worked', async () => {
+        postFaucetBalance = await erc20Contract.read.balanceOf([
+          account.address,
+        ]);
+        expect(String(postFaucetBalance)).toBe(
+          bn(preFaucetBalance).add(bn.parseUnits('1000000', 18)).toString()
+        );
+      });
+
+      await test.step('Select TKN', async () => {
+        const tknButton = page.getByRole('button', { name: 'TKN' });
+        await tknButton.click();
+        await hasDropdownSymbol(page, 'TKN');
+      });
+
+      await hasText(
+        page,
+        `Balance: ${format(postFaucetBalance as BigNumberish, {
+          units: 18,
+          precision: 3,
+        })}`
+      );
     });
 
     await test.step('Deposit TKN to Fuel', async () => {
