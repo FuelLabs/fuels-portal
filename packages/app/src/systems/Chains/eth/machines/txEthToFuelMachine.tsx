@@ -18,7 +18,6 @@ import { FetchMachine } from '~/systems/Core/machines';
 
 import type { GetReceiptsInfoReturn, TxEthToFuelInputs } from '../services';
 import { TxEthToFuelService } from '../services';
-import type { CachedReceiptsInfo} from '../utils';
 import { EthTxCache } from '../utils';
 
 type MachineContext = {
@@ -389,52 +388,21 @@ export const txEthToFuelMachine = createMachine(
         }
       },
       setEthToFuelTxReceiptCached: (ctx) => {
-        if (
-          ctx.ethTxId &&
-          ctx.erc20Token &&
-          ctx.ethTxNonce &&
-          ctx.amount &&
-          ctx.fuelRecipient &&
-          ctx.ethDepositBlockHeight &&
-          ctx.blockDate
-        ) {
-          console.log(`ctx.blockDate`, ctx.blockDate);
+        if (ctx.ethTxId && ctx.ethTxNonce && ctx.fuelRecipient) {
           EthTxCache.setTxReceipt(ctx.ethTxId, {
-            erc20Token: {
-              ...ctx.erc20Token,
-              totalSupply: {
-                ...ctx.erc20Token.totalSupply,
-                value: ctx.erc20Token.totalSupply.value.toString(),
-              },
-            },
             nonce: ctx.ethTxNonce.toString(),
-            amount: ctx.amount.toString(),
             recipient: ctx.fuelRecipient,
-            ethDepositBlockHeight: ctx.ethDepositBlockHeight,
-            blockDate: ctx.blockDate,
           });
         }
       },
       assignReceiptsInfoFromCache: assign((ctx) => {
-        const stringfiedReceipt = EthTxCache.getTxReceipt(ctx.ethTxId || '');
-        if (!stringfiedReceipt) {
+        const receiptInfo = EthTxCache.getTxReceipt(ctx.ethTxId || '');
+        if (!receiptInfo) {
           throw new Error('No receipt');
         }
-        const receiptInfo = JSON.parse(stringfiedReceipt) as CachedReceiptsInfo;
-        console.log(`receiptInfo`, receiptInfo);
         return {
-          erc20Token: {
-            ...receiptInfo.erc20Token,
-            totalSupply: {
-              ...receiptInfo.erc20Token.totalSupply,
-              value: BigInt(receiptInfo.erc20Token.totalSupply.value),
-            },
-          },
           ethTxNonce: bn(receiptInfo.nonce),
-          amount: bn(receiptInfo.amount),
           fuelRecipient: receiptInfo.recipient,
-          ethDepositBlockHeight: receiptInfo.ethDepositBlockHeight,
-          blockDate: receiptInfo.blockDate,
         };
       }),
     },
@@ -457,9 +425,8 @@ export const txEthToFuelMachine = createMachine(
       isMessageUnspentErc20: (ctx) =>
         ctx.fuelMessageStatus?.state === 'UNSPENT' && !!ctx.erc20Token,
       isTxEthToFuelReceiptCached: (ctx) => {
-        console.log(`ctx`, ctx);
         const temp = EthTxCache.getTxReceipt(ctx.ethTxId || '');
-        console.log(`temp`, temp);
+        console.log(`temp`, !!temp);
         return !!temp;
       },
     },
