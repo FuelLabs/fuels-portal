@@ -25,6 +25,10 @@ function getBridgeTokenContracts() {
   if (process.env.VITE_FUEL_CHAIN === 'fuelDev') {
     const { body } = retus('http://localhost:8082/deployments', {
       json: true,
+      retry: {
+        limit: 5,
+        delay: 15000,
+      },
     });
 
     return body;
