@@ -1,5 +1,4 @@
-import { expect } from '@playwright/test';
-import type { BrowserContext, Page } from '@playwright/test';
+import { expect, type Page } from '@playwright/test';
 
 import { shortAddress } from '../../../src/systems/Core/utils';
 import { getButtonByText, getByAriaLabel } from '../../commons';
@@ -43,22 +42,4 @@ export const checkTxItemDone = async (page: Page, txHash: string) => {
   const settled = listItem.getByText('Settled');
   const settledText = await settled.innerText();
   expect(settledText).toBeTruthy();
-};
-
-export const proceedAnyways = async (context: BrowserContext) => {
-  let metamaskNotificationPage = context
-    .pages()
-    .find((p) => p.url().includes('notification'));
-  if (!metamaskNotificationPage) {
-    metamaskNotificationPage = await context.waitForEvent('page', {
-      predicate: (page) => page.url().includes('notification'),
-    });
-  }
-  const proceedAnyways = metamaskNotificationPage.getByText(
-    'I want to proceed anyway'
-  );
-  const count = await proceedAnyways.count();
-  if (count) {
-    await proceedAnyways.click();
-  }
 };

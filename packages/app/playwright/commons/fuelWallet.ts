@@ -4,7 +4,6 @@ import { expect } from '../e2e/fixtures';
 import { FUEL_MNEMONIC, FUEL_WALLET_PASSWORD } from '../mocks';
 
 import { getButtonByText } from './button';
-import { getByAriaLabel } from './locator';
 
 export async function walletSetup(
   context: BrowserContext,
@@ -66,64 +65,8 @@ export async function walletSetup(
   await addButton.click({ timeout: 9000 });
 }
 
-export async function addAccount(context: BrowserContext) {
-  const walletPage = context.pages().find((page) => {
-    const url = page.url();
-    return url.includes('/popup.html#/wallet');
-  });
-
-  if (!walletPage) {
-    throw new Error('Wallet page could not be found.');
-  }
-
-  const accountsButton = getByAriaLabel(walletPage, 'Accounts');
-  await accountsButton.click();
-  const addAccountButton = getByAriaLabel(walletPage, 'Add account');
-  await addAccountButton.click();
-}
-
-export async function switchAccount(
-  context: BrowserContext,
-  accountName: string
-) {
-  const walletPage = context.pages().find((page) => {
-    const url = page.url();
-    return url.includes('/popup.html#/wallet');
-  });
-
-  if (!walletPage) {
-    throw new Error('Wallet page could not be found.');
-  }
-
-  const accountsButton = getByAriaLabel(walletPage, 'Accounts');
-  await accountsButton.click();
-  const accountButton = getByAriaLabel(walletPage, accountName, true);
-  await accountButton.click();
-}
-
-export async function walletConnect(
-  context: BrowserContext,
-  accountNames?: string[],
-  connectCurrentAccount: boolean = true
-) {
+export async function walletConnect(context: BrowserContext) {
   const walletPage = await getWalletPage(context);
-
-  if (!connectCurrentAccount) {
-    const disconnectCurrenctAccountButton = walletPage.getByRole('switch', {
-      checked: true,
-    });
-    await disconnectCurrenctAccountButton.click();
-  }
-
-  await Promise.all(
-    accountNames.map(async (accountName) => {
-      const accountConnectionButton = getByAriaLabel(
-        walletPage,
-        accountName
-      ).getByRole('switch');
-      await accountConnectionButton.click();
-    })
-  );
 
   const nextButton = getButtonByText(walletPage, 'Next');
   await nextButton.click();
