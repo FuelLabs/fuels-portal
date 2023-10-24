@@ -93,21 +93,15 @@ export const txEthToFuelMachine = createMachine(
         },
       },
       checkingSettlement: {
-        initial: 'checkingReceiptsCache',
+        initial: 'checkingDoneCache',
         states: {
-          checkingReceiptsCache: {
+          checkingDoneCache: {
             tags: ['isSettlementLoading', 'isSettlementSelected'],
-            data: {
-              input: (ctx: MachineContext) => ({
-                ethTxId: ctx.ethTxId,
-                ethPublicClient: ctx.ethPublicClient,
-              }),
-            },
             always: [
               {
                 actions: ['assignReceiptsInfoFromCache'],
-                cond: 'isTxEthToFuelReceiptCached',
-                target: 'checkingDoneCache',
+                cond: 'isTxEthToFuelDone',
+                target: '#(machine).checkingSettlement.checkingRelay.done',
               },
               {
                 target: 'gettingReceiptsInfo',
@@ -129,13 +123,9 @@ export const txEthToFuelMachine = createMachine(
                   cond: FetchMachine.hasError,
                 },
                 {
-                  actions: [
-                    'assignReceiptsInfo',
-                    'notifyEthTxSuccess',
-                    'setEthToFuelTxReceiptCached',
-                  ],
+                  actions: ['assignReceiptsInfo', 'notifyEthTxSuccess'],
                   cond: 'hasEthTxNonce',
-                  target: 'checkingDoneCache',
+                  target: 'gettingFuelMessageStatus',
                 },
               ],
             },
@@ -144,18 +134,6 @@ export const txEthToFuelMachine = createMachine(
                 target: 'gettingReceiptsInfo',
               },
             },
-          },
-          checkingDoneCache: {
-            tags: ['isSettlementLoading', 'isSettlementSelected'],
-            always: [
-              {
-                cond: 'isTxEthToFuelDone',
-                target: '#(machine).checkingSettlement.checkingRelay.done',
-              },
-              {
-                target: 'gettingFuelMessageStatus',
-              },
-            ],
           },
           gettingFuelMessageStatus: {
             tags: ['isSettlementLoading', 'isSettlementSelected'],
@@ -339,7 +317,7 @@ export const txEthToFuelMachine = createMachine(
                 },
               },
               done: {
-                entry: ['setEthToFuelTxDone'],
+                entry: ['setEthToFuelTxDone', 'setEthToFuelTxReceiptCached'],
                 tags: ['isReceiveDone'],
                 type: 'final',
               },
@@ -420,8 +398,6 @@ export const txEthToFuelMachine = createMachine(
         ctx.fuelMessageStatus?.state === 'UNSPENT' && !ctx.erc20Token,
       isMessageUnspentErc20: (ctx) =>
         ctx.fuelMessageStatus?.state === 'UNSPENT' && !!ctx.erc20Token,
-      isTxEthToFuelReceiptCached: (ctx) =>
-        !!EthTxCache.getTxReceipt(ctx.ethTxId || ''),
     },
     services: {
       getReceiptsInfo: FetchMachine.create<
