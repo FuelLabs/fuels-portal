@@ -394,5 +394,17 @@
     "discord": "https://discord.gg/learnweb3",
     "image": "learnweb3",
     "status": ["Building", "Beta-4"]
+  },
+  {
+    "isLive": false,
+    "name": "Guild",
+    "url": "https://guild.xyz",
+    "tags": ["Infrastructure Tooling or Platform"],
+    "description": "Automated membership management for the platforms your community already uses.",
+    "github": "https://github.com/agoraxyz/guild.xyz",
+    "twitter": "https://twitter.com/guildxyz",
+    "discord": "https://discord.gg/guildxyz",
+    "image": "guildxyz",
+    "status": ["Building"]
   }
 ]
