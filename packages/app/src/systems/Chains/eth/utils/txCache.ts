@@ -49,10 +49,12 @@ export const EthTxCache = {
   },
   getTxReceipt: (txId: string) => {
     const stringifiedReceipt = localStorage.getItem(generateTxReceiptKey(txId));
-    return (
-      stringifiedReceipt &&
-      (JSON.parse(stringifiedReceipt) as { nonce: string; recipient: Address })
-    );
+    return !stringifiedReceipt
+      ? null
+      : (JSON.parse(stringifiedReceipt) as {
+          nonce: string;
+          recipient: Address;
+        });
   },
 };
 
