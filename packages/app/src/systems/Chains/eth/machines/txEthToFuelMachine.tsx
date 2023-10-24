@@ -1,13 +1,14 @@
 /* eslint-disable no-console */
 import { toast } from '@fuel-ui/react';
 import type { FuelWalletLocked as FuelWallet } from '@fuel-wallet/sdk';
-import type {
-  BN,
-  Message as FuelMessage,
-  Address as FuelAddress,
-  Provider as FuelProvider,
-  TransactionResult,
-  MessageStatus,
+import {
+  type BN,
+  type Message as FuelMessage,
+  type Address as FuelAddress,
+  type Provider as FuelProvider,
+  type TransactionResult,
+  type MessageStatus,
+  bn,
 } from 'fuels';
 import type { PublicClient } from 'wagmi';
 import type { FetchTokenResult } from 'wagmi/actions';
@@ -17,6 +18,7 @@ import { FetchMachine } from '~/systems/Core/machines';
 
 import type { GetReceiptsInfoReturn, TxEthToFuelInputs } from '../services';
 import { TxEthToFuelService } from '../services';
+import type { CachedReceiptsInfo} from '../utils';
 import { EthTxCache } from '../utils';
 
 type MachineContext = {
@@ -92,8 +94,27 @@ export const txEthToFuelMachine = createMachine(
         },
       },
       checkingSettlement: {
-        initial: 'gettingReceiptsInfo',
+        initial: 'checkingReceiptsCache',
         states: {
+          checkingReceiptsCache: {
+            tags: ['isSettlementLoading', 'isSettlementSelected'],
+            data: {
+              input: (ctx: MachineContext) => ({
+                ethTxId: ctx.ethTxId,
+                ethPublicClient: ctx.ethPublicClient,
+              }),
+            },
+            always: [
+              {
+                actions: ['assignReceiptsInfoFromCache'],
+                cond: 'isTxEthToFuelReceiptCached',
+                target: 'checkingDoneCache',
+              },
+              {
+                target: 'gettingReceiptsInfo',
+              },
+            ],
+          },
           gettingReceiptsInfo: {
             tags: ['isSettlementLoading', 'isSettlementSelected'],
             invoke: {
@@ -109,7 +130,11 @@ export const txEthToFuelMachine = createMachine(
                   cond: FetchMachine.hasError,
                 },
                 {
-                  actions: ['assignReceiptsInfo', 'notifyEthTxSuccess'],
+                  actions: [
+                    'assignReceiptsInfo',
+                    'notifyEthTxSuccess',
+                    'setEthToFuelTxReceiptCached',
+                  ],
                   cond: 'hasEthTxNonce',
                   target: 'checkingDoneCache',
                 },
@@ -363,6 +388,55 @@ export const txEthToFuelMachine = createMachine(
           EthTxCache.removeTxCreated(ctx.ethTxId);
         }
       },
+      setEthToFuelTxReceiptCached: (ctx) => {
+        if (
+          ctx.ethTxId &&
+          ctx.erc20Token &&
+          ctx.ethTxNonce &&
+          ctx.amount &&
+          ctx.fuelRecipient &&
+          ctx.ethDepositBlockHeight &&
+          ctx.blockDate
+        ) {
+          console.log(`ctx.blockDate`, ctx.blockDate);
+          EthTxCache.setTxReceipt(ctx.ethTxId, {
+            erc20Token: {
+              ...ctx.erc20Token,
+              totalSupply: {
+                ...ctx.erc20Token.totalSupply,
+                value: ctx.erc20Token.totalSupply.value.toString(),
+              },
+            },
+            nonce: ctx.ethTxNonce.toString(),
+            amount: ctx.amount.toString(),
+            recipient: ctx.fuelRecipient,
+            ethDepositBlockHeight: ctx.ethDepositBlockHeight,
+            blockDate: ctx.blockDate,
+          });
+        }
+      },
+      assignReceiptsInfoFromCache: assign((ctx) => {
+        const stringfiedReceipt = EthTxCache.getTxReceipt(ctx.ethTxId || '');
+        if (!stringfiedReceipt) {
+          throw new Error('No receipt');
+        }
+        const receiptInfo = JSON.parse(stringfiedReceipt) as CachedReceiptsInfo;
+        console.log(`receiptInfo`, receiptInfo);
+        return {
+          erc20Token: {
+            ...receiptInfo.erc20Token,
+            totalSupply: {
+              ...receiptInfo.erc20Token.totalSupply,
+              value: BigInt(receiptInfo.erc20Token.totalSupply.value),
+            },
+          },
+          ethTxNonce: bn(receiptInfo.nonce),
+          amount: bn(receiptInfo.amount),
+          fuelRecipient: receiptInfo.recipient,
+          ethDepositBlockHeight: receiptInfo.ethDepositBlockHeight,
+          blockDate: receiptInfo.blockDate,
+        };
+      }),
     },
     guards: {
       hasFuelMessage: (ctx, ev) => !!ctx.fuelMessage || !!ev?.data,
@@ -372,12 +446,22 @@ export const txEthToFuelMachine = createMachine(
         !!ctx.fuelAddress &&
         !!ctx.fuelProvider &&
         !!ctx.ethPublicClient,
-      isTxEthToFuelDone: (ctx) => EthTxCache.getTxIsDone(ctx.ethTxId || ''),
+      isTxEthToFuelDone: (ctx) => {
+        const temp = EthTxCache.getTxIsDone(ctx.ethTxId || '');
+        console.log(`temp done`, temp);
+        return temp;
+      },
       isMessageSpent: (ctx) => ctx.fuelMessageStatus?.state === 'SPENT',
       isMessageUnspentEth: (ctx) =>
         ctx.fuelMessageStatus?.state === 'UNSPENT' && !ctx.erc20Token,
       isMessageUnspentErc20: (ctx) =>
         ctx.fuelMessageStatus?.state === 'UNSPENT' && !!ctx.erc20Token,
+      isTxEthToFuelReceiptCached: (ctx) => {
+        console.log(`ctx`, ctx);
+        const temp = EthTxCache.getTxReceipt(ctx.ethTxId || '');
+        console.log(`temp`, temp);
+        return !!temp;
+      },
     },
     services: {
       getReceiptsInfo: FetchMachine.create<
