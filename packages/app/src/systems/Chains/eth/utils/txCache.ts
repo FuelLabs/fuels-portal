@@ -53,7 +53,7 @@ export const EthTxCache = {
       ? null
       : (JSON.parse(stringifiedReceipt) as {
           nonce: string;
-          recipient: FuelAddress;
+          recipient: Address;
         });
   },
 };
