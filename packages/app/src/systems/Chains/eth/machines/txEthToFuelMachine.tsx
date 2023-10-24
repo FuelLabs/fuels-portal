@@ -414,17 +414,14 @@ export const txEthToFuelMachine = createMachine(
         !!ctx.fuelAddress &&
         !!ctx.fuelProvider &&
         !!ctx.ethPublicClient,
-      isTxEthToFuelDone: (ctx) => {
-        return EthTxCache.getTxIsDone(ctx.ethTxId || '');
-      },
+      isTxEthToFuelDone: (ctx) => EthTxCache.getTxIsDone(ctx.ethTxId || ''),
       isMessageSpent: (ctx) => ctx.fuelMessageStatus?.state === 'SPENT',
       isMessageUnspentEth: (ctx) =>
         ctx.fuelMessageStatus?.state === 'UNSPENT' && !ctx.erc20Token,
       isMessageUnspentErc20: (ctx) =>
         ctx.fuelMessageStatus?.state === 'UNSPENT' && !!ctx.erc20Token,
-      isTxEthToFuelReceiptCached: (ctx) => {
-        return !!EthTxCache.getTxReceipt(ctx.ethTxId || '');
-      },
+      isTxEthToFuelReceiptCached: (ctx) =>
+        !!EthTxCache.getTxReceipt(ctx.ethTxId || ''),
     },
     services: {
       getReceiptsInfo: FetchMachine.create<
