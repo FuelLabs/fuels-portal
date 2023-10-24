@@ -415,9 +415,7 @@ export const txEthToFuelMachine = createMachine(
         !!ctx.fuelProvider &&
         !!ctx.ethPublicClient,
       isTxEthToFuelDone: (ctx) => {
-        const temp = EthTxCache.getTxIsDone(ctx.ethTxId || '');
-        console.log(`temp done`, temp);
-        return temp;
+        return EthTxCache.getTxIsDone(ctx.ethTxId || '');
       },
       isMessageSpent: (ctx) => ctx.fuelMessageStatus?.state === 'SPENT',
       isMessageUnspentEth: (ctx) =>
@@ -425,9 +423,7 @@ export const txEthToFuelMachine = createMachine(
       isMessageUnspentErc20: (ctx) =>
         ctx.fuelMessageStatus?.state === 'UNSPENT' && !!ctx.erc20Token,
       isTxEthToFuelReceiptCached: (ctx) => {
-        const temp = EthTxCache.getTxReceipt(ctx.ethTxId || '');
-        console.log(`temp`, !!temp);
-        return !!temp;
+        return !!EthTxCache.getTxReceipt(ctx.ethTxId || '');
       },
     },
     services: {
