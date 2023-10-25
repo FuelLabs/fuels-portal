@@ -659,6 +659,12 @@ test.describe('Bridge', () => {
 
     await test.step('Deposit TKN before Fuel wallet has ETH', async () => {
       await switchAccount(context, 'Account 2');
+      await goToBridgePage(page);
+      await clickDepositTab(page);
+      const assetDropdown = getByAriaLabel(page, 'Coin Selector');
+      await assetDropdown.click();
+      const tknAsset = getByAriaLabel(page, 'TKN symbol');
+      await tknAsset.click();
       const preDepositBalanceEth = await erc20Contract.read.balanceOf([
         account.address,
       ]);
@@ -667,7 +673,7 @@ test.describe('Bridge', () => {
       const depositAmount = '1.12345';
       const depositInput = page.locator('input');
       await depositInput.fill(depositAmount);
-      const depositButton = getByAriaLabel(page, 'Deposit');
+      const depositButton = getByAriaLabel(page, 'Deposit', true);
       await depositButton.click();
 
       // Timeout needed until https://github.com/Synthetixio/synpress/issues/795 is fixed
