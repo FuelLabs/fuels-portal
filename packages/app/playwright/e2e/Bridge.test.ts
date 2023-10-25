@@ -105,57 +105,6 @@ test.describe('Bridge', () => {
     let depositERC20TxId: string;
     let withdrawERC20TxId: string;
 
-    await test.step('Deposit TKN before Fuel wallet has ETH', async () => {
-      const preDepositBalanceEth = await erc20Contract.read.balanceOf([
-        account.address,
-      ]);
-
-      // Deposit asset
-      const depositAmount = '1.12345';
-      const depositInput = page.locator('input');
-      await depositInput.fill(depositAmount);
-      const depositButton = getByAriaLabel(page, 'Deposit');
-      await depositButton.click();
-
-      // Timeout needed until https://github.com/Synthetixio/synpress/issues/795 is fixed
-      await page.waitForTimeout(7500);
-      await metamask.confirmPermissionToSpend();
-      await metamask.confirmTransaction();
-
-      await page.locator(':nth-match(:text("Done"), 1)').waitFor();
-      await hasText(page, INITIATE_DEPOSIT);
-
-      // Check steps
-      await page.locator(':nth-match(:text("Done"), 2)').waitFor();
-
-      const postDepositBalanceEth = await erc20Contract.read.balanceOf([
-        account.address,
-      ]);
-
-      expect(
-        parseFloat(
-          bn(preDepositBalanceEth.toString())
-            .sub(postDepositBalanceEth.toString())
-            .format({ precision: 6, units: 18 })
-        )
-      ).toBeCloseTo(parseFloat(depositAmount));
-
-      const confirmTransactionButton = page.getByRole('button', {
-        name: 'Confirm Transaction',
-      });
-      await confirmTransactionButton.click();
-
-      await hasText(
-        page,
-        'ERC20 deposit requires ETH on Fuel.  Please bridge or faucet ETH to Fuel before bridging ERC20 tokens.'
-      );
-      await closeTransactionPopup(page);
-      const assetDropdown = getByAriaLabel(page, 'Coin Selector');
-      await assetDropdown.click();
-      const ethAsset = getByAriaLabel(page, 'ETH symbol');
-      await ethAsset.click();
-    });
-
     await test.step('Deposit ETH to Fuel', async () => {
       const preDepositBalanceFuel = await fuelWallet.getBalance(BaseAssetId);
       const prevDepositBalanceEth = await client.getBalance({
@@ -710,6 +659,58 @@ test.describe('Bridge', () => {
         await checkTxItemDone(page, withdrawEthTxId);
         await checkTxItemDone(page, withdrawERC20TxId);
       });
+    });
+
+    await test.step('Deposit TKN before Fuel wallet has ETH', async () => {
+      await switchAccount(context, 'Account 2');
+      const preDepositBalanceEth = await erc20Contract.read.balanceOf([
+        account.address,
+      ]);
+
+      // Deposit asset
+      const depositAmount = '1.12345';
+      const depositInput = page.locator('input');
+      await depositInput.fill(depositAmount);
+      const depositButton = getByAriaLabel(page, 'Deposit');
+      await depositButton.click();
+
+      // Timeout needed until https://github.com/Synthetixio/synpress/issues/795 is fixed
+      await page.waitForTimeout(7500);
+      await metamask.confirmPermissionToSpend();
+      await metamask.confirmTransaction();
+
+      await page.locator(':nth-match(:text("Done"), 1)').waitFor();
+      await hasText(page, INITIATE_DEPOSIT);
+
+      // Check steps
+      await page.locator(':nth-match(:text("Done"), 2)').waitFor();
+
+      const postDepositBalanceEth = await erc20Contract.read.balanceOf([
+        account.address,
+      ]);
+
+      expect(
+        parseFloat(
+          bn(preDepositBalanceEth.toString())
+            .sub(postDepositBalanceEth.toString())
+            .format({ precision: 6, units: 18 })
+        )
+      ).toBeCloseTo(parseFloat(depositAmount));
+
+      const confirmTransactionButton = page.getByRole('button', {
+        name: 'Confirm Transaction',
+      });
+      await confirmTransactionButton.click();
+
+      await hasText(
+        page,
+        'ERC20 deposit requires ETH on Fuel.  Please bridge or faucet ETH to Fuel before bridging ERC20 tokens.'
+      );
+      await closeTransactionPopup(page);
+      const assetDropdown = getByAriaLabel(page, 'Coin Selector');
+      await assetDropdown.click();
+      const ethAsset = getByAriaLabel(page, 'ETH symbol');
+      await ethAsset.click();
     });
   });
 });
