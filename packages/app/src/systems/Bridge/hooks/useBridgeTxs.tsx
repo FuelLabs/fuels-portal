@@ -21,7 +21,7 @@ const selectors = {
 export const useBridgeTxs = () => {
   const {
     hasWallet,
-    isConnected: isFuelConnected,
+    isConnected,
     isLoadingConnection,
     provider: fuelProvider,
     address: fuelAddress,
@@ -39,10 +39,6 @@ export const useBridgeTxs = () => {
 
   const paginatedBridgeTxs = bridgeTxs?.slice(0, amountTxsToShow);
   const hasMorePages = (bridgeTxs?.length || 0) > amountTxsToShow;
-
-  // TODO: remove this workaround when issue gets fixed. only isFuelConnected should be enough
-  // https://linear.app/fuel-network/issue/FRO-668/isconnected-returning-true-even-if-currentaccount-is-not-connected
-  const isConnected = isFuelConnected && !!fuelAddress?.toAddress();
 
   return {
     handlers: {
