@@ -1,13 +1,13 @@
 /* eslint-disable no-console */
 import { toast } from '@fuel-ui/react';
 import type { FuelWalletLocked as FuelWallet } from '@fuel-wallet/sdk';
-import {
-  type BN,
-  type Message as FuelMessage,
-  type Address as FuelAddress,
-  type Provider as FuelProvider,
-  type TransactionResult,
-  type MessageStatus,
+import type {
+  BN,
+  Message as FuelMessage,
+  Address as FuelAddress,
+  Provider as FuelProvider,
+  TransactionResult,
+  MessageStatus,
 } from 'fuels';
 import type { PublicClient } from 'wagmi';
 import type { FetchTokenResult } from 'wagmi/actions';
