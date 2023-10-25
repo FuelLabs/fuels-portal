@@ -1,4 +1,7 @@
-import type { Address } from 'fuels';
+import { bn } from 'fuels';
+import type { Address } from 'viem';
+
+import type { GetReceiptsInfoReturn } from '../services';
 
 const BLOCK_DATE_KEY_SUBSTRING = 'ethBlockDate-';
 const HASH_DONE_KEY_SUBSTRING = 'ethToFuelTx';
@@ -40,21 +43,59 @@ export const EthTxCache = {
   getTxIsCreated: (txId: string) => {
     return localStorage.getItem(generateTxCreatedKey(txId)) === 'true';
   },
-  setTxReceipt: (
-    txId: string,
-    receiptInfo: { nonce: string; recipient: Address }
-  ) => {
-    const stringifiedReceipt = JSON.stringify(receiptInfo);
+  setTxReceipt: (txId: string, receiptInfo: GetReceiptsInfoReturn) => {
+    const receiptInfoToStringify = {
+      ...receiptInfo,
+      erc20Token: receiptInfo.erc20Token && {
+        ...receiptInfo.erc20Token,
+        totalSupply: {
+          ...receiptInfo.erc20Token?.totalSupply,
+          value: receiptInfo.erc20Token?.totalSupply.value.toString(),
+        },
+      },
+      nonce: receiptInfo.nonce?.toString(),
+      amount: receiptInfo.amount?.toString(),
+      blockdate: receiptInfo.blockDate?.toUTCString(), // This is necessary bc stringyfing a Date type loses info
+    };
+    const stringifiedReceipt = JSON.stringify(receiptInfoToStringify);
     localStorage.setItem(generateTxReceiptKey(txId), stringifiedReceipt);
   },
-  getTxReceipt: (txId: string) => {
+  getTxReceipt: (txId: string): GetReceiptsInfoReturn | null => {
     const stringifiedReceipt = localStorage.getItem(generateTxReceiptKey(txId));
-    return !stringifiedReceipt
-      ? null
-      : (JSON.parse(stringifiedReceipt) as {
-          nonce: string;
-          recipient: Address;
-        });
+    if (!stringifiedReceipt) {
+      return null;
+    }
+    const parsedReceipt = JSON.parse(stringifiedReceipt) as Omit<
+      GetReceiptsInfoReturn,
+      'erc20Token' | 'nonce' | 'amount'
+    > & {
+      nonce: string;
+      amount: string;
+      erc20Token?: {
+        address: Address;
+        decimals: number;
+        name: string;
+        symbol: string;
+        totalSupply: {
+          formatted: string;
+          value: string;
+        };
+      };
+    };
+    const typedReceipt = {
+      ...parsedReceipt,
+      erc20Token: parsedReceipt.erc20Token && {
+        ...parsedReceipt.erc20Token,
+        totalSupply: {
+          ...parsedReceipt.erc20Token.totalSupply,
+          value: BigInt(parsedReceipt.erc20Token.totalSupply.value),
+        },
+      },
+      nonce: bn(parsedReceipt.nonce),
+      amount: bn(parsedReceipt.amount),
+      blockDate: new Date(parsedReceipt.blockDate!),
+    };
+    return typedReceipt;
   },
 };
 

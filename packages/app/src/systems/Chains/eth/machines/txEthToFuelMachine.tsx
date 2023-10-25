@@ -8,7 +8,6 @@ import {
   type Provider as FuelProvider,
   type TransactionResult,
   type MessageStatus,
-  bn,
 } from 'fuels';
 import type { PublicClient } from 'wagmi';
 import type { FetchTokenResult } from 'wagmi/actions';
@@ -366,10 +365,21 @@ export const txEthToFuelMachine = createMachine(
         }
       },
       setEthToFuelTxReceiptCached: (ctx) => {
-        if (ctx.ethTxId && ctx.ethTxNonce && ctx.fuelRecipient) {
+        if (
+          ctx.ethTxId &&
+          ctx.ethTxNonce &&
+          ctx.fuelRecipient &&
+          ctx.amount &&
+          ctx.ethDepositBlockHeight &&
+          ctx.blockDate
+        ) {
           EthTxCache.setTxReceipt(ctx.ethTxId, {
-            nonce: ctx.ethTxNonce.toString(),
+            erc20Token: ctx.erc20Token,
+            nonce: ctx.ethTxNonce,
+            amount: ctx.amount,
             recipient: ctx.fuelRecipient,
+            ethDepositBlockHeight: ctx.ethDepositBlockHeight,
+            blockDate: ctx.blockDate,
           });
         }
       },
@@ -379,8 +389,12 @@ export const txEthToFuelMachine = createMachine(
           throw new Error('No receipt');
         }
         return {
-          ethTxNonce: bn(receiptInfo.nonce),
+          erc20Token: receiptInfo.erc20Token,
+          ethTxNonce: receiptInfo.nonce,
+          amount: receiptInfo.amount,
           fuelRecipient: receiptInfo.recipient,
+          ethDepositBlockHeight: receiptInfo.ethDepositBlockHeight,
+          blockDate: receiptInfo.blockDate,
         };
       }),
     },
