@@ -7,6 +7,7 @@ import {
   FuelAccountConnection,
   isEthChain,
   isFuelChain,
+  useFuelAccountConnection,
 } from '~/systems/Chains';
 
 import { BridgeButton, BridgeTabs } from '../containers';
@@ -24,6 +25,7 @@ export const Bridge = () => {
     asset,
     handlers,
   } = useBridge();
+  const { balance } = useFuelAccountConnection();
 
   const fromControls = useAnimationControls();
   const toControls = useAnimationControls();
@@ -73,6 +75,14 @@ export const Bridge = () => {
               onClickAsset={handlers.openAssetsDialog}
             />
           </Box.Stack>
+          {isFuelChain(toNetwork) && balance?.eq(0) && !!ethAssetAddress && (
+            <Alert status="warning">
+              <Alert.Description>
+                You don&apos;t have any ETH on Fuel to pay for gas. We recommend
+                you bridge some ETH before you bridge any other assets.
+              </Alert.Description>
+            </Alert>
+          )}
           <BridgeButton />
           <Alert status="warning">
             <Alert.Description>
