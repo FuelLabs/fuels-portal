@@ -665,7 +665,7 @@ test.describe('Bridge', () => {
       await assetDropdown.click();
       const tknAsset = getByAriaLabel(page, 'TKN symbol');
       await tknAsset.click();
-      const preDepositBalanceEth = await erc20Contract.read.balanceOf([
+      const preDepositBalanceTkn = await erc20Contract.read.balanceOf([
         account.address,
       ]);
 
