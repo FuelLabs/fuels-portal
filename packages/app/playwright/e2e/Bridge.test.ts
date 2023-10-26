@@ -687,14 +687,14 @@ test.describe('Bridge', () => {
       // Check steps
       await page.locator(':nth-match(:text("Done"), 2)').waitFor();
 
-      const postDepositBalanceEth = await erc20Contract.read.balanceOf([
+      const postDepositBalanceTkn = await erc20Contract.read.balanceOf([
         account.address,
       ]);
 
       expect(
         parseFloat(
-          bn(preDepositBalanceEth.toString())
-            .sub(postDepositBalanceEth.toString())
+          bn(preDepositBalanceTkn.toString())
+            .sub(postDepositBalanceTkn.toString())
             .format({ precision: 6, units: 18 })
         )
       ).toBeCloseTo(parseFloat(depositAmount));
