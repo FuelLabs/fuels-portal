@@ -46,6 +46,7 @@ test.describe('Bridge', () => {
     await walletSetup(context, extensionId, page);
     await addAccount(context);
     await addAccount(context);
+    await addAccount(context);
     await switchAccount(context, 'Account 1');
     client = createPublicClient({
       chain: foundry,
@@ -90,7 +91,7 @@ test.describe('Bridge', () => {
       const connectFuel = getByAriaLabel(page, 'Connect Fuel Wallet');
       await connectFuel.click();
       await getByAriaLabel(page, 'Connect to Fuel Wallet', true).click();
-      await walletConnect(context, ['Account 2']);
+      await walletConnect(context, ['Account 2', 'Account 4']);
     });
 
     const INITIATE_DEPOSIT =
@@ -658,7 +659,7 @@ test.describe('Bridge', () => {
     });
 
     await test.step('Deposit TKN before Fuel wallet has ETH', async () => {
-      await switchAccount(context, 'Account 2');
+      await switchAccount(context, 'Account 4');
       await goToBridgePage(page);
       await clickDepositTab(page);
       const assetDropdown = getByAriaLabel(page, 'Coin Selector');
