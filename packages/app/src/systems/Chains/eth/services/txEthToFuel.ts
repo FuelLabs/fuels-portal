@@ -397,7 +397,7 @@ export class TxEthToFuelService {
             ZeroBytes32
         ) {
           throw new Error(
-            'ERC20 deposit requires ETH on Fuel.  Please bridge or faucet ETH to Fuel before bridging ERC20 tokens.'
+            'This transaction requires ETH on Fuel to pay for gas. Please faucet your wallet or bridge ETH.'
           );
         }
       }
