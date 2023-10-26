@@ -674,41 +674,56 @@ test.describe('Bridge', () => {
       const depositAmount = '1.12345';
       const depositInput = page.locator('input');
       await depositInput.fill(depositAmount);
-      const depositButton = getByAriaLabel(page, 'Deposit', true);
-      await depositButton.click();
 
-      // Timeout needed until https://github.com/Synthetixio/synpress/issues/795 is fixed
-      await page.waitForTimeout(7500);
-      await metamask.confirmPermissionToSpend();
-      await metamask.confirmTransaction();
-
-      await page.locator(':nth-match(:text("Done"), 1)').waitFor();
-      await hasText(page, INITIATE_DEPOSIT);
-
-      // Check steps
-      await page.locator(':nth-match(:text("Done"), 2)').waitFor();
-
-      const postDepositBalanceTkn = await erc20Contract.read.balanceOf([
-        account.address,
-      ]);
-
-      expect(
-        parseFloat(
-          bn(preDepositBalanceTkn.toString())
-            .sub(postDepositBalanceTkn.toString())
-            .format({ precision: 6, units: 18 })
-        )
-      ).toBeCloseTo(parseFloat(depositAmount));
-
-      const confirmTransactionButton = page.getByRole('button', {
-        name: 'Confirm Transaction',
+      await test.step('Test deposit alert', async () => {
+        // Test alert
+        await hasText(
+          page,
+          "You don't have any ETH on Fuel to pay for gas. We recommend you bridge some ETH before you bridge any other assets."
+        );
+        const bridgeButton = getByAriaLabel(page, 'Bridge asset anyway');
+        await expect(bridgeButton).toHaveText('Bridge asset anyway', {
+          useInnerText: true,
+        });
       });
-      await confirmTransactionButton.click();
 
-      await hasText(
-        page,
-        'This transaction requires ETH on Fuel to pay for gas. Please faucet your wallet or bridge ETH.'
-      );
+      await test.step('Test deposit toast error message', async () => {
+        const depositButton = getByAriaLabel(page, 'Bridge asset anyway', true);
+        await depositButton.click();
+
+        // Timeout needed until https://github.com/Synthetixio/synpress/issues/795 is fixed
+        await page.waitForTimeout(7500);
+        await metamask.confirmPermissionToSpend();
+        await metamask.confirmTransaction();
+
+        await page.locator(':nth-match(:text("Done"), 1)').waitFor();
+        await hasText(page, INITIATE_DEPOSIT);
+
+        // Check steps
+        await page.locator(':nth-match(:text("Done"), 2)').waitFor();
+
+        const postDepositBalanceTkn = await erc20Contract.read.balanceOf([
+          account.address,
+        ]);
+
+        expect(
+          parseFloat(
+            bn(preDepositBalanceTkn.toString())
+              .sub(postDepositBalanceTkn.toString())
+              .format({ precision: 6, units: 18 })
+          )
+        ).toBeCloseTo(parseFloat(depositAmount));
+
+        const confirmTransactionButton = page.getByRole('button', {
+          name: 'Confirm Transaction',
+        });
+        await confirmTransactionButton.click();
+
+        await hasText(
+          page,
+          'This transaction requires ETH on Fuel to pay for gas. Please faucet your wallet or bridge ETH.'
+        );
+      });
       await closeTransactionPopup(page);
     });
   });
