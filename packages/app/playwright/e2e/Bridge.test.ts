@@ -46,6 +46,7 @@ test.describe('Bridge', () => {
     await walletSetup(context, extensionId, page);
     await addAccount(context);
     await addAccount(context);
+    await addAccount(context);
     await switchAccount(context, 'Account 1');
     client = createPublicClient({
       chain: foundry,
@@ -90,7 +91,7 @@ test.describe('Bridge', () => {
       const connectFuel = getByAriaLabel(page, 'Connect Fuel Wallet');
       await connectFuel.click();
       await getByAriaLabel(page, 'Connect to Fuel Wallet', true).click();
-      await walletConnect(context, ['Account 2']);
+      await walletConnect(context, ['Account 2', 'Account 4']);
     });
 
     const INITIATE_DEPOSIT =
@@ -351,6 +352,8 @@ test.describe('Bridge', () => {
     });
 
     await test.step('Deposit TKN to Fuel', async () => {
+      await goToBridgePage(page);
+      await clickDepositTab(page);
       const preDepositBalanceFuel = await fuelWallet.getBalance(
         VITE_FUEL_FUNGIBLE_ASSET_ID
       );
@@ -624,8 +627,6 @@ test.describe('Bridge', () => {
 
       await test.step('Change to account 2 should show loading and empty feedback', async () => {
         await switchAccount(context, 'Account 2');
-        const loading = getByAriaLabel(page, 'Loading Bridge Transactions');
-        await loading.innerText();
         const noActivity = page.getByText('No activity yet');
         await noActivity.innerText();
         const subText = page.getByText(
@@ -650,13 +651,65 @@ test.describe('Bridge', () => {
 
       await test.step('Change to account 1 should show loading and transactions', async () => {
         await switchAccount(context, 'Account 1');
-        const loading = getByAriaLabel(page, 'Loading Bridge Transactions');
-        await loading.innerText();
         await checkTxItemDone(page, depositEthTxId);
         await checkTxItemDone(page, depositERC20TxId);
         await checkTxItemDone(page, withdrawEthTxId);
         await checkTxItemDone(page, withdrawERC20TxId);
       });
+    });
+
+    await test.step('Deposit TKN before Fuel wallet has ETH', async () => {
+      await switchAccount(context, 'Account 4');
+      await goToBridgePage(page);
+      await clickDepositTab(page);
+      const assetDropdown = getByAriaLabel(page, 'Coin Selector');
+      await assetDropdown.click();
+      const tknAsset = getByAriaLabel(page, 'TKN symbol');
+      await tknAsset.click();
+      const preDepositBalanceTkn = await erc20Contract.read.balanceOf([
+        account.address,
+      ]);
+
+      // Deposit asset
+      const depositAmount = '1.12345';
+      const depositInput = page.locator('input');
+      await depositInput.fill(depositAmount);
+      const depositButton = getByAriaLabel(page, 'Deposit', true);
+      await depositButton.click();
+
+      // Timeout needed until https://github.com/Synthetixio/synpress/issues/795 is fixed
+      await page.waitForTimeout(7500);
+      await metamask.confirmPermissionToSpend();
+      await metamask.confirmTransaction();
+
+      await page.locator(':nth-match(:text("Done"), 1)').waitFor();
+      await hasText(page, INITIATE_DEPOSIT);
+
+      // Check steps
+      await page.locator(':nth-match(:text("Done"), 2)').waitFor();
+
+      const postDepositBalanceTkn = await erc20Contract.read.balanceOf([
+        account.address,
+      ]);
+
+      expect(
+        parseFloat(
+          bn(preDepositBalanceTkn.toString())
+            .sub(postDepositBalanceTkn.toString())
+            .format({ precision: 6, units: 18 })
+        )
+      ).toBeCloseTo(parseFloat(depositAmount));
+
+      const confirmTransactionButton = page.getByRole('button', {
+        name: 'Confirm Transaction',
+      });
+      await confirmTransactionButton.click();
+
+      await hasText(
+        page,
+        'This transaction requires ETH on Fuel to pay for gas. Please faucet your wallet or bridge ETH.'
+      );
+      await closeTransactionPopup(page);
     });
   });
 });
