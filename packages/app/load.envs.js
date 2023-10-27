@@ -23,8 +23,16 @@ function getEnvName() {
 
 function getBridgeTokenContracts() {
   if (process.env.VITE_FUEL_CHAIN === 'fuelDev') {
+    // On the ci I was encountering issues
+    // with the erc20-deployer server not
+    // completely started before the e2e tests began
+    const IS_CI = !!process.env.CI;
     const { body } = retus('http://localhost:8082/deployments', {
       json: true,
+      retry: {
+        limit: IS_CI ? 5 : 2,
+        delay: IS_CI ? 15000 : 0,
+      },
     });
 
     return body;

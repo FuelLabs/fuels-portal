@@ -115,15 +115,13 @@ export async function walletConnect(
     await disconnectCurrenctAccountButton.click();
   }
 
-  await Promise.all(
-    accountNames.map(async (accountName) => {
-      const accountConnectionButton = getByAriaLabel(
-        walletPage,
-        accountName
-      ).getByRole('switch');
-      await accountConnectionButton.click();
-    })
-  );
+  for (const accountName of accountNames) {
+    const accountConnectionButton = getByAriaLabel(
+      walletPage,
+      `Toggle ${accountName}`
+    );
+    await accountConnectionButton.click();
+  }
 
   const nextButton = getButtonByText(walletPage, 'Next');
   await nextButton.click();
