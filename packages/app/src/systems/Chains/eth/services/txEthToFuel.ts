@@ -1,5 +1,15 @@
-import type { BN, Message, WalletUnlocked as FuelWallet } from 'fuels';
-import { Provider as FuelProvider, Address as FuelAddress, bn } from 'fuels';
+import type {
+  BN,
+  Message,
+  WalletUnlocked as FuelWallet,
+  TransactionResponse,
+} from 'fuels';
+import {
+  Provider as FuelProvider,
+  Address as FuelAddress,
+  bn,
+  ZeroBytes32,
+} from 'fuels';
 import type { WalletClient } from 'viem';
 import { decodeEventLog } from 'viem';
 import type { PublicClient } from 'wagmi';
@@ -366,15 +376,37 @@ export class TxEthToFuelService {
     // TODO: should use the fuelProvider from input when wallet gets updated with new SDK
     const provider = await FuelProvider.create(fuelWallet.provider.url);
     const { maxGasPerTx } = await provider.getGasConfig();
-    const txMessageRelayed = await relayCommonMessage({
-      relayer: fuelWallet,
-      message: fuelMessage,
-      txParams: { gasLimit: maxGasPerTx },
-    });
+    let txMessageRelayed: TransactionResponse | undefined;
+    try {
+      txMessageRelayed = await relayCommonMessage({
+        relayer: fuelWallet,
+        message: fuelMessage,
+        txParams: { gasLimit: maxGasPerTx },
+      });
+    } catch (err) {
+      if (err instanceof Error) {
+        const messageToParse = err.message.replace(
+          'not enough coins to fit the target:',
+          ''
+        );
+        const parsedMessage = JSON.parse(messageToParse);
+        if (
+          parsedMessage.response.errors[0].message ===
+            'not enough coins to fit the target' &&
+          parsedMessage.request.variables.queryPerAsset[0].assetId ===
+            ZeroBytes32
+        ) {
+          throw new Error(
+            'This transaction requires ETH on Fuel to pay for gas. Please faucet your wallet or bridge ETH.'
+          );
+        }
+      }
+      throw err;
+    }
 
-    const txMessageRelayedResult = await txMessageRelayed.waitForResult();
+    const txMessageRelayedResult = await txMessageRelayed?.waitForResult();
 
-    if (txMessageRelayedResult.status !== 'success') {
+    if (txMessageRelayedResult?.status !== 'success') {
       throw new Error('Failed to relay message on Fuel');
     }
   }

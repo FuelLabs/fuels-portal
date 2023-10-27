@@ -16,6 +16,8 @@ import {
   walletApprove,
   walletConnect,
   hasText,
+  addAccount,
+  switchAccount,
 } from '../commons';
 import { ETH_MNEMONIC, FUEL_MNEMONIC } from '../mocks';
 
@@ -28,6 +30,7 @@ import {
   goToBridgePage,
   goToTransactionsPage,
   hasDropdownSymbol,
+  proceedAnyways,
 } from './utils/bridge';
 
 const { FUEL_PROVIDER_URL, VITE_ETH_ERC20, VITE_FUEL_FUNGIBLE_ASSET_ID } =
@@ -41,6 +44,10 @@ test.describe('Bridge', () => {
 
   test.beforeEach(async ({ context, extensionId, page }) => {
     await walletSetup(context, extensionId, page);
+    await addAccount(context);
+    await addAccount(context);
+    await addAccount(context);
+    await switchAccount(context, 'Account 1');
     client = createPublicClient({
       chain: foundry,
       transport: http(),
@@ -83,8 +90,8 @@ test.describe('Bridge', () => {
       // Connect fuel
       const connectFuel = getByAriaLabel(page, 'Connect Fuel Wallet');
       await connectFuel.click();
-      await getByAriaLabel(page, 'Connect to Fuel Wallet').click();
-      await walletConnect(context);
+      await getByAriaLabel(page, 'Connect to Fuel Wallet', true).click();
+      await walletConnect(context, ['Account 2', 'Account 4']);
     });
 
     const INITIATE_DEPOSIT =
@@ -109,7 +116,7 @@ test.describe('Bridge', () => {
         await hasDropdownSymbol(page, 'ETH');
         const depositInput = page.locator('input');
         await depositInput.fill(DEPOSIT_AMOUNT);
-        const depositButton = getByAriaLabel(page, 'Deposit');
+        const depositButton = getByAriaLabel(page, 'Deposit', true);
         await depositButton.click();
       });
 
@@ -255,21 +262,7 @@ test.describe('Bridge', () => {
         // For some reason we need this even if we wait for load state on the metamask notification page
         await page.waitForTimeout(3000);
 
-        let metamaskNotificationPage = context
-          .pages()
-          .find((p) => p.url().includes('notification'));
-        if (!metamaskNotificationPage) {
-          metamaskNotificationPage = await context.waitForEvent('page', {
-            predicate: (page) => page.url().includes('notification'),
-          });
-        }
-        const proceedAnyways = metamaskNotificationPage.getByText(
-          'I want to proceed anyway'
-        );
-        const count = await proceedAnyways.count();
-        if (count) {
-          await proceedAnyways.click();
-        }
+        await proceedAnyways(context);
 
         // Timeout needed until https://github.com/Synthetixio/synpress/issues/795 is fixed
         await page.waitForTimeout(10000);
@@ -359,6 +352,8 @@ test.describe('Bridge', () => {
     });
 
     await test.step('Deposit TKN to Fuel', async () => {
+      await goToBridgePage(page);
+      await clickDepositTab(page);
       const preDepositBalanceFuel = await fuelWallet.getBalance(
         VITE_FUEL_FUNGIBLE_ASSET_ID
       );
@@ -370,7 +365,7 @@ test.describe('Bridge', () => {
       await test.step('Fill data and click on deposit', async () => {
         await hasDropdownSymbol(page, 'TKN');
         // Deposit asset
-        const depositButton = getByAriaLabel(page, 'Deposit');
+        const depositButton = getByAriaLabel(page, 'Deposit', true);
 
         const depositInput = page.locator('input');
         await depositInput.fill(DEPOSIT_AMOUNT);
@@ -552,21 +547,7 @@ test.describe('Bridge', () => {
         // For some reason we need this even if we wait for load state on the metamask notification page
         await page.waitForTimeout(3000);
 
-        let metamaskNotificationPage = context
-          .pages()
-          .find((p) => p.url().includes('notification'));
-        if (!metamaskNotificationPage) {
-          metamaskNotificationPage = await context.waitForEvent('page', {
-            predicate: (page) => page.url().includes('notification'),
-          });
-        }
-        const proceedAnyways = metamaskNotificationPage.getByText(
-          'I want to proceed anyway'
-        );
-        const count = await proceedAnyways.count();
-        if (count) {
-          await proceedAnyways.click();
-        }
+        await proceedAnyways(context);
 
         // Timeout needed until https://github.com/Synthetixio/synpress/issues/795 is fixed
         await page.waitForTimeout(5000);
@@ -639,6 +620,96 @@ test.describe('Bridge', () => {
 
       expect(addressAfterRefresh).toEqual(address);
       expect(balanceTextAfterRefresh).toEqual(balanceText);
+    });
+
+    await test.step('Check if transaction list reacts correctly to fuel wallet changes', async () => {
+      await goToTransactionsPage(page);
+
+      await test.step('Change to account 2 should show loading and empty feedback', async () => {
+        await switchAccount(context, 'Account 2');
+        const noActivity = page.getByText('No activity yet');
+        await noActivity.innerText();
+        const subText = page.getByText(
+          "When you make a transaction you'll see it here"
+        );
+        await subText.innerText();
+      });
+
+      await test.step('Change to account 3 should show connect, but not loading', async () => {
+        await switchAccount(context, 'Account 3');
+        const loading = getByAriaLabel(page, 'Loading Bridge Transactions');
+        expect(await loading.count()).toBe(0);
+        const notDetected = page.getByText('Wallet not detected');
+        await notDetected.innerText();
+        const subText = page.getByText(
+          'Connect a wallet to see your transactions'
+        );
+        await subText.innerText();
+        const connectButton = getButtonByText(page, 'Connect Fuel Wallet');
+        expect(await connectButton.count()).toBe(1);
+      });
+
+      await test.step('Change to account 1 should show loading and transactions', async () => {
+        await switchAccount(context, 'Account 1');
+        await checkTxItemDone(page, depositEthTxId);
+        await checkTxItemDone(page, depositERC20TxId);
+        await checkTxItemDone(page, withdrawEthTxId);
+        await checkTxItemDone(page, withdrawERC20TxId);
+      });
+    });
+
+    await test.step('Deposit TKN before Fuel wallet has ETH', async () => {
+      await switchAccount(context, 'Account 4');
+      await goToBridgePage(page);
+      await clickDepositTab(page);
+      const assetDropdown = getByAriaLabel(page, 'Coin Selector');
+      await assetDropdown.click();
+      const tknAsset = getByAriaLabel(page, 'TKN symbol');
+      await tknAsset.click();
+      const preDepositBalanceTkn = await erc20Contract.read.balanceOf([
+        account.address,
+      ]);
+
+      // Deposit asset
+      const depositAmount = '1.12345';
+      const depositInput = page.locator('input');
+      await depositInput.fill(depositAmount);
+      const depositButton = getByAriaLabel(page, 'Deposit', true);
+      await depositButton.click();
+
+      // Timeout needed until https://github.com/Synthetixio/synpress/issues/795 is fixed
+      await page.waitForTimeout(7500);
+      await metamask.confirmPermissionToSpend();
+      await metamask.confirmTransaction();
+
+      await page.locator(':nth-match(:text("Done"), 1)').waitFor();
+      await hasText(page, INITIATE_DEPOSIT);
+
+      // Check steps
+      await page.locator(':nth-match(:text("Done"), 2)').waitFor();
+
+      const postDepositBalanceTkn = await erc20Contract.read.balanceOf([
+        account.address,
+      ]);
+
+      expect(
+        parseFloat(
+          bn(preDepositBalanceTkn.toString())
+            .sub(postDepositBalanceTkn.toString())
+            .format({ precision: 6, units: 18 })
+        )
+      ).toBeCloseTo(parseFloat(depositAmount));
+
+      const confirmTransactionButton = page.getByRole('button', {
+        name: 'Confirm Transaction',
+      });
+      await confirmTransactionButton.click();
+
+      await hasText(
+        page,
+        'This transaction requires ETH on Fuel to pay for gas. Please faucet your wallet or bridge ETH.'
+      );
+      await closeTransactionPopup(page);
     });
   });
 });
