@@ -354,8 +354,8 @@
     "tags": ["Infrastructure Tooling or Platform", "Wallet"],
     "description": "With the Fuel Wallet, you can explore DApps and manage your crypto assets, all in one place.",
     "github": "https://github.com/fuellabs/fuels-wallet",
-    "twitter": "",
-    "discord": "",
+    "twitter": "https://twitter.com/fuel_network",
+    "discord": "https://discord.gg/fuelnetwork",
     "image": "fuelwallet",
     "status": ["Building", "Beta-4"]
   },
@@ -381,6 +381,30 @@
     "twitter": "https://twitter.com/zap_infra",
     "discord": "",
     "image": "zap",
+    "status": ["Building"]
+  },
+  {
+    "isLive": false,
+    "name": "LearnWeb3",
+    "url": "https://learnweb3.io/",
+    "tags": ["Education"],
+    "description": "LearnWeb3 is the leading platform to upskill yourself with next-gen technologies for free proudly teaching 100k+ students without barriers!",
+    "github": "https://github.com/LearnWeb3DAO",
+    "twitter": "https://twitter.com/LearnWeb3DAO",
+    "discord": "https://discord.gg/learnweb3",
+    "image": "learnweb3",
+    "status": ["Building", "Beta-4"]
+  },
+  {
+    "isLive": false,
+    "name": "Guild",
+    "url": "https://guild.xyz",
+    "tags": ["Infrastructure Tooling or Platform"],
+    "description": "Automated membership management for the platforms your community already uses.",
+    "github": "https://github.com/agoraxyz/guild.xyz",
+    "twitter": "https://twitter.com/guildxyz",
+    "discord": "https://discord.gg/guildxyz",
+    "image": "guildxyz",
     "status": ["Building"]
   }
 ]
