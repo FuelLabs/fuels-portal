@@ -42,7 +42,7 @@ export const useFuelAccountConnection = (props?: { assetId?: string }) => {
 
     fuel?.addAsset({
       assetId,
-      imageUrl: icon,
+      imageUrl: !icon ? undefined : icon,
       symbol,
       decimals,
       name,
