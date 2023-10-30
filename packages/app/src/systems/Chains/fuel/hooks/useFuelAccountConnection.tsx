@@ -7,7 +7,6 @@ import {
   useWallet,
   useConnector,
   useFuel,
-  useAccounts,
 } from '@fuel-wallet/react';
 import { Address } from 'fuels';
 import { useMemo } from 'react';
@@ -25,8 +24,7 @@ export const useFuelAccountConnection = (props?: { assetId?: string }) => {
     assetId,
   });
   const { hasWallet } = useHasFuelWallet();
-  const { isConnected, isLoading: isLoadingConnection } = useIsConnected();
-  const { accounts } = useAccounts();
+  const { isLoading: isLoadingConnection } = useIsConnected();
   const { connect, error, isConnecting } = useConnector();
   const { disconnect } = useDisconnect();
   const { provider } = useProvider();
@@ -42,7 +40,7 @@ export const useFuelAccountConnection = (props?: { assetId?: string }) => {
 
     fuel?.addAsset({
       assetId,
-      imageUrl: !icon ? undefined : icon,
+      imageUrl: icon ?? undefined,
       symbol,
       decimals,
       name,
@@ -58,7 +56,7 @@ export const useFuelAccountConnection = (props?: { assetId?: string }) => {
     },
     account,
     address,
-    isConnected: isConnected && accounts?.includes(account || ''),
+    isConnected: !!account,
     error,
     hasWallet,
     isLoadingConnection,
