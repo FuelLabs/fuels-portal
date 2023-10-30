@@ -162,8 +162,8 @@ importers:
         specifier: 0.21.1
         version: 0.21.1(@types/react-dom@18.2.14)(@types/react@18.2.29)(csstype@3.1.2)
       '@fuel-wallet/react':
-        specifier: master
-        version: 0.13.6-master-6483dc7(@fuel-ui/css@0.21.1)(@fuel-ui/react@0.21.1)(dexie@3.2.4)(fuels@0.63.0)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 0.13.4
+        version: 0.13.4(@fuel-ui/css@0.21.1)(@fuel-ui/react@0.21.1)(dexie@3.2.4)(fuels@0.63.0)(react-dom@18.2.0)
       '@fuel-wallet/sdk':
         specifier: 0.13.4
         version: 0.13.4(dexie@3.2.4)(fuels@0.63.0)
@@ -3517,21 +3517,16 @@ packages:
       - immer
     dev: false
 
-  /@fuel-wallet/react@0.13.6-master-6483dc7(@fuel-ui/css@0.21.1)(@fuel-ui/react@0.21.1)(dexie@3.2.4)(fuels@0.63.0)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-X2TWux710RInEmFLkXfcCR5G/OkBEt6Ys/T4mC+grMFn1jhAF0pTjvjN98yBzmwxCK3I4sCb5VqmeLThpVLgNA==}
+  /@fuel-wallet/react@0.13.4(@fuel-ui/css@0.21.1)(@fuel-ui/react@0.21.1)(dexie@3.2.4)(fuels@0.63.0)(react-dom@18.2.0):
+    resolution: {integrity: sha512-CsZYH4AFKr+/sjD39UBVaAeeWDGICGndXXTRZF56IhMOTpWmKwOKs1mtFkee4feFv+qZElMY/lGeL9sGPM6PZg==}
     peerDependencies:
       '@fuel-ui/css': 0.21.1
       '@fuel-ui/react': 0.21.1
       fuels: '>=0.63.0'
-      react: '*'
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       '@fuel-ui/css': 0.21.1
       '@fuel-ui/react': 0.21.1(@types/react-dom@18.2.14)(@types/react@18.2.29)(csstype@3.1.2)
-      '@fuel-wallet/sdk': 0.13.6-master-6483dc7(dexie@3.2.4)(fuels@0.63.0)
-      '@fuel-wallet/types': 0.13.6-master-6483dc7(dexie@3.2.4)(fuels@0.63.0)
+      '@fuel-wallet/sdk': 0.13.4(dexie@3.2.4)(fuels@0.63.0)
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0)(react@18.2.0)
       compare-versions: 6.1.0
       fuels: 0.63.0
@@ -3554,35 +3549,6 @@ packages:
       json-rpc-2.0: 1.6.0
       uuid: 9.0.1
       xstate: 4.38.2
-    transitivePeerDependencies:
-      - dexie
-    dev: false
-
-  /@fuel-wallet/sdk@0.13.6-master-6483dc7(dexie@3.2.4)(fuels@0.63.0):
-    resolution: {integrity: sha512-GWyeNf1oaWAm8q3CC3mrGHFyyBImKKwQXmyy7kIdJbNU5M8npIuCkZNBstrzyIyx97cygKsp+8cFH4ydfBc2jg==}
-    peerDependencies:
-      fuels: '>=0.63.0'
-    dependencies:
-      '@fuel-wallet/types': 0.13.6-master-6483dc7(dexie@3.2.4)(fuels@0.63.0)
-      dexie-observable: 4.0.1-beta.13(dexie@3.2.4)
-      events: 3.3.0
-      fuels: 0.63.0
-      json-rpc-2.0: 1.6.0
-      uuid: 9.0.1
-      xstate: 4.38.2
-    transitivePeerDependencies:
-      - dexie
-    dev: false
-
-  /@fuel-wallet/types@0.13.6-master-6483dc7(dexie@3.2.4)(fuels@0.63.0):
-    resolution: {integrity: sha512-3PtrNusG1IhNmf+Kmn0z9rr3KBLnPLbZFdtq19kfDYYwGPt4QOpy9frVl6To8rFK83kOM30IEgK8rzQNrMZCKg==}
-    peerDependencies:
-      fuels: '>=0.63.0'
-    dependencies:
-      '@types/chrome': 0.0.246
-      dexie-observable: 4.0.1-beta.13(dexie@3.2.4)
-      fuels: 0.63.0
-      json-rpc-2.0: 1.6.0
     transitivePeerDependencies:
       - dexie
     dev: false
@@ -11092,7 +11058,7 @@ packages:
       isomorphic-fetch: 3.0.0
       prettier: 2.8.8
       xstate: 4.38.2
-      xstate-beta: /xstate@5.0.0-beta.38
+      xstate-beta: /xstate@5.0.0-beta.36
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -25144,8 +25110,8 @@ packages:
     resolution: {integrity: sha512-zHwbY2d2GGrsIySUCybrlq6YAPGM20yKpvliroDqfSbwa255Z1d7RYLkbbxiLx8SnEwDpWVple7JTXkjOw3JLA==}
     dev: true
 
-  /xstate@5.0.0-beta.38:
-    resolution: {integrity: sha512-8hOXlbfcbLbSFgX20E0mwPPImFPtnRG+NhkupB9TtfYaPk7HyHi4BSDdN7gpoyBbvDm5VbqRwYVquR58WbhCVA==}
+  /xstate@5.0.0-beta.36:
+    resolution: {integrity: sha512-pjnO9mllbJb9g9OPDwfXR6mR1mnwiXlWckD4CWChBN+Sb8Qc9OhhiTUN9MyxINKxIruSvjMokLVtSb/k9GfvCQ==}
     dev: true
 
   /xtend@4.0.2:
