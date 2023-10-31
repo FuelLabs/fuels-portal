@@ -1,10 +1,13 @@
 import { cssObj } from '@fuel-ui/css';
 import { Text, Box, Heading, Input, Icon } from '@fuel-ui/react';
+import { useState } from 'react';
 import { Layout, animations } from '~/systems/Core';
 
 import { EcosystemTags } from '../components/EcosystemTags';
+import { ProjectDetailPanel } from '../components/ProjectDetailPanel';
 import { ProjectList } from '../components/ProjectList/ProjectList';
 import { useEcosystem } from '../hooks/useEcosystem';
+import type { Project } from '../types';
 
 export function Ecosystem() {
   const { tags, isLoading, filter, search, handlers, filteredProjects } =
@@ -21,6 +24,17 @@ export function Ecosystem() {
   const emptyText = search?.length
     ? 'No results found for your search.'
     : undefined;
+
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const handleProjectSelect = (project: Project) => {
+    console.log('Project selected:', project);
+    setSelectedProject(project);
+  };
+
+  const handleClosePanel = () => {
+    console.log('Closing panel');
+    setSelectedProject(null);
+  };
 
   return (
     <Layout {...animations.slideInTop()}>
@@ -57,7 +71,14 @@ export function Ecosystem() {
             isLoading={isLoading}
             projects={filteredProjects || []}
             emptyText={emptyText}
+            onSelect={handleProjectSelect}
           />
+          {selectedProject && (
+            <ProjectDetailPanel
+              project={selectedProject}
+              onClose={handleClosePanel}
+            />
+          )}
         </Box.Stack>
       </Layout.Content>
     </Layout>

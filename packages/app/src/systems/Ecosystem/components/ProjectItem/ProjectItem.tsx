@@ -21,6 +21,7 @@ const MotionCard = motion(Card);
 
 export type ProjectItemProps = Project & {
   onPress?: () => void;
+  onSelect?: (project: Project) => void;
 };
 
 type ProjectItemComponent = FC<ProjectItemProps> & {
@@ -37,9 +38,24 @@ export const ProjectItem: ProjectItemComponent = ({
   status,
   github,
   isLive,
+  onSelect,
+  tags,
 }: ProjectItemProps) => {
   const onCardPress = () => {
-    window.open(url, '_blank');
+    if (onSelect) {
+      onSelect({
+        name,
+        description,
+        image,
+        url,
+        twitter,
+        discord,
+        status,
+        github,
+        isLive,
+        tags,
+      });
+    }
   };
 
   return (

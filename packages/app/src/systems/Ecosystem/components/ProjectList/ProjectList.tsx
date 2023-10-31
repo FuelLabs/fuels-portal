@@ -11,6 +11,7 @@ type ProjectListProps = {
   projects: Project[];
   isLoading?: boolean;
   emptyText?: string;
+  onSelect?: (project: Project) => void;
 };
 
 export const ProjectList = ({
@@ -18,6 +19,9 @@ export const ProjectList = ({
   isLoading,
   emptyText,
 }: ProjectListProps) => {
+  const onSelect = (_project: Project) => {
+    // Do something with the selected project
+  };
   if (isLoading) return <ProjectList.Loading />;
   const isEmpty = projects.length === 0;
 
@@ -25,7 +29,7 @@ export const ProjectList = ({
   return (
     <Grid css={styles.grid}>
       {projects.map((project) => (
-        <ProjectItem {...project} key={project.url} />
+        <ProjectItem key={project.name} {...project} onSelect={onSelect} />
       ))}
     </Grid>
   );
