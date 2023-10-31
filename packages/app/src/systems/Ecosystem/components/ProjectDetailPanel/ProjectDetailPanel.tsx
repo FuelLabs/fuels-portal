@@ -23,6 +23,7 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
         height: '100%',
         width: '300px',
         backgroundColor: '#fff',
+        zIndex: 9999,
       }}
     >
       <button onClick={onClose}>Close</button>

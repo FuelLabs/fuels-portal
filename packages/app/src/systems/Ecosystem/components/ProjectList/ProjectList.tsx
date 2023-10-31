@@ -18,10 +18,8 @@ export const ProjectList = ({
   projects,
   isLoading,
   emptyText,
+  onSelect,
 }: ProjectListProps) => {
-  const onSelect = (_project: Project) => {
-    // Do something with the selected project
-  };
   if (isLoading) return <ProjectList.Loading />;
   const isEmpty = projects.length === 0;
 
