@@ -5,9 +5,10 @@ import { useState } from 'react';
 type ProjecImageProps = {
   name: string;
   image?: string;
+  style?: React.CSSProperties;
 };
 
-export const ProjecImage = ({ name, image }: ProjecImageProps) => {
+export const ProjecImage = ({ name, image, style }: ProjecImageProps) => {
   const [imageFallback, setImageFallback] = useState(false);
 
   return (
@@ -18,6 +19,7 @@ export const ProjecImage = ({ name, image }: ProjecImageProps) => {
           alt={name}
           width={40}
           height={40}
+          style={style}
           onError={() => {
             setImageFallback(true);
           }}
