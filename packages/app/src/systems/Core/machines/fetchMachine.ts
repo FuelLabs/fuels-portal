@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { toast } from '@fuel-ui/react';
+import Bottleneck from '@thellimist/bottleneck';
 import type { TransitionConfig } from 'xstate';
 import { assign, createMachine } from 'xstate';
 
@@ -24,6 +25,9 @@ export type CreateFetchMachineOpts<I, R> = {
   maxAttempts?: number;
   fetch: (ctx: MachineContext<I>) => Promise<R>;
 };
+
+// 100ms delay = 10 req/s
+const limiter = new Bottleneck({ minTime: 100 });
 
 const MAX_ATTEMPTS = 3;
 
@@ -125,7 +129,7 @@ export const FetchMachine = {
           },
         },
         services: {
-          fetch: opts.fetch,
+          fetch: limiter.wrap(opts.fetch),
         },
       }
     );

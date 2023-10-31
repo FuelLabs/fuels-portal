@@ -179,6 +179,9 @@ importers:
       '@tanstack/react-query':
         specifier: ^4.36.1
         version: 4.36.1(react-dom@18.2.0)(react@18.2.0)
+      '@thellimist/bottleneck':
+        specifier: ^2.19.8
+        version: 2.19.8
       '@xstate/react':
         specifier: ^3.2.1
         version: 3.2.2(@types/react@18.2.29)(react@18.2.0)(xstate@4.38.2)
@@ -315,6 +318,9 @@ importers:
       adm-zip:
         specifier: ^0.5.10
         version: 0.5.10
+      bottleneck:
+        specifier: link:@types/@thellimist/bottleneck
+        version: link:@types/@thellimist/bottleneck
       jdown:
         specifier: ^1.0.5
         version: 1.0.5
@@ -9586,6 +9592,10 @@ packages:
       '@testing-library/dom': 9.3.3
     dev: true
 
+  /@thellimist/bottleneck@2.19.8:
+    resolution: {integrity: sha512-sDJcqJWZn59NVumEnCKZedXg0PQ+SjAIEVuJGb4GZv4QRlfr55/MiYadaoUhX1KUtNnSEBF0HX7W0nNpP7okhA==}
+    dev: false
+
   /@tootallnate/once@2.0.0:
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
     engines: {node: '>= 10'}
@@ -11058,7 +11068,7 @@ packages:
       isomorphic-fetch: 3.0.0
       prettier: 2.8.8
       xstate: 4.38.2
-      xstate-beta: /xstate@5.0.0-beta.36
+      xstate-beta: /xstate@5.0.0-beta.38
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -25110,8 +25120,8 @@ packages:
     resolution: {integrity: sha512-zHwbY2d2GGrsIySUCybrlq6YAPGM20yKpvliroDqfSbwa255Z1d7RYLkbbxiLx8SnEwDpWVple7JTXkjOw3JLA==}
     dev: true
 
-  /xstate@5.0.0-beta.36:
-    resolution: {integrity: sha512-pjnO9mllbJb9g9OPDwfXR6mR1mnwiXlWckD4CWChBN+Sb8Qc9OhhiTUN9MyxINKxIruSvjMokLVtSb/k9GfvCQ==}
+  /xstate@5.0.0-beta.38:
+    resolution: {integrity: sha512-8hOXlbfcbLbSFgX20E0mwPPImFPtnRG+NhkupB9TtfYaPk7HyHi4BSDdN7gpoyBbvDm5VbqRwYVquR58WbhCVA==}
     dev: true
 
   /xtend@4.0.2:
