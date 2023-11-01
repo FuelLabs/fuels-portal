@@ -4,7 +4,7 @@ import type { ActorRefFrom, InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine, spawn } from 'xstate';
 import { isEthChain, isFuelChain, txFuelToEthMachine } from '~/systems/Chains';
 import { txEthToFuelMachine } from '~/systems/Chains/eth/machines';
-import { FetchMachine } from '~/systems/Core';
+import { FetchMachine, delay } from '~/systems/Core';
 
 import { BridgeService, type BridgeInputs } from '../services';
 import type { BridgeTx } from '../types';
@@ -228,6 +228,11 @@ export const bridgeTxsMachine = createMachine(
           if (!input) {
             throw new Error('No input to bridge');
           }
+
+          // Enforce a minimum delay to show the loading state
+          // this creates a better experience for the user as the
+          // screen doesn't flash between states
+          await delay(250);
 
           const txs = await BridgeService.fetchTxs(input);
 
