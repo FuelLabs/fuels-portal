@@ -406,5 +406,29 @@
     "discord": "https://discord.gg/guildxyz",
     "image": "guildxyz",
     "status": ["Building"]
+  },
+  {
+    "isLive": false,
+    "name": "Frank",
+    "url": "https://fuelstat.xyz/frank/",
+    "tags": ["Infrastructure Tooling or Platform"],
+    "description": "Frank (Fuel Rank) is a tool for you to track and analyze your interactions with the Fuel blockchain.",
+    "github": "https://github.com/fuelet",
+    "twitter": "https://twitter.com/FueletWallet",
+    "discord": "https://discord.gg/fueletwallet",
+    "image": "frank",
+    "status": ["Beta-4"]
+  },
+  {
+    "isLive": false,
+    "name": "Fuelstat",
+    "url": "https://fuelstat.xyz/",
+    "tags": ["Infrastructure Tooling or Platform"],
+    "description": "FuelStat is a Fuel analytics platform to check out the latest data on Fuel accounts, transactions, and volume.",
+    "github": "https://github.com/fuelet",
+    "twitter": "https://twitter.com/FueletWallet",
+    "discord": "https://discord.gg/fueletwallet",
+    "image": "fuelstat",
+    "status": ["Beta-4"]
   }
 ]
