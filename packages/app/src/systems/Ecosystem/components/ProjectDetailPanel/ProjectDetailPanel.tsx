@@ -58,8 +58,8 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
           top: 0,
           height: '100%',
           width: '50%',
-          backgroundColor: '#fff',
-          boxShadow: '-2px 0px 5px rgba(0, 0, 0, 0.1)',
+          backgroundColor: '#000000',
+          boxShadow: '-5px 0px 15px rgba(0, 245, 140, 0.7)',
           padding: '30px',
           overflowY: 'auto',
           zIndex: 1000,
@@ -68,7 +68,7 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
         }}
       >
         <Box style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Tag leftIconAriaLabel="close" variant="ghost" onClick={onClose}>
+          <Tag rightIconAriaLabel="close" variant="outlined" onClick={onClose}>
             Close
             <TagCloseButton />
           </Tag>
@@ -82,20 +82,22 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
             height: '90px',
             borderRadius: '12px',
             overflow: 'hidden',
-            //marginBottom: '20px',
-            border: '2px solid #000',
+            marginBottom: '20px',
+            border: '1px solid #FFFFFF',
           }}
         >
-          <ProjecImage
-            name={project.name}
-            image={project.image}
+          <div
             style={{
-              width: '100px',
-              height: '100px',
-              objectFit: 'contain',
-              objectPosition: 'center',
+              position: 'relative',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingTop: '5px',
+              transform: 'scale(2.3)', // Adjust the scale factor as needed
             }}
-          />
+          >
+            <ProjecImage name={project.name} image={project.image} />
+          </div>
         </Box>
 
         <h2 style={{ fontSize: '24px', marginBottom: '10px' }}>
