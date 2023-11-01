@@ -53,13 +53,15 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
       <div
         ref={panelRef}
         style={{
+          flexDirection: 'column',
+          alignItems: 'start',
           position: 'fixed',
           right: 0,
           top: 0,
           height: '100%',
           width: '50%',
           backgroundColor: '#000000',
-          boxShadow: '-5px 0px 15px rgba(0, 245, 140, 0.7)',
+          boxShadow: '-15px 0px 15px rgba(0, 245, 140, 0.4)',
           padding: '30px',
           overflowY: 'auto',
           zIndex: 1000,
@@ -67,12 +69,37 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
           transition: 'transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55)',
         }}
       >
-        <Box style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Tag rightIconAriaLabel="close" variant="outlined" onClick={onClose}>
-            Close
-            <TagCloseButton />
-          </Tag>
-        </Box>
+        <div
+          style={{
+            background: '#010101',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            height: '200px',
+            width: '100%',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            zIndex: 1,
+            //boxShadow: '0px 0px 75px rgba(0, 245, 140, 0.5)',
+            borderBottom: '1px solid #00F58C',
+          }}
+        >
+          <Box
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              position: 'fixed',
+              top: 15,
+              right: 15,
+              zIndex: 4,
+            }}
+          >
+            <Tag rightIconAriaLabel="close" variant="solid" onClick={onClose}>
+              Close
+              <TagCloseButton />
+            </Tag>
+          </Box>
+        </div>
         <Box
           style={{
             display: 'flex',
@@ -83,7 +110,11 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
             borderRadius: '12px',
             overflow: 'hidden',
             marginBottom: '20px',
+            position: 'relative',
+            top: '125px',
+            zIndex: 2,
             border: '1px solid #FFFFFF',
+            boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.6)',
           }}
         >
           <div
@@ -93,14 +124,21 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
               justifyContent: 'center',
               alignItems: 'center',
               paddingTop: '5px',
-              transform: 'scale(2.3)', // Adjust the scale factor as needed
+              transform: 'scale(240%)',
             }}
           >
             <ProjecImage name={project.name} image={project.image} />
           </div>
         </Box>
 
-        <h2 style={{ fontSize: '24px', marginBottom: '10px' }}>
+        <h2
+          style={{
+            fontSize: '24px',
+            position: 'relative',
+            marginTop: '150px',
+            marginBottom: '10px',
+          }}
+        >
           {project.name}
         </h2>
         <Box
@@ -109,6 +147,7 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
             gap: '10px',
             marginBottom: '20px',
             flexWrap: 'wrap',
+            position: 'relative',
           }}
         >
           {project.tags?.map((tag, index) => (
@@ -118,6 +157,7 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
               style={{
                 fontSize: 'small',
                 fontWeight: '500',
+                position: 'relative',
               }}
             >
               {tag}
