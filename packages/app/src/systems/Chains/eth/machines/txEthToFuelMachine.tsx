@@ -406,7 +406,12 @@ export const txEthToFuelMachine = createMachine(
         !!ctx.fuelAddress &&
         !!ctx.fuelProvider &&
         !!ctx.ethPublicClient,
-      isTxEthToFuelDone: (ctx) => EthTxCache.getTxIsDone(ctx.ethTxId || ''),
+      isTxEthToFuelDone: (ctx) => {
+        return (
+          EthTxCache.getTxIsDone(ctx.ethTxId || '') &&
+          !!EthTxCache.getTxReceipt(ctx.ethTxId || '')
+        );
+      },
       isMessageSpent: (ctx) => ctx.fuelMessageStatus?.state === 'SPENT',
       isMessageUnspentEth: (ctx) =>
         ctx.fuelMessageStatus?.state === 'UNSPENT' && !ctx.erc20Token,

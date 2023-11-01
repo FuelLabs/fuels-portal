@@ -627,6 +627,8 @@ test.describe('Bridge', () => {
 
       await test.step('Change to account 2 should show loading and empty feedback', async () => {
         await switchAccount(context, 'Account 2');
+        const loading = getByAriaLabel(page, 'Loading Bridge Transactions');
+        await loading.innerText();
         const noActivity = page.getByText('No activity yet');
         await noActivity.innerText();
         const subText = page.getByText(
@@ -651,6 +653,8 @@ test.describe('Bridge', () => {
 
       await test.step('Change to account 1 should show loading and transactions', async () => {
         await switchAccount(context, 'Account 1');
+        const loading = getByAriaLabel(page, 'Loading Bridge Transactions');
+        await loading.innerText();
         await checkTxItemDone(page, depositEthTxId);
         await checkTxItemDone(page, depositERC20TxId);
         await checkTxItemDone(page, withdrawEthTxId);
