@@ -95,6 +95,7 @@ export const bridgeMachine = createMachine(
               fuelWallet: ev.input.fuelWallet,
               ethAddress: ev.input.ethAddress,
               fuelAsset: ev.input.fuelAsset,
+              fuelProvider: ev.input.fuelProvider,
             }),
           },
           onDone: [

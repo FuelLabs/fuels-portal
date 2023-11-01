@@ -1,4 +1,3 @@
-import type { FuelWalletLocked } from '@fuel-wallet/sdk';
 import type { BN } from 'fuels';
 import { bn, DECIMAL_UNITS } from 'fuels';
 import { useEffect, useMemo } from 'react';
@@ -96,6 +95,7 @@ export function useBridge() {
     isConnecting: fuelIsConnecting,
     balance: fuelBalance,
     wallet: fuelWallet,
+    provider: fuelProvider,
   } = useFuelAccountConnection({
     assetId: fuelAssetAddress?.startsWith('0x')
       ? (fuelAssetAddress as `0x${string}`)
@@ -213,8 +213,8 @@ export function useBridge() {
         store.startBridging({
           fuelAddress,
           ethWalletClient,
-          // TODO: remove this workaround when we get versions organized and using the same version
-          fuelWallet: fuelWallet as unknown as FuelWalletLocked,
+          fuelWallet,
+          fuelProvider,
           ethAddress,
           asset,
           ethPublicClient,
