@@ -2,7 +2,7 @@ import type { FetchRequestOptions } from 'fuels';
 import { Provider } from 'fuels';
 
 let requestTimestamps: number[] = [];
-const maxRequestsPerSecond = 10;
+const maxRequestsPerSecond = 20;
 const waitTime = 1000; // 1 second in milliseconds
 
 export const rateLimitedFetch = async (
