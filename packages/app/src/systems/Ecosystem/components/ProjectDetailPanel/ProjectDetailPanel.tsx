@@ -62,10 +62,11 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
           width: '50%',
           backgroundColor: '#111111',
           //opacity: '0.95',
-          boxShadow: '-15px 0px 15px rgba(0, 245, 140, 0.4)',
+          boxShadow: '-5px 0px 15px rgba(0, 245, 140, 0.4)',
           padding: '30px',
           overflowY: 'auto',
           zIndex: 1000,
+          borderLeft: '1px solid #00F58C',
           transform: isPanelVisible ? 'translateX(0)' : 'translateX(100%)',
           transition: 'transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55)',
         }}
@@ -95,6 +96,7 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
               top: 15,
               right: 15,
               zIndex: 4,
+              boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.6)',
             }}
           >
             <Tag
@@ -227,8 +229,7 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
           {project.description}
         </p>
         <Alert status="info">
-          <Alert.Title>Disclaimer</Alert.Title>
-          <Alert.Description>
+          <Alert.Description style={{ fontSize: '11px' }}>
             The content here is provided by the app developers. Links and
             content are not verified nor endorsed by Fuel. If you have any
             questions, please contact the project directly.
@@ -251,14 +252,20 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
             <Button
               href={project.twitter}
               size="sm"
-              intent="primary"
+              intent="error"
+              variant="ghost"
               leftIcon={'BrandX'}
             >
               Twitter
             </Button>
           )}
           {project.github && (
-            <Button href={project.github} size="sm" leftIcon={'BrandGithub'}>
+            <Button
+              href={project.github}
+              size="sm"
+              leftIcon={'BrandGithub'}
+              variant="ghost"
+            >
               GitHub
             </Button>
           )}
@@ -268,6 +275,7 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
               size="sm"
               intent="info"
               leftIcon={'BrandDiscord'}
+              variant="ghost"
             >
               Discord
             </Button>
