@@ -26,7 +26,7 @@ export const useFuelAccountConnection = (props?: { assetId?: string }) => {
     provider: fuelProvider,
   });
   const { hasWallet } = useHasFuelWallet();
-  const { isConnected, isLoading: isLoadingConnection } = useIsConnected();
+  const { isLoading: isLoadingConnection } = useIsConnected();
   const { connect, error, isConnecting } = useConnector();
   const { disconnect } = useDisconnect();
   // const { provider: fuelProvider } = useProvider();
@@ -42,7 +42,7 @@ export const useFuelAccountConnection = (props?: { assetId?: string }) => {
 
     fuel?.addAsset({
       assetId,
-      imageUrl: icon,
+      imageUrl: icon ?? undefined,
       symbol,
       decimals,
       name,
@@ -58,7 +58,7 @@ export const useFuelAccountConnection = (props?: { assetId?: string }) => {
     },
     account,
     address,
-    isConnected,
+    isConnected: !!account,
     error,
     hasWallet,
     isLoadingConnection,
