@@ -1,4 +1,4 @@
-import { Badge, Box, Button, Link, Tag, TagCloseButton } from '@fuel-ui/react';
+import { Badge, Box, Button, Alert, Tag, TagCloseButton } from '@fuel-ui/react';
 import type { FC } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -60,7 +60,8 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
           top: 0,
           height: '100%',
           width: '50%',
-          backgroundColor: '#000000',
+          backgroundColor: '#111111',
+          //opacity: '0.95',
           boxShadow: '-15px 0px 15px rgba(0, 245, 140, 0.4)',
           padding: '30px',
           overflowY: 'auto',
@@ -71,9 +72,11 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
       >
         <div
           style={{
-            background: '#010101',
+            backgroundImage:
+              'url(https://assets-global.website-files.com/62e273f312d561347ce33306/62f124d39576fd474e271ab8_Fuel_Trailer_Still_4.jpeg)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
+            //borderRadius: '8px',
             height: '200px',
             width: '100%',
             position: 'absolute',
@@ -81,7 +84,7 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
             left: 0,
             zIndex: 1,
             //boxShadow: '0px 0px 75px rgba(0, 245, 140, 0.5)',
-            borderBottom: '1px solid #00F58C',
+            borderBottom: '1px solid #FFFFFF',
           }}
         >
           <Box
@@ -128,14 +131,14 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
               justifyContent: 'center',
               alignItems: 'center',
               paddingTop: '5px',
-              transform: 'scale(275%)',
+              transform: 'scale(285%)',
             }}
           >
             <ProjecImage name={project.name} image={project.image} />
           </div>
         </Box>
 
-        <h2
+        <h1
           style={{
             fontSize: '24px',
             display: 'flex',
@@ -147,12 +150,12 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
           }}
         >
           {project.name}
-        </h2>
+        </h1>
         <Box
           style={{
             display: 'flex',
             gap: '10px',
-            marginBottom: '20px',
+            marginBottom: '10px',
             flexWrap: 'wrap',
             position: 'relative',
           }}
@@ -164,6 +167,28 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
               style={{
                 fontSize: 'small',
                 fontWeight: '500',
+                position: 'relative',
+              }}
+            >
+              {tag}
+            </Badge>
+          ))}
+        </Box>
+        <Box
+          style={{
+            display: 'flex',
+            gap: '10px',
+            flexWrap: 'wrap',
+            position: 'relative',
+          }}
+        >
+          {project.status?.map((tag, index) => (
+            <Badge
+              key={index}
+              variant="outlined"
+              intent="info"
+              style={{
+                fontSize: 'small',
                 position: 'relative',
               }}
             >
@@ -190,6 +215,8 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
               top: '220px',
               right: '15px',
               zIndex: 2,
+              //boxShadow: '0px 2px 3px rgba(0, 0, 0, 0.4)',
+              //border: '0.5px solid #FFFFFF',
             }}
           >
             Visit Website
@@ -199,10 +226,52 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
         <p style={{ fontSize: '16px', marginBottom: '20px' }}>
           {project.description}
         </p>
+        <Alert status="info">
+          <Alert.Title>Disclaimer</Alert.Title>
+          <Alert.Description>
+            The content here is provided by the app developers. Links and
+            content are not verified nor endorsed by Fuel. If you have any
+            questions, please contact the project directly.
+          </Alert.Description>
+        </Alert>
+        <h2
+          style={{
+            fontSize: '18px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: '10px',
+            position: 'relative',
+          }}
+        >
+          Socials
+        </h2>
         <Box style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
-          {project.twitter && <Link href={project.twitter}>Twitter</Link>}
-          {project.github && <Link href={project.github}>GitHub</Link>}
-          {project.discord && <Link href={project.discord}>Discord</Link>}
+          {project.twitter && (
+            <Button
+              href={project.twitter}
+              size="sm"
+              intent="primary"
+              leftIcon={'BrandX'}
+            >
+              Twitter
+            </Button>
+          )}
+          {project.github && (
+            <Button href={project.github} size="sm" leftIcon={'BrandGithub'}>
+              GitHub
+            </Button>
+          )}
+          {project.discord && (
+            <Button
+              href={project.discord}
+              size="sm"
+              intent="info"
+              leftIcon={'BrandDiscord'}
+            >
+              Discord
+            </Button>
+          )}
         </Box>
       </div>
     </>
