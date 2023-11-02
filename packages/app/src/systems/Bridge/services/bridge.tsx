@@ -56,6 +56,7 @@ export class BridgeService {
       fuelWallet,
       ethAddress,
       asset,
+      fuelProvider,
     } = input;
 
     if (!fromNetwork || !toNetwork) {
@@ -90,7 +91,7 @@ export class BridgeService {
         if (fuelWallet) {
           store.addTxEthToFuel({
             ethTxId: txId,
-            fuelProvider: fuelWallet.provider,
+            fuelProvider,
             ethPublicClient,
             fuelAddress,
           });
@@ -111,13 +112,14 @@ export class BridgeService {
         fuelWallet,
         ethAddress,
         fuelAsset,
+        fuelProvider,
       });
 
       if (txId) {
         if (fuelWallet) {
           store.addTxFuelToEth({
             fuelTxId: txId,
-            fuelProvider: fuelWallet.provider,
+            fuelProvider,
             ethPublicClient,
           });
           store.openTxFuelToEth({

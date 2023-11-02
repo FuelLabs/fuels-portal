@@ -2,8 +2,6 @@ import {
   useAccount,
   useDisconnect,
   useIsConnected,
-  useProvider,
-  useBalance,
   useWallet,
   useConnector,
   useFuel,
@@ -12,22 +10,26 @@ import { Address } from 'fuels';
 import { useMemo } from 'react';
 import { store } from '~/store';
 import type { AssetFuel } from '~/systems/Assets/utils';
+import { useFuelNetwork } from '~/systems/Settings/providers/FuelNetworkProvider';
 
+import { useBalance } from './useBalance';
 import { useHasFuelWallet } from './useHasFuelWallet';
 
 export const useFuelAccountConnection = (props?: { assetId?: string }) => {
   const { assetId } = props || {};
+  const { fuelProvider } = useFuelNetwork();
   const { fuel } = useFuel();
   const { account } = useAccount();
   const { balance } = useBalance({
     address: account || '',
     assetId,
+    provider: fuelProvider,
   });
   const { hasWallet } = useHasFuelWallet();
   const { isLoading: isLoadingConnection } = useIsConnected();
   const { connect, error, isConnecting } = useConnector();
   const { disconnect } = useDisconnect();
-  const { provider } = useProvider();
+  // const { provider: fuelProvider } = useProvider();
   const { wallet } = useWallet({ address: account || '' });
 
   const address = useMemo(
@@ -61,7 +63,7 @@ export const useFuelAccountConnection = (props?: { assetId?: string }) => {
     hasWallet,
     isLoadingConnection,
     isConnecting,
-    provider,
+    provider: fuelProvider,
     balance,
     wallet,
   };
