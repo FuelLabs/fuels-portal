@@ -3,13 +3,9 @@ import type {
   Message,
   WalletUnlocked as FuelWallet,
   TransactionResponse,
-} from 'fuels';
-import {
   Provider as FuelProvider,
-  Address as FuelAddress,
-  bn,
-  ZeroBytes32,
 } from 'fuels';
+import { Address as FuelAddress, bn, ZeroBytes32 } from 'fuels';
 import type { WalletClient } from 'viem';
 import { decodeEventLog } from 'viem';
 import type { PublicClient } from 'wagmi';
@@ -328,10 +324,7 @@ export class TxEthToFuelService {
     }
 
     const { fuelProvider, ethTxNonce } = input;
-
-    // TODO: should use the fuelProvider from input when wallet gets updated with new SDK
-    const provider = await FuelProvider.create(fuelProvider.url);
-    const messageStatus = await provider.getMessageStatus(
+    const messageStatus = await fuelProvider.getMessageStatus(
       ethTxNonce.toHex(32).toString()
     );
     return messageStatus;
@@ -350,9 +343,7 @@ export class TxEthToFuelService {
 
     const { ethTxNonce, fuelProvider, fuelRecipient } = input;
 
-    // TODO: should use the fuelProvider from input when wallet gets updated with new SDK
-    const provider = await FuelProvider.create(fuelProvider.url);
-    const messages = await provider.getMessages(fuelRecipient, {
+    const messages = await fuelProvider.getMessages(fuelRecipient, {
       first: 1000,
     });
     const fuelMessage = messages.find((message) => {
@@ -373,9 +364,7 @@ export class TxEthToFuelService {
     }
     const { fuelWallet, fuelMessage } = input;
 
-    // TODO: should use the fuelProvider from input when wallet gets updated with new SDK
-    const provider = await FuelProvider.create(fuelWallet.provider.url);
-    const { maxGasPerTx } = await provider.getGasConfig();
+    const { maxGasPerTx } = await input.fuelWallet.provider.getGasConfig();
     let txMessageRelayed: TransactionResponse | undefined;
     try {
       txMessageRelayed = await relayCommonMessage({
