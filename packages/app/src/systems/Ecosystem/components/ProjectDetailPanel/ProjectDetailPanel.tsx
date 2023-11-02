@@ -1,4 +1,4 @@
-import { Badge, Box, Link, Tag, TagCloseButton } from '@fuel-ui/react';
+import { Badge, Box, Button, Link, Tag, TagCloseButton } from '@fuel-ui/react';
 import type { FC } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -94,7 +94,11 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
               zIndex: 4,
             }}
           >
-            <Tag rightIconAriaLabel="close" variant="solid" onClick={onClose}>
+            <Tag
+              rightIconAriaLabel="close"
+              variant="outlined"
+              onClick={onClose}
+            >
               Close
               <TagCloseButton />
             </Tag>
@@ -105,8 +109,8 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            width: '90px',
-            height: '90px',
+            width: '110px',
+            height: '110px',
             borderRadius: '12px',
             overflow: 'hidden',
             marginBottom: '20px',
@@ -124,7 +128,7 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
               justifyContent: 'center',
               alignItems: 'center',
               paddingTop: '5px',
-              transform: 'scale(240%)',
+              transform: 'scale(275%)',
             }}
           >
             <ProjecImage name={project.name} image={project.image} />
@@ -134,9 +138,12 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
         <h2
           style={{
             fontSize: '24px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: '10px',
             position: 'relative',
             marginTop: '150px',
-            marginBottom: '10px',
           }}
         >
           {project.name}
@@ -164,6 +171,31 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
             </Badge>
           ))}
         </Box>
+        {project.url && (
+          <Button
+            as="a"
+            href={project.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="solid"
+            size="sm"
+            leftIcon="ExternalLink"
+            color="intentsBase8"
+            intent="info"
+            style={{
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              overflow: 'hidden',
+              position: 'fixed',
+              top: '220px',
+              right: '15px',
+              zIndex: 2,
+            }}
+          >
+            Visit Website
+          </Button>
+        )}
+
         <p style={{ fontSize: '16px', marginBottom: '20px' }}>
           {project.description}
         </p>
