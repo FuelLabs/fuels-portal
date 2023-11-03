@@ -1,4 +1,4 @@
-import { Badge, Box, Button, Alert, Tag, TagCloseButton } from '@fuel-ui/react';
+import { Badge, Box, Button, Alert, TagCloseButton } from '@fuel-ui/react';
 import type { FC } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -62,13 +62,12 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
           width: '50%',
           backgroundColor: '#111111',
           //opacity: '0.95',
-          boxShadow: '-5px 0px 15px rgba(0, 245, 140, 0.4)',
           padding: '30px',
           overflowY: 'auto',
           zIndex: 1000,
-          borderLeft: '1px solid #00F58C',
-          transform: isPanelVisible ? 'translateX(0)' : 'translateX(100%)',
-          transition: 'transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55)',
+          borderLeft: '0.5px solid #FFFFFF',
+          //transform: isPanelVisible ? 'translateX(0)' : 'translateX(100%)',
+          //transition: 'transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55)',
         }}
       >
         <div
@@ -96,17 +95,17 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
               top: 15,
               right: 15,
               zIndex: 4,
-              boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.6)',
             }}
           >
-            <Tag
+            <Button
               rightIconAriaLabel="close"
-              variant="outlined"
-              onClick={onClose}
+              size="xs"
+              variant="ghost"
+              intent="base"
+              onPress={onClose}
             >
-              Close
               <TagCloseButton />
-            </Tag>
+            </Button>
           </Box>
         </div>
         <Box
