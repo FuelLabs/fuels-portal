@@ -20,8 +20,8 @@
     "@fuel-ts/utils": "0.63.0",
     "@fuel-ui/css": "0.21.1",
     "@fuel-ui/react": "0.21.1",
-    "@fuel-wallet/react": "0.13.4",
-    "@fuel-wallet/sdk": "0.13.4",
+    "@fuel-wallet/react": "0.13.6",
+    "@fuel-wallet/sdk": "0.13.6",
     "@fuels/assets": "0.1.0",
     "@fuels/react-xstore": "0.0.8",
     "@hookform/resolvers": "^3.1.1",
@@ -46,7 +46,7 @@
     "yup": "^1.2.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.36.2",
+    "@fuel-wallet/playwright-utils": "0.13.6",
     "@storybook/addon-a11y": "^7.2.2",
     "@storybook/addon-actions": "^7.2.2",
     "@storybook/addon-essentials": "^7.2.2",
