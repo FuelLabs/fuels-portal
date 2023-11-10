@@ -131,7 +131,7 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              paddingTop: '5px',
+              paddingTop: '6.5px',
               transform: 'scale(285%)',
             }}
           >

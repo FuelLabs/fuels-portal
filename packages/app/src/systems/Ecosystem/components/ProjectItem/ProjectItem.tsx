@@ -142,7 +142,7 @@ export const ProjectItem: ProjectItemComponent = ({
             {isLive ? (
               <Tag intent="base" size="xs" css={styles.tag} variant="ghost">
                 <Box css={styles.dot} />
-                {'Live on testnet'}
+                {'Live'}
               </Tag>
             ) : null}
           </Box.Flex>
