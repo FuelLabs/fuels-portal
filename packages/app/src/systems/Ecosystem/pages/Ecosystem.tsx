@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Text, Box, Heading, Input, Icon } from '@fuel-ui/react';
+import { Text, Box, Button, Heading, Input, Icon } from '@fuel-ui/react';
 import { useState } from 'react';
 import { Layout, animations } from '~/systems/Core';
 
@@ -49,6 +49,10 @@ export function Ecosystem() {
                 Here&apos;s a list of dapps built on Fuel
               </Text>
             </Box.Stack>
+          </Box.Flex>
+          <Box.Flex
+            css={{ justifyContent: 'space-between', alignItems: 'center' }}
+          >
             <Input css={styles.searchBar}>
               <Input.Field
                 name="search"
@@ -59,6 +63,15 @@ export function Ecosystem() {
               />
               <Input.ElementRight element={<Icon icon="Search" />} />
             </Input>
+            <a
+              href="https://fuelnetwork.typeform.com/addproject"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button variant="solid" intent="primary" size="md">
+                List your dapp
+              </Button>
+            </a>
           </Box.Flex>
           <EcosystemTags
             tags={tags}
