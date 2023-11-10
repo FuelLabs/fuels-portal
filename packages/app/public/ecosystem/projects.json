@@ -60,7 +60,7 @@
     "status": ["Building"]
   },
   {
-    "isLive": false,
+    "isLive": true,
     "name": "BSAFE",
     "url": "https://bsafe.pro/",
     "tags": ["DeFi", "Wallet"],
@@ -69,7 +69,7 @@
     "twitter": "https://twitter.com/Bsafe_Fuel",
     "discord": "",
     "image": "bsafe",
-    "status": ["Building", "Beta-4"]
+    "status": ["Building"]
   },
   {
     "isLive": false,
@@ -132,7 +132,7 @@
     "status": ["Building"]
   },
   {
-    "isLive": false,
+    "isLive": true,
     "name": "Fuelet Wallet",
     "url": "https://fuelet.app/",
     "tags": ["Infrastructure Tooling or Platform", "Wallet"],
@@ -141,7 +141,7 @@
     "twitter": "https://twitter.com/FueletWallet",
     "discord": "https://discord.gg/fueletwallet",
     "image": "fuelet",
-    "status": ["Building", "Beta-4"]
+    "status": ["Building"]
   },
   {
     "isLive": false,
@@ -288,7 +288,7 @@
     "status": ["Building"]
   },
   {
-    "isLive": false,
+    "isLive": true,
     "name": "Spark",
     "url": "https://sprk.fi/",
     "tags": ["DEX (Orderbook)", "DeFi", "Infrastructure Tooling or Platform"],
@@ -297,10 +297,10 @@
     "twitter": "https://twitter.com/Sprkfi",
     "discord": "https://discord.gg/Nz9VZQrSNH",
     "image": "spark",
-    "status": ["Building", "Beta-4"]
+    "status": ["Building"]
   },
   {
-    "isLive": false,
+    "isLive": true,
     "name": "Swaylend",
     "url": "swaylend.com",
     "tags": ["DEX (Orderbook)", "DeFi", "Infrastructure Tooling or Platform"],
@@ -309,7 +309,7 @@
     "twitter": "https://twitter.com/swaylend",
     "discord": "https://discord.gg/phcHhUHssg",
     "image": "swaylend",
-    "status": ["Building", "Beta-4"]
+    "status": ["Building"]
   },
   {
     "isLive": false,
@@ -348,7 +348,7 @@
     "status": ["Building"]
   },
   {
-    "isLive": false,
+    "isLive": true,
     "name": "Wallet",
     "url": "https://wallet.fuel.network/docs/install/",
     "tags": ["Infrastructure Tooling or Platform", "Wallet"],
@@ -357,7 +357,7 @@
     "twitter": "https://twitter.com/fuel_network",
     "discord": "https://discord.gg/fuelnetwork",
     "image": "fuelwallet",
-    "status": ["Building", "Beta-4"]
+    "status": ["Building"]
   },
   {
     "isLive": false,
@@ -384,7 +384,7 @@
     "status": ["Building"]
   },
   {
-    "isLive": false,
+    "isLive": true,
     "name": "LearnWeb3",
     "url": "https://learnweb3.io/",
     "tags": ["Education"],
@@ -393,7 +393,7 @@
     "twitter": "https://twitter.com/LearnWeb3DAO",
     "discord": "https://discord.gg/learnweb3",
     "image": "learnweb3",
-    "status": ["Building", "Beta-4"]
+    "status": ["Building"]
   },
   {
     "isLive": false,
@@ -408,7 +408,7 @@
     "status": ["Building"]
   },
   {
-    "isLive": false,
+    "isLive": true,
     "name": "Frank",
     "url": "https://fuelstat.xyz/frank/",
     "tags": ["Infrastructure Tooling or Platform"],
@@ -417,10 +417,10 @@
     "twitter": "https://twitter.com/FueletWallet",
     "discord": "https://discord.gg/fueletwallet",
     "image": "frank",
-    "status": ["Beta-4"]
+    "status": ["Building"]
   },
   {
-    "isLive": false,
+    "isLive": true,
     "name": "Fuelstat",
     "url": "https://fuelstat.xyz/",
     "tags": ["Infrastructure Tooling or Platform"],
@@ -429,6 +429,18 @@
     "twitter": "https://twitter.com/FueletWallet",
     "discord": "https://discord.gg/fueletwallet",
     "image": "fuelstat",
-    "status": ["Beta-4"]
+    "status": ["Building"]
+  },
+  {
+    "isLive": true,
+    "name": "Metaschool",
+    "url": "https://metaschool.so/",
+    "tags": ["Education"],
+    "description": "Metaschool, a web3 education platform, with 140,000 developers, that helps developers enter web3 by building and shipping dApps.",
+    "github": "https://github.com/0xmetaschool",
+    "twitter": "https://twitter.com/0xmetaschool",
+    "discord": "https://discord.com/invite/vbVMUwXWgc",
+    "image": "metaschool",
+    "status": ["Building"]
   }
 ]
