@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Layout, animations } from '~/systems/Core';
 
 import { EcosystemTags } from '../components/EcosystemTags';
+import { FeaturedProjects } from '../components/FeaturedProjects';
 import { ProjectDetailPanel } from '../components/ProjectDetailPanel';
 import { ProjectList } from '../components/ProjectList/ProjectList';
 import { useEcosystem } from '../hooks/useEcosystem';
@@ -35,6 +36,7 @@ export function Ecosystem() {
     console.log('Closing panel');
     setSelectedProject(null);
   };
+  //const liveProjects = filteredProjects.filter((project) => project.isLive);
 
   return (
     <Layout {...animations.slideInTop()}>
@@ -43,7 +45,7 @@ export function Ecosystem() {
           <Box.Flex css={styles.headingWrapper}>
             <Box.Stack gap="$2" wrap="wrap">
               <Heading as="h2" css={styles.heading}>
-                Explore Fuel Dapps
+                Explore the Fuel Ecosystem
               </Heading>
               <Text color="intentsBase11">
                 Here&apos;s a list of dapps built on Fuel
@@ -73,6 +75,9 @@ export function Ecosystem() {
               </Button>
             </a>
           </Box.Flex>
+          <Box css={styles.featuredProjectsBox}>
+            <FeaturedProjects />
+          </Box>
           <EcosystemTags
             tags={tags}
             onPressTag={handleTagButtonClick}
@@ -121,9 +126,15 @@ const styles = {
     },
   }),
   searchBar: cssObj({
-    width: '100%',
+    width: '50%',
     '@sm': {
       width: 'auto',
     },
+  }),
+  featuredProjectsBox: cssObj({
+    border: '1px solid #ccc',
+    padding: '$4',
+    margin: '$4',
+    borderRadius: '$md',
   }),
 };
