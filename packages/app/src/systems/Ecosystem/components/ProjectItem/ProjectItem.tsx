@@ -7,10 +7,11 @@ import {
   Text,
   Icon,
   Tooltip,
+  CardFooter,
 } from '@fuel-ui/react';
 import { motion } from 'framer-motion';
 import { type FC } from 'react';
-import { animations, getUrlHostName } from '~/systems/Core';
+import { animations } from '~/systems/Core';
 
 import type { Project } from '../../types';
 import { ProjecImage } from '../ProjectImage';
@@ -118,27 +119,20 @@ export const ProjectItem: ProjectItemComponent = ({
                   </Tooltip>
                 )}
                 <Tooltip content={url}>
-                  <Icon
-                    icon="ArrowUpRight"
-                    color="intentsBase8"
-                    size={20}
-                    stroke={1}
-                  />
+                  <ButtonLink as="a" href={url} color="intentsBase12" size="sm">
+                    <Icon
+                      icon="ExternalLink"
+                      color="intentsBase8"
+                      size={20}
+                      stroke={1}
+                    />
+                  </ButtonLink>
                 </Tooltip>
               </Box.Flex>
             </Box.Flex>
             <Text fontSize="sm"> {description}</Text>
           </Box.Stack>
           <Box.Flex align="center" justify="space-between" wrap="wrap">
-            <ButtonLink
-              as="a"
-              css={styles.link}
-              href={url}
-              color="intentsBase10"
-              size="sm"
-            >
-              {getUrlHostName(url)}
-            </ButtonLink>
             {isLive ? (
               <Tag intent="base" size="xs" css={styles.tag} variant="ghost">
                 <Box css={styles.dot} />
@@ -146,27 +140,29 @@ export const ProjectItem: ProjectItemComponent = ({
               </Tag>
             ) : null}
           </Box.Flex>
-          <Box.Flex
-            align="center"
-            justify="flex-end"
-            wrap="wrap"
-            css={styles.statusContainer}
-          >
-            {status &&
-              status.map((s, index) => (
-                <Tag
-                  key={index}
-                  intent="base"
-                  size="xs"
-                  css={styles.tag}
-                  variant="ghost"
-                >
-                  {s}
-                </Tag>
-              ))}
-          </Box.Flex>
         </Box.Stack>
       </Card.Body>
+      <CardFooter css={styles.cardFooter}>
+        <Box.Flex
+          align="center"
+          justify="flex-start"
+          wrap="wrap"
+          css={styles.statusContainer}
+        >
+          {status &&
+            status.map((s, index) => (
+              <Tag
+                key={index}
+                intent="base"
+                size="xs"
+                css={styles.tag}
+                variant="ghost"
+              >
+                {s}
+              </Tag>
+            ))}
+        </Box.Flex>
+      </CardFooter>
     </MotionCard>
   );
 };
@@ -179,6 +175,9 @@ const styles = {
       border: '1px solid #00F58C',
       transform: 'scale(1.02)',
     },
+  }),
+  cardFooter: cssObj({
+    //maxHeight: '10px',
   }),
   details: cssObj({
     flex: 1,
@@ -220,8 +219,8 @@ const styles = {
   }),
   statusContainer: cssObj({
     display: 'flex',
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
     flexWrap: 'wrap',
     marginTop: 'auto',
   }),

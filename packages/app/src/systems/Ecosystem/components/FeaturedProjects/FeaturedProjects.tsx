@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, Heading, Card, Text } from '@fuel-ui/react';
+import { Box, Heading, Card, Text, Button } from '@fuel-ui/react';
 import React from 'react';
 
 import type { Project } from '../../types';
@@ -12,10 +12,10 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
     <Box css={styles.container}>
       <Box
         css={{
-          width: '85%',
+          width: '75%',
         }}
       >
-        <Card variant="outlined">
+        <Card variant="ghost" css={styles.card}>
           <Card.Header css={styles.cardHeader}>
             <Box css={styles.projectImageWrapper}>
               <div
@@ -41,6 +41,16 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
               <Text>{firstProject.description}</Text>
             </Box>
           </Card.Body>
+          <Card.Footer gap="$3" direction="row-reverse">
+            <Button
+              size="sm"
+              variant="ghost"
+              intent="info"
+              leftIcon={'ExternalLink'}
+            >
+              Visit Website
+            </Button>
+          </Card.Footer>
         </Card>
       </Box>
     </Box>
@@ -49,23 +59,28 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
 
 const styles = {
   container: cssObj({
-    padding: '$4',
-    borderRadius: '$sm',
+    background: '#00F58C',
+    padding: '$7',
+    borderRadius: '$lg',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: '200px',
   }),
+  card: cssObj({
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
+    //border: '1px solid #E2E2E2',
+    borderRadius: '$lg',
+  }),
   cardHeader: cssObj({
     backgroundImage:
       'url(https://fuel-labs.ghost.io/content/images/size/w2000/2023/09/Background.png)',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
     overflow: 'hidden',
-    borderTopLeftRadius: '$sm',
-    borderTopRightRadius: '$sm',
+    borderTopLeftRadius: '$lg',
+    borderTopRightRadius: '$lg',
     padding: '1rem',
     display: 'flex',
     alignItems: 'center',
@@ -80,8 +95,7 @@ const styles = {
     borderRadius: '12px',
     overflow: 'hidden',
     position: 'relative',
-    zIndex: 2,
-    border: '1px solid #FFFFFF',
+    border: '1px solid #E2E2E2',
     boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.6)',
     marginRight: '1rem',
   }),

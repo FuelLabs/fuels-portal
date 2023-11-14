@@ -73,7 +73,7 @@
   },
   {
     "isLive": false,
-    "name": "Composability Labs (Swaylend)",
+    "name": "Composability Labs",
     "url": "https://github.com/compolabs",
     "tags": ["DEX (Orderbook)", "DeFi", "Infrastructure Tooling or Platform"],
     "description": "Modularity maxis, building DeFi infrastructure.",
