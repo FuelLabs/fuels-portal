@@ -16,7 +16,7 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
       setCurrentProjectIndex((prevIndex) => (prevIndex + 1) % projects.length);
       setNextProjectIndex((nextIndex) => (nextIndex + 1) % projects.length);
       setSlide(false);
-    }, 500);
+    }, 1500);
   };
 
   const prevProject = () => {
@@ -48,6 +48,13 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
   return (
     <Box css={styles.container}>
       <Box css={carouselWrapperStyle}>
+        <Box css={{ ...styles.cardWrapper, ...(slide && styles.slideEffect) }}>
+          <ProjectCard project={projects[nextProjectIndex]} />
+          <ProjectCard project={projects[currentProjectIndex]} />
+          <ProjectCard project={projects[nextProjectIndex]} />
+        </Box>
+      </Box>
+      <Box css={styles.dotsContainer}>
         {/* Arrow Left */}
         <IconButton
           variant="link"
@@ -57,13 +64,13 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
           icon={'ArrowLeft'}
           css={styles.arrowButton}
         />
-
-        <Box css={{ ...styles.cardWrapper, ...(slide && styles.slideEffect) }}>
-          <ProjectCard project={projects[nextProjectIndex]} />
-          <ProjectCard project={projects[currentProjectIndex]} />
-          <ProjectCard project={projects[nextProjectIndex]} />
-        </Box>
-
+        {projects.map((_, index) => (
+          <Box
+            key={index}
+            css={index === currentProjectIndex ? styles.activeDot : styles.dot}
+            onClick={() => handleDotClick(index)}
+          />
+        ))}
         {/* Arrow Right */}
         <IconButton
           variant="link"
@@ -73,15 +80,6 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
           icon={'ArrowRight'}
           css={styles.arrowButton}
         />
-      </Box>
-      <Box css={styles.dotsContainer}>
-        {projects.map((_, index) => (
-          <Box
-            key={index}
-            css={index === currentProjectIndex ? styles.activeDot : styles.dot}
-            onClick={() => handleDotClick(index)}
-          />
-        ))}
       </Box>
     </Box>
   );
@@ -190,7 +188,7 @@ const styles = {
     position: 'relative',
   }),
   slideEffect: cssObj({
-    transform: 'translateX(-50%)', // Adjust to center the focused card
+    transform: 'translateX(-33.33%)', // Adjust to center the focused card
   }),
   cardWrapper: cssObj({
     display: 'flex',
@@ -207,22 +205,23 @@ const styles = {
   dot: cssObj({
     height: '10px',
     width: '10px',
-    backgroundColor: '#bbb',
+    backgroundColor: '#BBB',
     borderRadius: '50%',
     margin: '0 5px',
     cursor: 'pointer',
     transition: 'background-color 0.3s ease',
     '&:hover': {
-      backgroundColor: '#888',
+      backgroundColor: '#FFFFFF',
     },
   }),
   activeDot: cssObj({
     height: '10px',
     width: '10px',
-    backgroundColor: '#fff',
+    backgroundColor: '#FFF',
     borderRadius: '50%',
     margin: '0 5px',
     cursor: 'pointer',
+    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.3)',
   }),
 };
 
