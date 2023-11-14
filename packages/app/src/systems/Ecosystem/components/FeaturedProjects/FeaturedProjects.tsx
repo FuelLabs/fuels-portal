@@ -1,12 +1,24 @@
 import { cssObj } from '@fuel-ui/css';
 import { Box, Heading, Card, Text, Button } from '@fuel-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 
 import type { Project } from '../../types';
 import { ProjecImage } from '../ProjectImage';
 
 const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
-  const firstProject = projects[0];
+  const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
+
+  const nextProject = () => {
+    setCurrentProjectIndex((prevIndex) => (prevIndex + 1) % projects.length);
+  };
+
+  const prevProject = () => {
+    setCurrentProjectIndex(
+      (prevIndex) => (prevIndex - 1 + projects.length) % projects.length
+    );
+  };
+
+  const currentProject = projects[currentProjectIndex];
 
   return (
     <Box css={styles.container}>
@@ -29,16 +41,16 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
                 }}
               >
                 <ProjecImage
-                  name={firstProject.name}
-                  image={firstProject.image}
+                  name={currentProject.name}
+                  image={currentProject.image}
                 />
               </div>
             </Box>
-            <Heading as="h2">{firstProject.name}</Heading>
+            <Heading as="h2">{currentProject.name}</Heading>
           </Card.Header>
           <Card.Body>
             <Box css={styles.cardContent}>
-              <Text>{firstProject.description}</Text>
+              <Text>{currentProject.description}</Text>
             </Box>
           </Card.Body>
           <Card.Footer gap="$3" direction="row-reverse">
@@ -52,6 +64,10 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
             </Button>
           </Card.Footer>
         </Card>
+        <Box css={styles.navigation}>
+          <Button onClick={prevProject}>Previous</Button>
+          <Button onClick={nextProject}>Next</Button>
+        </Box>
       </Box>
     </Box>
   );
@@ -103,6 +119,11 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+  }),
+  navigation: cssObj({
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginTop: '1rem',
   }),
 };
 
