@@ -7,9 +7,14 @@ import { ProjecImage } from '../ProjectImage';
 
 const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
+  const [slide, setSlide] = useState(false);
 
   const nextProject = () => {
-    setCurrentProjectIndex((prevIndex) => (prevIndex + 1) % projects.length);
+    setSlide(true);
+    setTimeout(() => {
+      setCurrentProjectIndex((prevIndex) => (prevIndex + 1) % projects.length);
+      setSlide(false);
+    }, 500);
   };
   useEffect(() => {
     const interval = setInterval(() => {
@@ -40,7 +45,11 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
           ></IconButton>
         </Box>
 
-        <Box>
+        <Box
+          css={{
+            ...(slide && styles.slideEffect), // Apply the slide effect
+          }}
+        >
           <Card variant="ghost" css={styles.card}>
             <Card.Header css={styles.cardHeader}>
               <Box css={styles.projectImageWrapper}>
@@ -102,7 +111,8 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-between',
-    minHeight: '200px',
+    height: '250px',
+    overflow: 'hidden',
   }),
   card: cssObj({
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
@@ -149,13 +159,18 @@ const styles = {
     marginTop: '1rem',
   }),
   arrowContainer: cssObj({
-    padding: '0 10px', // Add horizontal padding
+    padding: '0 10px',
   }),
   carouselWrapper: cssObj({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     width: 'calc(300px + 40px)',
+    position: 'relative',
+  }),
+  slideEffect: cssObj({
+    transform: 'translateX(-150%)',
+    transition: 'transform 0.5s ease-in-out',
   }),
 };
 
