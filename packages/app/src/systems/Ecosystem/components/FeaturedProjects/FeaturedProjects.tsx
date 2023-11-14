@@ -1,6 +1,6 @@
 import { cssObj } from '@fuel-ui/css';
 import { Box, Heading, Card, Text, Button, IconButton } from '@fuel-ui/react';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import type { Project } from '../../types';
 import { ProjecImage } from '../ProjectImage';
@@ -11,7 +11,14 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
   const nextProject = () => {
     setCurrentProjectIndex((prevIndex) => (prevIndex + 1) % projects.length);
   };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextProject();
+    }, 5000); // Change the project every 3000 milliseconds (3 seconds)
 
+    // Clear the interval when the component unmounts
+    return () => clearInterval(interval);
+  }, [projects.length]);
   const prevProject = () => {
     setCurrentProjectIndex(
       (prevIndex) => (prevIndex - 1 + projects.length) % projects.length
@@ -142,7 +149,6 @@ const styles = {
     marginTop: '1rem',
   }),
   arrowContainer: cssObj({
-    // Adjust the size and positioning of the arrow container
     padding: '0 10px', // Add horizontal padding
   }),
   carouselWrapper: cssObj({
