@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, Heading, Card, Text, Button } from '@fuel-ui/react';
+import { Box, Heading, Card, Text, Button, IconButton } from '@fuel-ui/react';
 import React, { useState } from 'react';
 
 import type { Project } from '../../types';
@@ -22,51 +22,64 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
 
   return (
     <Box css={styles.container}>
-      <Box
-        css={{
-          width: '75%',
-        }}
-      >
-        <Card variant="ghost" css={styles.card}>
-          <Card.Header css={styles.cardHeader}>
-            <Box css={styles.projectImageWrapper}>
-              <div
-                style={{
-                  position: 'relative',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  paddingTop: '6.5px',
-                  transform: 'scale(170%)',
-                }}
+      <Box css={styles.carouselWrapper}>
+        <Box css={styles.arrowContainer}>
+          <IconButton
+            variant="link"
+            intent="base"
+            onClick={prevProject}
+            aria-label="Button"
+            icon={'ArrowLeft'}
+          ></IconButton>
+        </Box>
+
+        <Box>
+          <Card variant="ghost" css={styles.card}>
+            <Card.Header css={styles.cardHeader}>
+              <Box css={styles.projectImageWrapper}>
+                <div
+                  style={{
+                    position: 'relative',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    paddingTop: '6.5px',
+                    transform: 'scale(170%)',
+                  }}
+                >
+                  <ProjecImage
+                    name={currentProject.name}
+                    image={currentProject.image}
+                  />
+                </div>
+              </Box>
+              <Heading as="h2">{currentProject.name}</Heading>
+            </Card.Header>
+            <Card.Body>
+              <Box css={styles.cardContent}>
+                <Text>{currentProject.description}</Text>
+              </Box>
+            </Card.Body>
+            <Card.Footer gap="$3" direction="row-reverse">
+              <Button
+                size="sm"
+                variant="ghost"
+                intent="info"
+                leftIcon={'ExternalLink'}
               >
-                <ProjecImage
-                  name={currentProject.name}
-                  image={currentProject.image}
-                />
-              </div>
-            </Box>
-            <Heading as="h2">{currentProject.name}</Heading>
-          </Card.Header>
-          <Card.Body>
-            <Box css={styles.cardContent}>
-              <Text>{currentProject.description}</Text>
-            </Box>
-          </Card.Body>
-          <Card.Footer gap="$3" direction="row-reverse">
-            <Button
-              size="sm"
-              variant="ghost"
-              intent="info"
-              leftIcon={'ExternalLink'}
-            >
-              Visit Website
-            </Button>
-          </Card.Footer>
-        </Card>
-        <Box css={styles.navigation}>
-          <Button onClick={prevProject}>Previous</Button>
-          <Button onClick={nextProject}>Next</Button>
+                Visit Website
+              </Button>
+            </Card.Footer>
+          </Card>
+        </Box>
+        <Box css={styles.arrowContainer}>
+          <IconButton
+            variant="link"
+            intent="base"
+            onClick={nextProject}
+            aria-label="Button"
+            icon={'ArrowRight'}
+          ></IconButton>
         </Box>
       </Box>
     </Box>
@@ -76,16 +89,19 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
 const styles = {
   container: cssObj({
     background: '#00F58C',
-    padding: '$7',
+    padding: '1rem',
     borderRadius: '$lg',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     minHeight: '200px',
   }),
   card: cssObj({
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
+    width: '750px',
+    alignItems: 'center',
+    justifyContent: 'center',
     //border: '1px solid #E2E2E2',
     borderRadius: '$lg',
   }),
@@ -124,6 +140,16 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     marginTop: '1rem',
+  }),
+  arrowContainer: cssObj({
+    // Adjust the size and positioning of the arrow container
+    padding: '0 10px', // Add horizontal padding
+  }),
+  carouselWrapper: cssObj({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 'calc(300px + 40px)',
   }),
 };
 
