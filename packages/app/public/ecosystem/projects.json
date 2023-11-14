@@ -60,7 +60,7 @@
     "status": ["Building"]
   },
   {
-    "isLive": false,
+    "isLive": true,
     "name": "BSAFE",
     "url": "https://bsafe.pro/",
     "tags": ["DeFi", "Wallet"],
@@ -69,7 +69,7 @@
     "twitter": "https://twitter.com/Bsafe_Fuel",
     "discord": "",
     "image": "bsafe",
-    "status": ["Building", "Beta-4"]
+    "status": ["Building"]
   },
   {
     "isLive": false,
@@ -129,10 +129,10 @@
     "twitter": "https://twitter.com/fuel_art",
     "discord": "https://discord.gg/sj9PujpSzJ",
     "image": "fuelart",
-    "status": ["Building", "Beta-3"]
+    "status": ["Building"]
   },
   {
-    "isLive": false,
+    "isLive": true,
     "name": "Fuelet Wallet",
     "url": "https://fuelet.app/",
     "tags": ["Infrastructure Tooling or Platform", "Wallet"],
@@ -141,7 +141,7 @@
     "twitter": "https://twitter.com/FueletWallet",
     "discord": "https://discord.gg/fueletwallet",
     "image": "fuelet",
-    "status": ["Building", "Beta-4"]
+    "status": ["Building"]
   },
   {
     "isLive": false,
@@ -288,19 +288,19 @@
     "status": ["Building"]
   },
   {
-    "isLive": false,
+    "isLive": true,
     "name": "Spark",
-    "url": "https://allspark.gg/",
+    "url": "https://sprk.fi/",
     "tags": ["DEX (Orderbook)", "DeFi", "Infrastructure Tooling or Platform"],
     "description": "Spark is a predicate-based central limit order book.",
     "github": "https://github.com/compolabs/spark",
-    "twitter": "https://twitter.com/allsparkgg",
+    "twitter": "https://twitter.com/Sprkfi",
     "discord": "https://discord.gg/Nz9VZQrSNH",
     "image": "spark",
     "status": ["Building"]
   },
   {
-    "isLive": false,
+    "isLive": true,
     "name": "Swaylend",
     "url": "swaylend.com",
     "tags": ["DEX (Orderbook)", "DeFi", "Infrastructure Tooling or Platform"],
@@ -348,16 +348,16 @@
     "status": ["Building"]
   },
   {
-    "isLive": false,
+    "isLive": true,
     "name": "Wallet",
     "url": "https://wallet.fuel.network/docs/install/",
     "tags": ["Infrastructure Tooling or Platform", "Wallet"],
     "description": "With the Fuel Wallet, you can explore DApps and manage your crypto assets, all in one place.",
     "github": "https://github.com/fuellabs/fuels-wallet",
-    "twitter": "",
-    "discord": "",
+    "twitter": "https://twitter.com/fuel_network",
+    "discord": "https://discord.gg/fuelnetwork",
     "image": "fuelwallet",
-    "status": ["Building", "Beta-4"]
+    "status": ["Building"]
   },
   {
     "isLive": false,
@@ -381,6 +381,66 @@
     "twitter": "https://twitter.com/zap_infra",
     "discord": "",
     "image": "zap",
+    "status": ["Building"]
+  },
+  {
+    "isLive": true,
+    "name": "LearnWeb3",
+    "url": "https://learnweb3.io/",
+    "tags": ["Education"],
+    "description": "LearnWeb3 is the leading platform to upskill yourself with next-gen technologies for free proudly teaching 100k+ students without barriers!",
+    "github": "https://github.com/LearnWeb3DAO",
+    "twitter": "https://twitter.com/LearnWeb3DAO",
+    "discord": "https://discord.gg/learnweb3",
+    "image": "learnweb3",
+    "status": ["Building"]
+  },
+  {
+    "isLive": false,
+    "name": "Guild",
+    "url": "https://guild.xyz",
+    "tags": ["Infrastructure Tooling or Platform"],
+    "description": "Automated membership management for the platforms your community already uses.",
+    "github": "https://github.com/agoraxyz/guild.xyz",
+    "twitter": "https://twitter.com/guildxyz",
+    "discord": "https://discord.gg/guildxyz",
+    "image": "guildxyz",
+    "status": ["Building"]
+  },
+  {
+    "isLive": true,
+    "name": "Frank",
+    "url": "https://fuelstat.xyz/frank/",
+    "tags": ["Infrastructure Tooling or Platform"],
+    "description": "Frank (Fuel Rank) is a tool for you to track and analyze your interactions with the Fuel blockchain.",
+    "github": "https://github.com/fuelet",
+    "twitter": "https://twitter.com/FueletWallet",
+    "discord": "https://discord.gg/fueletwallet",
+    "image": "frank",
+    "status": ["Building"]
+  },
+  {
+    "isLive": true,
+    "name": "Fuelstat",
+    "url": "https://fuelstat.xyz/",
+    "tags": ["Infrastructure Tooling or Platform"],
+    "description": "FuelStat is a Fuel analytics platform to check out the latest data on Fuel accounts, transactions, and volume.",
+    "github": "https://github.com/fuelet",
+    "twitter": "https://twitter.com/FueletWallet",
+    "discord": "https://discord.gg/fueletwallet",
+    "image": "fuelstat",
+    "status": ["Building"]
+  },
+  {
+    "isLive": true,
+    "name": "Metaschool",
+    "url": "https://metaschool.so/",
+    "tags": ["Education"],
+    "description": "Metaschool, a web3 education platform, with 140,000 developers, that helps developers enter web3 by building and shipping dApps.",
+    "github": "https://github.com/0xmetaschool",
+    "twitter": "https://twitter.com/0xmetaschool",
+    "discord": "https://discord.com/invite/vbVMUwXWgc",
+    "image": "metaschool",
     "status": ["Building"]
   }
 ]

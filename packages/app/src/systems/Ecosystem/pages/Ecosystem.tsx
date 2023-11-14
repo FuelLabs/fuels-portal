@@ -1,5 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import { Text, Box, Button, Heading, Input, Icon } from '@fuel-ui/react';
+import { Box, Button, Heading, Input, Icon } from '@fuel-ui/react';
 import { useState } from 'react';
 import { Layout, animations } from '~/systems/Core';
 
@@ -36,21 +36,20 @@ export function Ecosystem() {
     console.log('Closing panel');
     setSelectedProject(null);
   };
-  //const liveProjects = filteredProjects.filter((project) => project.isLive);
+  const featuredProjects = filteredProjects
+    ? filteredProjects.filter((project) => project.isLive)
+    : [];
 
   return (
     <Layout {...animations.slideInTop()}>
       <Layout.Content css={{ padding: '$16 $1 $4 $4' }}>
         <Box.Stack gap="$12" grow={1} css={styles.content}>
           <Box.Flex css={styles.headingWrapper}>
-            <Box.Stack gap="$2" wrap="wrap">
-              <Heading as="h2" css={styles.heading}>
+            <Heading as="h1" css={styles.heading}>
+              <Box.Stack gap="$2" wrap="wrap">
                 Explore the Fuel Ecosystem
-              </Heading>
-              <Text color="intentsBase11">
-                Here&apos;s a list of dapps built on Fuel
-              </Text>
-            </Box.Stack>
+              </Box.Stack>
+            </Heading>
           </Box.Flex>
           <Box.Flex
             css={{ justifyContent: 'space-between', alignItems: 'center' }}
@@ -75,9 +74,15 @@ export function Ecosystem() {
               </Button>
             </a>
           </Box.Flex>
-          <Box css={styles.featuredProjectsBox}>
-            <FeaturedProjects />
+          <Heading as="h2" css={styles.heading}>
+            Featured Projects
+          </Heading>
+          <Box>
+            {featuredProjects.length > 0 && (
+              <FeaturedProjects projects={featuredProjects} />
+            )}
           </Box>
+          <Box css={styles.divider}></Box>
           <EcosystemTags
             tags={tags}
             onPressTag={handleTagButtonClick}
@@ -131,10 +136,9 @@ const styles = {
       width: 'auto',
     },
   }),
-  featuredProjectsBox: cssObj({
-    border: '1px solid #ccc',
-    padding: '$4',
-    margin: '$4',
-    borderRadius: '$md',
+  divider: cssObj({
+    height: '0.5px',
+    width: '100%',
+    backgroundColor: '#E0E0E0',
   }),
 };
