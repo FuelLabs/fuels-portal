@@ -7,100 +7,117 @@ import { ProjecImage } from '../ProjectImage';
 
 const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
+  const [nextProjectIndex, setNextProjectIndex] = useState(1);
   const [slide, setSlide] = useState(false);
 
   const nextProject = () => {
     setSlide(true);
     setTimeout(() => {
       setCurrentProjectIndex((prevIndex) => (prevIndex + 1) % projects.length);
+      setNextProjectIndex((nextIndex) => (nextIndex + 1) % projects.length);
       setSlide(false);
     }, 500);
   };
-  useEffect(() => {
-    const interval = setInterval(() => {
-      nextProject();
-    }, 5000); // Change the project every 3000 milliseconds (3 seconds)
 
-    // Clear the interval when the component unmounts
-    return () => clearInterval(interval);
-  }, [projects.length]);
   const prevProject = () => {
     setCurrentProjectIndex(
       (prevIndex) => (prevIndex - 1 + projects.length) % projects.length
     );
+    setNextProjectIndex(
+      (nextIndex) => (nextIndex - 1 + projects.length) % projects.length
+    );
   };
 
-  const currentProject = projects[currentProjectIndex];
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextProject();
+    }, 5000);
 
+    return () => clearInterval(interval);
+  }, [projects.length]);
+
+  const carouselWrapperStyle = {
+    ...styles.carouselWrapper,
+    width: projects.length > 1 ? '100%' : '50%',
+  };
+
+  const handleDotClick = (index: number) => {
+    setCurrentProjectIndex(index);
+    setNextProjectIndex((index + 1) % projects.length);
+  };
   return (
     <Box css={styles.container}>
-      <Box css={styles.carouselWrapper}>
-        <Box css={styles.arrowContainer}>
-          <IconButton
-            variant="link"
-            intent="base"
-            onClick={prevProject}
-            aria-label="Button"
-            icon={'ArrowLeft'}
-          ></IconButton>
+      <Box css={carouselWrapperStyle}>
+        {/* Arrow Left */}
+        <IconButton
+          variant="link"
+          intent="base"
+          onClick={prevProject}
+          aria-label="Previous Project"
+          icon={'ArrowLeft'}
+          css={styles.arrowButton}
+        />
+
+        <Box css={{ ...styles.cardWrapper, ...(slide && styles.slideEffect) }}>
+          <ProjectCard project={projects[nextProjectIndex]} />
+          <ProjectCard project={projects[currentProjectIndex]} />
+          <ProjectCard project={projects[nextProjectIndex]} />
         </Box>
 
-        <Box
-          css={{
-            ...(slide && styles.slideEffect), // Apply the slide effect
-          }}
-        >
-          <Card variant="ghost" css={styles.card}>
-            <Card.Header css={styles.cardHeader}>
-              <Box css={styles.projectImageWrapper}>
-                <div
-                  style={{
-                    position: 'relative',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    paddingTop: '6.5px',
-                    transform: 'scale(170%)',
-                  }}
-                >
-                  <ProjecImage
-                    name={currentProject.name}
-                    image={currentProject.image}
-                  />
-                </div>
-              </Box>
-              <Heading as="h2">{currentProject.name}</Heading>
-            </Card.Header>
-            <Card.Body>
-              <Box css={styles.cardContent}>
-                <Text>{currentProject.description}</Text>
-              </Box>
-            </Card.Body>
-            <Card.Footer gap="$3" direction="row-reverse">
-              <Button
-                size="sm"
-                variant="ghost"
-                intent="info"
-                leftIcon={'ExternalLink'}
-              >
-                Visit Website
-              </Button>
-            </Card.Footer>
-          </Card>
-        </Box>
-        <Box css={styles.arrowContainer}>
-          <IconButton
-            variant="link"
-            intent="base"
-            onClick={nextProject}
-            aria-label="Button"
-            icon={'ArrowRight'}
-          ></IconButton>
-        </Box>
+        {/* Arrow Right */}
+        <IconButton
+          variant="link"
+          intent="base"
+          onClick={nextProject}
+          aria-label="Next Project"
+          icon={'ArrowRight'}
+          css={styles.arrowButton}
+        />
+      </Box>
+      <Box css={styles.dotsContainer}>
+        {projects.map((_, index) => (
+          <Box
+            key={index}
+            css={index === currentProjectIndex ? styles.activeDot : styles.dot}
+            onClick={() => handleDotClick(index)}
+          />
+        ))}
       </Box>
     </Box>
   );
 };
+
+const ProjectCard = ({ project }: { project: Project }) => (
+  <Card variant="ghost" css={styles.card}>
+    <Card.Header css={styles.cardHeader}>
+      <Box css={styles.projectImageWrapper}>
+        <div
+          style={{
+            position: 'relative',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingTop: '6.5px',
+            transform: 'scale(170%)',
+          }}
+        >
+          <ProjecImage name={project.name} image={project.image} />
+        </div>
+      </Box>
+      <Heading as="h2">{project.name}</Heading>
+    </Card.Header>
+    <Card.Body>
+      <Box css={styles.cardContent}>
+        <Text>{project.description}</Text>
+      </Box>
+    </Card.Body>
+    <Card.Footer gap="$3" direction="row-reverse">
+      <Button size="sm" variant="ghost" intent="info" leftIcon={'ExternalLink'}>
+        Visit Website
+      </Button>
+    </Card.Footer>
+  </Card>
+);
 
 const styles = {
   container: cssObj({
@@ -111,7 +128,7 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-between',
-    height: '250px',
+    minHeight: '250px',
     overflow: 'hidden',
   }),
   card: cssObj({
@@ -119,8 +136,8 @@ const styles = {
     width: '750px',
     alignItems: 'center',
     justifyContent: 'center',
-    //border: '1px solid #E2E2E2',
     borderRadius: '$lg',
+    margin: '0 20px',
   }),
   cardHeader: cssObj({
     backgroundImage:
@@ -161,16 +178,51 @@ const styles = {
   arrowContainer: cssObj({
     padding: '0 10px',
   }),
+  arrowButton: cssObj({
+    // Add styles for positioning and visibility
+  }),
   carouselWrapper: cssObj({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 'calc(300px + 40px)',
+    width: '100%',
+    overflow: 'visible', // Change to visible to prevent cropping
     position: 'relative',
   }),
   slideEffect: cssObj({
-    transform: 'translateX(-150%)',
-    transition: 'transform 0.5s ease-in-out',
+    transform: 'translateX(-50%)', // Adjust to center the focused card
+  }),
+  cardWrapper: cssObj({
+    display: 'flex',
+    transition: 'transform 1s ease-out',
+    justifyContent: 'flex-start', // Start alignment to control the focus
+    width: '300%', // Increase width to accommodate all cards
+  }),
+  dotsContainer: cssObj({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '20px',
+  }),
+  dot: cssObj({
+    height: '10px',
+    width: '10px',
+    backgroundColor: '#bbb',
+    borderRadius: '50%',
+    margin: '0 5px',
+    cursor: 'pointer',
+    transition: 'background-color 0.3s ease',
+    '&:hover': {
+      backgroundColor: '#888',
+    },
+  }),
+  activeDot: cssObj({
+    height: '10px',
+    width: '10px',
+    backgroundColor: '#fff',
+    borderRadius: '50%',
+    margin: '0 5px',
+    cursor: 'pointer',
   }),
 };
 
