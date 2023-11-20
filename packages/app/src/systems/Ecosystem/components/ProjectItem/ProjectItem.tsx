@@ -217,7 +217,7 @@ const styles = {
     gap: '$4',
     justifyContent: 'flex-start',
     padding: '$6',
-    flex: '1 1 auto', // Allow the body to grow and shrink as needed
+    flex: '1 1 auto',
     minHeight: '95px',
   }),
   statusContainer: cssObj({

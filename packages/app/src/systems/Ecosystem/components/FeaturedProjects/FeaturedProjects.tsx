@@ -97,7 +97,7 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
                 ))}
               </Box>
             </Card.Header>
-            <Card.Body>
+            <Card.Body css={styles.cardBody}>
               <Heading as="h3" css={styles.header}>
                 {currentProject.name}
               </Heading>
@@ -105,7 +105,11 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
                 <Text>{currentProject.description}</Text>
               </Box>
             </Card.Body>
-            <Card.Footer gap="$3" direction="row-reverse">
+            <Card.Footer
+              css={styles.cardFooter}
+              gap="$3"
+              direction="row-reverse"
+            >
               {currentProject.isLive ? (
                 <Button intent="base" size="sm" variant="outlined">
                   <Box css={styles.dotLive} />
@@ -234,6 +238,22 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'start',
+  }),
+  cardFooter: cssObj({
+    height: '60px', // Set a fixed height for the footer
+    display: 'flex',
+    alignItems: 'center', // Center the content vertically
+    justifyContent: 'space-between', // Distribute space between items
+    padding: '0 15px', // Add some padding for aesthetics
+  }),
+  cardBody: cssObj({
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    padding: '15px',
+    flex: '1 1 auto', // Allow the body to grow and shrink as needed
+    minHeight: '120px', // Set a minimum height for the body
   }),
   projectImageWrapper: cssObj({
     display: 'flex',
