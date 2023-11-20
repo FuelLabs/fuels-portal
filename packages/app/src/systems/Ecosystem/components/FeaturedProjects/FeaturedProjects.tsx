@@ -1,5 +1,13 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, Heading, Card, Text, Button, IconButton } from '@fuel-ui/react';
+import {
+  Box,
+  Heading,
+  Card,
+  Text,
+  Button,
+  IconButton,
+  Tag,
+} from '@fuel-ui/react';
 import React, { useState, useEffect } from 'react';
 
 import type { Project } from '../../types';
@@ -7,55 +15,139 @@ import { ProjecImage } from '../ProjectImage';
 
 const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
-  const [nextProjectIndex, setNextProjectIndex] = useState(1);
-  const [slide, setSlide] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  const changeProject = (newIndex: number) => {
+    setIsAnimating(true);
+    setTimeout(() => {
+      setCurrentProjectIndex(newIndex);
+      setIsAnimating(false);
+    }, 500);
+  };
 
   const nextProject = () => {
-    setSlide(true);
-    setTimeout(() => {
-      setCurrentProjectIndex((prevIndex) => (prevIndex + 1) % projects.length);
-      setNextProjectIndex((nextIndex) => (nextIndex + 1) % projects.length);
-      setSlide(false);
-    }, 1500);
+    const newIndex = (currentProjectIndex + 1) % projects.length;
+    changeProject(newIndex);
   };
 
   const prevProject = () => {
-    setCurrentProjectIndex(
-      (prevIndex) => (prevIndex - 1 + projects.length) % projects.length
-    );
-    setNextProjectIndex(
-      (nextIndex) => (nextIndex - 1 + projects.length) % projects.length
-    );
+    const newIndex =
+      (currentProjectIndex - 1 + projects.length) % projects.length;
+    changeProject(newIndex);
   };
 
   useEffect(() => {
     const interval = setInterval(() => {
       nextProject();
-    }, 5000);
+    }, 5000); // Adjust the interval as needed
 
     return () => clearInterval(interval);
-  }, [projects.length]);
+  }, [currentProjectIndex, projects.length]);
 
-  const carouselWrapperStyle = {
-    ...styles.carouselWrapper,
-    width: projects.length > 1 ? '100%' : '50%',
-  };
+  const currentProject = projects[currentProjectIndex];
 
   const handleDotClick = (index: number) => {
-    setCurrentProjectIndex(index);
-    setNextProjectIndex((index + 1) % projects.length);
+    changeProject(index);
   };
+
   return (
     <Box css={styles.container}>
-      <Box css={carouselWrapperStyle}>
-        <Box css={{ ...styles.cardWrapper, ...(slide && styles.slideEffect) }}>
-          <ProjectCard project={projects[nextProjectIndex]} />
-          <ProjectCard project={projects[currentProjectIndex]} />
-          <ProjectCard project={projects[nextProjectIndex]} />
+      <Box css={styles.carouselWrapper}>
+        <Box>
+          <Card
+            variant="ghost"
+            css={{
+              ...styles.card,
+              ...(isAnimating ? styles.fadeOut : styles.fadeIn),
+            }}
+          >
+            <Card.Header css={styles.cardHeader}>
+              <Box css={styles.projectImageWrapper}>
+                <div
+                  style={{
+                    position: 'relative',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    paddingTop: '6.5px',
+                    transform: 'scale(170%)',
+                  }}
+                >
+                  <ProjecImage
+                    name={currentProject.name}
+                    image={currentProject.image}
+                  />
+                </div>
+              </Box>
+              <Box css={styles.statusContainer}>
+                {currentProject.tags?.map((tag, index) => (
+                  <Tag
+                    key={index}
+                    variant="ghost"
+                    intent="base"
+                    style={{
+                      fontSize: 'small',
+                      fontWeight: '500',
+                      position: 'relative',
+                    }}
+                  >
+                    {tag}
+                  </Tag>
+                ))}
+              </Box>
+            </Card.Header>
+            <Card.Body>
+              <Heading as="h3" css={styles.header}>
+                {currentProject.name}
+              </Heading>
+              <Box css={styles.cardContent}>
+                <Text>{currentProject.description}</Text>
+              </Box>
+            </Card.Body>
+            <Card.Footer gap="$3" direction="row-reverse">
+              <Box
+                style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}
+              >
+                {currentProject.twitter && (
+                  <Button
+                    href={currentProject.twitter}
+                    size="sm"
+                    intent="error"
+                    variant="ghost"
+                    leftIcon={'BrandX'}
+                  ></Button>
+                )}
+                {currentProject.github && (
+                  <Button
+                    href={currentProject.github}
+                    size="sm"
+                    leftIcon={'BrandGithub'}
+                    variant="ghost"
+                  ></Button>
+                )}
+                {currentProject.discord && (
+                  <Button
+                    href={currentProject.discord}
+                    size="sm"
+                    intent="info"
+                    leftIcon={'BrandDiscord'}
+                    variant="ghost"
+                  ></Button>
+                )}
+                <Button
+                  size="sm"
+                  variant="outlined"
+                  intent="info"
+                  leftIcon={'ExternalLink'}
+                >
+                  Visit Website
+                </Button>
+              </Box>
+            </Card.Footer>
+          </Card>
         </Box>
       </Box>
       <Box css={styles.dotsContainer}>
-        {/* Arrow Left */}
         <IconButton
           variant="link"
           intent="base"
@@ -71,7 +163,6 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
             onClick={() => handleDotClick(index)}
           />
         ))}
-        {/* Arrow Right */}
         <IconButton
           variant="link"
           intent="base"
@@ -85,38 +176,15 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
   );
 };
 
-const ProjectCard = ({ project }: { project: Project }) => (
-  <Card variant="ghost" css={styles.card}>
-    <Card.Header css={styles.cardHeader}>
-      <Box css={styles.projectImageWrapper}>
-        <div
-          style={{
-            position: 'relative',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingTop: '6.5px',
-            transform: 'scale(170%)',
-          }}
-        >
-          <ProjecImage name={project.name} image={project.image} />
-        </div>
-      </Box>
-      <Heading as="h2">{project.name}</Heading>
-    </Card.Header>
-    <Card.Body>
-      <Box css={styles.cardContent}>
-        <Text>{project.description}</Text>
-      </Box>
-    </Card.Body>
-    <Card.Footer gap="$3" direction="row-reverse">
-      <Button size="sm" variant="ghost" intent="info" leftIcon={'ExternalLink'}>
-        Visit Website
-      </Button>
-    </Card.Footer>
-  </Card>
-);
+const fadeInKeyframes = {
+  from: { opacity: 0 },
+  to: { opacity: 1 },
+};
 
+const fadeOutKeyframes = {
+  from: { opacity: 1 },
+  to: { opacity: 0 },
+};
 const styles = {
   container: cssObj({
     background: '#00F58C',
@@ -126,25 +194,25 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-between',
-    minHeight: '250px',
+    minHeight: '200px',
     overflow: 'hidden',
   }),
   card: cssObj({
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
     width: '750px',
+    border: '1px solid #D8D8D8',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: '$lg',
-    margin: '0 20px',
+    overflow: 'hidden',
   }),
   cardHeader: cssObj({
     backgroundImage:
       'url(https://fuel-labs.ghost.io/content/images/size/w2000/2023/09/Background.png)',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
+    position: 'relative',
     overflow: 'hidden',
-    borderTopLeftRadius: '$lg',
-    borderTopRightRadius: '$lg',
     padding: '1rem',
     display: 'flex',
     alignItems: 'center',
@@ -162,6 +230,13 @@ const styles = {
     border: '1px solid #E2E2E2',
     boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.6)',
     marginRight: '1rem',
+    //bottom: '10px', // Adjust as needed
+    //left: '10px', // Adjust as needed
+    //flexDirection: 'row',
+    //gap: '10px',
+  }),
+  header: cssObj({
+    //color: '#00F58C',
   }),
   cardContent: cssObj({
     display: 'flex',
@@ -183,18 +258,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%',
-    overflow: 'visible', // Change to visible to prevent cropping
-    position: 'relative',
-  }),
-  slideEffect: cssObj({
-    transform: 'translateX(-33.33%)', // Adjust to center the focused card
-  }),
-  cardWrapper: cssObj({
-    display: 'flex',
-    transition: 'transform 1s ease-out',
-    justifyContent: 'flex-start', // Start alignment to control the focus
-    width: '300%', // Increase width to accommodate all cards
+    width: 'calc(300px + 40px)',
   }),
   dotsContainer: cssObj({
     display: 'flex',
@@ -222,6 +286,31 @@ const styles = {
     margin: '0 5px',
     cursor: 'pointer',
     boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.3)',
+  }),
+  tag: cssObj({
+    color: '$intentsBase12',
+    borderRadius: '$sm',
+    padding: '0 $1',
+    backgroundColor: '$gray5',
+    marginRight: '8px',
+  }),
+  statusContainer: cssObj({
+    position: 'absolute',
+    bottom: '10px', // Adjust as needed
+    right: '10px', // Adjust as needed
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '10px',
+  }),
+  fadeIn: cssObj({
+    animationName: fadeInKeyframes,
+    animationDuration: '0.5s',
+    animationTimingFunction: 'ease-in-out',
+  }),
+  fadeOut: cssObj({
+    animationName: fadeOutKeyframes,
+    animationDuration: '0.5s',
+    animationTimingFunction: 'ease-in-out',
   }),
 };
 

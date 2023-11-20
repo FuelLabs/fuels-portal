@@ -74,15 +74,17 @@ export function Ecosystem() {
               </Button>
             </a>
           </Box.Flex>
-          <Heading as="h2" css={styles.heading}>
-            Featured Projects
-          </Heading>
+          {featuredProjects.length > 0 && (
+            <Heading as="h2" css={styles.heading}>
+              Featured Projects
+            </Heading>
+          )}
           <Box>
             {featuredProjects.length > 0 && (
               <FeaturedProjects projects={featuredProjects} />
             )}
           </Box>
-          <Box css={styles.divider}></Box>
+          {featuredProjects.length > 0 && <Box css={styles.divider}></Box>}
           <EcosystemTags
             tags={tags}
             onPressTag={handleTagButtonClick}
