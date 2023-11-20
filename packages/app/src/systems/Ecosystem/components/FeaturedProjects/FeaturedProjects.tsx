@@ -52,10 +52,10 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
 
   return (
     <Box css={styles.container}>
-      <Box css={styles.carouselWrapper}>
+      <Box>
         <Box>
           <Card
-            variant="ghost"
+            variant="outlined"
             css={{
               ...styles.card,
               ...(isAnimating ? styles.fadeOut : styles.fadeIn),
@@ -69,7 +69,7 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    paddingTop: '6.5px',
+                    paddingTop: '6.45px',
                     transform: 'scale(170%)',
                   }}
                 >
@@ -208,7 +208,7 @@ const fadeOutKeyframes = {
 };
 const styles = {
   container: cssObj({
-    background: '#00F58C',
+    //background: '#00F58C',
     padding: '1rem',
     borderRadius: '$lg',
     display: 'flex',
@@ -219,17 +219,17 @@ const styles = {
     overflow: 'hidden',
   }),
   card: cssObj({
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
+    //boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
     width: '750px',
-    //border: '1px solid #D8D8D8',
+    //border: '1px solid #00F58C',
+    margin: '0 auto',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: '$lg',
     overflow: 'hidden',
   }),
   cardHeader: cssObj({
-    backgroundImage:
-      'url(https://fuel-labs.ghost.io/content/images/size/w2000/2023/09/Background.png)',
+    //backgroundImage:'url(https://fuel-labs.ghost.io/content/images/size/w2000/2023/09/Background.png)',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     position: 'relative',
@@ -265,7 +265,7 @@ const styles = {
     overflow: 'hidden',
     position: 'relative',
     border: '1px solid #E2E2E2',
-    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.6)',
+    //boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.6)',
     marginRight: '1rem',
   }),
   header: cssObj({
@@ -286,12 +286,6 @@ const styles = {
   }),
   arrowButton: cssObj({
     // Add styles for positioning and visibility
-  }),
-  carouselWrapper: cssObj({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 'calc(300px + 40px)',
   }),
   dotsContainer: cssObj({
     display: 'flex',
@@ -330,11 +324,11 @@ const styles = {
   activeDot: cssObj({
     height: '10px',
     width: '10px',
-    backgroundColor: '#FFF',
+    backgroundColor: '#00F58C',
     borderRadius: '50%',
     margin: '0 5px',
     cursor: 'pointer',
-    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.3)',
+    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
   }),
   tag: cssObj({
     color: '$intentsBase12',
