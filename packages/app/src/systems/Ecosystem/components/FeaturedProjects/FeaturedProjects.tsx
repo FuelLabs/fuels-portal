@@ -39,7 +39,7 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       nextProject();
-    }, 5000); // Adjust the interval as needed
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [currentProjectIndex, projects.length]);
@@ -83,8 +83,9 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
                 {currentProject.tags?.map((tag, index) => (
                   <Tag
                     key={index}
-                    variant="ghost"
-                    intent="base"
+                    variant="outlined"
+                    intent="info"
+                    size="sm"
                     style={{
                       fontSize: 'small',
                       fontWeight: '500',
@@ -105,8 +106,19 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
               </Box>
             </Card.Body>
             <Card.Footer gap="$3" direction="row-reverse">
+              {currentProject.isLive && (
+                <Button intent="base" size="sm" variant="outlined">
+                  <Box css={styles.live} />
+                  {'Live on Testnet'}
+                </Button>
+              )}
               <Box
-                style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  gap: '10px',
+                  marginLeft: 'auto',
+                }}
               >
                 {currentProject.twitter && (
                   <Button
@@ -137,7 +149,7 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
                 <Button
                   size="sm"
                   variant="outlined"
-                  intent="info"
+                  intent="base"
                   leftIcon={'ExternalLink'}
                 >
                   Visit Website
@@ -230,10 +242,6 @@ const styles = {
     border: '1px solid #E2E2E2',
     boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.6)',
     marginRight: '1rem',
-    //bottom: '10px', // Adjust as needed
-    //left: '10px', // Adjust as needed
-    //flexDirection: 'row',
-    //gap: '10px',
   }),
   header: cssObj({
     //color: '#00F58C',
@@ -265,6 +273,14 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: '20px',
+  }),
+  live: cssObj({
+    width: '$1',
+    height: '$1',
+    borderRadius: '50%',
+    border: '1px solid #A9F6D5',
+    background: '#00F58C',
+    boxShadow: '0px 0px 4px 0px #00F58C',
   }),
   dot: cssObj({
     height: '10px',

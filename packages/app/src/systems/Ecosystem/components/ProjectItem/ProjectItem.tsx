@@ -36,7 +36,6 @@ export const ProjectItem: ProjectItemComponent = ({
   url,
   twitter,
   discord,
-  status,
   github,
   isLive,
   onSelect,
@@ -51,7 +50,6 @@ export const ProjectItem: ProjectItemComponent = ({
         url,
         twitter,
         discord,
-        status,
         github,
         isLive,
         tags,
@@ -132,14 +130,6 @@ export const ProjectItem: ProjectItemComponent = ({
             </Box.Flex>
             <Text fontSize="sm"> {description}</Text>
           </Box.Stack>
-          <Box.Flex align="center" justify="space-between" wrap="wrap">
-            {isLive ? (
-              <Tag intent="base" size="xs" css={styles.tag} variant="ghost">
-                <Box css={styles.dot} />
-                {'Live'}
-              </Tag>
-            ) : null}
-          </Box.Flex>
         </Box.Stack>
       </Card.Body>
       <CardFooter css={styles.cardFooter}>
@@ -149,18 +139,12 @@ export const ProjectItem: ProjectItemComponent = ({
           wrap="wrap"
           css={styles.statusContainer}
         >
-          {status &&
-            status.map((s, index) => (
-              <Tag
-                key={index}
-                intent="base"
-                size="xs"
-                css={styles.tag}
-                variant="ghost"
-              >
-                {s}
-              </Tag>
-            ))}
+          {isLive ? (
+            <Tag intent="base" size="xs" css={styles.tag} variant="ghost">
+              <Box css={styles.dot} />
+              {'Live on Testnet'}
+            </Tag>
+          ) : null}
         </Box.Flex>
       </CardFooter>
     </MotionCard>
@@ -177,7 +161,7 @@ const styles = {
     },
   }),
   cardFooter: cssObj({
-    //maxHeight: '10px',
+    maxHeight: '20px',
   }),
   details: cssObj({
     flex: 1,

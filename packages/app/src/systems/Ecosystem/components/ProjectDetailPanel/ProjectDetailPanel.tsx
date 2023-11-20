@@ -59,7 +59,7 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
           right: 0,
           top: 0,
           height: '100%',
-          width: '75%',
+          width: '50%',
           backgroundColor: '#111111',
           padding: '30px',
           overflowY: 'auto',
@@ -167,28 +167,6 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
               style={{
                 fontSize: 'small',
                 fontWeight: '500',
-                position: 'relative',
-              }}
-            >
-              {tag}
-            </Badge>
-          ))}
-        </Box>
-        <Box
-          style={{
-            display: 'flex',
-            gap: '10px',
-            flexWrap: 'wrap',
-            position: 'relative',
-          }}
-        >
-          {project.status?.map((tag, index) => (
-            <Badge
-              key={index}
-              variant="outlined"
-              intent="info"
-              style={{
-                fontSize: 'small',
                 position: 'relative',
               }}
             >

@@ -8,32 +8,29 @@
     "github": "https://github.com/AcumenProtocol",
     "twitter": "https://twitter.com/acumenofficial",
     "discord": "https://discord.gg/vnUPngfB5D",
-    "image": "acumen",
-    "status": ["Building"]
+    "image": "acumen"
   },
   {
     "isLive": false,
     "name": "Aerv Finance",
     "url": "https://aerv.finance",
     "tags": ["DeFi"],
-    "description": "The Leading Liquid Staking Solution on Fuel",
+    "description": "The Leading Liquid Staking Solution on Fuel.",
     "github": "",
     "twitter": "https://twitter.com/AervFinance",
     "discord": "",
-    "image": "aerv",
-    "status": ["Building"]
+    "image": "aerv"
   },
   {
     "isLive": false,
     "name": "Aori",
     "url": "https://www.aori.io/",
     "tags": ["DeFi", "Options"],
-    "description": "Non-Custodial, high-performance order book trading infrastructure for decentralized options, spot trading, and OTC settlement.",
+    "description": "Non-custodial, high-performance order book trading infrastructure for decentralized options, spot trading, and OTC settlement.",
     "github": "https://github.com/aori-io",
     "twitter": "https://twitter.com/aori_io",
     "discord": "",
-    "image": "aori",
-    "status": ["Building"]
+    "image": "aori"
   },
   {
     "isLive": false,
@@ -44,8 +41,7 @@
     "github": "",
     "twitter": "https://twitter.com/Artdao_xyz",
     "discord": "",
-    "image": "artdao",
-    "status": ["Stealth-Mode"]
+    "image": "artdao"
   },
   {
     "isLive": false,
@@ -56,44 +52,29 @@
     "github": "",
     "twitter": "https://twitter.com/BaldBoyzOnFuel",
     "discord": "",
-    "image": "baldboyz",
-    "status": ["Building"]
+    "image": "baldboyz"
   },
   {
     "isLive": true,
     "name": "BSAFE",
     "url": "https://bsafe.pro/",
     "tags": ["DeFi", "Wallet"],
-    "description": "Bsafe is a multisign tool created to simplify asset management!",
+    "description": "Bsafe is a multi-signature tool created to simplify asset management.",
     "github": "",
     "twitter": "https://twitter.com/Bsafe_Fuel",
     "discord": "",
-    "image": "bsafe",
-    "status": ["Building"]
-  },
-  {
-    "isLive": false,
-    "name": "Composability Labs",
-    "url": "https://github.com/compolabs",
-    "tags": ["DEX (Orderbook)", "DeFi", "Infrastructure Tooling or Platform"],
-    "description": "Modularity maxis, building DeFi infrastructure.",
-    "github": "https://github.com/compolabs",
-    "twitter": "https://twitter.com/compolabs",
-    "discord": "https://discord.gg/phcHhUHssg",
-    "image": "compolabs",
-    "status": ["Building"]
+    "image": "bsafe"
   },
   {
     "isLive": false,
     "name": "Common Ground",
     "url": "https://www.commonground.cg/",
     "tags": ["Infrastructure Tooling or Platform"],
-    "description": "The Web3-powered app for communities of all shapes and sizes. Chat, share and earn with your audience and friends",
+    "description": "The Web3-powered app for communities of all shapes and sizes. Chat, share, and earn with your audience and friends.",
     "github": "",
     "twitter": "https://twitter.com/CommonGround_cg",
     "discord": "",
-    "image": "commonground",
-    "status": ["Building"]
+    "image": "commonground"
   },
   {
     "isLive": false,
@@ -104,8 +85,7 @@
     "github": "https://github.com/elixfinance",
     "twitter": "https://twitter.com/elixfinance",
     "discord": "https://discord.gg/avrdk2tAY6",
-    "image": "elix",
-    "status": ["Building"]
+    "image": "elix"
   },
   {
     "isLive": false,
@@ -116,20 +96,18 @@
     "github": "",
     "twitter": "https://twitter.com/Fluid_Protocol",
     "discord": "https://discord.gg/fluidprotocol",
-    "image": "fluid",
-    "status": ["Building"]
+    "image": "fluid"
   },
   {
     "isLive": false,
     "name": "Fuelart",
     "url": "https://fuelart.io/",
     "tags": ["Marketplace", "NFTs"],
-    "description": "Fuelart is a next gen NFT marketplace built on Fuel.",
+    "description": "Fuelart is a next-gen NFT marketplace built on Fuel.",
     "github": "",
     "twitter": "https://twitter.com/fuel_art",
     "discord": "https://discord.gg/sj9PujpSzJ",
-    "image": "fuelart",
-    "status": ["Building"]
+    "image": "fuelart"
   },
   {
     "isLive": true,
@@ -140,8 +118,7 @@
     "github": "https://github.com/fuelet",
     "twitter": "https://twitter.com/FueletWallet",
     "discord": "https://discord.gg/fueletwallet",
-    "image": "fuelet",
-    "status": ["Building"]
+    "image": "fuelet"
   },
   {
     "isLive": false,
@@ -152,8 +129,7 @@
     "github": "",
     "twitter": "https://twitter.com/HelixaTCG",
     "discord": "",
-    "image": "helixa",
-    "status": ["Building"]
+    "image": "helixa"
   },
   {
     "isLive": false,
@@ -164,32 +140,29 @@
     "github": "https://github.com/hyperlane-xyz",
     "twitter": "https://twitter.com/hyperlane_xyz",
     "discord": "",
-    "image": "hyperlane",
-    "status": ["Building"]
+    "image": "hyperlane"
   },
   {
     "isLive": false,
     "name": "Microchain Systems",
     "url": "https://microchain.systems/",
     "tags": ["DEX (AMM)", "DeFi"],
-    "description": "A low-cost, easy-to-use token swapping terminal with two major benefits: versatility and simplicity.",
+    "description": "A low-cost, easy-to-use token-swapping terminal with two major benefits: versatility and simplicity.",
     "github": "",
     "twitter": "https://twitter.com/MicrochainSys",
     "discord": "",
-    "image": "microchain",
-    "status": ["Building"]
+    "image": "microchain"
   },
   {
     "isLive": false,
     "name": "Nomen",
     "url": "https://fuelnomen-testnet.netlify.app/",
     "tags": ["Infrastructure Tooling or Platform", "Name Service"],
-    "description": "Nomen is the native name system of Fuel.",
+    "description": "Nomen is a native name system of Fuel.",
     "github": "",
     "twitter": "https://twitter.com/fuelnomen",
     "discord": "https://discord.gg/xPC87HyJ5n",
-    "image": "fuelnomen",
-    "status": ["Building"]
+    "image": "fuelnomen"
   },
   {
     "isLive": false,
@@ -200,8 +173,7 @@
     "github": "",
     "twitter": "https://twitter.com/OraoNetwork",
     "discord": "",
-    "image": "orao",
-    "status": ["Building"]
+    "image": "orao"
   },
   {
     "isLive": false,
@@ -212,8 +184,7 @@
     "github": "",
     "twitter": "https://twitter.com/PEPAlabs",
     "discord": "",
-    "image": "pepamarket",
-    "status": ["Building"]
+    "image": "pepamarket"
   },
   {
     "isLive": false,
@@ -224,8 +195,7 @@
     "github": "",
     "twitter": "https://twitter.com/playestates",
     "discord": "https://discord.gg/playestates",
-    "image": "playestates",
-    "status": ["Building"]
+    "image": "playestates"
   },
   {
     "isLive": false,
@@ -236,8 +206,7 @@
     "github": "",
     "twitter": "https://twitter.com/PoolsharkLabs",
     "discord": "",
-    "image": "poolshark",
-    "status": ["Building"]
+    "image": "poolshark"
   },
   {
     "isLive": false,
@@ -248,20 +217,18 @@
     "github": "https://github.com/QuidMint/",
     "twitter": "https://twitter.com/quidmint",
     "discord": "",
-    "image": "quid",
-    "status": ["Building"]
+    "image": "quid"
   },
   {
     "isLive": false,
     "name": "RedStone Oracle",
     "url": "https://redstone.finance/",
     "tags": ["Infrastructure Tooling or Platform", "Oracle"],
-    "description": "RedStone Oracles delivers the data you need at high-frequency and inherited security of the destination chain.",
+    "description": "Modular Oracles tailored to your decentralized application.",
     "github": "https://github.com/redstone-finance",
     "twitter": "https://twitter.com/redstone_defi",
     "discord": "",
-    "image": "redstone",
-    "status": ["Building"]
+    "image": "redstone"
   },
   {
     "isLive": false,
@@ -272,8 +239,7 @@
     "github": "https://github.com/Sail-Exchange",
     "twitter": "https://twitter.com/_sailexchange",
     "discord": "",
-    "image": "sail",
-    "status": ["Building"]
+    "image": "sail"
   },
   {
     "isLive": false,
@@ -284,8 +250,7 @@
     "github": "https://github.com/SmartMoney-Labs",
     "twitter": "https://twitter.com/smartmoney_labs",
     "discord": "https://discord.gg/jFMuUcFe2G",
-    "image": "smartmoney",
-    "status": ["Building"]
+    "image": "smartmoney"
   },
   {
     "isLive": true,
@@ -296,8 +261,7 @@
     "github": "https://github.com/compolabs/spark",
     "twitter": "https://twitter.com/Sprkfi",
     "discord": "https://discord.gg/Nz9VZQrSNH",
-    "image": "spark",
-    "status": ["Building"]
+    "image": "spark"
   },
   {
     "isLive": true,
@@ -308,20 +272,18 @@
     "github": "https://github.com/compolabs/sway-lend",
     "twitter": "https://twitter.com/swaylend",
     "discord": "https://discord.gg/phcHhUHssg",
-    "image": "swaylend",
-    "status": ["Building"]
+    "image": "swaylend"
   },
   {
     "isLive": false,
     "name": "Ruscet Exchange",
     "url": "https://github.com/ruscet",
     "tags": ["DeFi"],
-    "description": "The permissionless, hyper-efficient exchange on Fuel.",
+    "description": "A permissionless, hyper-efficient exchange on Fuel.",
     "github": "https://github.com/ruscet",
     "twitter": "https://twitter.com/ruscet_",
     "discord": "https://discord.gg/g3eqZsA39z",
-    "image": "ruscet",
-    "status": ["Stealth-Mode"]
+    "image": "ruscet"
   },
   {
     "isLive": false,
@@ -332,8 +294,7 @@
     "github": "",
     "twitter": "https://twitter.com/ThunderbyFuel",
     "discord": "https://discord.gg/thundernftmarket",
-    "image": "thunder",
-    "status": ["Building"]
+    "image": "thunder"
   },
   {
     "isLive": false,
@@ -344,20 +305,18 @@
     "github": "",
     "twitter": "https://twitter.com/0xUNIC",
     "discord": "https://discord.gg/bkED7VZzWK",
-    "image": "unic",
-    "status": ["Building"]
+    "image": "unic"
   },
   {
     "isLive": true,
-    "name": "Wallet",
+    "name": "Fuel Wallet",
     "url": "https://wallet.fuel.network/docs/install/",
     "tags": ["Infrastructure Tooling or Platform", "Wallet"],
-    "description": "With the Fuel Wallet, you can explore DApps and manage your crypto assets, all in one place.",
+    "description": "Explore decentralized applications and manage your crypto assets, all in one place.",
     "github": "https://github.com/fuellabs/fuels-wallet",
     "twitter": "https://twitter.com/fuel_network",
     "discord": "https://discord.gg/fuelnetwork",
-    "image": "fuelwallet",
-    "status": ["Building"]
+    "image": "fuelwallet"
   },
   {
     "isLive": false,
@@ -368,32 +327,29 @@
     "github": "",
     "twitter": "https://twitter.com/YamaFinance",
     "discord": "https://discord.gg/4tBE8w4SYW",
-    "image": "yama",
-    "status": ["Building"]
+    "image": "yama"
   },
   {
     "isLive": false,
     "name": "Zap",
     "url": "https://zapinfra.com",
     "tags": ["Infrastructure Tooling or Platform"],
-    "description": "Zap is the gateway to better UX, cheaper transactions & faster execution on Fuel",
+    "description": "Zap is the gateway to better UX, cheaper transactions, and faster execution on Fuel",
     "github": "https://github.com/Layer3Labs/Zap-Protocol",
     "twitter": "https://twitter.com/zap_infra",
     "discord": "",
-    "image": "zap",
-    "status": ["Building"]
+    "image": "zap"
   },
   {
     "isLive": true,
     "name": "LearnWeb3",
     "url": "https://learnweb3.io/",
     "tags": ["Education"],
-    "description": "LearnWeb3 is the leading platform to upskill yourself with next-gen technologies for free proudly teaching 100k+ students without barriers!",
+    "description": "LearnWeb3 is the leading platform to upskill yourself with next-gen technologies, proudly teaching 100,000+ students without barriers.",
     "github": "https://github.com/LearnWeb3DAO",
     "twitter": "https://twitter.com/LearnWeb3DAO",
     "discord": "https://discord.gg/learnweb3",
-    "image": "learnweb3",
-    "status": ["Building"]
+    "image": "learnweb3"
   },
   {
     "isLive": false,
@@ -404,43 +360,39 @@
     "github": "https://github.com/agoraxyz/guild.xyz",
     "twitter": "https://twitter.com/guildxyz",
     "discord": "https://discord.gg/guildxyz",
-    "image": "guildxyz",
-    "status": ["Building"]
+    "image": "guildxyz"
   },
   {
     "isLive": true,
     "name": "Frank",
     "url": "https://fuelstat.xyz/frank/",
     "tags": ["Infrastructure Tooling or Platform"],
-    "description": "Frank (Fuel Rank) is a tool for you to track and analyze your interactions with the Fuel blockchain.",
+    "description": "Frank (Fuel Rank) is a tool to track and analyze your interactions with the Fuel blockchain.",
     "github": "https://github.com/fuelet",
     "twitter": "https://twitter.com/FueletWallet",
     "discord": "https://discord.gg/fueletwallet",
-    "image": "frank",
-    "status": ["Building"]
+    "image": "frank"
   },
   {
     "isLive": true,
     "name": "Fuelstat",
     "url": "https://fuelstat.xyz/",
     "tags": ["Infrastructure Tooling or Platform"],
-    "description": "FuelStat is a Fuel analytics platform to check out the latest data on Fuel accounts, transactions, and volume.",
+    "description": "FuelStat is an analytics platform for tracking the latest data on Fuel accounts, transactions, and volume.",
     "github": "https://github.com/fuelet",
     "twitter": "https://twitter.com/FueletWallet",
     "discord": "https://discord.gg/fueletwallet",
-    "image": "fuelstat",
-    "status": ["Building"]
+    "image": "fuelstat"
   },
   {
     "isLive": true,
     "name": "Metaschool",
     "url": "https://metaschool.so/",
     "tags": ["Education"],
-    "description": "Metaschool, a web3 education platform, with 140,000 developers, that helps developers enter web3 by building and shipping dApps.",
+    "description": "Metaschool is a web3 education platform with 140,000 developers that helps developers enter web3 by building and shipping decentralized applications.",
     "github": "https://github.com/0xmetaschool",
     "twitter": "https://twitter.com/0xmetaschool",
     "discord": "https://discord.com/invite/vbVMUwXWgc",
-    "image": "metaschool",
-    "status": ["Building"]
+    "image": "metaschool"
   }
 ]

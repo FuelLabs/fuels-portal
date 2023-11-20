@@ -7,6 +7,5 @@ export type Project = {
   github?: string;
   twitter?: string;
   discord?: string;
-  status: string[];
   isLive?: boolean;
 };
