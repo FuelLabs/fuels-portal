@@ -106,10 +106,15 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
               </Box>
             </Card.Body>
             <Card.Footer gap="$3" direction="row-reverse">
-              {currentProject.isLive && (
+              {currentProject.isLive ? (
                 <Button intent="base" size="sm" variant="outlined">
-                  <Box css={styles.live} />
+                  <Box css={styles.dotLive} />
                   {'Live on Testnet'}
+                </Button>
+              ) : (
+                <Button intent="base" size="sm" variant="outlined">
+                  <Box css={styles.dotBuilding} />
+                  {'Building'}
                 </Button>
               )}
               <Box
@@ -212,7 +217,7 @@ const styles = {
   card: cssObj({
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
     width: '750px',
-    border: '1px solid #D8D8D8',
+    //border: '1px solid #D8D8D8',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: '$lg',
@@ -274,12 +279,20 @@ const styles = {
     alignItems: 'center',
     marginTop: '20px',
   }),
-  live: cssObj({
+  dotLive: cssObj({
     width: '$1',
     height: '$1',
     borderRadius: '50%',
     border: '1px solid #A9F6D5',
     background: '#00F58C',
+    boxShadow: '0px 0px 4px 0px #00F58C',
+  }),
+  dotBuilding: cssObj({
+    width: '$1',
+    height: '$1',
+    borderRadius: '50%',
+    border: '1px solid #E5C06F',
+    background: '#F3B42C',
     boxShadow: '0px 0px 4px 0px #00F58C',
   }),
   dot: cssObj({

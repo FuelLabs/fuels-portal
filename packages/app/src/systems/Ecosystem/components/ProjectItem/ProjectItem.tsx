@@ -144,7 +144,12 @@ export const ProjectItem: ProjectItemComponent = ({
               <Box css={styles.dot} />
               {'Live on Testnet'}
             </Tag>
-          ) : null}
+          ) : (
+            <Tag intent="base" size="xs" css={styles.tag} variant="ghost">
+              <Box css={styles.dotBuilding} />
+              {'Building'}
+            </Tag>
+          )}
         </Box.Flex>
       </CardFooter>
     </MotionCard>
@@ -161,7 +166,11 @@ const styles = {
     },
   }),
   cardFooter: cssObj({
-    maxHeight: '20px',
+    height: '20px', // Set a fixed height for the footer
+    display: 'flex',
+    alignItems: 'center', // Center the content vertically
+    justifyContent: 'flex-end', // Align content to the start horizontally
+    //padding: '0 15px', // Add some padding for aesthetics
   }),
   details: cssObj({
     flex: 1,
@@ -183,6 +192,14 @@ const styles = {
     background: '#00F58C',
     boxShadow: '0px 0px 4px 0px #00F58C',
   }),
+  dotBuilding: cssObj({
+    width: '$1',
+    height: '$1',
+    borderRadius: '50%',
+    border: '1px solid #E5C06F',
+    background: '#F3B42C',
+    boxShadow: '0px 0px 4px 0px #00F58C',
+  }),
   tag: cssObj({
     color: '$intentsBase12',
     borderRadius: '$sm',
@@ -200,6 +217,8 @@ const styles = {
     gap: '$4',
     justifyContent: 'flex-start',
     padding: '$6',
+    flex: '1 1 auto', // Allow the body to grow and shrink as needed
+    minHeight: '95px',
   }),
   statusContainer: cssObj({
     display: 'flex',
