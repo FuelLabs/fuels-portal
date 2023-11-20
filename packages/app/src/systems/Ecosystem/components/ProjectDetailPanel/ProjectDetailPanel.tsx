@@ -44,7 +44,7 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
             left: 0,
             width: '100%',
             height: '100%',
-            backdropFilter: 'blur(5px)',
+            backdropFilter: 'blur(3px)',
             zIndex: 999,
             transition: 'backdropFilter 0.5s ease',
           }}
@@ -62,6 +62,7 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
           width: '50%',
           backgroundColor: '#111111',
           padding: '30px',
+          opacity: '1',
           overflowY: 'auto',
           zIndex: 1000,
           borderLeft: '0.5px solid #FFFFFF',
@@ -205,7 +206,7 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
           {project.description}
         </p>
         <Alert status="info">
-          <Alert.Description style={{ fontSize: '11px' }}>
+          <Alert.Description style={{ fontSize: '13px' }}>
             The content here is provided by the app developers. Links and
             content are not verified nor endorsed by Fuel. If you have any
             questions, please contact the project directly.

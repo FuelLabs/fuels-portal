@@ -1,14 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import {
-  Box,
-  ButtonLink,
-  Card,
-  Tag,
-  Text,
-  Icon,
-  Tooltip,
-  CardFooter,
-} from '@fuel-ui/react';
+import { Box, Card, Button, Text } from '@fuel-ui/react';
 import { motion } from 'framer-motion';
 import { type FC } from 'react';
 import { animations } from '~/systems/Core';
@@ -68,7 +59,9 @@ export const ProjectItem: ProjectItemComponent = ({
       css={styles.card}
     >
       <Card.Body css={styles.body}>
-        <ProjecImage name={name} image={image} />
+        <Box css={styles.image}>
+          <ProjecImage name={name} image={image} />
+        </Box>
         <Box.Stack gap="$2" justify="space-between" css={styles.details}>
           <Box.Stack align="flex-start" gap="$1">
             <Box.Flex
@@ -79,79 +72,65 @@ export const ProjectItem: ProjectItemComponent = ({
               <Text fontSize="base" color="intentsBase12">
                 {name}
               </Text>
-              <Box.Flex>
-                {twitter && (
-                  <Tooltip content={twitter}>
-                    <ButtonLink
-                      as="a"
-                      href={twitter}
-                      color="intentsBase12"
-                      size="sm"
-                    >
-                      <Icon icon="BrandX" size={20} stroke={1} />
-                    </ButtonLink>
-                  </Tooltip>
-                )}
-                {discord && (
-                  <Tooltip content={discord}>
-                    <ButtonLink
-                      as="a"
-                      href={discord}
-                      color="intentsBase12"
-                      size="sm"
-                    >
-                      <Icon icon="BrandDiscord" size={20} stroke={1} />
-                    </ButtonLink>
-                  </Tooltip>
-                )}
-                {github && (
-                  <Tooltip content={github}>
-                    <ButtonLink
-                      as="a"
-                      href={github}
-                      color="intentsBase12"
-                      size="sm"
-                    >
-                      <Icon icon="BrandGithub" size={20} stroke={1} />
-                    </ButtonLink>
-                  </Tooltip>
-                )}
-                <Tooltip content={url}>
-                  <ButtonLink as="a" href={url} color="intentsBase12" size="sm">
-                    <Icon
-                      icon="ExternalLink"
-                      color="intentsBase8"
-                      size={20}
-                      stroke={1}
-                    />
-                  </ButtonLink>
-                </Tooltip>
-              </Box.Flex>
             </Box.Flex>
             <Text fontSize="sm"> {description}</Text>
           </Box.Stack>
         </Box.Stack>
       </Card.Body>
-      <CardFooter css={styles.cardFooter}>
-        <Box.Flex
-          align="center"
-          justify="flex-start"
-          wrap="wrap"
-          css={styles.statusContainer}
+      <Card.Footer css={styles.cardFooter} gap="$3" direction="row-reverse">
+        {isLive ? (
+          <Button intent="base" size="xs" variant="outlined">
+            <Box css={styles.dot} />
+            {'Live on Testnet'}
+          </Button>
+        ) : (
+          <Button intent="base" size="xs" variant="outlined">
+            <Box css={styles.dotBuilding} />
+            {'Building'}
+          </Button>
+        )}
+        <Box
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: '10px',
+            marginLeft: 'auto',
+          }}
         >
-          {isLive ? (
-            <Tag intent="base" size="xs" css={styles.tag} variant="ghost">
-              <Box css={styles.dot} />
-              {'Live on Testnet'}
-            </Tag>
-          ) : (
-            <Tag intent="base" size="xs" css={styles.tag} variant="ghost">
-              <Box css={styles.dotBuilding} />
-              {'Building'}
-            </Tag>
+          {twitter && (
+            <Button
+              href={twitter}
+              size="xs"
+              intent="error"
+              variant="ghost"
+              leftIcon={'BrandX'}
+            ></Button>
           )}
-        </Box.Flex>
-      </CardFooter>
+          {github && (
+            <Button
+              href={github}
+              size="xs"
+              leftIcon={'BrandGithub'}
+              variant="ghost"
+            ></Button>
+          )}
+          {discord && (
+            <Button
+              href={discord}
+              size="xs"
+              intent="info"
+              leftIcon={'BrandDiscord'}
+              variant="ghost"
+            ></Button>
+          )}
+          <Button
+            size="xs"
+            variant="outlined"
+            intent="base"
+            leftIcon={'ExternalLink'}
+          ></Button>
+        </Box>
+      </Card.Footer>
     </MotionCard>
   );
 };
@@ -160,17 +139,28 @@ const styles = {
   card: cssObj({
     transition: 'transform 0.2s ease-in-out, border 0.2s ease-in-out',
     '&:hover': {
-      cursor: 'pointer',
-      border: '1px solid #00F58C',
-      transform: 'scale(1.02)',
+      textDecoration: 'none !important',
+      border: '1px solid $intentsBase8',
+      backgroundImage:
+        'linear-gradient($transparent, rgb(15, 15, 15)) !important',
+      'html[class="fuel_light-theme"] &': {
+        backgroundImage:
+          'linear-gradient($transparent, rgb(245, 245, 245)) !important',
+      },
     },
   }),
+  image: cssObj({
+    height: '40px',
+    width: '40px',
+    border: '1px solid #2E2E2E',
+    borderRadius: '$sm',
+    overflow: 'hidden',
+  }),
   cardFooter: cssObj({
-    height: '20px', // Set a fixed height for the footer
+    height: '20px',
     display: 'flex',
-    alignItems: 'center', // Center the content vertically
-    justifyContent: 'flex-end', // Align content to the start horizontally
-    //padding: '0 15px', // Add some padding for aesthetics
+    alignItems: 'center',
+    justifyContent: 'flex-end',
   }),
   details: cssObj({
     flex: 1,

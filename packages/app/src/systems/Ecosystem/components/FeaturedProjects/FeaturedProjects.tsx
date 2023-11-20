@@ -219,14 +219,22 @@ const styles = {
     overflow: 'hidden',
   }),
   card: cssObj({
-    //boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
     width: '750px',
-    //border: '1px solid #00F58C',
     margin: '0 auto',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: '$lg',
     overflow: 'hidden',
+    '&:hover': {
+      textDecoration: 'none !important',
+      border: '1px solid $intentsBase8',
+      backgroundImage:
+        'linear-gradient($transparent, rgb(15, 15, 15)) !important',
+      'html[class="fuel_light-theme"] &': {
+        backgroundImage:
+          'linear-gradient($transparent, rgb(245, 245, 245)) !important',
+      },
+    },
   }),
   cardHeader: cssObj({
     //backgroundImage:'url(https://fuel-labs.ghost.io/content/images/size/w2000/2023/09/Background.png)',
