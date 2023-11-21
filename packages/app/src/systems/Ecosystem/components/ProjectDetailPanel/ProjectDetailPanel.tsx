@@ -1,5 +1,5 @@
 import { Badge, Box, Button, Alert, TagCloseButton } from '@fuel-ui/react';
-import type { FC } from 'react';
+import type { FC, CSSProperties } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 
 import type { Project } from '../../types';
@@ -16,6 +16,7 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
 }) => {
   const panelRef = useRef<HTMLDivElement>(null);
   const [isPanelVisible, setPanelVisible] = useState(true);
+  const [isMobileView, setIsMobileView] = useState(window.innerWidth < 750);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -34,6 +35,35 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
     };
   }, [onClose]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileView(window.innerWidth < 750);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const panelStyle: CSSProperties = {
+    flexDirection: 'column',
+    alignItems: 'start',
+    position: 'fixed',
+    right: 0,
+    top: 0,
+    height: '100%',
+    width: isMobileView ? '85%' : '50%',
+    backgroundColor: '#000000',
+    padding: '30px',
+    overflowY: 'auto',
+    zIndex: 1000,
+    borderLeft: '0.5px solid #2E2E2E',
+    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.6)',
+  };
+
   return (
     <>
       {isPanelVisible && (
@@ -50,41 +80,20 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
           }}
         ></div>
       )}
-      <div
-        ref={panelRef}
-        style={{
-          flexDirection: 'column',
-          alignItems: 'start',
-          position: 'fixed',
-          right: 0,
-          top: 0,
-          height: '100%',
-          width: '50%',
-          backgroundColor: '#111111',
-          padding: '30px',
-          opacity: '1',
-          overflowY: 'auto',
-          zIndex: 1000,
-          borderLeft: '0.5px solid #FFFFFF',
-          //transform: isPanelVisible ? 'translateX(0)' : 'translateX(100%)',
-          //transition: 'transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55)',
-        }}
-      >
+      <div ref={panelRef} style={panelStyle}>
         <div
           style={{
             backgroundImage:
               'url(https://assets-global.website-files.com/62e273f312d561347ce33306/62f124d39576fd474e271ab8_Fuel_Trailer_Still_4.jpeg)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            //borderRadius: '8px',
             height: '200px',
             width: '100%',
             position: 'absolute',
             top: 0,
             left: 0,
             zIndex: 1,
-            //boxShadow: '0px 0px 75px rgba(0, 245, 140, 0.5)',
-            borderBottom: '1px solid #FFFFFF',
+            borderBottom: '1px solid #2E2E2E',
           }}
         >
           <Box
@@ -121,7 +130,7 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
             position: 'relative',
             top: '125px',
             zIndex: 2,
-            border: '1px solid #FFFFFF',
+            border: '1px solid #2E2E2E',
             boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.6)',
           }}
         >
@@ -194,8 +203,6 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
               top: '220px',
               right: '15px',
               zIndex: 2,
-              //boxShadow: '0px 2px 3px rgba(0, 0, 0, 0.4)',
-              //border: '0.5px solid #FFFFFF',
             }}
           >
             Visit Website

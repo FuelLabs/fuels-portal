@@ -315,7 +315,7 @@ const styles = {
     borderRadius: '50%',
     border: '1px solid #E5C06F',
     background: '#F3B42C',
-    boxShadow: '0px 0px 4px 0px #00F58C',
+    boxShadow: '0px 0px 4px 0px #F3B42C',
   }),
   dot: cssObj({
     height: '10px',
