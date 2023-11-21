@@ -1,13 +1,5 @@
 import { cssObj } from '@fuel-ui/css';
-import {
-  Box,
-  Heading,
-  Card,
-  Text,
-  Button,
-  IconButton,
-  Tag,
-} from '@fuel-ui/react';
+import { Box, Card, Text, Button, IconButton, Tag } from '@fuel-ui/react';
 import React, { useState, useEffect } from 'react';
 
 import type { Project } from '../../types';
@@ -19,6 +11,7 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
   const [nextProjectIndex, setNextProjectIndex] = useState<number | null>(null);
   const [, setIsHovering] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   // Define animation classes as strings
   const slideInAnimation = 'slideIn 0.5s ease-in-out forwards';
@@ -93,6 +86,18 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
 
   const currentProject = projects[currentProjectIndex];
 
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   const handleDotClick = (index: number) => {
     changeProject(index);
   };
@@ -143,12 +148,12 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
                       key={index}
                       variant="outlined"
                       intent="info"
-                      size="sm"
+                      size="xs"
                       style={{
-                        fontSize: 'small',
+                        fontSize: '$xs',
                         fontWeight: '500',
-                        position: 'relative',
                       }}
+                      css={styles.tag}
                     >
                       {tag}
                     </Tag>
@@ -156,9 +161,7 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
                 </Box>
               </Card.Header>
               <Card.Body css={styles.cardBody}>
-                <Heading as="h3" css={styles.header}>
-                  {currentProject.name}
-                </Heading>
+                <h3 style={styles.header}>{currentProject.name}</h3>
                 <Box css={styles.cardContent}>
                   <Text>{currentProject.description}</Text>
                 </Box>
@@ -169,12 +172,22 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
                 direction="row-reverse"
               >
                 {currentProject.isLive ? (
-                  <Button intent="base" size="sm" variant="outlined">
+                  <Button
+                    intent="base"
+                    size="sm"
+                    variant="outlined"
+                    css={styles.button}
+                  >
                     <Box css={styles.dotLive} />
-                    {'Live on Testnet'}
+                    {windowWidth > 600 ? 'Live on Testnet' : 'Live'}
                   </Button>
                 ) : (
-                  <Button intent="base" size="sm" variant="outlined">
+                  <Button
+                    intent="base"
+                    size="sm"
+                    variant="outlined"
+                    css={styles.button}
+                  >
                     <Box css={styles.dotBuilding} />
                     {'Building'}
                   </Button>
@@ -194,6 +207,7 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
                       intent="error"
                       variant="ghost"
                       leftIcon={'BrandX'}
+                      css={styles.button}
                     ></Button>
                   )}
                   {currentProject.github && (
@@ -202,6 +216,7 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
                       size="sm"
                       leftIcon={'BrandGithub'}
                       variant="ghost"
+                      css={styles.button}
                     ></Button>
                   )}
                   {currentProject.discord && (
@@ -211,6 +226,7 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
                       intent="info"
                       leftIcon={'BrandDiscord'}
                       variant="ghost"
+                      css={styles.button}
                     ></Button>
                   )}
                   <Button
@@ -218,8 +234,9 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
                     variant="outlined"
                     intent="base"
                     leftIcon={'ExternalLink'}
+                    css={styles.button}
                   >
-                    Visit Website
+                    {windowWidth > 600 ? 'Visit Website' : null}
                   </Button>
                 </Box>
               </Card.Footer>
@@ -260,22 +277,27 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
 
 const styles = {
   container: cssObj({
-    padding: '1rem',
+    //padding: '1rem',
     borderRadius: '$lg',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    margin: '0 auto',
     justifyContent: 'space-between',
-    minHeight: '200px',
     overflow: 'hidden',
+    width: '100%',
   }),
   card: cssObj({
-    width: '750px',
-    margin: '0 auto',
+    width: '85vw', // Set a fixed width based on viewport width
+    //height: '27vw', // Set a fixed height based on viewport width
+    maxWidth: '750px', // Maximum width limit
+    maxHeight: '500px', // Maximum height limit
+    margin: '0 auto', // Center the card horizontally
+    boxSizing: 'border-box', // Include padding and border in the element's total width and height
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: '$lg',
-    overflow: 'hidden',
+    overflow: 'hidden', // Hide any content that overflows the card's dimensions
     '&:hover': {
       textDecoration: 'none !important',
       border: '1px solid $intentsBase8',
@@ -285,6 +307,21 @@ const styles = {
         backgroundImage:
           'linear-gradient($transparent, rgb(245, 245, 245)) !important',
       },
+    },
+  }),
+  button: cssObj({
+    // ... existing styles for button ...
+    '@media (max-width: 600px)': {
+      fontSize: '0.8rem', // Smaller button and font size on small screens
+      padding: '5px 10px',
+    },
+    '@media (min-width: 601px) and (max-width: 1024px)': {
+      fontSize: '0.9rem', // Medium button and font size on medium screens
+      padding: '8px 15px',
+    },
+    '@media (min-width: 1025px)': {
+      fontSize: '1rem', // Larger button and font size on large screens
+      padding: '10px 20px',
     },
   }),
   cardHeader: cssObj({
@@ -312,7 +349,19 @@ const styles = {
     alignItems: 'flex-start',
     padding: '15px',
     flex: '1 1 auto', // Allow the body to grow and shrink as needed
-    minHeight: '120px', // Set a minimum height for the body
+    minHeight: '135px', // Set a minimum height for the body
+    '@media (max-width: 600px)': {
+      padding: '10px', // Smaller padding on small screens
+      fontSize: '0.85rem', // Smaller font size on small screens
+    },
+    '@media (min-width: 601px) and (max-width: 1024px)': {
+      padding: '15px', // Medium padding on medium screens
+      fontSize: '1rem', // Smaller font size on small screens
+    },
+    '@media (min-width: 1025px)': {
+      padding: '20px', // Larger padding on large screens
+      fontSize: '1.2rem', // Smaller font size on small screens
+    },
   }),
   projectImageWrapper: cssObj({
     display: 'flex',
@@ -327,7 +376,15 @@ const styles = {
     marginRight: '1rem',
   }),
   header: cssObj({
-    //color: '#00F58C',
+    '@media (max-width: 600px)': {
+      fontSize: '1.2rem', // Smaller font size on small screens
+    },
+    '@media (min-width: 601px) and (max-width: 1024px)': {
+      fontSize: '1.5rem', // Medium font size on medium screens
+    },
+    '@media (min-width: 1025px)': {
+      fontSize: '1.8rem', // Larger font size on large screens
+    },
   }),
   cardContent: cssObj({
     display: 'flex',
@@ -389,19 +446,29 @@ const styles = {
     boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
   }),
   tag: cssObj({
-    color: '$intentsBase12',
-    borderRadius: '$sm',
-    padding: '0 $1',
-    backgroundColor: '$gray5',
-    marginRight: '8px',
+    '@media (max-width: 600px)': {
+      flexDirection: 'column', // Stack tags vertically on small screens
+      fontSize: '0.7rem', // Smaller font size on small screens
+    },
+    '@media (min-width: 601px) and (max-width: 1024px)': {
+      fontSize: '0.8rem', // Medium font size on medium screens
+    },
+    '@media (min-width: 1025px)': {
+      fontSize: '0.9rem', // Larger font size on large screens
+    },
   }),
   statusContainer: cssObj({
     position: 'absolute',
-    bottom: '10px',
+    bottom: '16px',
     right: '10px',
     display: 'flex',
     flexDirection: 'row',
     gap: '10px',
+    '@media (max-width: 600px)': {
+      flexDirection: 'column', // Stack tags vertically on small screens
+      alignItems: 'end', // Align items to the start of the container
+      gap: '3px',
+    },
   }),
 };
 
