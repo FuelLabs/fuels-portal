@@ -1,5 +1,6 @@
+import { cssObj } from '@fuel-ui/css';
 import { Badge, Box, Button, Alert, TagCloseButton } from '@fuel-ui/react';
-import type { FC, CSSProperties } from 'react';
+import type { FC } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 
 import type { Project } from '../../types';
@@ -48,22 +49,6 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
     };
   }, []);
 
-  const panelStyle: CSSProperties = {
-    flexDirection: 'column',
-    alignItems: 'start',
-    position: 'fixed',
-    right: 0,
-    top: 0,
-    height: '100%',
-    width: isMobileView ? '85%' : '50%',
-    backgroundColor: '#000000',
-    padding: '30px',
-    overflowY: 'auto',
-    zIndex: 1000,
-    borderLeft: '0.5px solid #2E2E2E',
-    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.6)',
-  };
-
   return (
     <>
       {isPanelVisible && (
@@ -80,7 +65,7 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
           }}
         ></div>
       )}
-      <div ref={panelRef} style={panelStyle}>
+      <Box ref={panelRef} css={styles.panelStyle} data-mobile={isMobileView}>
         <div
           style={{
             backgroundImage:
@@ -97,24 +82,29 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
           }}
         >
           <Box
-            style={{
+            css={{
               display: 'flex',
-              justifyContent: 'flex-end',
               position: 'fixed',
               top: 15,
               right: 15,
+              backgroundColor: '$intentsBase3',
+              borderRadius: '$md',
+              height: '25px',
+              width: '25px',
+              justifyContent: 'center',
+              alignItems: 'center',
               zIndex: 4,
             }}
           >
-            <Button
+            {/* <Button
               rightIconAriaLabel="close"
               size="xs"
               variant="ghost"
               intent="base"
               onPress={onClose}
-            >
-              <TagCloseButton />
-            </Button>
+            > */}
+
+            <TagCloseButton onPress={onClose} />
           </Box>
         </div>
         <Box
@@ -265,9 +255,30 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
             </Button>
           )}
         </Box>
-      </div>
+      </Box>
     </>
   );
+};
+
+const styles = {
+  panelStyle: cssObj({
+    flexDirection: 'column',
+    alignItems: 'start',
+    position: 'fixed',
+    right: 0,
+    top: 0,
+    height: '100%',
+    width: '50%',
+    backgroundColor: '$intentsBase1',
+    padding: '30px',
+    overflowY: 'auto',
+    zIndex: 1000,
+    borderLeft: '0.5px solid #2E2E2E',
+    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.6)',
+    '&[data-mobile="true"]': {
+      width: '85%',
+    },
+  }),
 };
 
 export default ProjectDetailPanel;

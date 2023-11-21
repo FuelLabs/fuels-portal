@@ -138,6 +138,8 @@ export const ProjectItem: ProjectItemComponent = ({
 const styles = {
   card: cssObj({
     transition: 'transform 0.2s ease-in-out, border 0.2s ease-in-out',
+    display: 'flex',
+    flexDirection: 'column',
     '&:hover': {
       textDecoration: 'none !important',
       border: '1px solid $intentsBase8',
@@ -157,7 +159,7 @@ const styles = {
     overflow: 'hidden',
   }),
   cardFooter: cssObj({
-    height: '20px',
+    flex: '0 0 20px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
