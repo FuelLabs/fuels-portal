@@ -199,6 +199,7 @@ const styles = {
   }),
   title: cssObj({
     width: '100%',
+    fontWeight: 'bold',
   }),
   body: cssObj({
     display: 'flex',

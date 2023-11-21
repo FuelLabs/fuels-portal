@@ -161,7 +161,9 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
                 </Box>
               </Card.Header>
               <Card.Body css={styles.cardBody}>
-                <h3 style={styles.header}>{currentProject.name}</h3>
+                <Text fontSize="base" color="intentsBase12" css={styles.header}>
+                  {currentProject.name}
+                </Text>
                 <Box css={styles.cardContent}>
                   <Text>{currentProject.description}</Text>
                 </Box>
@@ -347,28 +349,35 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    padding: '15px',
     flex: '1 1 auto', // Allow the body to grow and shrink as needed
-    minHeight: '135px', // Set a minimum height for the body
     '@media (max-width: 600px)': {
-      padding: '10px', // Smaller padding on small screens
+      paddingTop: '8px',
+      paddingLeft: '15px',
+      paddingRight: '15px',
+      minHeight: '110px',
       fontSize: '0.85rem', // Smaller font size on small screens
     },
     '@media (min-width: 601px) and (max-width: 1024px)': {
-      padding: '15px', // Medium padding on medium screens
+      paddingTop: '8px',
+      paddingLeft: '15px',
+      paddingRight: '15px',
+      minHeight: '120px',
       fontSize: '1rem', // Smaller font size on small screens
     },
     '@media (min-width: 1025px)': {
-      padding: '20px', // Larger padding on large screens
-      fontSize: '1.2rem', // Smaller font size on small screens
+      paddingTop: '8px',
+      paddingLeft: '15px',
+      paddingRight: '15px',
+      minHeight: '130px',
+      fontSize: '1rem', // Smaller font size on small screens
     },
   }),
   projectImageWrapper: cssObj({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '68px',
-    height: '68px',
+    width: '65px',
+    height: '65px',
     borderRadius: '12px',
     overflow: 'hidden',
     position: 'relative',
@@ -376,14 +385,17 @@ const styles = {
     marginRight: '1rem',
   }),
   header: cssObj({
+    fontWeight: 'bold',
+    paddingBottom: '8px',
+    paddingTop: '8px',
     '@media (max-width: 600px)': {
-      fontSize: '1.2rem', // Smaller font size on small screens
+      fontSize: '1rem', // Smaller font size on small screens
     },
     '@media (min-width: 601px) and (max-width: 1024px)': {
-      fontSize: '1.5rem', // Medium font size on medium screens
+      fontSize: '1.2rem', // Medium font size on medium screens
     },
     '@media (min-width: 1025px)': {
-      fontSize: '1.8rem', // Larger font size on large screens
+      fontSize: '1.3rem', // Larger font size on large screens
     },
   }),
   cardContent: cssObj({
