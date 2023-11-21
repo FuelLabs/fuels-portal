@@ -15,14 +15,16 @@ import { ProjecImage } from '../ProjectImage';
 
 const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [animationClass, setAnimationClass] = useState('');
+  const [nextProjectIndex, setNextProjectIndex] = useState<number | null>(null);
 
+  // Define animation classes as strings
+  const slideInAnimation = 'slideIn 0.5s ease-in-out forwards';
+  const slideOutAnimation = 'slideOut 0.5s ease-in-out forwards';
   const changeProject = (newIndex: number) => {
-    setIsAnimating(true);
-    setTimeout(() => {
-      setCurrentProjectIndex(newIndex);
-      setIsAnimating(false);
-    }, 500);
+    console.log(`Changing project to index: ${newIndex}`);
+    setNextProjectIndex(newIndex);
+    setAnimationClass(slideOutAnimation);
   };
 
   const nextProject = () => {
@@ -38,11 +40,35 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      nextProject();
-    }, 5000);
+      nextProject(); // Call the function to go to the next project
+    }, 3000); // Change project every 3 seconds
 
-    return () => clearInterval(interval);
-  }, [currentProjectIndex, projects.length]);
+    return () => clearInterval(interval); // Clear interval on unmount
+  }, [currentProjectIndex, projects.length]); // Depend on currentProjectIndex and projects.length
+
+  useEffect(() => {
+    if (animationClass === slideOutAnimation && nextProjectIndex !== null) {
+      // Start slide-in slightly before slide-out completes
+      const timer = setTimeout(() => {
+        setCurrentProjectIndex(nextProjectIndex);
+        setAnimationClass(slideInAnimation);
+      }, 450); // Adjusted to start before slide-out completes
+
+      return () => clearTimeout(timer);
+    }
+  }, [nextProjectIndex, animationClass]);
+
+  useEffect(() => {
+    console.log(
+      `Next project index: ${nextProjectIndex}, Animation class: ${animationClass}`
+    );
+    if (animationClass === slideOutAnimation && nextProjectIndex !== null) {
+      setTimeout(() => {
+        setCurrentProjectIndex(nextProjectIndex);
+        setAnimationClass(slideInAnimation);
+      }, 600); // Duration of the slide-out animation
+    }
+  }, [nextProjectIndex, animationClass]);
 
   const currentProject = projects[currentProjectIndex];
 
@@ -51,161 +77,167 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
   };
 
   return (
-    <Box css={styles.container}>
-      <Box>
+    <>
+      <style>{`
+      @keyframes slideIn {
+        0% { transform: translateX(100%); opacity: 0; }
+        100% { transform: translateX(0); opacity: 1; }
+      }
+
+      @keyframes slideOut {
+        0% { transform: translateX(0); opacity: 1; }
+        100% { transform: translateX(-145%); opacity: 0; }
+      }
+    `}</style>
+      <Box css={styles.container}>
         <Box>
-          <Card
-            variant="outlined"
-            css={{
-              ...styles.card,
-              ...(isAnimating ? styles.fadeOut : styles.fadeIn),
-            }}
-          >
-            <Card.Header css={styles.cardHeader}>
-              <Box css={styles.projectImageWrapper}>
-                <div
-                  style={{
-                    position: 'relative',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    paddingTop: '6.45px',
-                    transform: 'scale(170%)',
-                  }}
-                >
-                  <ProjecImage
-                    name={currentProject.name}
-                    image={currentProject.image}
-                  />
-                </div>
-              </Box>
-              <Box css={styles.statusContainer}>
-                {currentProject.tags?.map((tag, index) => (
-                  <Tag
-                    key={index}
-                    variant="outlined"
-                    intent="info"
-                    size="sm"
+          <Box>
+            <Card
+              variant="outlined"
+              css={{
+                ...styles.card,
+                animation: animationClass,
+              }}
+            >
+              <Card.Header css={styles.cardHeader}>
+                <Box css={styles.projectImageWrapper}>
+                  <div
                     style={{
-                      fontSize: 'small',
-                      fontWeight: '500',
                       position: 'relative',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      paddingTop: '6.45px',
+                      transform: 'scale(170%)',
                     }}
                   >
-                    {tag}
-                  </Tag>
-                ))}
-              </Box>
-            </Card.Header>
-            <Card.Body css={styles.cardBody}>
-              <Heading as="h3" css={styles.header}>
-                {currentProject.name}
-              </Heading>
-              <Box css={styles.cardContent}>
-                <Text>{currentProject.description}</Text>
-              </Box>
-            </Card.Body>
-            <Card.Footer
-              css={styles.cardFooter}
-              gap="$3"
-              direction="row-reverse"
-            >
-              {currentProject.isLive ? (
-                <Button intent="base" size="sm" variant="outlined">
-                  <Box css={styles.dotLive} />
-                  {'Live on Testnet'}
-                </Button>
-              ) : (
-                <Button intent="base" size="sm" variant="outlined">
-                  <Box css={styles.dotBuilding} />
-                  {'Building'}
-                </Button>
-              )}
-              <Box
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  gap: '10px',
-                  marginLeft: 'auto',
-                }}
+                    <ProjecImage
+                      name={currentProject.name}
+                      image={currentProject.image}
+                    />
+                  </div>
+                </Box>
+                <Box css={styles.statusContainer}>
+                  {currentProject.tags?.map((tag, index) => (
+                    <Tag
+                      key={index}
+                      variant="outlined"
+                      intent="info"
+                      size="sm"
+                      style={{
+                        fontSize: 'small',
+                        fontWeight: '500',
+                        position: 'relative',
+                      }}
+                    >
+                      {tag}
+                    </Tag>
+                  ))}
+                </Box>
+              </Card.Header>
+              <Card.Body css={styles.cardBody}>
+                <Heading as="h3" css={styles.header}>
+                  {currentProject.name}
+                </Heading>
+                <Box css={styles.cardContent}>
+                  <Text>{currentProject.description}</Text>
+                </Box>
+              </Card.Body>
+              <Card.Footer
+                css={styles.cardFooter}
+                gap="$3"
+                direction="row-reverse"
               >
-                {currentProject.twitter && (
-                  <Button
-                    href={currentProject.twitter}
-                    size="sm"
-                    intent="error"
-                    variant="ghost"
-                    leftIcon={'BrandX'}
-                  ></Button>
+                {currentProject.isLive ? (
+                  <Button intent="base" size="sm" variant="outlined">
+                    <Box css={styles.dotLive} />
+                    {'Live on Testnet'}
+                  </Button>
+                ) : (
+                  <Button intent="base" size="sm" variant="outlined">
+                    <Box css={styles.dotBuilding} />
+                    {'Building'}
+                  </Button>
                 )}
-                {currentProject.github && (
-                  <Button
-                    href={currentProject.github}
-                    size="sm"
-                    leftIcon={'BrandGithub'}
-                    variant="ghost"
-                  ></Button>
-                )}
-                {currentProject.discord && (
-                  <Button
-                    href={currentProject.discord}
-                    size="sm"
-                    intent="info"
-                    leftIcon={'BrandDiscord'}
-                    variant="ghost"
-                  ></Button>
-                )}
-                <Button
-                  size="sm"
-                  variant="outlined"
-                  intent="base"
-                  leftIcon={'ExternalLink'}
+                <Box
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    gap: '10px',
+                    marginLeft: 'auto',
+                  }}
                 >
-                  Visit Website
-                </Button>
-              </Box>
-            </Card.Footer>
-          </Card>
+                  {currentProject.twitter && (
+                    <Button
+                      href={currentProject.twitter}
+                      size="sm"
+                      intent="error"
+                      variant="ghost"
+                      leftIcon={'BrandX'}
+                    ></Button>
+                  )}
+                  {currentProject.github && (
+                    <Button
+                      href={currentProject.github}
+                      size="sm"
+                      leftIcon={'BrandGithub'}
+                      variant="ghost"
+                    ></Button>
+                  )}
+                  {currentProject.discord && (
+                    <Button
+                      href={currentProject.discord}
+                      size="sm"
+                      intent="info"
+                      leftIcon={'BrandDiscord'}
+                      variant="ghost"
+                    ></Button>
+                  )}
+                  <Button
+                    size="sm"
+                    variant="outlined"
+                    intent="base"
+                    leftIcon={'ExternalLink'}
+                  >
+                    Visit Website
+                  </Button>
+                </Box>
+              </Card.Footer>
+            </Card>
+          </Box>
+        </Box>
+        <Box css={styles.dotsContainer}>
+          <IconButton
+            variant="link"
+            intent="base"
+            onClick={prevProject}
+            aria-label="Previous Project"
+            icon={'ArrowLeft'}
+            css={styles.arrowButton}
+          />
+          {projects.map((_, index) => (
+            <Box
+              key={index}
+              css={
+                index === currentProjectIndex ? styles.activeDot : styles.dot
+              }
+              onClick={() => handleDotClick(index)}
+            />
+          ))}
+          <IconButton
+            variant="link"
+            intent="base"
+            onClick={nextProject}
+            aria-label="Next Project"
+            icon={'ArrowRight'}
+            css={styles.arrowButton}
+          />
         </Box>
       </Box>
-      <Box css={styles.dotsContainer}>
-        <IconButton
-          variant="link"
-          intent="base"
-          onClick={prevProject}
-          aria-label="Previous Project"
-          icon={'ArrowLeft'}
-          css={styles.arrowButton}
-        />
-        {projects.map((_, index) => (
-          <Box
-            key={index}
-            css={index === currentProjectIndex ? styles.activeDot : styles.dot}
-            onClick={() => handleDotClick(index)}
-          />
-        ))}
-        <IconButton
-          variant="link"
-          intent="base"
-          onClick={nextProject}
-          aria-label="Next Project"
-          icon={'ArrowRight'}
-          css={styles.arrowButton}
-        />
-      </Box>
-    </Box>
+    </>
   );
 };
 
-const fadeInKeyframes = {
-  from: { opacity: 0 },
-  to: { opacity: 1 },
-};
-
-const fadeOutKeyframes = {
-  from: { opacity: 1 },
-  to: { opacity: 0 },
-};
 const styles = {
   container: cssObj({
     //background: '#00F58C',
@@ -273,7 +305,6 @@ const styles = {
     overflow: 'hidden',
     position: 'relative',
     border: '1px solid #E2E2E2',
-    //boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.6)',
     marginRight: '1rem',
   }),
   header: cssObj({
@@ -347,21 +378,11 @@ const styles = {
   }),
   statusContainer: cssObj({
     position: 'absolute',
-    bottom: '10px', // Adjust as needed
-    right: '10px', // Adjust as needed
+    bottom: '10px',
+    right: '10px',
     display: 'flex',
     flexDirection: 'row',
     gap: '10px',
-  }),
-  fadeIn: cssObj({
-    animationName: fadeInKeyframes,
-    animationDuration: '0.5s',
-    animationTimingFunction: 'ease-in-out',
-  }),
-  fadeOut: cssObj({
-    animationName: fadeOutKeyframes,
-    animationDuration: '0.5s',
-    animationTimingFunction: 'ease-in-out',
   }),
 };
 
