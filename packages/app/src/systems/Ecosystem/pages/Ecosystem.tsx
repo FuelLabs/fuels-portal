@@ -74,6 +74,17 @@ export function Ecosystem() {
               </Button>
             </a>
           </Box.Flex>
+          <Heading as="h2" css={styles.heading}>
+            Project Categories
+          </Heading>
+          <EcosystemTags
+            tags={tags}
+            onPressTag={handleTagButtonClick}
+            activeTag={filter}
+            onPressAllCategories={handlers.clearFilters}
+            isLoading={isLoading}
+          />
+          <Box css={styles.divider}></Box>
           {featuredProjects.length > 0 && (
             <Heading as="h2" css={styles.heading}>
               Featured Projects
@@ -85,13 +96,6 @@ export function Ecosystem() {
             )}
           </Box>
           {featuredProjects.length > 0 && <Box css={styles.divider}></Box>}
-          <EcosystemTags
-            tags={tags}
-            onPressTag={handleTagButtonClick}
-            activeTag={filter}
-            onPressAllCategories={handlers.clearFilters}
-            isLoading={isLoading}
-          />
           <ProjectList
             isLoading={isLoading}
             projects={filteredProjects || []}
@@ -141,6 +145,6 @@ const styles = {
   divider: cssObj({
     height: '0.5px',
     width: '100%',
-    backgroundColor: '#E0E0E0',
+    backgroundColor: '$intentsBase6',
   }),
 };

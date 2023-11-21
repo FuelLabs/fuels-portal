@@ -13,13 +13,15 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
   const [isPaused, setIsPaused] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  // Define animation classes as strings
+  const isSingleProject = projects.length === 1;
   const slideInAnimation = 'slideIn 0.5s ease-in-out forwards';
   const slideOutAnimation = 'slideOut 0.5s ease-in-out forwards';
   const changeProject = (newIndex: number) => {
-    console.log(`Changing project to index: ${newIndex}`);
-    setNextProjectIndex(newIndex);
-    setAnimationClass(slideOutAnimation);
+    if (!isSingleProject) {
+      console.log(`Changing project to index: ${newIndex}`);
+      setNextProjectIndex(newIndex);
+      setAnimationClass(slideOutAnimation);
+    }
   };
 
   const nextProject = () => {
@@ -120,7 +122,10 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
           <Box>
             <Card
               variant="outlined"
-              css={{ ...styles.card, animation: animationClass }}
+              css={{
+                ...styles.card,
+                animation: isSingleProject ? '' : animationClass,
+              }}
               onMouseEnter={onMouseEnterHandler}
               onMouseLeave={onMouseLeaveHandler}
             >
@@ -245,33 +250,35 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
             </Card>
           </Box>
         </Box>
-        <Box css={styles.dotsContainer}>
-          <IconButton
-            variant="link"
-            intent="base"
-            onClick={prevProject}
-            aria-label="Previous Project"
-            icon={'ArrowLeft'}
-            css={styles.arrowButton}
-          />
-          {projects.map((_, index) => (
-            <Box
-              key={index}
-              css={
-                index === currentProjectIndex ? styles.activeDot : styles.dot
-              }
-              onClick={() => handleDotClick(index)}
+        {!isSingleProject && (
+          <Box css={styles.dotsContainer}>
+            <IconButton
+              variant="link"
+              intent="base"
+              onClick={prevProject}
+              aria-label="Previous Project"
+              icon={'ArrowLeft'}
+              css={styles.arrowButton}
             />
-          ))}
-          <IconButton
-            variant="link"
-            intent="base"
-            onClick={nextProject}
-            aria-label="Next Project"
-            icon={'ArrowRight'}
-            css={styles.arrowButton}
-          />
-        </Box>
+            {projects.map((_, index) => (
+              <Box
+                key={index}
+                css={
+                  index === currentProjectIndex ? styles.activeDot : styles.dot
+                }
+                onClick={() => handleDotClick(index)}
+              />
+            ))}
+            <IconButton
+              variant="link"
+              intent="base"
+              onClick={nextProject}
+              aria-label="Next Project"
+              icon={'ArrowRight'}
+              css={styles.arrowButton}
+            />
+          </Box>
+        )}
       </Box>
     </>
   );

@@ -394,5 +394,16 @@
     "twitter": "https://twitter.com/0xmetaschool",
     "discord": "https://discord.com/invite/vbVMUwXWgc",
     "image": "metaschool"
+  },
+  {
+    "isLive": true,
+    "name": "Fuel Bridge",
+    "url": "https://alpha.fuel.network/bridge",
+    "tags": ["Bridge", "Infrastructure Tooling or Platform"],
+    "description": "Bridge assets from Ethereum to Fuel with Fuel's native bridge.",
+    "github": "https://github.com/FuelLabs/fuel-bridge",
+    "twitter": "https://twitter.com/fuel_network",
+    "discord": "https://discord.gg/fuelnetwork",
+    "image": "fuelwallet"
   }
 ]

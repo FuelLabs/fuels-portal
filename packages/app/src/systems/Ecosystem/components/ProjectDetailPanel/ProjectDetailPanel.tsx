@@ -81,29 +81,7 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
             borderBottom: '1px solid #2E2E2E',
           }}
         >
-          <Box
-            css={{
-              display: 'flex',
-              position: 'fixed',
-              top: 15,
-              right: 15,
-              backgroundColor: '$intentsBase3',
-              borderRadius: '$md',
-              height: '25px',
-              width: '25px',
-              justifyContent: 'center',
-              alignItems: 'center',
-              zIndex: 4,
-            }}
-          >
-            {/* <Button
-              rightIconAriaLabel="close"
-              size="xs"
-              variant="ghost"
-              intent="base"
-              onPress={onClose}
-            > */}
-
+          <Box css={styles.closeButton}>
             <TagCloseButton onPress={onClose} />
           </Box>
         </div>
@@ -278,6 +256,19 @@ const styles = {
     '&[data-mobile="true"]': {
       width: '85%',
     },
+  }),
+  closeButton: cssObj({
+    display: 'flex',
+    position: 'fixed',
+    top: 15,
+    right: 15,
+    backgroundColor: '$intentsBase3',
+    borderRadius: '$md',
+    height: '25px',
+    width: '25px',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 4,
   }),
 };
 
