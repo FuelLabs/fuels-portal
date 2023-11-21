@@ -17,6 +17,8 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
   const [animationClass, setAnimationClass] = useState('');
   const [nextProjectIndex, setNextProjectIndex] = useState<number | null>(null);
+  const [, setIsHovering] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
 
   // Define animation classes as strings
   const slideInAnimation = 'slideIn 0.5s ease-in-out forwards';
@@ -38,37 +40,56 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
     changeProject(newIndex);
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      nextProject(); // Call the function to go to the next project
-    }, 3000); // Change project every 3 seconds
+  const onMouseEnterHandler = () => {
+    setIsHovering(true);
+    setIsPaused(true); // Pause the animation
+  };
 
-    return () => clearInterval(interval); // Clear interval on unmount
-  }, [currentProjectIndex, projects.length]); // Depend on currentProjectIndex and projects.length
+  const onMouseLeaveHandler = () => {
+    setIsHovering(false);
+    setIsPaused(false); // Resume the animation
+  };
 
   useEffect(() => {
-    if (animationClass === slideOutAnimation && nextProjectIndex !== null) {
-      // Start slide-in slightly before slide-out completes
+    if (!isPaused) {
+      const interval = setInterval(() => {
+        nextProject(); // Call the function to go to the next project
+      }, 3000); // Change project every 3 seconds
+
+      return () => clearInterval(interval); // Clear interval on unmount
+    }
+  }, [currentProjectIndex, projects.length, isPaused]);
+
+  useEffect(() => {
+    if (
+      !isPaused &&
+      animationClass === slideOutAnimation &&
+      nextProjectIndex !== null
+    ) {
       const timer = setTimeout(() => {
         setCurrentProjectIndex(nextProjectIndex);
         setAnimationClass(slideInAnimation);
-      }, 450); // Adjusted to start before slide-out completes
+      }, 450);
 
       return () => clearTimeout(timer);
     }
-  }, [nextProjectIndex, animationClass]);
+  }, [nextProjectIndex, animationClass, isPaused]);
 
   useEffect(() => {
     console.log(
       `Next project index: ${nextProjectIndex}, Animation class: ${animationClass}`
     );
-    if (animationClass === slideOutAnimation && nextProjectIndex !== null) {
+    if (
+      !isPaused &&
+      animationClass === slideOutAnimation &&
+      nextProjectIndex !== null
+    ) {
       setTimeout(() => {
         setCurrentProjectIndex(nextProjectIndex);
         setAnimationClass(slideInAnimation);
-      }, 600); // Duration of the slide-out animation
+      }, 600);
     }
-  }, [nextProjectIndex, animationClass]);
+  }, [nextProjectIndex, animationClass, isPaused]);
 
   const currentProject = projects[currentProjectIndex];
 
@@ -94,10 +115,9 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
           <Box>
             <Card
               variant="outlined"
-              css={{
-                ...styles.card,
-                animation: animationClass,
-              }}
+              css={{ ...styles.card, animation: animationClass }}
+              onMouseEnter={onMouseEnterHandler}
+              onMouseLeave={onMouseLeaveHandler}
             >
               <Card.Header css={styles.cardHeader}>
                 <Box css={styles.projectImageWrapper}>
@@ -240,7 +260,6 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
 
 const styles = {
   container: cssObj({
-    //background: '#00F58C',
     padding: '1rem',
     borderRadius: '$lg',
     display: 'flex',
