@@ -1,5 +1,13 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, Card, Text, Button, IconButton, Tag } from '@fuel-ui/react';
+import {
+  Box,
+  HStack,
+  Card,
+  Text,
+  Button,
+  IconButton,
+  Tag,
+} from '@fuel-ui/react';
 import React, { useState, useEffect } from 'react';
 
 import type { Project } from '../../types';
@@ -7,32 +15,38 @@ import { ProjecImage } from '../ProjectImage';
 
 const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
+  const [, setSecondProjectIndex] = useState(1);
   const [animationClass, setAnimationClass] = useState('');
   const [nextProjectIndex, setNextProjectIndex] = useState<number | null>(null);
   const [, setIsHovering] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [, setWindowWidth] = useState(window.innerWidth);
+  const [containerAnimation, setContainerAnimation] = useState('');
 
   const isSingleProject = projects.length === 1;
-  const slideInAnimation = 'slideIn 0.5s ease-in-out forwards';
-  const slideOutAnimation = 'slideOut 0.5s ease-in-out forwards';
+
+  const slideLeftAnimation = 'slideLeft 0.5s ease-in-out forwards';
+  const slideRightAnimation = 'slideRight 0.5s ease-in-out forwards';
+
   const changeProject = (newIndex: number) => {
     if (!isSingleProject) {
       console.log(`Changing project to index: ${newIndex}`);
       setNextProjectIndex(newIndex);
-      setAnimationClass(slideOutAnimation);
+      setAnimationClass(slideLeftAnimation);
     }
   };
 
   const nextProject = () => {
     const newIndex = (currentProjectIndex + 1) % projects.length;
-    changeProject(newIndex);
+    setCurrentProjectIndex(newIndex);
+    setContainerAnimation(slideLeftAnimation);
   };
 
   const prevProject = () => {
     const newIndex =
       (currentProjectIndex - 1 + projects.length) % projects.length;
-    changeProject(newIndex);
+    setCurrentProjectIndex(newIndex);
+    setContainerAnimation(slideRightAnimation);
   };
 
   const onMouseEnterHandler = () => {
@@ -44,6 +58,11 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
     setIsHovering(false);
     setIsPaused(false); // Resume the animation
   };
+
+  useEffect(() => {
+    // Update the second project index when the current project index changes
+    setSecondProjectIndex((currentProjectIndex + 1) % projects.length);
+  }, [currentProjectIndex, projects.length]);
 
   useEffect(() => {
     if (!isPaused) {
@@ -58,12 +77,12 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
   useEffect(() => {
     if (
       !isPaused &&
-      animationClass === slideOutAnimation &&
+      animationClass === slideLeftAnimation &&
       nextProjectIndex !== null
     ) {
       const timer = setTimeout(() => {
         setCurrentProjectIndex(nextProjectIndex);
-        setAnimationClass(slideInAnimation);
+        setAnimationClass(slideRightAnimation);
       }, 450);
 
       return () => clearTimeout(timer);
@@ -76,17 +95,15 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
     );
     if (
       !isPaused &&
-      animationClass === slideOutAnimation &&
+      animationClass === slideLeftAnimation &&
       nextProjectIndex !== null
     ) {
       setTimeout(() => {
         setCurrentProjectIndex(nextProjectIndex);
-        setAnimationClass(slideInAnimation);
+        setAnimationClass(slideRightAnimation);
       }, 600);
     }
   }, [nextProjectIndex, animationClass, isPaused]);
-
-  const currentProject = projects[currentProjectIndex];
 
   useEffect(() => {
     const handleResize = () => {
@@ -104,182 +121,185 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
     changeProject(index);
   };
 
+  const CardComponent = ({ project }: { project: Project }) => (
+    <Box>
+      <Card
+        variant="outlined"
+        css={{
+          ...styles.card,
+          animation: isSingleProject ? '' : animationClass,
+        }}
+        onMouseEnter={onMouseEnterHandler}
+        onMouseLeave={onMouseLeaveHandler}
+      >
+        <Card.Header css={styles.cardHeader}>
+          <Box css={styles.projectImageWrapper}>
+            <div
+              style={{
+                position: 'relative',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingTop: '6.45px',
+                transform: 'scale(170%)',
+              }}
+            >
+              <ProjecImage name={project.name} image={project.image} />
+            </div>
+          </Box>
+          <Box css={styles.statusContainer}>
+            {project.tags?.map((tag, index) => (
+              <Tag
+                key={index}
+                variant="outlined"
+                intent="info"
+                size="xs"
+                style={{
+                  fontSize: '$xs',
+                  fontWeight: '500',
+                }}
+                css={styles.tag}
+              >
+                {tag}
+              </Tag>
+            ))}
+          </Box>
+        </Card.Header>
+        <Card.Body css={styles.cardBody}>
+          <Text fontSize="base" color="intentsBase12" css={styles.header}>
+            {project.name}
+          </Text>
+          <Box css={styles.cardContent}>
+            <Text>{project.description}</Text>
+          </Box>
+        </Card.Body>
+        <Card.Footer css={styles.cardFooter} gap="$3" direction="row-reverse">
+          {project.isLive ? (
+            <Button
+              intent="base"
+              size="sm"
+              variant="outlined"
+              css={styles.button}
+            >
+              <Box css={styles.dotLive} />
+              Testnet
+            </Button>
+          ) : (
+            <Button
+              intent="base"
+              size="sm"
+              variant="outlined"
+              css={styles.button}
+            >
+              <Box css={styles.dotBuilding} />
+              {'Building'}
+            </Button>
+          )}
+          <Box
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              gap: '10px',
+              marginLeft: 'auto',
+            }}
+          >
+            {project.twitter && (
+              <Button
+                href={project.twitter}
+                size="sm"
+                intent="error"
+                variant="ghost"
+                leftIcon={'BrandX'}
+                css={styles.button}
+              ></Button>
+            )}
+            {project.github && (
+              <Button
+                href={project.github}
+                size="sm"
+                leftIcon={'BrandGithub'}
+                variant="ghost"
+                css={styles.button}
+              ></Button>
+            )}
+            {project.discord && (
+              <Button
+                href={project.discord}
+                size="sm"
+                intent="info"
+                leftIcon={'BrandDiscord'}
+                variant="ghost"
+                css={styles.button}
+              ></Button>
+            )}
+            <Button
+              size="sm"
+              variant="outlined"
+              intent="base"
+              leftIcon={'ExternalLink'}
+              css={styles.button}
+            ></Button>
+          </Box>
+        </Card.Footer>
+      </Card>
+    </Box>
+  );
+
   return (
     <>
       <style>{`
-      @keyframes slideIn {
-        0% { transform: translateX(100%); opacity: 0; }
-        100% { transform: translateX(0); opacity: 1; }
+       @keyframes slideLeft {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-38vw); } // Slide to the left by 100% of the container width
       }
-
-      @keyframes slideOut {
-        0% { transform: translateX(0); opacity: 1; }
-        100% { transform: translateX(-145%); opacity: 0; }
+      
+      @keyframes slideRight {
+        0% { transform: translateX(-38vw); }
+        100% { transform: translateX(0); }
       }
     `}</style>
-      <Box css={styles.container}>
+      <Box css={styles.container} style={{ animation: containerAnimation }}>
         <Box>
-          <Box>
-            <Card
-              variant="outlined"
-              css={{
-                ...styles.card,
-                animation: isSingleProject ? '' : animationClass,
-              }}
-              onMouseEnter={onMouseEnterHandler}
-              onMouseLeave={onMouseLeaveHandler}
-            >
-              <Card.Header css={styles.cardHeader}>
-                <Box css={styles.projectImageWrapper}>
-                  <div
-                    style={{
-                      position: 'relative',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      paddingTop: '6.45px',
-                      transform: 'scale(170%)',
-                    }}
-                  >
-                    <ProjecImage
-                      name={currentProject.name}
-                      image={currentProject.image}
-                    />
-                  </div>
-                </Box>
-                <Box css={styles.statusContainer}>
-                  {currentProject.tags?.map((tag, index) => (
-                    <Tag
-                      key={index}
-                      variant="outlined"
-                      intent="info"
-                      size="xs"
-                      style={{
-                        fontSize: '$xs',
-                        fontWeight: '500',
-                      }}
-                      css={styles.tag}
-                    >
-                      {tag}
-                    </Tag>
-                  ))}
-                </Box>
-              </Card.Header>
-              <Card.Body css={styles.cardBody}>
-                <Text fontSize="base" color="intentsBase12" css={styles.header}>
-                  {currentProject.name}
-                </Text>
-                <Box css={styles.cardContent}>
-                  <Text>{currentProject.description}</Text>
-                </Box>
-              </Card.Body>
-              <Card.Footer
-                css={styles.cardFooter}
-                gap="$3"
-                direction="row-reverse"
-              >
-                {currentProject.isLive ? (
-                  <Button
-                    intent="base"
-                    size="sm"
-                    variant="outlined"
-                    css={styles.button}
-                  >
-                    <Box css={styles.dotLive} />
-                    {windowWidth > 600 ? 'Live on Testnet' : 'Live'}
-                  </Button>
-                ) : (
-                  <Button
-                    intent="base"
-                    size="sm"
-                    variant="outlined"
-                    css={styles.button}
-                  >
-                    <Box css={styles.dotBuilding} />
-                    {'Building'}
-                  </Button>
-                )}
-                <Box
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    gap: '10px',
-                    marginLeft: 'auto',
-                  }}
-                >
-                  {currentProject.twitter && (
-                    <Button
-                      href={currentProject.twitter}
-                      size="sm"
-                      intent="error"
-                      variant="ghost"
-                      leftIcon={'BrandX'}
-                      css={styles.button}
-                    ></Button>
-                  )}
-                  {currentProject.github && (
-                    <Button
-                      href={currentProject.github}
-                      size="sm"
-                      leftIcon={'BrandGithub'}
-                      variant="ghost"
-                      css={styles.button}
-                    ></Button>
-                  )}
-                  {currentProject.discord && (
-                    <Button
-                      href={currentProject.discord}
-                      size="sm"
-                      intent="info"
-                      leftIcon={'BrandDiscord'}
-                      variant="ghost"
-                      css={styles.button}
-                    ></Button>
-                  )}
-                  <Button
-                    size="sm"
-                    variant="outlined"
-                    intent="base"
-                    leftIcon={'ExternalLink'}
-                    css={styles.button}
-                  >
-                    {windowWidth > 600 ? 'Visit Website' : null}
-                  </Button>
-                </Box>
-              </Card.Footer>
-            </Card>
-          </Box>
+          <HStack>
+            <CardComponent project={projects[currentProjectIndex]} />
+            <CardComponent
+              project={projects[(currentProjectIndex + 1) % projects.length]}
+            />
+            <CardComponent
+              project={projects[(currentProjectIndex + 2) % projects.length]}
+            />
+          </HStack>
         </Box>
-        {!isSingleProject && (
-          <Box css={styles.dotsContainer}>
-            <IconButton
-              variant="link"
-              intent="base"
-              onClick={prevProject}
-              aria-label="Previous Project"
-              icon={'ArrowLeft'}
-              css={styles.arrowButton}
-            />
-            {projects.map((_, index) => (
-              <Box
-                key={index}
-                css={
-                  index === currentProjectIndex ? styles.activeDot : styles.dot
-                }
-                onClick={() => handleDotClick(index)}
-              />
-            ))}
-            <IconButton
-              variant="link"
-              intent="base"
-              onClick={nextProject}
-              aria-label="Next Project"
-              icon={'ArrowRight'}
-              css={styles.arrowButton}
-            />
-          </Box>
-        )}
       </Box>
+      {!isSingleProject && (
+        <Box css={styles.dotsContainer}>
+          <IconButton
+            variant="link"
+            intent="base"
+            onClick={prevProject}
+            aria-label="Previous Project"
+            icon={'ArrowLeft'}
+            css={styles.arrowButton}
+          />
+          {projects.map((_, index) => (
+            <Box
+              key={index}
+              css={
+                index === currentProjectIndex ? styles.activeDot : styles.dot
+              }
+              onClick={() => handleDotClick(index)}
+            />
+          ))}
+          <IconButton
+            variant="link"
+            intent="base"
+            onClick={nextProject}
+            aria-label="Next Project"
+            icon={'ArrowRight'}
+            css={styles.arrowButton}
+          />
+        </Box>
+      )}
     </>
   );
 };
@@ -294,11 +314,10 @@ const styles = {
     margin: '0 auto',
     justifyContent: 'space-between',
     overflow: 'hidden',
-    width: '100%',
+    width: '200%', // Adjust based on your card width (e.g., if each card is 38vw)
   }),
   card: cssObj({
-    width: '85vw', // Set a fixed width based on viewport width
-    //height: '27vw', // Set a fixed height based on viewport width
+    width: '38vw', // Set a fixed width based on viewport width
     maxWidth: '750px', // Maximum width limit
     maxHeight: '500px', // Maximum height limit
     margin: '0 auto', // Center the card horizontally
@@ -334,7 +353,8 @@ const styles = {
     },
   }),
   cardHeader: cssObj({
-    //backgroundImage:'url(https://fuel-labs.ghost.io/content/images/size/w2000/2023/09/Background.png)',
+    backgroundImage:
+      'url(https://fuel-labs.ghost.io/content/images/size/w2000/2023/09/Background.png)',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     position: 'relative',
@@ -466,7 +486,6 @@ const styles = {
   }),
   tag: cssObj({
     '@media (max-width: 600px)': {
-      flexDirection: 'column', // Stack tags vertically on small screens
       fontSize: '0.7rem', // Smaller font size on small screens
     },
     '@media (min-width: 601px) and (max-width: 1024px)': {
@@ -484,7 +503,6 @@ const styles = {
     flexDirection: 'row',
     gap: '10px',
     '@media (max-width: 600px)': {
-      flexDirection: 'column', // Stack tags vertically on small screens
       alignItems: 'end', // Align items to the start of the container
       gap: '3px',
     },
