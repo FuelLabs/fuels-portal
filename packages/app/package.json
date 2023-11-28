@@ -46,7 +46,7 @@
     "yup": "^1.2.0"
   },
   "devDependencies": {
-    "@fuel-wallet/playwright-utils": "file:../../../fuels-wallet/packages/test-utils/fuel-wallet-playwright-utils-0.13.7.tgz",
+    "@fuel-wallet/playwright-utils": "0.13.10",
     "@storybook/addon-a11y": "^7.2.2",
     "@storybook/addon-actions": "^7.2.2",
     "@storybook/addon-essentials": "^7.2.2",
