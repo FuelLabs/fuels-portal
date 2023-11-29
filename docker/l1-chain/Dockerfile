@@ -1,5 +1,5 @@
 # ====== Build Image ======
-FROM node:16-alpine AS BUILD_IMAGE
+FROM node:18-alpine AS BUILD_IMAGE
 
 # dependencies
 RUN apk --no-cache add git
@@ -28,7 +28,7 @@ RUN pnpm run build
 COPY ./hardhat/hardhat.config.ts .
 
 # ====== Final Image ======
-FROM node:16-alpine
+FROM node:18-alpine
 
 ARG L1_IP=0.0.0.0
 ARG L1_PORT=8545

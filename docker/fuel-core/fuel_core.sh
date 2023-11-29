@@ -56,8 +56,25 @@ exec /root/fuel-core run \
     --db-type in-memory \
     --utxo-validation \
     --vm-backtrace \
+    --enable-relayer \
     --relayer $L1_CHAIN_HTTP \
     --relayer-v2-listening-contracts $FUEL_MESSAGE_PORTAL_CONTRACT_ADDRESS \
-    --relayer-da-finalization 0 \
     --poa-interval-period 1s \
     --chain ./chainConfig.json
+
+
+
+
+# Usage: fuel-core run 
+# --ip <IP> 
+# --port <PORT> 
+# --db-type <DATABASE_TYPE> 
+# --utxo-validation 
+# --vm-backtrace <--enable-relayer|
+# --relayer <RELAYER>|
+# --relayer-v2-listening-contracts <ETH_V2_LISTENING_CONTRACTS>|
+# --relayer-da-deploy-height <DA_DEPLOY_HEIGHT>|
+# --relayer-log-page-size <LOG_PAGE_SIZE>|
+# --relayer-min-duration-s <SYNC_MINIMUM_DURATION_SECS>|
+# --relayer-eth-sync-call-freq-s <SYNCING_CALL_FREQUENCY_SECS>|
+# --relayer-eth-sync-log-freq-s <SYNCING_LOG_FREQUENCY_SECS>>
