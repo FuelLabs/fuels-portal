@@ -11,141 +11,86 @@ import {
 import React, { useState, useEffect } from 'react';
 
 import type { Project } from '../../types';
+import { ProjectDetailPanel } from '../ProjectDetailPanel';
 import { ProjecImage } from '../ProjectImage';
 
 const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
-  const [, setSecondProjectIndex] = useState(1);
-  const [animationClass, setAnimationClass] = useState('');
-  const [nextProjectIndex, setNextProjectIndex] = useState<number | null>(null);
-  const [, setIsHovering] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-  const [, setWindowWidth] = useState(window.innerWidth);
   const [containerAnimation, setContainerAnimation] = useState('');
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  const isSingleProject = projects.length === 1;
-
-  const slideLeftAnimation = 'slideLeft 0.5s ease-in-out forwards';
-  const slideRightAnimation = 'slideRight 0.5s ease-in-out forwards';
-
-  const changeProject = (newIndex: number) => {
-    if (!isSingleProject) {
-      console.log(`Changing project to index: ${newIndex}`);
-      setNextProjectIndex(newIndex);
-      setAnimationClass(slideLeftAnimation);
-    }
+  const handleProjectSelect = (project: Project) => {
+    setSelectedProject(project);
   };
+
+  const handleClosePanel = () => {
+    setSelectedProject(null);
+  };
+  const isSingleProject = projects.length === 1;
 
   const nextProject = () => {
     const newIndex = (currentProjectIndex + 1) % projects.length;
     setCurrentProjectIndex(newIndex);
-    setContainerAnimation(slideLeftAnimation);
+    setContainerAnimation('slideLeft 0.5s ease-in-out forwards');
   };
 
   const prevProject = () => {
     const newIndex =
       (currentProjectIndex - 1 + projects.length) % projects.length;
     setCurrentProjectIndex(newIndex);
-    setContainerAnimation(slideRightAnimation);
+    setContainerAnimation('slideRight 0.5s ease-in-out forwards');
   };
 
   const onMouseEnterHandler = () => {
-    setIsHovering(true);
-    setIsPaused(true); // Pause the animation
+    setIsPaused(true);
   };
 
   const onMouseLeaveHandler = () => {
-    setIsHovering(false);
-    setIsPaused(false); // Resume the animation
+    setIsPaused(false);
   };
-
-  useEffect(() => {
-    // Update the second project index when the current project index changes
-    setSecondProjectIndex((currentProjectIndex + 1) % projects.length);
-  }, [currentProjectIndex, projects.length]);
 
   useEffect(() => {
     if (!isPaused) {
       const interval = setInterval(() => {
-        nextProject(); // Call the function to go to the next project
-      }, 3000); // Change project every 3 seconds
-
-      return () => clearInterval(interval); // Clear interval on unmount
+        nextProject();
+      }, 3000);
+      return () => clearInterval(interval);
     }
-  }, [currentProjectIndex, projects.length, isPaused]);
-
-  useEffect(() => {
-    if (
-      !isPaused &&
-      animationClass === slideLeftAnimation &&
-      nextProjectIndex !== null
-    ) {
-      const timer = setTimeout(() => {
-        setCurrentProjectIndex(nextProjectIndex);
-        setAnimationClass(slideRightAnimation);
-      }, 450);
-
-      return () => clearTimeout(timer);
-    }
-  }, [nextProjectIndex, animationClass, isPaused]);
-
-  useEffect(() => {
-    console.log(
-      `Next project index: ${nextProjectIndex}, Animation class: ${animationClass}`
-    );
-    if (
-      !isPaused &&
-      animationClass === slideLeftAnimation &&
-      nextProjectIndex !== null
-    ) {
-      setTimeout(() => {
-        setCurrentProjectIndex(nextProjectIndex);
-        setAnimationClass(slideRightAnimation);
-      }, 600);
-    }
-  }, [nextProjectIndex, animationClass, isPaused]);
+  }, [currentProjectIndex, isPaused]);
 
   useEffect(() => {
     const handleResize = () => {
-      setWindowWidth(window.innerWidth);
+      // Handle window resize if necessary
     };
-
     window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const handleDotClick = (index: number) => {
-    changeProject(index);
+    setCurrentProjectIndex(index);
+    // Decide the animation direction based on index
+    setContainerAnimation(
+      index > currentProjectIndex
+        ? 'slideLeft 0.5s ease-in-out forwards'
+        : 'slideRight 0.5s ease-in-out forwards'
+    );
   };
 
   const CardComponent = ({ project }: { project: Project }) => (
-    <Box>
+    <Box onClick={() => handleProjectSelect(project)}>
+      {' '}
       <Card
         variant="outlined"
-        css={{
-          ...styles.card,
-          animation: isSingleProject ? '' : animationClass,
-        }}
+        css={styles.card}
         onMouseEnter={onMouseEnterHandler}
         onMouseLeave={onMouseLeaveHandler}
       >
         <Card.Header css={styles.cardHeader}>
           <Box css={styles.projectImageWrapper}>
-            <div
-              style={{
-                position: 'relative',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingTop: '6.45px',
-                transform: 'scale(170%)',
-              }}
-            >
+            <Box css={styles.image}>
               <ProjecImage name={project.name} image={project.image} />
-            </div>
+            </Box>
           </Box>
           <Box css={styles.statusContainer}>
             {project.tags?.map((tag, index) => (
@@ -199,7 +144,7 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
             style={{
               display: 'flex',
               flexDirection: 'row',
-              gap: '10px',
+              gap: '5px',
               marginLeft: 'auto',
             }}
           >
@@ -248,18 +193,133 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
   return (
     <>
       <style>{`
-       @keyframes slideLeft {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-38vw); } // Slide to the left by 100% of the container width
-      }
-      
-      @keyframes slideRight {
-        0% { transform: translateX(-38vw); }
-        100% { transform: translateX(0); }
-      }
+        @keyframes slideLeft {
+            from { transform: translateX(0); }
+            to { transform: translateX(-32.5vw); } // Adjust this to match one card width
+          }
+          
+          @keyframes slideRight {
+            from { transform: translateX(-32.5vw); } // Adjust this to match one card width
+            to { transform: translateX(0); }
+          }
+          @media (max-width: 2560px) {
+            @keyframes slideLeft {
+              from { transform: translateX(0); }
+              to { transform: translateX(-19vw); } // Adjust for tablets
+            }
+            
+            @keyframes slideRight {
+              from { transform: translateX(-19vw); }
+              to { transform: translateX(0); }
+            }
+          }
+          @media (max-width: 1440px) {
+            @keyframes slideLeft {
+              from { transform: translateX(0); }
+              to { transform: translateX(-33vw); } // Adjust for tablets
+            }
+            
+            @keyframes slideRight {
+              from { transform: translateX(-33vw); }
+              to { transform: translateX(0); }
+            }
+          }
+          @media (max-width: 1280px) {
+            @keyframes slideLeft {
+              from { transform: translateX(0); }
+              to { transform: translateX(-37.5vw); } // Adjust for tablets
+            }
+            
+            @keyframes slideRight {
+              from { transform: translateX(-37.5vw); }
+              to { transform: translateX(0); }
+            }
+          }
+          @media (max-width: 1100px) {
+            @keyframes slideLeft {
+              from { transform: translateX(0); }
+              to { transform: translateX(-44vw); } // Adjust for tablets
+            }
+            
+            @keyframes slideRight {
+              from { transform: translateX(-44vw); }
+              to { transform: translateX(0); }
+            }
+          }
+          @media (max-width: 1030px) {
+            @keyframes slideLeft {
+              from { transform: translateX(0); }
+              to { transform: translateX(-47vw); } // Adjust for tablets
+            }
+            
+            @keyframes slideRight {
+              from { transform: translateX(-47vw); }
+              to { transform: translateX(0); }
+            }
+          }
+          @media (max-width: 1000px) {
+            @keyframes slideLeft {
+              from { transform: translateX(0); }
+              to { transform: translateX(-48vw); } // Adjust for tablets
+            }
+            
+            @keyframes slideRight {
+              from { transform: translateX(-48vw); }
+              to { transform: translateX(0); }
+            }
+          }
+          @media (max-width: 768px) {
+            @keyframes slideLeft {
+              from { transform: translateX(0); }
+              to { transform: translateX(-94vw); } // Adjust for mobile
+            }
+            
+            @keyframes slideRight {
+              from { transform: translateX(-94vw); }
+              to { transform: translateX(0); }
+            }
+          }
+          @media (max-width: 425px) {
+            @keyframes slideLeft {
+              from { transform: translateX(0); }
+              to { transform: translateX(-91vw); } // Adjust for mobile
+            }
+            
+            @keyframes slideRight {
+              from { transform: translateX(-91vw); }
+              to { transform: translateX(0); }
+            }
+          }
+          @media (max-width: 375px) {
+            @keyframes slideLeft {
+              from { transform: translateX(0); }
+              to { transform: translateX(-90vw); } // Adjust for mobile
+            }
+            
+            @keyframes slideRight {
+              from { transform: translateX(-90vw); }
+              to { transform: translateX(0); }
+            }
+          }
+          @media (max-width: 320px) {
+            @keyframes slideLeft {
+              from { transform: translateX(0); }
+              to { transform: translateX(-88vw); } // Adjust for mobile
+            }
+            
+            @keyframes slideRight {
+              from { transform: translateX(-88vw); }
+              to { transform: translateX(0); }
+            }
+          }
     `}</style>
-      <Box css={styles.container} style={{ animation: containerAnimation }}>
-        <Box>
+
+      <Box
+        css={styles.container}
+        //style={{ animation: containerAnimation }}
+        key={currentProjectIndex}
+      >
+        <Box css={styles.container} style={{ animation: containerAnimation }}>
           <HStack>
             <CardComponent project={projects[currentProjectIndex]} />
             <CardComponent
@@ -300,6 +360,12 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
           />
         </Box>
       )}
+      {selectedProject && (
+        <ProjectDetailPanel
+          project={selectedProject}
+          onClose={handleClosePanel}
+        />
+      )}
     </>
   );
 };
@@ -307,25 +373,62 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
 const styles = {
   container: cssObj({
     //padding: '1rem',
-    borderRadius: '$lg',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'start',
     margin: '0 auto',
-    justifyContent: 'space-between',
+    justifyContent: 'start',
     overflow: 'hidden',
-    width: '200%', // Adjust based on your card width (e.g., if each card is 38vw)
+    width: '200%',
+    position: 'relative', // Helps with alignment
+    marginLeft: '0',
+    '@media (max-width: 768px)': {
+      justifyContent: 'center',
+    },
   }),
   card: cssObj({
-    width: '38vw', // Set a fixed width based on viewport width
-    maxWidth: '750px', // Maximum width limit
-    maxHeight: '500px', // Maximum height limit
-    margin: '0 auto', // Center the card horizontally
-    boxSizing: 'border-box', // Include padding and border in the element's total width and height
+    flex: '1 0 50%',
+    //width: '32vw', // Set a fixed width based on viewport width
+    //minWidth: '32vw',
+    '@media (max-width: 2560px)': {
+      width: '18.5vw',
+    },
+    '@media (max-width: 1440px)': {
+      width: '32.5vw',
+    },
+    '@media (max-width: 1280px)': {
+      width: '37vw',
+    },
+    '@media (max-width: 1100px)': {
+      width: '43vw',
+    },
+    '@media (max-width: 1030px)': {
+      width: '46vw',
+    },
+    '@media (max-width: 1000px)': {
+      width: '47vw',
+    },
+    '@media (max-width: 768px)': {
+      width: '93vw',
+    },
+    '@media (max-width: 425px)': {
+      width: '90vw',
+    },
+    '@media (max-width: 375px)': {
+      width: '89vw',
+    },
+    '@media (max-width: 320px)': {
+      width: '87vw',
+    },
+    maxHeight: '500px',
+    margin: '0 auto',
+    boxSizing: 'border-box',
+    marginLeft: '2px',
+    marginRight: '1px',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: '$lg',
-    overflow: 'hidden', // Hide any content that overflows the card's dimensions
+    borderRadius: '$md',
+    overflow: 'hidden',
     '&:hover': {
       textDecoration: 'none !important',
       border: '1px solid $intentsBase8',
@@ -339,7 +442,7 @@ const styles = {
   }),
   button: cssObj({
     // ... existing styles for button ...
-    '@media (max-width: 600px)': {
+    '@media (max-width: 768px)': {
       fontSize: '0.8rem', // Smaller button and font size on small screens
       padding: '5px 10px',
     },
@@ -377,11 +480,11 @@ const styles = {
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     flex: '1 1 auto', // Allow the body to grow and shrink as needed
-    '@media (max-width: 600px)': {
+    '@media (max-width: 768px)': {
       paddingTop: '8px',
       paddingLeft: '15px',
       paddingRight: '15px',
-      minHeight: '110px',
+      minHeight: '115px',
       fontSize: '0.85rem', // Smaller font size on small screens
     },
     '@media (min-width: 601px) and (max-width: 1024px)': {
@@ -405,17 +508,32 @@ const styles = {
     alignItems: 'center',
     width: '65px',
     height: '65px',
-    borderRadius: '12px',
+    borderRadius: '8px',
     overflow: 'hidden',
     position: 'relative',
     border: '1px solid #E2E2E2',
     marginRight: '1rem',
+    '@media (max-width: 320px)': {
+      width: '40px',
+      height: '40px',
+    },
+  }),
+  image: cssObj({
+    position: 'relative',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: '6.45px',
+    transform: 'scale(170%)',
+    '@media (max-width: 320px)': {
+      transform: 'scale(100%)',
+    },
   }),
   header: cssObj({
     fontWeight: 'bold',
     paddingBottom: '8px',
     paddingTop: '8px',
-    '@media (max-width: 600px)': {
+    '@media (max-width: 768px)': {
       fontSize: '1rem', // Smaller font size on small screens
     },
     '@media (min-width: 601px) and (max-width: 1024px)': {
@@ -485,11 +603,15 @@ const styles = {
     boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
   }),
   tag: cssObj({
-    '@media (max-width: 600px)': {
-      fontSize: '0.7rem', // Smaller font size on small screens
+    borderRadius: '5px',
+    paddingLeft: '5px',
+    paddingRight: '5px',
+    //paddingTop: '1px',
+    '@media (max-width: 768px)': {
+      fontSize: '0.5rem', // Smaller font size on small screens
     },
     '@media (min-width: 601px) and (max-width: 1024px)': {
-      fontSize: '0.8rem', // Medium font size on medium screens
+      fontSize: '0.65rem', // Medium font size on medium screens
     },
     '@media (min-width: 1025px)': {
       fontSize: '0.9rem', // Larger font size on large screens
@@ -502,7 +624,15 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     gap: '10px',
-    '@media (max-width: 600px)': {
+    '@media (max-width: 320px)': {
+      alignItems: 'end', // Align items to the start of the container
+      gap: '1px',
+    },
+    '@media (max-width: 768px)': {
+      alignItems: 'end', // Align items to the start of the container
+      gap: '3px',
+    },
+    '@media (max-width: 1000px)': {
       alignItems: 'end', // Align items to the start of the container
       gap: '3px',
     },
