@@ -213,6 +213,17 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
               to { transform: translateX(0); }
             }
           }
+          @media (max-width: 1466px) {
+            @keyframes slideLeft {
+              from { transform: translateX(0); }
+              to { transform: translateX(-32.5vw); } // Adjust for tablets
+            }
+            
+            @keyframes slideRight {
+              from { transform: translateX(-32.5vw); }
+              to { transform: translateX(0); }
+            }
+          }
           @media (max-width: 1440px) {
             @keyframes slideLeft {
               from { transform: translateX(0); }
