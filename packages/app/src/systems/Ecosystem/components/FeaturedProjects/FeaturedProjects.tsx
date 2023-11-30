@@ -205,11 +205,11 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
           @media (max-width: 2560px) {
             @keyframes slideLeft {
               from { transform: translateX(0); }
-              to { transform: translateX(-19vw); } // Adjust for tablets
+              to { transform: translateX(-18.5vw); } // Adjust for tablets
             }
             
             @keyframes slideRight {
-              from { transform: translateX(-19vw); }
+              from { transform: translateX(-18.5vw); }
               to { transform: translateX(0); }
             }
           }
@@ -388,10 +388,14 @@ const styles = {
   }),
   card: cssObj({
     flex: '1 0 50%',
-    //width: '32vw', // Set a fixed width based on viewport width
-    //minWidth: '32vw',
+    minWidth: '32vw',
     '@media (max-width: 2560px)': {
-      width: '18.5vw',
+      minWidth: '18vw',
+      width: '18.3vw',
+    },
+    '@media (max-width: 1466px)': {
+      minWidth: '32vw',
+      width: '32vw',
     },
     '@media (max-width: 1440px)': {
       width: '32.5vw',
