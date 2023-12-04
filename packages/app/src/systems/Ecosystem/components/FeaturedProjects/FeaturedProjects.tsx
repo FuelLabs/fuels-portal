@@ -11,6 +11,8 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
   const [isPaused, setIsPaused] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [isFadingIn, setIsFadingIn] = useState(true);
+  const [, setSlideAnimation] = useState('');
 
   const handleProjectSelect = (project: Project) => {
     setSelectedProject(project);
@@ -22,7 +24,11 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
   const isSingleProject = projects.length === 1;
 
   const nextProject = () => {
-    setCurrentProjectIndex((currentProjectIndex + 1) % projects.length);
+    setIsFadingIn(false); // Start fade out
+    setTimeout(() => {
+      setCurrentProjectIndex((currentProjectIndex + 1) % projects.length);
+      setIsFadingIn(true); // Start fade in
+    }, 1000); // This duration should match the fade-out animation duration
   };
 
   const prevProject = () => {
@@ -41,25 +47,25 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
 
   useEffect(() => {
     if (!isPaused) {
-      const interval = setInterval(() => {
-        nextProject();
-      }, 3000);
+      const interval = setInterval(nextProject, 3000);
       return () => clearInterval(interval);
     }
   }, [currentProjectIndex, isPaused]);
 
   useEffect(() => {
-    const handleResize = () => {
-      // Handle window resize if necessary
-    };
+    const handleResize = () => {};
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const handleDotClick = (index: number) => {
     setCurrentProjectIndex(index);
-    // Decide the animation direction based on index
   };
+
+  useEffect(() => {
+    const animation = windowWidth <= 768 ? 'slideMobile' : 'slideDesktop';
+    setSlideAnimation(animation);
+  }, [windowWidth]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -69,127 +75,169 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const CardComponent = ({ project }: { project: Project }) => (
-    <Box onClick={() => handleProjectSelect(project)}>
-      <Card
-        variant="outlined"
-        css={styles.card}
+  const handleProjectChange = () => {
+    setIsFadingIn(false);
+    setTimeout(() => {
+      setCurrentProjectIndex((currentProjectIndex + 1) % projects.length);
+      setIsFadingIn(true);
+    }, 1000); // Duration of fadeOut animation
+  };
+
+  useEffect(() => {
+    if (!isPaused) {
+      const interval = setInterval(handleProjectChange, 3000);
+      return () => clearInterval(interval);
+    }
+  }, [currentProjectIndex, isPaused]);
+
+  const CardComponent = ({ project }: { project: Project }) => {
+    return (
+      <Box
+        onClick={() => handleProjectSelect(project)}
+        css={isFadingIn ? styles.fadeIn : styles.fadeOut}
         onMouseEnter={onMouseEnterHandler}
         onMouseLeave={onMouseLeaveHandler}
       >
-        <Card.Header css={styles.cardHeader}>
-          <Box css={styles.projectImageWrapper}>
-            <Box css={styles.image}>
-              <ProjecImage name={project.name} image={project.image} />
+        {' '}
+        <Card
+          variant="outlined"
+          css={styles.card}
+          onMouseEnter={onMouseEnterHandler}
+          onMouseLeave={onMouseLeaveHandler}
+        >
+          <Card.Header css={styles.cardHeader}>
+            <Box css={styles.projectImageWrapper}>
+              <Box css={styles.image}>
+                <ProjecImage name={project.name} image={project.image} />
+              </Box>
             </Box>
-          </Box>
-          <Box css={styles.statusContainer}>
-            {project.tags?.map((tag, index) => (
-              <Tag
-                key={index}
+            <Box css={styles.statusContainer}>
+              {project.tags?.map((tag, index) => (
+                <Tag
+                  key={index}
+                  variant="ghost"
+                  intent="info"
+                  size="xs"
+                  style={{
+                    fontSize: '$xs',
+                    fontWeight: '500',
+                  }}
+                  css={styles.tag}
+                >
+                  {tag}
+                </Tag>
+              ))}
+            </Box>
+          </Card.Header>
+          <Card.Body css={styles.cardBody}>
+            <Text fontSize="base" color="intentsBase12" css={styles.header}>
+              {project.name}
+            </Text>
+            <Box css={styles.cardContent}>
+              <Text>{project.description}</Text>
+            </Box>
+          </Card.Body>
+          <Card.Footer css={styles.cardFooter} gap="$3" direction="row-reverse">
+            {project.isLive ? (
+              <Button
+                intent="base"
+                size="sm"
                 variant="outlined"
-                intent="info"
-                size="xs"
-                style={{
-                  fontSize: '$xs',
-                  fontWeight: '500',
-                }}
-                css={styles.tag}
+                css={styles.button}
               >
-                {tag}
-              </Tag>
-            ))}
-          </Box>
-        </Card.Header>
-        <Card.Body css={styles.cardBody}>
-          <Text fontSize="base" color="intentsBase12" css={styles.header}>
-            {project.name}
-          </Text>
-          <Box css={styles.cardContent}>
-            <Text>{project.description}</Text>
-          </Box>
-        </Card.Body>
-        <Card.Footer css={styles.cardFooter} gap="$3" direction="row-reverse">
-          {project.isLive ? (
-            <Button
-              intent="base"
-              size="sm"
-              variant="outlined"
-              css={styles.button}
+                <Box css={styles.dotLive} />
+                Testnet
+              </Button>
+            ) : (
+              <Button
+                intent="base"
+                size="sm"
+                variant="outlined"
+                css={styles.button}
+              >
+                <Box css={styles.dotBuilding} />
+                {'Building'}
+              </Button>
+            )}
+            <Box
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: '5px',
+                marginLeft: 'auto',
+              }}
             >
-              <Box css={styles.dotLive} />
-              Testnet
-            </Button>
-          ) : (
-            <Button
-              intent="base"
-              size="sm"
-              variant="outlined"
-              css={styles.button}
-            >
-              <Box css={styles.dotBuilding} />
-              {'Building'}
-            </Button>
-          )}
-          <Box
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              gap: '5px',
-              marginLeft: 'auto',
-            }}
-          >
-            {project.twitter && (
+              {project.twitter && (
+                <Button
+                  href={project.twitter}
+                  size="sm"
+                  intent="error"
+                  variant="ghost"
+                  leftIcon={'BrandX'}
+                  css={styles.button}
+                ></Button>
+              )}
+              {project.github && (
+                <Button
+                  href={project.github}
+                  size="sm"
+                  leftIcon={'BrandGithub'}
+                  variant="ghost"
+                  css={styles.button}
+                ></Button>
+              )}
+              {project.discord && (
+                <Button
+                  href={project.discord}
+                  size="sm"
+                  intent="info"
+                  leftIcon={'BrandDiscord'}
+                  variant="ghost"
+                  css={styles.button}
+                ></Button>
+              )}
               <Button
-                href={project.twitter}
                 size="sm"
-                intent="error"
-                variant="ghost"
-                leftIcon={'BrandX'}
+                variant="outlined"
+                intent="base"
+                leftIcon={'ExternalLink'}
                 css={styles.button}
               ></Button>
-            )}
-            {project.github && (
-              <Button
-                href={project.github}
-                size="sm"
-                leftIcon={'BrandGithub'}
-                variant="ghost"
-                css={styles.button}
-              ></Button>
-            )}
-            {project.discord && (
-              <Button
-                href={project.discord}
-                size="sm"
-                intent="info"
-                leftIcon={'BrandDiscord'}
-                variant="ghost"
-                css={styles.button}
-              ></Button>
-            )}
-            <Button
-              size="sm"
-              variant="outlined"
-              intent="base"
-              leftIcon={'ExternalLink'}
-              css={styles.button}
-            ></Button>
-          </Box>
-        </Card.Footer>
-      </Card>
-    </Box>
-  );
+            </Box>
+          </Card.Footer>
+        </Card>
+      </Box>
+    );
+  };
 
   return (
     <>
-      <Box css={styles.gridContainer}>
-        <CardComponent project={projects[currentProjectIndex]} />
-        {!isSingleProject && windowWidth > 768 && (
-          <CardComponent
-            project={projects[(currentProjectIndex + 1) % projects.length]}
-          />
-        )}
+      <style>
+        {`
+            @keyframes fadeInEffect {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+
+            @keyframes fadeOutEffect {
+                from { opacity: 1; }
+                to { opacity: 0; }
+            }
+        `}
+      </style>
+
+      <Box
+        onMouseEnter={onMouseEnterHandler}
+        onMouseLeave={onMouseLeaveHandler}
+      >
+        <Box css={styles.gridContainer}>
+          <CardComponent project={projects[currentProjectIndex]} />
+          {!isSingleProject && windowWidth > 740 && (
+            <CardComponent
+              project={projects[(currentProjectIndex + 1) % projects.length]}
+            />
+          )}
+        </Box>
       </Box>
       {!isSingleProject && (
         <Box css={styles.dotsContainer}>
@@ -233,22 +281,33 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
 const styles = {
   gridContainer: cssObj({
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr', // Two cards for larger screens
+    position: 'relative',
+    width: '100%',
+    height: '100%',
+    gridTemplateColumns: '1fr 1fr',
     gap: '1rem',
     alignItems: 'center',
-    '@media (max-width: 768px)': {
-      gridTemplateColumns: '1fr', // One card for smaller screens
+    '@media (max-width: 740px)': {
+      gridTemplateColumns: '1fr',
     },
   }),
   card: cssObj({
     flex: '1 0 50%',
-    maxHeight: '500px',
     margin: '0 auto',
+    position: 'relative',
     boxSizing: 'border-box',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: '$md',
     overflow: 'hidden',
+    width: '1fr%',
+    transition: 'transform 0.3s ease', // Smooth transition for hover
+    ':hover': {
+      zIndex: 1, // Ensure hovered card is above others
+    },
+    // Define a custom property for the animation state
+    '--animation-state': 'running',
+    animationPlayState: 'var(--animation-state)',
     '&:hover': {
       textDecoration: 'none !important',
       border: '1px solid $intentsBase8',
@@ -297,17 +356,26 @@ const styles = {
   cardBody: cssObj({
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'flex-start',
     alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    padding: '$6',
     flex: '1 1 auto',
-    '@media (max-width: 768px)': {
+    minHeight: '95px',
+    '@media (max-width: 350px)': {
       paddingTop: '8px',
       paddingLeft: '15px',
       paddingRight: '15px',
-      minHeight: '115px',
-      fontSize: '0.85rem', // Smaller font size on small screens
+      minHeight: '136px',
+      fontSize: '0.75rem', // Smaller font size on small screens
     },
-    '@media (min-width: 601px) and (max-width: 1024px)': {
+    '@media (min-width: 351px) and (max-width: 740px)': {
+      paddingTop: '8px',
+      paddingLeft: '15px',
+      paddingRight: '15px',
+      minHeight: '130px',
+      fontSize: '0.8rem', // Smaller font size on small screens
+    },
+    '@media (min-width: 741px) and (max-width: 1024px)': {
       paddingTop: '8px',
       paddingLeft: '15px',
       paddingRight: '15px',
@@ -376,9 +444,7 @@ const styles = {
   arrowContainer: cssObj({
     padding: '0 10px',
   }),
-  arrowButton: cssObj({
-    // Add styles for positioning and visibility
-  }),
+  arrowButton: cssObj({}),
   dotsContainer: cssObj({
     display: 'flex',
     justifyContent: 'center',
@@ -426,7 +492,6 @@ const styles = {
     borderRadius: '5px',
     paddingLeft: '5px',
     paddingRight: '5px',
-    //paddingTop: '1px',
     '@media (max-width: 768px)': {
       fontSize: '0.65rem', // Smaller font size on small screens
     },
@@ -458,6 +523,18 @@ const styles = {
     '@media (max-width: 1000px)': {
       alignItems: 'end', // Align items to the start of the container
       gap: '3px',
+    },
+  }),
+  fadeIn: cssObj({
+    animation: 'fadeInEffect 1s ease-in-out forwards',
+    '&:hover': {
+      opacity: 1, // Ensure the card is fully visible on hover
+    },
+  }),
+  fadeOut: cssObj({
+    animation: 'fadeOutEffect 1s ease-in-out forwards',
+    '&:hover': {
+      opacity: 1, // Ensure the card is fully visible on hover
     },
   }),
 };
