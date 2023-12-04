@@ -209,9 +209,8 @@ export async function getSwayDependencies(repo: any) {
   let repoVersion: string = '';
   if (match && match[1]) {
     const version = match[1];
-    repoVersion = version;
+    repoVersion = getVersionTag(version);
   }
-
   const dependencies = await Promise.all(
     (repo.dependencies || []).map(async (dependency: any) => {
       if (dependency.version) return dependency;
@@ -304,7 +303,8 @@ export async function getReposAndDependencies(rawRepos: any) {
   const analyzedRepos = repos.reduce<(typeof repos)[0][]>((prev: any, repo) => {
     if (repo.isCorrect) return [...prev, repo];
 
-    const dependencies = repo.dependencies?.map((dependency: any) => {
+    const dependencies = repo.dependencies?.map((_dependency: any) => {
+      const dependency = _dependency || {};
       if (dependency.isCorrect) return dependency;
 
       const rootRepo: any = prev.find(
@@ -314,7 +314,7 @@ export async function getReposAndDependencies(rawRepos: any) {
       return {
         ...dependency,
         isCorrect:
-          dependency.version === rootRepo?.version && rootRepo.isCorrect,
+          dependency.version === rootRepo?.version && rootRepo?.isCorrect,
       };
     });
 
