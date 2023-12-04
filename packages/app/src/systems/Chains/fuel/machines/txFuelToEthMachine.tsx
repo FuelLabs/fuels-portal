@@ -19,6 +19,7 @@ type MachineContext = {
   fuelTxId?: string;
   fuelTxResult?: TransactionResult;
   fuelLastBlockId?: string;
+  nonce?: string;
   messageId?: string;
   messageProof?: MessageProof;
   fuelBlockHashCommited?: string;
@@ -33,6 +34,7 @@ type MachineServices = {
     data: {
       txResult: TransactionResult;
       messageId: string;
+      nonce: string;
     };
   };
   getMessageProof: {
@@ -122,9 +124,10 @@ export const txFuelToEthMachine = createMachine(
                   actions: [
                     'assignFuelTxResult',
                     'assignMessageId',
+                    'assignNonce',
                     'notifyFuelTxSuccess',
                   ],
-                  cond: 'hasMessageId',
+                  cond: 'hasTxResultInfo',
                   target: 'checkingDoneCache',
                 },
               ],
@@ -191,7 +194,7 @@ export const txFuelToEthMachine = createMachine(
                   data: {
                     input: (ctx: MachineContext) => ({
                       fuelTxId: ctx.fuelTxId,
-                      messageId: ctx.messageId,
+                      nonce: ctx.nonce,
                       fuelBlockHashCommited: ctx.fuelBlockHashCommited,
                       fuelProvider: ctx.fuelProvider,
                       fuelLastBlockId: ctx.fuelLastBlockId,
@@ -386,6 +389,9 @@ export const txFuelToEthMachine = createMachine(
       assignMessageId: assign({
         messageId: (_, ev) => ev.data.messageId,
       }),
+      assignNonce: assign({
+        nonce: (_, ev) => ev.data.nonce,
+      }),
       assignMessageProof: assign({
         messageProof: (_, ev) => ev.data,
       }),
@@ -416,7 +422,9 @@ export const txFuelToEthMachine = createMachine(
       },
     },
     guards: {
-      hasMessageId: (ctx, ev) => !!ctx.messageId || !!ev?.data.messageId,
+      hasTxResultInfo: (ctx, ev) =>
+        (!!ctx.messageId || !!ev?.data.messageId) &&
+        (!!ctx.nonce || !!ev?.data.nonce),
       hasMessageProof: (ctx, ev) => !!ctx.messageProof || !!ev?.data,
       hasBlockCommited: (ctx, ev) =>
         !!ctx.fuelBlockHashCommited || !!ev?.data?.blockHashCommited,

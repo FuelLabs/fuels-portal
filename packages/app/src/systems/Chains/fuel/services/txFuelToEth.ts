@@ -40,7 +40,7 @@ export type TxFuelToEthInputs = {
   };
   getMessageProof: {
     fuelTxId: string;
-    messageId: string;
+    nonce: string;
     fuelProvider?: FuelProvider;
     fuelBlockHashCommited?: string;
   };
@@ -189,6 +189,7 @@ export class TxFuelToEthService {
     return {
       txResult,
       messageId: message?.messageId,
+      nonce: message?.nonce,
     };
   }
 
@@ -269,18 +270,18 @@ export class TxFuelToEthService {
     if (!input?.fuelTxId) {
       throw new Error('Need transaction Id');
     }
-    if (!input?.messageId) {
-      throw new Error('Need message ID');
+    if (!input?.nonce) {
+      throw new Error('Need nonce');
     }
     if (!input?.fuelBlockHashCommited) {
       throw new Error('Need last block ID');
     }
 
-    const { fuelTxId, fuelProvider, messageId, fuelBlockHashCommited } = input;
+    const { fuelTxId, fuelProvider, nonce, fuelBlockHashCommited } = input;
     const provider = await FuelProvider.create(fuelProvider.url);
     const withdrawMessageProof = await provider.getMessageProof(
       fuelTxId,
-      messageId,
+      nonce,
       fuelBlockHashCommited
     );
 

@@ -5,9 +5,9 @@
   },
   "dependencies": {
     "@fuel-bridge/solidity-contracts": "0.3.0",
-    "@fuel-bridge/test-utils": "0.3.0",
+    "@fuel-bridge/test-utils": "file:./fuel-bridge-test-utils-0.3.0.tgz",
     "ethers": "5.7.2",
-    "fuels": "0.63.0"
+    "fuels": "pr-1407"
   },
   "devDependencies": {
     "ts-node": "^10.9.1"
