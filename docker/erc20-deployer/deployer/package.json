@@ -4,8 +4,8 @@
     "start": "ts-node ./src/index.ts"
   },
   "dependencies": {
-    "@fuel-bridge/solidity-contracts": "0.3.0",
-    "@fuel-bridge/test-utils": "file:./fuel-bridge-test-utils-0.3.0.tgz",
+    "@fuel-bridge/solidity-contracts": "pr-106",
+    "@fuel-bridge/test-utils": "pr-106",
     "ethers": "5.7.2",
     "fuels": "pr-1407"
   },

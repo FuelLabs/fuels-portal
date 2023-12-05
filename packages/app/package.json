@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@fuel-bridge/fungible-token": "0.3.0",
-    "@fuel-bridge/message-predicates": "0.3.0",
+    "@fuel-bridge/message-predicates": "pr-106",
     "@fuel-bridge/solidity-contracts": "0.3.0",
     "@fuel-ts/utils": "pr-1407",
     "@fuel-ui/css": "0.21.1",

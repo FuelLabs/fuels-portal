@@ -380,9 +380,9 @@ export class TxEthToFuelService {
         );
         const parsedMessage = JSON.parse(messageToParse);
         if (
-          parsedMessage.response.errors[0].message ===
+          parsedMessage.response?.errors[0].message ===
             'not enough coins to fit the target' &&
-          parsedMessage.request.variables.queryPerAsset[0].assetId ===
+          parsedMessage.request?.variables.queryPerAsset[0].assetId ===
             ZeroBytes32
         ) {
           throw new Error(

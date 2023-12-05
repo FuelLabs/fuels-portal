@@ -5,9 +5,9 @@ import {
 import type {
   Message,
   WalletUnlocked as FuelWallet,
-  TransactionRequestLike,
   TransactionResponse,
   Provider,
+  ScriptTransactionRequestLike,
 } from 'fuels';
 import {
   ZeroBytes32,
@@ -36,11 +36,7 @@ function getCommonRelayableMessages(provider: Provider) {
       buildTx: async (
         relayer: FuelWallet,
         message: Message,
-        details: CommonMessageDetails,
-        txParams: Pick<
-          TransactionRequestLike,
-          'gasLimit' | 'gasPrice' | 'maturity'
-        >
+        details: CommonMessageDetails
       ): Promise<ScriptTransactionRequest> => {
         const script = arrayify(details.script);
         const predicateBytecode = arrayify(details.predicate);
@@ -60,12 +56,9 @@ function getCommonRelayableMessages(provider: Provider) {
           throw new Error('cannot find contract ID in message data');
         const contractId = hexlify(data.slice(0, 32));
 
-        const { maxGasPerTx } = provider.getGasConfig();
         // build the transaction
         const transaction = new ScriptTransactionRequest({
           script,
-          gasLimit: maxGasPerTx,
-          ...txParams,
         });
         transaction.inputs.push({
           type: InputType.Message,
@@ -99,6 +92,12 @@ function getCommonRelayableMessages(provider: Provider) {
 
         transaction.witnesses.push('0x');
 
+        const transactionCost = await relayer.provider.getTransactionCost(
+          transaction
+        );
+
+        transaction.gasLimit = transactionCost.gasUsed.mul(1.2);
+
         return transaction;
       },
     },
@@ -116,7 +115,10 @@ type CommonMessageDetails = {
     relayer: FuelWallet,
     message: Message,
     details: CommonMessageDetails,
-    txParams: Pick<TransactionRequestLike, 'gasLimit' | 'gasPrice' | 'maturity'>
+    txParams: Pick<
+      ScriptTransactionRequestLike,
+      'gasLimit' | 'gasPrice' | 'maturity'
+    >
   ) => Promise<ScriptTransactionRequest>;
 };
 
@@ -128,7 +130,10 @@ export async function relayCommonMessage({
 }: {
   relayer: FuelWallet;
   message: Message;
-  txParams?: Pick<TransactionRequestLike, 'gasLimit' | 'gasPrice' | 'maturity'>;
+  txParams?: Pick<
+    ScriptTransactionRequestLike,
+    'gasLimit' | 'gasPrice' | 'maturity'
+  >;
 }): Promise<TransactionResponse> {
   // find the relay details for the specified message
   let messageRelayDetails: CommonMessageDetails | undefined;
