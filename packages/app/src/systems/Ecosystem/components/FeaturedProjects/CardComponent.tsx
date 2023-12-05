@@ -11,6 +11,7 @@ interface CardComponentProps {
   onSelect: (project: Project) => void;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
+  applyFadeEffect: boolean;
   isFadingIn: boolean;
 }
 
@@ -19,14 +20,19 @@ const CardComponent: React.FC<CardComponentProps> = ({
   onSelect,
   onMouseEnter,
   onMouseLeave,
+  applyFadeEffect,
   isFadingIn,
 }) => {
-  //const [isFadingIn] = useState(true);
+  const cardStyle = applyFadeEffect
+    ? isFadingIn
+      ? styles.fadeIn
+      : styles.fadeOut
+    : {};
 
   return (
     <Box
       onClick={() => onSelect(project)}
-      css={isFadingIn ? styles.fadeIn : styles.fadeOut}
+      css={cardStyle} // Apply conditional styling
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >

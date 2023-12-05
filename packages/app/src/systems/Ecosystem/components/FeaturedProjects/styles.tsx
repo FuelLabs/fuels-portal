@@ -13,6 +13,17 @@ export const styles = {
       gridTemplateColumns: '1fr',
     },
   }),
+  gridContainerSingle: cssObj({
+    display: 'grid',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+    width: '100%',
+    height: '100%',
+    '@media (max-width: 740px)': {
+      gridTemplateColumns: '1fr',
+    },
+  }),
   card: cssObj({
     flex: '1 0 50%',
     margin: '0 auto',

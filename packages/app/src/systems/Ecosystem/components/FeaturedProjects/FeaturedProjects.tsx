@@ -24,6 +24,9 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
     setIsPanelVisible(false); // Hide panel
   };
   const isSingleProject = projects.length === 1;
+  const gridContainerStyle = isSingleProject
+    ? styles.gridContainerSingle
+    : styles.gridContainer;
 
   const nextProject = () => {
     setIsFadingIn(false); // Start fade out
@@ -152,12 +155,13 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
         onMouseEnter={onMouseEnterHandler}
         onMouseLeave={onMouseLeaveHandler}
       >
-        <Box css={styles.gridContainer}>
+        <Box css={gridContainerStyle}>
           <CardComponent
             project={projects[currentProjectIndex]}
             onSelect={handleProjectSelect}
             onMouseEnter={onMouseEnterHandler}
             onMouseLeave={onMouseLeaveHandler}
+            applyFadeEffect={!isSingleProject}
             isFadingIn={isFadingIn}
           />
           {!isSingleProject && windowWidth > 740 && (
@@ -166,6 +170,7 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
               onSelect={handleProjectSelect}
               onMouseEnter={onMouseEnterHandler}
               onMouseLeave={onMouseLeaveHandler}
+              applyFadeEffect={!isSingleProject}
               isFadingIn={isFadingIn}
             />
           )}
