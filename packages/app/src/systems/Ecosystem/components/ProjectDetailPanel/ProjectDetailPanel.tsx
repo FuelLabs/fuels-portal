@@ -43,7 +43,6 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
 
     window.addEventListener('resize', handleResize);
 
-    // Cleanup
     return () => {
       window.removeEventListener('resize', handleResize);
     };
@@ -52,68 +51,28 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
   return (
     <>
       {isPanelVisible && (
-        <div
+        <Box
           style={{
             position: 'fixed',
             top: 0,
             left: 0,
             width: '100%',
             height: '100%',
-            //backdropFilter: 'blur(3px)',
             zIndex: 999,
             transition: 'backdropFilter 0.5s ease',
           }}
-        ></div>
+        ></Box>
       )}
       <Box ref={panelRef} css={styles.panelStyle} data-mobile={isMobileView}>
-        <div
-          style={{
-            backgroundImage:
-              'url(https://assets-global.website-files.com/62e273f312d561347ce33306/62f124d39576fd474e271ab8_Fuel_Trailer_Still_4.jpeg)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            height: '200px',
-            width: '100%',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            zIndex: 1,
-            borderBottom: '1px solid #2E2E2E',
-          }}
-        >
+        <Box css={styles.backgroundImage}>
           <Box css={styles.closeButton}>
             <TagCloseButton onPress={onClose} />
           </Box>
-        </div>
-        <Box
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '110px',
-            height: '110px',
-            borderRadius: '12px',
-            overflow: 'hidden',
-            marginBottom: '20px',
-            position: 'relative',
-            top: '125px',
-            zIndex: 2,
-            border: '1px solid #2E2E2E',
-            boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.6)',
-          }}
-        >
-          <div
-            style={{
-              position: 'relative',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              paddingTop: '6.5px',
-              transform: 'scale(285%)',
-            }}
-          >
+        </Box>
+        <Box css={styles.imageContainer}>
+          <Box css={styles.image}>
             <ProjecImage name={project.name} image={project.image} />
-          </div>
+          </Box>
         </Box>
 
         <h1
@@ -124,7 +83,7 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
             justifyContent: 'space-between',
             marginBottom: '10px',
             position: 'relative',
-            marginTop: '150px',
+            marginTop: '200px',
           }}
         >
           {project.name}
@@ -163,15 +122,7 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
             leftIcon="ExternalLink"
             color="intentsBase8"
             intent="info"
-            style={{
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-              overflow: 'hidden',
-              position: 'fixed',
-              top: '220px',
-              right: '15px',
-              zIndex: 2,
-            }}
+            css={styles.websiteButton}
           >
             Visit Website
           </Button>
@@ -199,7 +150,7 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
         >
           Socials
         </h2>
-        <Box style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
+        <Box css={styles.socials}>
           {project.twitter && (
             <Button
               href={project.twitter}
@@ -245,7 +196,7 @@ const styles = {
     position: 'fixed',
     right: 0,
     top: 0,
-    height: '100%',
+    height: '95%',
     width: '50%',
     backgroundColor: '$intentsBase1',
     padding: '30px',
@@ -255,6 +206,7 @@ const styles = {
     boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.6)',
     '&[data-mobile="true"]': {
       width: '85%',
+      overflowY: 'scroll',
     },
   }),
   closeButton: cssObj({
@@ -269,6 +221,56 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 4,
+  }),
+  imageContainer: cssObj({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '110px',
+    height: '110px',
+    borderRadius: '12px',
+    overflow: 'hidden',
+    marginBottom: '20px',
+    position: 'relative',
+    top: '180px',
+    zIndex: 2,
+    border: '1px solid #2E2E2E',
+  }),
+  image: cssObj({
+    position: 'relative',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: '6.5px',
+    transform: 'scale(285%)',
+  }),
+  backgroundImage: cssObj({
+    backgroundImage:
+      'url(https://assets-global.website-files.com/62e273f312d561347ce33306/62f124d39576fd474e271ab8_Fuel_Trailer_Still_4.jpeg)',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    height: '275px',
+    width: '100%',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 1,
+    borderBottom: '1px solid #2E2E2E',
+  }),
+  websiteButton: cssObj({
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    overflow: 'hidden',
+    position: 'absolute',
+    top: '255px',
+    right: '25px',
+    zIndex: 2,
+  }),
+  socials: cssObj({
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '10px',
+    marginBottom: '25px',
   }),
 };
 

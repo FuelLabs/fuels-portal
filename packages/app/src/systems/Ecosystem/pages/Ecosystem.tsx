@@ -18,8 +18,10 @@ export function Ecosystem() {
     handlers.searchProjects({ query: e.target.value });
   };
 
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const handleTagButtonClick = (tag: string) => {
     handlers.filterProjects({ tag });
+    setSelectedCategory(tag);
   };
 
   const emptyText = search?.length
@@ -102,6 +104,11 @@ export function Ecosystem() {
               )}
             </Box>
             {featuredProjects.length > 0 && <Box css={styles.divider}></Box>}
+            {selectedCategory && (
+              <Heading as="h3" css={styles.heading}>
+                {selectedCategory}
+              </Heading>
+            )}
             <ProjectList
               isLoading={isLoading}
               projects={filteredProjects || []}
