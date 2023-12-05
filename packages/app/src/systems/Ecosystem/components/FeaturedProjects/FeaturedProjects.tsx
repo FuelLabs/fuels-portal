@@ -13,13 +13,15 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [isFadingIn, setIsFadingIn] = useState(true);
   const [, setSlideAnimation] = useState('');
+  const [isPanelVisible, setIsPanelVisible] = useState(false);
 
   const handleProjectSelect = (project: Project) => {
     setSelectedProject(project);
+    setIsPanelVisible(true); // Show panel immediately
   };
 
   const handleClosePanel = () => {
-    setSelectedProject(null);
+    setIsPanelVisible(false); // Hide panel
   };
   const isSingleProject = projects.length === 1;
 
@@ -28,7 +30,7 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
     setTimeout(() => {
       setCurrentProjectIndex((currentProjectIndex + 1) % projects.length);
       setIsFadingIn(true); // Start fade in
-    }, 1000); // This duration should match the fade-out animation duration
+    }, 500);
   };
 
   const prevProject = () => {
@@ -47,7 +49,7 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
 
   useEffect(() => {
     if (!isPaused) {
-      const interval = setInterval(nextProject, 3000);
+      const interval = setInterval(nextProject, 7500);
       return () => clearInterval(interval);
     }
   }, [currentProjectIndex, isPaused]);
@@ -80,15 +82,34 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
     setTimeout(() => {
       setCurrentProjectIndex((currentProjectIndex + 1) % projects.length);
       setIsFadingIn(true);
-    }, 1000); // Duration of fadeOut animation
+    }, 500); // Duration of fadeOut animation
   };
 
   useEffect(() => {
     if (!isPaused) {
-      const interval = setInterval(handleProjectChange, 3000);
+      const interval = setInterval(handleProjectChange, 7500);
       return () => clearInterval(interval);
     }
   }, [currentProjectIndex, isPaused]);
+
+  const renderPanel = () => {
+    if (selectedProject) {
+      return (
+        <Box
+          css={isPanelVisible ? styles.panelVisible : styles.panelHidden}
+          onAnimationEnd={() => {
+            if (!isPanelVisible) setSelectedProject(null);
+          }}
+        >
+          <ProjectDetailPanel
+            project={selectedProject}
+            onClose={handleClosePanel}
+          />
+        </Box>
+      );
+    }
+    return null;
+  };
 
   const CardComponent = ({ project }: { project: Project }) => {
     return (
@@ -223,6 +244,32 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
                 from { opacity: 1; }
                 to { opacity: 0; }
             }
+
+            @keyframes slideIn {
+                from {
+                  transform: translateX(100%);
+                }
+                to {
+                  transform: translateX(0);
+                }
+              }
+              
+              @keyframes slideOut {
+                from {
+                  transform: translateX(0);
+                }
+                to {
+                  transform: translateX(100%);
+                }
+              }
+              
+              .panelVisible {
+                animation: slideIn 0.5s forwards;
+              }
+              
+              .panelHidden {
+                animation: slideOut 0.5s forwards;
+              }
         `}
       </style>
 
@@ -268,12 +315,7 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
           />
         </Box>
       )}
-      {selectedProject && (
-        <ProjectDetailPanel
-          project={selectedProject}
-          onClose={handleClosePanel}
-        />
-      )}
+      {renderPanel()}
     </>
   );
 };
@@ -320,7 +362,6 @@ const styles = {
     },
   }),
   button: cssObj({
-    // ... existing styles for button ...
     '@media (max-width: 768px)': {
       fontSize: '0.8rem', // Smaller button and font size on small screens
       padding: '5px 10px',
@@ -536,6 +577,26 @@ const styles = {
     '&:hover': {
       opacity: 1, // Ensure the card is fully visible on hover
     },
+  }),
+
+  panelVisible: cssObj({
+    // Define the CSS for the visible state of the panel
+    position: 'fixed',
+    right: 0,
+    top: 0,
+    height: '100%',
+    width: '100%',
+    animation: 'slideIn 0.5s forwards',
+  }),
+
+  panelHidden: cssObj({
+    // Define the CSS for the hidden state of the panel
+    position: 'fixed',
+    right: 0,
+    top: 0,
+    height: '100%',
+    width: '100%',
+    animation: 'slideOut 0.5s forwards',
   }),
 };
 

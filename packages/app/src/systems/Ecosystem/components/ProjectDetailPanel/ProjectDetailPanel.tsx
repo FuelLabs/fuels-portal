@@ -59,7 +59,7 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
             left: 0,
             width: '100%',
             height: '100%',
-            backdropFilter: 'blur(3px)',
+            //backdropFilter: 'blur(3px)',
             zIndex: 999,
             transition: 'backdropFilter 0.5s ease',
           }}
