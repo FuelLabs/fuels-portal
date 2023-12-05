@@ -27,90 +27,107 @@ export function Ecosystem() {
     : undefined;
 
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [isPanelVisible, setIsPanelVisible] = useState(false);
+
   const handleProjectSelect = (project: Project) => {
     console.log('Project selected:', project);
     setSelectedProject(project);
+    setIsPanelVisible(true);
   };
 
   const handleClosePanel = () => {
     console.log('Closing panel');
-    setSelectedProject(null);
+    setIsPanelVisible(false);
   };
+
   const featuredProjects = filteredProjects
     ? filteredProjects.filter((project) => project.isLive)
     : [];
 
   return (
-    <Layout {...animations.slideInTop()}>
-      <Layout.Content css={{ padding: '$16 $4 $4 $4' }}>
-        <Box.Stack gap="$12" grow={1} css={styles.content}>
-          <Box.Flex css={styles.headingWrapper}>
-            <Heading as="h1" css={styles.heading}>
-              <Box.Stack gap="$2" wrap="wrap">
-                Explore the Fuel Ecosystem
-              </Box.Stack>
-            </Heading>
-          </Box.Flex>
-          <Box.Flex
-            css={{ justifyContent: 'space-between', alignItems: 'center' }}
-          >
-            <Input css={styles.searchBar}>
-              <Input.Field
-                name="search"
-                placeholder="Search"
-                type="text"
-                onChange={handleSearch}
-                value={search || ''}
-              />
-              <Input.ElementRight element={<Icon icon="Search" />} />
-            </Input>
-            <a
-              href="https://fuelnetwork.typeform.com/addproject"
-              target="_blank"
-              rel="noopener noreferrer"
+    <>
+      <style>{keyframes}</style>
+      <Layout {...animations.slideInTop()}>
+        <Layout.Content css={{ padding: '$16 $4 $4 $4' }}>
+          <Box.Stack gap="$12" grow={1} css={styles.content}>
+            <Box.Flex css={styles.headingWrapper}>
+              <Heading as="h1" css={styles.heading}>
+                <Box.Stack gap="$2" wrap="wrap">
+                  Explore the Fuel Ecosystem
+                </Box.Stack>
+              </Heading>
+            </Box.Flex>
+            <Box.Flex
+              css={{ justifyContent: 'space-between', alignItems: 'center' }}
             >
-              <Button variant="solid" intent="primary" size="md">
-                List your dapp
-              </Button>
-            </a>
-          </Box.Flex>
-          <Heading as="h2" css={styles.heading}>
-            Project Categories
-          </Heading>
-          <EcosystemTags
-            tags={tags}
-            onPressTag={handleTagButtonClick}
-            activeTag={filter}
-            onPressAllCategories={handlers.clearFilters}
-            isLoading={isLoading}
-          />
-          <Box css={styles.divider}></Box>
-          {featuredProjects.length > 0 && (
+              <Input css={styles.searchBar}>
+                <Input.Field
+                  name="search"
+                  placeholder="Search"
+                  type="text"
+                  onChange={handleSearch}
+                  value={search || ''}
+                />
+                <Input.ElementRight element={<Icon icon="Search" />} />
+              </Input>
+              <a
+                href="https://fuelnetwork.typeform.com/addproject"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button variant="solid" intent="primary" size="md">
+                  List your dapp
+                </Button>
+              </a>
+            </Box.Flex>
             <Heading as="h2" css={styles.heading}>
-              Featured Projects
+              Project Categories
             </Heading>
-          )}
-          <Box>
-            {featuredProjects.length > 0 && (
-              <FeaturedProjects projects={featuredProjects} />
-            )}
-          </Box>
-          {featuredProjects.length > 0 && <Box css={styles.divider}></Box>}
-          <ProjectList
-            isLoading={isLoading}
-            projects={filteredProjects || []}
-            emptyText={emptyText}
-            onSelect={handleProjectSelect}
-          />
-          {selectedProject && (
-            <ProjectDetailPanel
-              project={selectedProject}
-              onClose={handleClosePanel}
+            <EcosystemTags
+              tags={tags}
+              onPressTag={handleTagButtonClick}
+              activeTag={filter}
+              onPressAllCategories={handlers.clearFilters}
+              isLoading={isLoading}
             />
-          )}
-        </Box.Stack>
-      </Layout.Content>
-    </Layout>
+            <Box css={styles.divider}></Box>
+            {featuredProjects.length > 0 && (
+              <Heading as="h2" css={styles.heading}>
+                Featured Projects
+              </Heading>
+            )}
+            <Box>
+              {featuredProjects.length > 0 && (
+                <FeaturedProjects projects={featuredProjects} />
+              )}
+            </Box>
+            {featuredProjects.length > 0 && <Box css={styles.divider}></Box>}
+            <ProjectList
+              isLoading={isLoading}
+              projects={filteredProjects || []}
+              emptyText={emptyText}
+              onSelect={handleProjectSelect}
+            />
+            {selectedProject && (
+              <Box
+                css={isPanelVisible ? styles.panelVisible : styles.panelHidden}
+                onAnimationEnd={() => {
+                  if (!isPanelVisible) setSelectedProject(null);
+                }}
+              >
+                <ProjectDetailPanel
+                  project={selectedProject}
+                  onClose={() => {
+                    handleClosePanel();
+                    setIsPanelVisible(false);
+                  }}
+                />
+              </Box>
+            )}
+          </Box.Stack>
+        </Layout.Content>
+      </Layout>
+    </>
   );
 }
 
@@ -147,4 +164,39 @@ const styles = {
     width: '100%',
     backgroundColor: '$intentsBase6',
   }),
+  panelVisible: cssObj({
+    animation: 'slideIn 0.5s forwards',
+    position: 'fixed',
+    right: 0,
+    top: 0,
+    height: '100%',
+    width: '100%',
+  }),
+  panelHidden: cssObj({
+    animation: 'slideOut 0.5s forwards',
+    position: 'fixed',
+    right: 0,
+    top: 0,
+    height: '100%',
+    width: '100%',
+  }),
 };
+const keyframes = `
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes slideOut {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
+`;
