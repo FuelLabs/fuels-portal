@@ -23,7 +23,10 @@ export function Ecosystem() {
     handlers.filterProjects({ tag });
     setSelectedCategory(tag);
   };
-
+  const handleAllCategoriesClick = () => {
+    handlers.clearFilters();
+    setSelectedCategory(null); // Reset the selected category
+  };
   const emptyText = search?.length
     ? 'No results found for your search.'
     : undefined;
@@ -89,7 +92,7 @@ export function Ecosystem() {
               tags={tags}
               onPressTag={handleTagButtonClick}
               activeTag={filter}
-              onPressAllCategories={handlers.clearFilters}
+              onPressAllCategories={handleAllCategoriesClick}
               isLoading={isLoading}
             />
             <Box css={styles.divider}></Box>
