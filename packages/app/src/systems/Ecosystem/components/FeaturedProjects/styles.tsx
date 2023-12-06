@@ -138,8 +138,9 @@ export const styles = {
     borderRadius: '$md',
     overflow: 'hidden',
     position: 'relative',
-    border: '1px solid #E2E2E2',
+    border: '1px solid $intentsBase8',
     marginRight: '1rem',
+    backgroundColor: '$intentsBase1',
     '@media (max-width: 320px)': {
       width: '40px',
       height: '40px',

@@ -154,7 +154,7 @@ const styles = {
   image: cssObj({
     height: '40px',
     width: '40px',
-    border: '1px solid #2E2E2E',
+    border: '1px solid $intentsBase8',
     borderRadius: '$sm',
     overflow: 'hidden',
   }),

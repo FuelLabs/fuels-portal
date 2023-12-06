@@ -232,9 +232,10 @@ const styles = {
     overflow: 'hidden',
     marginBottom: '20px',
     position: 'relative',
+    border: '1px solid $intentsBase8',
+    backgroundColor: '$intentsBase1',
     top: '180px',
     zIndex: 2,
-    border: '1px solid #2E2E2E',
   }),
   image: cssObj({
     position: 'relative',
