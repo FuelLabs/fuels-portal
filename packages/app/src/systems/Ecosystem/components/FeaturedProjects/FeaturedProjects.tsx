@@ -24,6 +24,8 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
     setIsPanelVisible(false); // Hide panel
   };
   const isSingleProject = projects.length === 1;
+  const isTwoProjects = projects.length === 2;
+
   const gridContainerStyle = isSingleProject
     ? styles.gridContainerSingle
     : styles.gridContainer;
@@ -156,27 +158,79 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
         onMouseLeave={onMouseLeaveHandler}
       >
         <Box css={gridContainerStyle}>
-          <CardComponent
-            project={projects[currentProjectIndex]}
-            onSelect={handleProjectSelect}
-            onMouseEnter={onMouseEnterHandler}
-            onMouseLeave={onMouseLeaveHandler}
-            applyFadeEffect={!isSingleProject}
-            isFadingIn={isFadingIn}
-          />
-          {!isSingleProject && windowWidth > 740 && (
-            <CardComponent
-              project={projects[(currentProjectIndex + 1) % projects.length]}
-              onSelect={handleProjectSelect}
-              onMouseEnter={onMouseEnterHandler}
-              onMouseLeave={onMouseLeaveHandler}
-              applyFadeEffect={!isSingleProject}
-              isFadingIn={isFadingIn}
-            />
+          {isTwoProjects && windowWidth > 740 ? (
+            <>
+              {/* Render both projects without fading */}
+              <CardComponent
+                project={projects[0]}
+                onSelect={handleProjectSelect}
+                onMouseEnter={onMouseEnterHandler}
+                onMouseLeave={onMouseLeaveHandler}
+              />
+              <CardComponent
+                project={projects[1]}
+                onSelect={handleProjectSelect}
+                onMouseEnter={onMouseEnterHandler}
+                onMouseLeave={onMouseLeaveHandler}
+              />
+            </>
+          ) : (
+            <>
+              {/* Render with fading effect */}
+              <CardComponent
+                project={projects[currentProjectIndex]}
+                onSelect={handleProjectSelect}
+                onMouseEnter={onMouseEnterHandler}
+                onMouseLeave={onMouseLeaveHandler}
+                applyFadeEffect={!isSingleProject}
+                isFadingIn={isFadingIn}
+              />
+              {!isSingleProject && windowWidth > 740 && (
+                <CardComponent
+                  project={
+                    projects[(currentProjectIndex + 1) % projects.length]
+                  }
+                  onSelect={handleProjectSelect}
+                  onMouseEnter={onMouseEnterHandler}
+                  onMouseLeave={onMouseLeaveHandler}
+                  applyFadeEffect={!isSingleProject}
+                  isFadingIn={isFadingIn}
+                />
+              )}
+            </>
           )}
         </Box>
       </Box>
-      {!isSingleProject && (
+      {!isSingleProject && !isTwoProjects && (
+        <Box css={styles.dotsContainer}>
+          <IconButton
+            variant="link"
+            intent="base"
+            onClick={prevProject}
+            aria-label="Previous Project"
+            icon={'ArrowLeft'}
+            css={styles.arrowButton}
+          />
+          {projects.map((_, index) => (
+            <Box
+              key={index}
+              css={
+                index === currentProjectIndex ? styles.activeDot : styles.dot
+              }
+              onClick={() => handleDotClick(index)}
+            />
+          ))}
+          <IconButton
+            variant="link"
+            intent="base"
+            onClick={nextProject}
+            aria-label="Next Project"
+            icon={'ArrowRight'}
+            css={styles.arrowButton}
+          />
+        </Box>
+      )}
+      {isTwoProjects && windowWidth <= 740 && (
         <Box css={styles.dotsContainer}>
           <IconButton
             variant="link"

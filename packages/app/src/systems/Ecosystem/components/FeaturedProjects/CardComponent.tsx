@@ -11,8 +11,8 @@ interface CardComponentProps {
   onSelect: (project: Project) => void;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
-  applyFadeEffect: boolean;
-  isFadingIn: boolean;
+  applyFadeEffect?: boolean;
+  isFadingIn?: boolean;
 }
 
 const CardComponent: React.FC<CardComponentProps> = ({
