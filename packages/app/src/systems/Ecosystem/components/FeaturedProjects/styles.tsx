@@ -18,8 +18,7 @@ export const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
-    width: '100%',
-    height: '100%',
+
     '@media (max-width: 740px)': {
       gridTemplateColumns: '1fr',
     },

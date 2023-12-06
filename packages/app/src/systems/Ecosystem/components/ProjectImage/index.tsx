@@ -3,7 +3,7 @@ import { IconButton, Image } from '@fuel-ui/react';
 import { useState } from 'react';
 
 type ProjecImageProps = {
-  name: string;
+  name?: string;
   image?: string;
   style?: React.CSSProperties;
 };

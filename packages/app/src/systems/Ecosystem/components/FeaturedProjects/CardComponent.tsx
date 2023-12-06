@@ -23,6 +23,7 @@ const CardComponent: React.FC<CardComponentProps> = ({
   applyFadeEffect,
   isFadingIn,
 }) => {
+  if (!project) return null;
   const cardStyle = applyFadeEffect
     ? isFadingIn
       ? styles.fadeIn
