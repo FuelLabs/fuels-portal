@@ -41,6 +41,7 @@ export const styles = {
     borderRadius: '$md',
     overflow: 'hidden',
     width: '1fr%',
+    zIndex: '0',
     transition: 'transform 0.3s ease', // Smooth transition for hover
     ':hover': {
       zIndex: 1, // Ensure hovered card is above others
