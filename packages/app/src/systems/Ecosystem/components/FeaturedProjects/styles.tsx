@@ -14,15 +14,23 @@ export const styles = {
     },
   }),
   gridContainerSingle: cssObj({
-    display: 'grid',
+    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
-
+    width: '100%',
+    height: '100%',
     '@media (max-width: 740px)': {
-      gridTemplateColumns: '1fr',
+      flexDirection: 'column',
+    },
+    '& > *': {
+      // Target direct child (CardComponent)
+      width: '550px', // Set fixed width
+      maxWidth: '100%', // Ensure it doesn't exceed the container width
+      maxHeight: '100%', // Ensure it doesn't exceed the container height
     },
   }),
+
   card: cssObj({
     flex: '1 0 50%',
     margin: '0 auto',
