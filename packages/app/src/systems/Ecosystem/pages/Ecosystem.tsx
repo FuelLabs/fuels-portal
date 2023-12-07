@@ -1,12 +1,14 @@
 import { cssObj } from '@fuel-ui/css';
-import { Box, Button, Heading, Input, Icon } from '@fuel-ui/react';
+import { Box, Button, Heading, Input, Icon, Text } from '@fuel-ui/react';
 import { useState } from 'react';
 import { Layout, animations } from '~/systems/Core';
 
+import DismissibleAlert from '../components/Alerts/DismissibleAlert';
 import { EcosystemTags } from '../components/EcosystemTags';
 import { FeaturedProjects } from '../components/FeaturedProjects';
 import { ProjectDetailPanel } from '../components/ProjectDetailPanel';
 import { ProjectList } from '../components/ProjectList/ProjectList';
+import categoryDescriptions from '../data/categoryDescriptions';
 import { useEcosystem } from '../hooks/useEcosystem';
 import type { Project } from '../types';
 
@@ -26,6 +28,9 @@ export function Ecosystem() {
   const handleAllCategoriesClick = () => {
     handlers.clearFilters();
     setSelectedCategory(null); // Reset the selected category
+  };
+  const getCategoryDescription = (category: string): string | null => {
+    return categoryDescriptions[category] || null;
   };
   const emptyText = search?.length
     ? 'No results found for your search.'
@@ -95,22 +100,42 @@ export function Ecosystem() {
               onPressAllCategories={handleAllCategoriesClick}
               isLoading={isLoading}
             />
+            <Box
+              css={{
+                position: 'absolute',
+                bottom: '3%',
+                right: '1%',
+              }}
+            >
+              <DismissibleAlert description="To learn more about a project, click on the relative project card."></DismissibleAlert>
+            </Box>
             <Box css={styles.divider}></Box>
             {featuredProjects.length > 0 && (
-              <Heading as="h2" css={styles.heading}>
-                Featured Projects
-              </Heading>
+              <>
+                <Heading as="h2" css={styles.heading}>
+                  Featured Projects
+                </Heading>
+              </>
             )}
-            <Box>
-              {featuredProjects.length > 0 && (
-                <FeaturedProjects projects={featuredProjects} />
-              )}
-            </Box>
+            {featuredProjects.length > 0 && (
+              <>
+                <Box>
+                  <FeaturedProjects projects={featuredProjects} />
+                </Box>
+              </>
+            )}
             {featuredProjects.length > 0 && <Box css={styles.divider}></Box>}
             {selectedCategory && (
-              <Heading as="h3" css={styles.heading}>
-                {selectedCategory}
-              </Heading>
+              <>
+                <Box>
+                  <Heading as="h2" css={styles.heading}>
+                    {selectedCategory}
+                  </Heading>
+                  <Text css={styles.categoryDescription}>
+                    {getCategoryDescription(selectedCategory)}
+                  </Text>
+                </Box>
+              </>
             )}
             <ProjectList
               isLoading={isLoading}
@@ -189,6 +214,9 @@ const styles = {
     top: 0,
     height: '100%',
     width: '100%',
+  }),
+  categoryDescription: cssObj({
+    marginTop: '10px',
   }),
 };
 const keyframes = `

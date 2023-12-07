@@ -33,6 +33,7 @@ export const styles = {
 
   card: cssObj({
     flex: '1 0 50%',
+    flexDirection: 'column',
     margin: '0 auto',
     position: 'relative',
     boxSizing: 'border-box',
@@ -41,6 +42,7 @@ export const styles = {
     borderRadius: '$md',
     overflow: 'hidden',
     width: '1fr%',
+    //height: '331px',
     zIndex: '0',
     transition: 'transform 0.3s ease', // Smooth transition for hover
     ':hover': {
@@ -92,6 +94,7 @@ export const styles = {
     alignItems: 'center', // Center the content vertically
     justifyContent: 'space-between', // Distribute space between items
     padding: '0 15px', // Add some padding for aesthetics
+    //flex: '0 0 20px',
   }),
   cardBody: cssObj({
     display: 'flex',
@@ -119,7 +122,7 @@ export const styles = {
       paddingTop: '8px',
       paddingLeft: '15px',
       paddingRight: '15px',
-      minHeight: '120px',
+      minHeight: '135px',
       fontSize: '1rem', // Smaller font size on small screens
     },
     '@media (min-width: 1025px)': {
