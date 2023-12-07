@@ -39,9 +39,13 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
   };
 
   const prevProject = () => {
-    setCurrentProjectIndex(
-      (currentProjectIndex - 1 + projects.length) % projects.length
-    );
+    setIsFadingIn(false);
+    setTimeout(() => {
+      setCurrentProjectIndex(
+        (currentProjectIndex - 1 + projects.length) % projects.length
+      );
+      setIsFadingIn(true);
+    }, 500);
   };
 
   const onMouseEnterHandler = () => {
@@ -66,7 +70,11 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
   }, []);
 
   const handleDotClick = (index: number) => {
-    setCurrentProjectIndex(index);
+    setIsFadingIn(false);
+    setTimeout(() => {
+      setCurrentProjectIndex(index);
+      setIsFadingIn(true);
+    }, 500);
   };
 
   useEffect(() => {
@@ -82,7 +90,7 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
     setTimeout(() => {
       setCurrentProjectIndex((currentProjectIndex + 1) % projects.length);
       setIsFadingIn(true);
-    }, 500); // Duration of fadeOut animation
+    }, 500);
   };
 
   useEffect(() => {
