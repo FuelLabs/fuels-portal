@@ -2,13 +2,13 @@ import { cssObj } from '@fuel-ui/css';
 import { IconButton, Image } from '@fuel-ui/react';
 import { useState } from 'react';
 
-type ProjecImageProps = {
+type ProjectImageProps = {
   name?: string;
   image?: string;
   style?: React.CSSProperties;
 };
 
-export const ProjecImage = ({ name, image, style }: ProjecImageProps) => {
+export const ProjectImage = ({ name, image, style }: ProjectImageProps) => {
   const [imageFallback, setImageFallback] = useState(false);
 
   return (

@@ -94,7 +94,6 @@ export const styles = {
     alignItems: 'center', // Center the content vertically
     justifyContent: 'space-between', // Distribute space between items
     padding: '0 15px', // Add some padding for aesthetics
-    //flex: '0 0 20px',
   }),
   cardBody: cssObj({
     display: 'flex',
@@ -157,9 +156,6 @@ export const styles = {
     alignItems: 'center',
     paddingTop: '6.45px',
     transform: 'scale(170%)',
-    '@media (max-width: 320px)': {
-      transform: 'scale(100%)',
-    },
   }),
   header: cssObj({
     fontWeight: 'bold',

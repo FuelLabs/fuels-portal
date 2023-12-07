@@ -6,11 +6,9 @@ import { Layout, animations } from '~/systems/Core';
 import DismissibleAlert from '../components/Alerts/DismissibleAlert';
 import { EcosystemTags } from '../components/EcosystemTags';
 import { FeaturedProjects } from '../components/FeaturedProjects';
-import { ProjectDetailPanel } from '../components/ProjectDetailPanel';
 import { ProjectList } from '../components/ProjectList/ProjectList';
 import categoryDescriptions from '../data/categoryDescriptions';
 import { useEcosystem } from '../hooks/useEcosystem';
-import type { Project } from '../types';
 
 export function Ecosystem() {
   const { tags, isLoading, filter, search, handlers, filteredProjects } =
@@ -27,7 +25,7 @@ export function Ecosystem() {
   };
   const handleAllCategoriesClick = () => {
     handlers.clearFilters();
-    setSelectedCategory(null); // Reset the selected category
+    setSelectedCategory(null);
   };
   const getCategoryDescription = (category: string): string | null => {
     return categoryDescriptions[category] || null;
@@ -36,24 +34,9 @@ export function Ecosystem() {
     ? 'No results found for your search.'
     : undefined;
 
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [isPanelVisible, setIsPanelVisible] = useState(false);
-
-  const handleProjectSelect = (project: Project) => {
-    console.log('Project selected:', project);
-    setSelectedProject(project);
-    setIsPanelVisible(true);
-  };
-
-  const handleClosePanel = () => {
-    console.log('Closing panel');
-    setIsPanelVisible(false);
-  };
-
   const featuredProjects = filteredProjects
     ? filteredProjects.filter((project) => project.isLive)
     : [];
-
   return (
     <>
       <style>{keyframes}</style>
@@ -141,24 +124,7 @@ export function Ecosystem() {
               isLoading={isLoading}
               projects={filteredProjects || []}
               emptyText={emptyText}
-              onSelect={handleProjectSelect}
             />
-            {selectedProject && (
-              <Box
-                css={isPanelVisible ? styles.panelVisible : styles.panelHidden}
-                onAnimationEnd={() => {
-                  if (!isPanelVisible) setSelectedProject(null);
-                }}
-              >
-                <ProjectDetailPanel
-                  project={selectedProject}
-                  onClose={() => {
-                    handleClosePanel();
-                    setIsPanelVisible(false);
-                  }}
-                />
-              </Box>
-            )}
           </Box.Stack>
         </Layout.Content>
       </Layout>

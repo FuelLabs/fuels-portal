@@ -8,7 +8,8 @@
     "github": "https://github.com/AcumenProtocol",
     "twitter": "https://twitter.com/acumenofficial",
     "discord": "https://discord.gg/vnUPngfB5D",
-    "image": "acumen"
+    "image": "acumen",
+    "banner": "acumen"
   },
   {
     "isLive": false,
@@ -19,7 +20,8 @@
     "github": "",
     "twitter": "https://twitter.com/AervFinance",
     "discord": "",
-    "image": "aerv"
+    "image": "aerv",
+    "banner": "aerv"
   },
   {
     "isLive": false,
@@ -30,7 +32,8 @@
     "github": "https://github.com/aori-io",
     "twitter": "https://twitter.com/aori_io",
     "discord": "",
-    "image": "aori"
+    "image": "aori",
+    "banner": "aori"
   },
   {
     "isLive": false,
@@ -41,7 +44,8 @@
     "github": "",
     "twitter": "https://twitter.com/Artdao_xyz",
     "discord": "",
-    "image": "artdao"
+    "image": "artdao",
+    "banner": "artdao"
   },
   {
     "isLive": false,
@@ -52,7 +56,8 @@
     "github": "",
     "twitter": "https://twitter.com/BaldBoyzOnFuel",
     "discord": "",
-    "image": "baldboyz"
+    "image": "baldboyz",
+    "banner": "baldboyz"
   },
   {
     "isLive": true,
@@ -63,7 +68,8 @@
     "github": "",
     "twitter": "https://twitter.com/Bsafe_Fuel",
     "discord": "",
-    "image": "bsafe"
+    "image": "bsafe",
+    "banner": "bsafe"
   },
   {
     "isLive": true,
@@ -74,7 +80,8 @@
     "github": "",
     "twitter": "https://twitter.com/CommonGround_cg",
     "discord": "",
-    "image": "commonground"
+    "image": "commonground",
+    "banner": "commonground"
   },
   {
     "isLive": false,
@@ -85,7 +92,8 @@
     "github": "https://github.com/elixfinance",
     "twitter": "https://twitter.com/elixfinance",
     "discord": "https://discord.gg/avrdk2tAY6",
-    "image": "elix"
+    "image": "elix",
+    "banner": "elix"
   },
   {
     "isLive": false,
@@ -96,7 +104,8 @@
     "github": "",
     "twitter": "https://twitter.com/Fluid_Protocol",
     "discord": "https://discord.gg/fluidprotocol",
-    "image": "fluid"
+    "image": "fluid",
+    "banner": "fluid"
   },
   {
     "isLive": true,
@@ -107,7 +116,8 @@
     "github": "https://github.com/fuelet",
     "twitter": "https://twitter.com/FueletWallet",
     "discord": "https://discord.gg/fueletwallet",
-    "image": "frank"
+    "image": "frank",
+    "banner": "fuelet"
   },
   {
     "isLive": true,
@@ -118,7 +128,8 @@
     "github": "https://github.com/FuelLabs/fuel-bridge",
     "twitter": "https://twitter.com/fuel_network",
     "discord": "https://discord.gg/fuelnetwork",
-    "image": "fuelbridge"
+    "image": "fuelbridge",
+    "banner": "fuelbridge"
   },
   {
     "isLive": true,
@@ -129,7 +140,8 @@
     "github": "https://github.com/fuellabs/fuels-wallet",
     "twitter": "https://twitter.com/fuel_network",
     "discord": "https://discord.gg/fuelnetwork",
-    "image": "fuelwallet"
+    "image": "fuelwallet",
+    "banner": "fuelwallet"
   },
   {
     "isLive": false,
@@ -140,7 +152,8 @@
     "github": "",
     "twitter": "https://twitter.com/fuel_art",
     "discord": "https://discord.gg/sj9PujpSzJ",
-    "image": "fuelart"
+    "image": "fuelart",
+    "banner": "fuelart"
   },
   {
     "isLive": true,
@@ -151,7 +164,8 @@
     "github": "https://github.com/fuelet",
     "twitter": "https://twitter.com/FueletWallet",
     "discord": "https://discord.gg/fueletwallet",
-    "image": "fuelet"
+    "image": "fuelet",
+    "banner": "fuelet"
   },
   {
     "isLive": true,
@@ -162,7 +176,8 @@
     "github": "https://github.com/fuelet",
     "twitter": "https://twitter.com/FueletWallet",
     "discord": "https://discord.gg/fueletwallet",
-    "image": "fuelstat"
+    "image": "fuelstat",
+    "banner": "fuelet"
   },
   {
     "isLive": false,
@@ -173,7 +188,8 @@
     "github": "https://github.com/agoraxyz/guild.xyz",
     "twitter": "https://twitter.com/guildxyz",
     "discord": "https://discord.gg/guildxyz",
-    "image": "guildxyz"
+    "image": "guildxyz",
+    "banner": "guildxyz"
   },
   {
     "isLive": false,
@@ -184,7 +200,8 @@
     "github": "",
     "twitter": "https://twitter.com/HelixaTCG",
     "discord": "",
-    "image": "helixa"
+    "image": "helixa",
+    "banner": "helixa"
   },
   {
     "isLive": false,
@@ -195,7 +212,8 @@
     "github": "https://github.com/hyperlane-xyz",
     "twitter": "https://twitter.com/hyperlane_xyz",
     "discord": "",
-    "image": "hyperlane"
+    "image": "hyperlane",
+    "banner": "hyperlane"
   },
   {
     "isLive": true,
@@ -206,7 +224,8 @@
     "github": "https://github.com/LearnWeb3DAO",
     "twitter": "https://twitter.com/LearnWeb3DAO",
     "discord": "https://discord.gg/learnweb3",
-    "image": "learnweb3"
+    "image": "learnweb3",
+    "banner": "learnweb3"
   },
   {
     "isLive": true,
@@ -217,7 +236,8 @@
     "github": "https://github.com/0xmetaschool",
     "twitter": "https://twitter.com/0xmetaschool",
     "discord": "https://discord.com/invite/vbVMUwXWgc",
-    "image": "metaschool"
+    "image": "metaschool",
+    "banner": "metaschool"
   },
   {
     "isLive": false,
@@ -228,7 +248,8 @@
     "github": "",
     "twitter": "https://twitter.com/MicrochainSys",
     "discord": "",
-    "image": "microchain"
+    "image": "microchain",
+    "banner": "microchain"
   },
   {
     "isLive": false,
@@ -239,7 +260,8 @@
     "github": "",
     "twitter": "https://twitter.com/fuelnomen",
     "discord": "https://discord.gg/xPC87HyJ5n",
-    "image": "fuelnomen"
+    "image": "fuelnomen",
+    "banner": "fuelnomen"
   },
   {
     "isLive": false,
@@ -250,7 +272,8 @@
     "github": "",
     "twitter": "https://twitter.com/OraoNetwork",
     "discord": "",
-    "image": "orao"
+    "image": "orao",
+    "banner": "orao"
   },
   {
     "isLive": false,
@@ -261,7 +284,8 @@
     "github": "",
     "twitter": "https://twitter.com/PEPAlabs",
     "discord": "",
-    "image": "pepamarket"
+    "image": "pepamarket",
+    "banner": "pepamarket"
   },
   {
     "isLive": false,
@@ -272,7 +296,8 @@
     "github": "",
     "twitter": "https://twitter.com/playestates",
     "discord": "https://discord.gg/playestates",
-    "image": "playestates"
+    "image": "playestates",
+    "banner": "playestates"
   },
   {
     "isLive": false,
@@ -283,7 +308,8 @@
     "github": "",
     "twitter": "https://twitter.com/PoolsharkLabs",
     "discord": "",
-    "image": "poolshark"
+    "image": "poolshark",
+    "banner": "poolshark"
   },
   {
     "isLive": false,
@@ -294,7 +320,8 @@
     "github": "https://github.com/QuidMint/",
     "twitter": "https://twitter.com/quidmint",
     "discord": "",
-    "image": "quid"
+    "image": "quid",
+    "banner": "quid"
   },
   {
     "isLive": false,
@@ -305,7 +332,8 @@
     "github": "https://github.com/redstone-finance",
     "twitter": "https://twitter.com/redstone_defi",
     "discord": "",
-    "image": "redstone"
+    "image": "redstone",
+    "banner": "redstone"
   },
   {
     "isLive": false,
@@ -316,7 +344,8 @@
     "github": "https://github.com/ruscet",
     "twitter": "https://twitter.com/ruscet_",
     "discord": "https://discord.gg/g3eqZsA39z",
-    "image": "ruscet"
+    "image": "ruscet",
+    "banner": "ruscet"
   },
   {
     "isLive": false,
@@ -327,7 +356,8 @@
     "github": "https://github.com/Sail-Exchange",
     "twitter": "https://twitter.com/_sailexchange",
     "discord": "",
-    "image": "sail"
+    "image": "sail",
+    "banner": "sail"
   },
   {
     "isLive": false,
@@ -338,7 +368,8 @@
     "github": "https://github.com/SmartMoney-Labs",
     "twitter": "https://twitter.com/smartmoney_labs",
     "discord": "https://discord.gg/jFMuUcFe2G",
-    "image": "smartmoney"
+    "image": "smartmoney",
+    "banner": "smartmoney"
   },
   {
     "isLive": true,
@@ -349,7 +380,8 @@
     "github": "https://github.com/compolabs/spark",
     "twitter": "https://twitter.com/Sprkfi",
     "discord": "https://discord.gg/Nz9VZQrSNH",
-    "image": "spark"
+    "image": "spark",
+    "banner": "spark"
   },
   {
     "isLive": true,
@@ -360,7 +392,8 @@
     "github": "https://github.com/compolabs/sway-lend",
     "twitter": "https://twitter.com/swaylend",
     "discord": "https://discord.gg/phcHhUHssg",
-    "image": "swaylend"
+    "image": "swaylend",
+    "banner": "swaylend"
   },
   {
     "isLive": true,
@@ -371,7 +404,8 @@
     "github": "",
     "twitter": "https://twitter.com/ThunderbyFuel",
     "discord": "https://discord.gg/thundernftmarket",
-    "image": "thunder"
+    "image": "thunder",
+    "banner": "thunder"
   },
   {
     "isLive": false,
@@ -382,7 +416,8 @@
     "github": "",
     "twitter": "https://twitter.com/0xUNIC",
     "discord": "https://discord.gg/bkED7VZzWK",
-    "image": "unic"
+    "image": "unic",
+    "banner": "unic"
   },
   {
     "isLive": false,
@@ -393,7 +428,8 @@
     "github": "",
     "twitter": "https://twitter.com/YamaFinance",
     "discord": "https://discord.gg/4tBE8w4SYW",
-    "image": "yama"
+    "image": "yama",
+    "banner": "yama"
   },
   {
     "isLive": false,
@@ -404,6 +440,7 @@
     "github": "https://github.com/Layer3Labs/Zap-Protocol",
     "twitter": "https://twitter.com/zap_infra",
     "discord": "",
-    "image": "zap"
+    "image": "zap",
+    "banner": "zap"
   }
 ]

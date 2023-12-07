@@ -2,10 +2,12 @@ import { cssObj } from '@fuel-ui/css';
 import { Box, Card, Button, Text } from '@fuel-ui/react';
 import { motion } from 'framer-motion';
 import { type FC } from 'react';
+import React, { useState } from 'react';
 import { animations } from '~/systems/Core';
 
 import type { Project } from '../../types';
-import { ProjecImage } from '../ProjectImage';
+import { ProjectDetailPanel } from '../ProjectDetailPanel';
+import { ProjectImage } from '../ProjectImage';
 
 import { ProjectItemLoader } from './ProjectItemLoader';
 
@@ -29,109 +31,139 @@ export const ProjectItem: ProjectItemComponent = ({
   discord,
   github,
   isLive,
-  onSelect,
   tags,
+  banner,
 }: ProjectItemProps) => {
+  const [isPanelVisible, setIsPanelVisible] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+
   const onCardPress = () => {
-    if (onSelect) {
-      onSelect({
-        name,
-        description,
-        image,
-        url,
-        twitter,
-        discord,
-        github,
-        isLive,
-        tags,
-      });
+    setSelectedProject({
+      name,
+      description,
+      image,
+      url,
+      twitter,
+      discord,
+      github,
+      isLive,
+      tags,
+      banner,
+    });
+    setIsPanelVisible(true);
+  };
+
+  const handleClosePanel = () => {
+    setIsPanelVisible(false);
+    setSelectedProject(null); // Reset the selected project when closing the panel
+  };
+
+  const renderPanel = () => {
+    if (selectedProject && isPanelVisible) {
+      return (
+        <Box
+          css={isPanelVisible ? styles.panelVisible : styles.panelHidden}
+          onAnimationEnd={() => {
+            if (!isPanelVisible) setSelectedProject(null);
+          }}
+        >
+          <ProjectDetailPanel
+            project={selectedProject}
+            onClose={handleClosePanel}
+          />
+        </Box>
+      );
     }
+    return null;
   };
 
   return (
-    <MotionCard
-      withDividers
-      {...animations.appearIn({
-        transition: { type: 'spring' },
-      })}
-      onClick={onCardPress}
-      variant="outlined"
-      css={styles.card}
-    >
-      <Card.Body css={styles.body}>
-        <Box css={styles.image}>
-          <ProjecImage name={name} image={image} />
-        </Box>
-        <Box.Stack gap="$2" justify="space-between" css={styles.details}>
-          <Box.Stack align="flex-start" gap="$1">
-            <Box.Flex
-              align="flex-start"
-              justify="space-between"
-              css={styles.title}
-            >
-              <Text fontSize="base" color="intentsBase12">
-                {name}
-              </Text>
-            </Box.Flex>
-            <Text fontSize="sm"> {description}</Text>
+    <>
+      <MotionCard
+        withDividers
+        {...animations.appearIn({
+          transition: { type: 'spring' },
+        })}
+        onClick={onCardPress}
+        variant="outlined"
+        css={styles.card}
+      >
+        <Card.Body css={styles.body}>
+          <Box css={styles.image}>
+            <ProjectImage name={name} image={image} />
+          </Box>
+          <Box.Stack gap="$2" justify="space-between" css={styles.details}>
+            <Box.Stack align="flex-start" gap="$1">
+              <Box.Flex
+                align="flex-start"
+                justify="space-between"
+                css={styles.title}
+              >
+                <Text fontSize="base" color="intentsBase12">
+                  {name}
+                </Text>
+              </Box.Flex>
+              <Text fontSize="sm"> {description}</Text>
+            </Box.Stack>
           </Box.Stack>
-        </Box.Stack>
-      </Card.Body>
-      <Card.Footer css={styles.cardFooter} gap="$3" direction="row-reverse">
-        {isLive ? (
-          <Button intent="base" size="xs" variant="outlined">
-            <Box css={styles.dot} />
-            {'Testnet'}
-          </Button>
-        ) : (
-          <Button intent="base" size="xs" variant="outlined">
-            <Box css={styles.dotBuilding} />
-            {'Building'}
-          </Button>
-        )}
-        <Box
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            gap: '10px',
-            marginLeft: 'auto',
-          }}
-        >
-          {twitter && (
-            <Button
-              href={twitter}
-              size="xs"
-              intent="error"
-              variant="ghost"
-              leftIcon={'BrandX'}
-            ></Button>
+        </Card.Body>
+        <Card.Footer css={styles.cardFooter} gap="$3" direction="row-reverse">
+          {isLive ? (
+            <Button intent="base" size="xs" variant="outlined">
+              <Box css={styles.dot} />
+              {'Testnet'}
+            </Button>
+          ) : (
+            <Button intent="base" size="xs" variant="outlined">
+              <Box css={styles.dotBuilding} />
+              {'Building'}
+            </Button>
           )}
-          {github && (
+          <Box
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              gap: '10px',
+              marginLeft: 'auto',
+            }}
+          >
+            {twitter && (
+              <Button
+                href={twitter}
+                size="xs"
+                intent="error"
+                variant="ghost"
+                leftIcon={'BrandX'}
+              ></Button>
+            )}
+            {github && (
+              <Button
+                href={github}
+                size="xs"
+                leftIcon={'BrandGithub'}
+                variant="ghost"
+              ></Button>
+            )}
+            {discord && (
+              <Button
+                href={discord}
+                size="xs"
+                intent="info"
+                leftIcon={'BrandDiscord'}
+                variant="ghost"
+              ></Button>
+            )}
             <Button
-              href={github}
               size="xs"
-              leftIcon={'BrandGithub'}
-              variant="ghost"
+              variant="outlined"
+              intent="base"
+              leftIcon={'ExternalLink'}
             ></Button>
-          )}
-          {discord && (
-            <Button
-              href={discord}
-              size="xs"
-              intent="info"
-              leftIcon={'BrandDiscord'}
-              variant="ghost"
-            ></Button>
-          )}
-          <Button
-            size="xs"
-            variant="outlined"
-            intent="base"
-            leftIcon={'ExternalLink'}
-          ></Button>
-        </Box>
-      </Card.Footer>
-    </MotionCard>
+          </Box>
+        </Card.Footer>
+      </MotionCard>
+      {renderPanel()}
+    </>
   );
 };
 
@@ -219,6 +251,23 @@ const styles = {
     justifyContent: 'flex-start',
     flexWrap: 'wrap',
     marginTop: 'auto',
+  }),
+  panelVisible: cssObj({
+    position: 'fixed',
+    right: 0,
+    top: 0,
+    height: '100%',
+    width: '100%',
+    animation: 'slideIn 0.5s forwards',
+  }),
+
+  panelHidden: cssObj({
+    position: 'fixed',
+    right: 0,
+    top: 0,
+    height: '100%',
+    width: '100%',
+    animation: 'slideOut 0.5s forwards',
   }),
 };
 

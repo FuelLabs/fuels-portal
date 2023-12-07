@@ -2,7 +2,7 @@ import { Box, Card, Text, Button, Tag } from '@fuel-ui/react';
 import React from 'react';
 
 import type { Project } from '../../types';
-import { ProjecImage } from '../ProjectImage';
+import { ProjectImage } from '../ProjectImage';
 
 import { styles } from './styles';
 
@@ -33,7 +33,7 @@ const CardComponent: React.FC<CardComponentProps> = ({
   return (
     <Box
       onClick={() => onSelect(project)}
-      css={cardStyle} // Apply conditional styling
+      css={cardStyle}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
@@ -47,7 +47,7 @@ const CardComponent: React.FC<CardComponentProps> = ({
         <Card.Header css={styles.cardHeader}>
           <Box css={styles.projectImageWrapper}>
             <Box css={styles.image}>
-              <ProjecImage name={project.name} image={project.image} />
+              <ProjectImage name={project.name} image={project.image} />
             </Box>
           </Box>
           <Box css={styles.statusContainer}>

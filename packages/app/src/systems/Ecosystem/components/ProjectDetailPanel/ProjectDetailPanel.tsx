@@ -4,7 +4,8 @@ import type { FC } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 
 import type { Project } from '../../types';
-import { ProjecImage } from '../ProjectImage';
+import { ProjectBanner } from '../ProjectBanner';
+import { ProjectImage } from '../ProjectImage';
 
 type ProjectDetailPanelProps = {
   project: Project;
@@ -64,14 +65,32 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
         ></Box>
       )}
       <Box ref={panelRef} css={styles.panelStyle} data-mobile={isMobileView}>
-        <Box css={styles.backgroundImage}>
+        <Box>
+          <ProjectBanner
+            name={project.name}
+            banner={project.banner}
+            style={{
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              width: '100%',
+              height: '200px',
+              objectFit: 'cover',
+              objectPosition: 'center',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              zIndex: 1,
+              borderBottom: '1px solid #2E2E2E',
+            }}
+          />
           <Box css={styles.closeButton}>
             <TagCloseButton onPress={onClose} />
           </Box>
         </Box>
         <Box css={styles.imageContainer}>
           <Box css={styles.image}>
-            <ProjecImage name={project.name} image={project.image} />
+            <ProjectImage name={project.name} image={project.image} />
           </Box>
         </Box>
 
@@ -83,7 +102,7 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
             justifyContent: 'space-between',
             marginBottom: '10px',
             position: 'relative',
-            marginTop: '200px',
+            marginTop: '130px',
           }}
         >
           {project.name}
@@ -234,7 +253,7 @@ const styles = {
     position: 'relative',
     border: '1px solid $intentsBase8',
     backgroundColor: '$intentsBase1',
-    top: '180px',
+    top: '110px',
     zIndex: 2,
   }),
   image: cssObj({
@@ -246,8 +265,6 @@ const styles = {
     transform: 'scale(285%)',
   }),
   backgroundImage: cssObj({
-    backgroundImage:
-      'url(https://assets-global.website-files.com/62e273f312d561347ce33306/62f124d39576fd474e271ab8_Fuel_Trailer_Still_4.jpeg)',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     height: '275px',
@@ -263,7 +280,7 @@ const styles = {
     alignItems: 'center',
     overflow: 'hidden',
     position: 'absolute',
-    top: '255px',
+    top: '182.5px',
     right: '25px',
     zIndex: 2,
   }),
