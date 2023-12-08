@@ -121,7 +121,7 @@
   },
   {
     "isLive": true,
-    "name": "Fuel Bridge",
+    "name": "Fuel-Bridge",
     "url": "https://alpha.fuel.network/bridge",
     "tags": ["Bridge", "Tooling"],
     "description": "Bridge assets from Ethereum to Fuel with Fuel's native bridge.",
