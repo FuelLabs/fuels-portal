@@ -73,16 +73,6 @@ export function Ecosystem() {
                 </Button>
               </a>
             </Box.Flex>
-            <Heading as="h2" css={styles.heading}>
-              Project Categories
-            </Heading>
-            <EcosystemTags
-              tags={tags}
-              onPressTag={handleTagButtonClick}
-              activeTag={filter}
-              onPressAllCategories={handleAllCategoriesClick}
-              isLoading={isLoading}
-            />
             <Box
               css={{
                 position: 'absolute',
@@ -108,6 +98,16 @@ export function Ecosystem() {
               </>
             )}
             {featuredProjects.length > 0 && <Box css={styles.divider}></Box>}
+            <Heading as="h2" css={styles.heading}>
+              Project Categories
+            </Heading>
+            <EcosystemTags
+              tags={tags}
+              onPressTag={handleTagButtonClick}
+              activeTag={filter}
+              onPressAllCategories={handleAllCategoriesClick}
+              isLoading={isLoading}
+            />
             {selectedCategory && (
               <>
                 <Box>

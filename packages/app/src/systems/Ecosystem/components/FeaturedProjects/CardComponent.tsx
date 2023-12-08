@@ -85,7 +85,7 @@ const CardComponent: React.FC<CardComponentProps> = ({
               css={styles.button}
             >
               <Box css={styles.dotLive} />
-              Testnet
+              Testnet Ready
             </Button>
           ) : (
             <Button

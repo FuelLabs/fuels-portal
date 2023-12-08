@@ -152,9 +152,9 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
         </p>
         <Alert status="info">
           <Alert.Description style={{ fontSize: '13px' }}>
-            The content here is provided by the app developers. Links and
-            content are not verified nor endorsed by Fuel. If you have any
-            questions, please contact the project directly.
+            This content is provided by the app developers. Links and content
+            are not verified nor endorsed by Fuel. If you have any questions,
+            please contact the project directly.
           </Alert.Description>
         </Alert>
         <h2

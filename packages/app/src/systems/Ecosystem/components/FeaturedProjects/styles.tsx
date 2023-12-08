@@ -63,11 +63,14 @@ export const styles = {
     },
   }),
   button: cssObj({
-    '@media (max-width: 768px)': {
+    '@media (max-width: 740px)': {
       fontSize: '0.8rem', // Smaller button and font size on small screens
       padding: '5px 10px',
     },
-    '@media (min-width: 601px) and (max-width: 1024px)': {
+    '@media (min-width: 741px) and (max-width: 830px)': {
+      fontSize: '0.74rem', // Smaller font size on small screens
+    },
+    '@media (min-width: 830px) and (max-width: 1024px)': {
       fontSize: '0.9rem', // Medium button and font size on medium screens
       padding: '8px 15px',
     },

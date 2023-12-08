@@ -4,6 +4,7 @@ const categoryDescriptions = {
   DeFi: "Fuel's DeFi ecosystem encompasses a spectrum of decentralized finance services including lending and borrowing platforms, decentralized exchanges with Automated Market Makers (AMMs) and order books, along with innovative financial instruments like stablecoins, options, and bonds, providing a complete decentralized finance infrastructure.",
   Education:
     'Educational resources and platforms featuring Fuel, providing comprehensive learning opportunities about the Fuel Network and the Sway language.',
+  Fuel: 'Decentralized Applications designed and maintained by Fuel Labs inc.',
   Gaming:
     ' Interactive and immersive blockchain-based games on Fuel, featuring unique digital assets and decentralized gameplay.',
   Marketplace:
