@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable no-empty-pattern */
 // Use a test fixture to set the context so tests have access to the wallet extension.
+import { downloadFuel } from '@fuel-wallet/playwright-utils';
 import type { BrowserContext } from '@playwright/test';
 import { chromium, test as base } from '@playwright/test';
 import { initialSetup } from '@synthetixio/synpress/commands/metamask';
@@ -8,7 +9,6 @@ import { prepareMetamask } from '@synthetixio/synpress/helpers';
 
 import { ETH_MNEMONIC, ETH_WALLET_PASSWORD } from '../../mocks';
 
-import { downloadFuel } from './utils/downloadFuel';
 import { getExtensionsData } from './utils/getExtensionsData';
 import { waitForExtensions } from './utils/waitForExtenssions';
 

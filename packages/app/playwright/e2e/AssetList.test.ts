@@ -1,6 +1,9 @@
+import {
+  getButtonByText,
+  getByAriaLabel,
+  hasText,
+} from '@fuel-wallet/playwright-utils';
 import test, { expect } from '@playwright/test';
-
-import { getButtonByText, getByAriaLabel, hasText } from '../commons';
 
 import { hasDropdownSymbol } from './utils/bridge';
 
