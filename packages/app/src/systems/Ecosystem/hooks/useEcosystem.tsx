@@ -8,7 +8,7 @@ const selectors = {
     const { projects, search, filter } = state.context;
     if (search) {
       return projects.filter((project) => {
-        return project.name.toLowerCase().includes(search.toLowerCase());
+        return project.name?.toLowerCase().includes(search.toLowerCase());
       });
     }
 
