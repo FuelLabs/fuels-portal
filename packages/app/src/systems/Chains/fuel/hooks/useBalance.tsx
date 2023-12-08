@@ -2,7 +2,7 @@ import { QUERY_KEYS } from '@fuel-wallet/react';
 import { useQuery } from '@tanstack/react-query';
 // should import BN because of this error: https://github.com/FuelLabs/fuels-ts/issues/1054
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type { BytesLike, BN, Provider as FuelProvider } from 'fuels';
+import type { BytesLike, Provider as FuelProvider } from 'fuels';
 import { Address } from 'fuels';
 import { useEffect } from 'react';
 
