@@ -44,7 +44,23 @@ const CardComponent: React.FC<CardComponentProps> = ({
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
       >
-        <Card.Header css={styles.cardHeader}>
+        <Card.Header
+          css={{
+            backgroundImage: `url(${
+              project.banner
+                ? `/ecosystem/bannerImages/${project.banner}.jpeg`
+                : '/ecosystem/bannerImages/default.jpeg'
+            })`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            position: 'relative',
+            overflow: 'hidden',
+            padding: '1rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'start',
+          }}
+        >
           <Box css={styles.projectImageWrapper}>
             <Box css={styles.image}>
               <ProjectImage name={project.name} image={project.image} />

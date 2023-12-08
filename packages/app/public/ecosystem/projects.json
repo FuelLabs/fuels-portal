@@ -313,18 +313,6 @@
   },
   {
     "isLive": false,
-    "name": "Qu!d",
-    "url": "https://yo.quid.io/",
-    "tags": ["DeFi"],
-    "description": "",
-    "github": "https://github.com/QuidMint/",
-    "twitter": "https://twitter.com/quidmint",
-    "discord": "",
-    "image": "quid",
-    "banner": "quid"
-  },
-  {
-    "isLive": false,
     "name": "RedStone Oracle",
     "url": "https://redstone.finance/",
     "tags": ["Oracle"],
