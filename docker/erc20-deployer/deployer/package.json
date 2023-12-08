@@ -7,7 +7,7 @@
     "@fuel-bridge/solidity-contracts": "pr-106",
     "@fuel-bridge/test-utils": "pr-106",
     "ethers": "5.7.2",
-    "fuels": "pr-1407"
+    "fuels": "next"
   },
   "devDependencies": {
     "ts-node": "^10.9.1"
