@@ -78,7 +78,7 @@ export const styles = {
   }),
   cardHeader: cssObj({
     backgroundImage:
-      'url(https://fuel-labs.ghost.io/content/images/size/w2000/2023/09/Background.png)',
+      'url(https://mirror.xyz/_next/image?url=https%3A%2F%2Fimages.mirror-media.xyz%2Fpublication-images%2FHtk-GEPMhnsK-tQyjsrDc.png%3Fheight%3D500%26width%3D1500&w=3840&q=100)',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     position: 'relative',
