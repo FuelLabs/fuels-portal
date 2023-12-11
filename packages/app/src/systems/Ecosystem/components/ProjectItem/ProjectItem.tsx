@@ -201,11 +201,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
   }),
-
 
   link: cssObj({
     textDecoration: 'underline',
@@ -233,7 +229,6 @@ const styles = {
     borderRadius: '$sm',
     padding: '0 $1',
     backgroundColor: '$gray5',
-    marginRight: '8px',
     marginRight: '8px',
   }),
   title: cssObj({
