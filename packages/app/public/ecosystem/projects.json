@@ -67,6 +67,7 @@
     "description": "Bsafe is a multi-signature tool created to simplify asset management.",
     "github": "",
     "twitter": "https://twitter.com/Bsafe_Fuel",
+    "twitter": "https://twitter.com/Bsafe_Fuel",
     "discord": "",
     "image": "bsafe",
     "banner": "bsafe"
@@ -92,6 +93,7 @@
     "github": "https://github.com/elixfinance",
     "twitter": "https://twitter.com/elixfinance",
     "discord": "https://discord.gg/avrdk2tAY6",
+    "discord": "https://discord.gg/avrdk2tAY6",
     "image": "elix",
     "banner": "elix"
   },
@@ -103,6 +105,7 @@
     "description": "Fluid is the native decentralized stablecoin on Fuel.",
     "github": "",
     "twitter": "https://twitter.com/Fluid_Protocol",
+    "discord": "https://discord.gg/fluidprotocol",
     "discord": "https://discord.gg/fluidprotocol",
     "image": "fluid",
     "banner": "fluid"
@@ -152,6 +155,7 @@
     "github": "",
     "twitter": "https://twitter.com/fuel_art",
     "discord": "https://discord.gg/sj9PujpSzJ",
+    "discord": "https://discord.gg/sj9PujpSzJ",
     "image": "fuelart",
     "banner": "fuelart"
   },
@@ -163,6 +167,7 @@
     "description": "Fuelet is the leading account abstraction and non-custodial wallet on Fuel.",
     "github": "https://github.com/fuelet",
     "twitter": "https://twitter.com/FueletWallet",
+    "discord": "https://discord.gg/fueletwallet",
     "discord": "https://discord.gg/fueletwallet",
     "image": "fuelet",
     "banner": "fuelet"
@@ -260,6 +265,7 @@
     "github": "",
     "twitter": "https://twitter.com/fuelnomen",
     "discord": "https://discord.gg/xPC87HyJ5n",
+    "discord": "https://discord.gg/xPC87HyJ5n",
     "image": "fuelnomen",
     "banner": "fuelnomen"
   },
@@ -295,6 +301,7 @@
     "description": "PlayEstates brings real estate on-chain and makes RWA ownership easy and affordable.",
     "github": "",
     "twitter": "https://twitter.com/playestates",
+    "discord": "https://discord.gg/playestates",
     "discord": "https://discord.gg/playestates",
     "image": "playestates",
     "banner": "playestates"
@@ -356,6 +363,7 @@
     "github": "https://github.com/SmartMoney-Labs",
     "twitter": "https://twitter.com/smartmoney_labs",
     "discord": "https://discord.gg/jFMuUcFe2G",
+    "discord": "https://discord.gg/jFMuUcFe2G",
     "image": "smartmoney",
     "banner": "smartmoney"
   },
@@ -366,6 +374,8 @@
     "tags": ["DeFi"],
     "description": "Spark is a predicate-based central limit order book.",
     "github": "https://github.com/compolabs/spark",
+    "twitter": "https://twitter.com/Sprkfi",
+    "discord": "https://discord.gg/Nz9VZQrSNH",
     "twitter": "https://twitter.com/Sprkfi",
     "discord": "https://discord.gg/Nz9VZQrSNH",
     "image": "spark",
@@ -380,6 +390,7 @@
     "github": "https://github.com/compolabs/sway-lend",
     "twitter": "https://twitter.com/swaylend",
     "discord": "https://discord.gg/phcHhUHssg",
+    "discord": "https://discord.gg/phcHhUHssg",
     "image": "swaylend",
     "banner": "swaylend"
   },
@@ -391,6 +402,7 @@
     "description": "Thunder is the superior NFT marketplace on Fuel.",
     "github": "",
     "twitter": "https://twitter.com/ThunderbyFuel",
+    "discord": "https://discord.gg/thundernftmarket",
     "discord": "https://discord.gg/thundernftmarket",
     "image": "thunder",
     "banner": "thunder"
@@ -404,6 +416,7 @@
     "github": "",
     "twitter": "https://twitter.com/0xUNIC",
     "discord": "https://discord.gg/bkED7VZzWK",
+    "discord": "https://discord.gg/bkED7VZzWK",
     "image": "unic",
     "banner": "unic"
   },
@@ -415,6 +428,7 @@
     "description": "A novel omnichain stablecoin that makes CDPs as efficient and powerful as possible.",
     "github": "",
     "twitter": "https://twitter.com/YamaFinance",
+    "discord": "https://discord.gg/4tBE8w4SYW",
     "discord": "https://discord.gg/4tBE8w4SYW",
     "image": "yama",
     "banner": "yama"

@@ -4,7 +4,7 @@ import type { ActorRefFrom, InterpreterFrom, StateFrom } from 'xstate';
 import { assign, createMachine, spawn } from 'xstate';
 import { isEthChain, isFuelChain, txFuelToEthMachine } from '~/systems/Chains';
 import { txEthToFuelMachine } from '~/systems/Chains/eth/machines';
-import { FetchMachine } from '~/systems/Core';
+import { FetchMachine, delay } from '~/systems/Core';
 
 import { BridgeService, type BridgeInputs } from '../services';
 import type { BridgeTx } from '../types';
@@ -16,7 +16,7 @@ export type BridgeTxsMachineContext = {
   fuelToEthTxRefs: {
     [key: string]: ActorRefFrom<typeof txFuelToEthMachine>;
   };
-  bridgeTxs?: BridgeTx[];
+  bridgeTxs?: BridgeTx[] | undefined;
   fuelProvider?: FuelProvider;
   ethPublicClient?: PublicClient;
   fuelAddress?: FuelAddress;
@@ -24,7 +24,7 @@ export type BridgeTxsMachineContext = {
 
 type MachineServices = {
   fetchTxs: {
-    data: BridgeTx[];
+    data: BridgeTx[] | undefined;
   };
 };
 
@@ -103,15 +103,15 @@ export const bridgeTxsMachine = createMachine(
       assignFetchInputs: assign((ctx, ev) => ({
         fuelProvider: ev.input?.fuelProvider || ctx.fuelProvider,
         ethPublicClient: ev.input?.ethPublicClient || ctx.ethPublicClient,
-        fuelAddress: ev.input?.fuelAddress || ctx.fuelAddress,
+        fuelAddress: ev.input?.fuelAddress,
       })),
       assignTxMachines: assign({
         ethToFuelTxRefs: (ctx, ev) => {
-          const ethToFuelBridgeTxs = ev.data.filter(({ fromNetwork }) =>
+          const ethToFuelBridgeTxs = ev.data?.filter(({ fromNetwork }) =>
             isEthChain(fromNetwork)
           );
 
-          const newRefs = ethToFuelBridgeTxs.reduce((prev, tx) => {
+          const newRefs = ethToFuelBridgeTxs?.reduce((prev, tx) => {
             // safely avoid overriding instance
             if (ctx.ethToFuelTxRefs?.[tx.txHash]) return prev;
 
@@ -135,11 +135,11 @@ export const bridgeTxsMachine = createMachine(
           };
         },
         fuelToEthTxRefs: (ctx, ev) => {
-          const fuelToEthBridgeTxs = ev.data.filter(({ fromNetwork }) =>
+          const fuelToEthBridgeTxs = ev.data?.filter(({ fromNetwork }) =>
             isFuelChain(fromNetwork)
           );
 
-          const newRefs = fuelToEthBridgeTxs.reduce((prev, tx) => {
+          const newRefs = fuelToEthBridgeTxs?.reduce((prev, tx) => {
             // safely avoid overriding instance
             if (ctx.fuelToEthTxRefs?.[tx.txHash]) return prev;
 
@@ -228,6 +228,11 @@ export const bridgeTxsMachine = createMachine(
           if (!input) {
             throw new Error('No input to bridge');
           }
+
+          // Enforce a minimum delay to show the loading state
+          // this creates a better experience for the user as the
+          // screen doesn't flash between states
+          await delay(250);
 
           const txs = await BridgeService.fetchTxs(input);
 

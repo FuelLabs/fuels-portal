@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import { toast } from '@fuel-ui/react';
 import type { FuelWalletLocked as FuelWallet } from '@fuel-wallet/sdk';
 import type {
   BN,
@@ -28,10 +29,9 @@ type MachineContext = {
   ethPublicClient?: PublicClient;
   ethDepositBlockHeight?: string;
   erc20Token?: FetchTokenResult;
-  amount?: string;
+  amount?: BN;
   fuelRecipient?: FuelAddress;
   blockDate?: Date;
-  assetId?: string;
   fuelRelayedTx?: TransactionResult;
 };
 
@@ -92,8 +92,21 @@ export const txEthToFuelMachine = createMachine(
         },
       },
       checkingSettlement: {
-        initial: 'gettingReceiptsInfo',
+        initial: 'checkingDoneCache',
         states: {
+          checkingDoneCache: {
+            tags: ['isSettlementLoading', 'isSettlementSelected'],
+            always: [
+              {
+                actions: ['assignReceiptsInfoFromCache'],
+                cond: 'isTxEthToFuelDone',
+                target: '#(machine).checkingSettlement.checkingRelay.done',
+              },
+              {
+                target: 'gettingReceiptsInfo',
+              },
+            ],
+          },
           gettingReceiptsInfo: {
             tags: ['isSettlementLoading', 'isSettlementSelected'],
             invoke: {
@@ -109,9 +122,9 @@ export const txEthToFuelMachine = createMachine(
                   cond: FetchMachine.hasError,
                 },
                 {
-                  actions: ['assignReceiptsInfo'],
+                  actions: ['assignReceiptsInfo', 'notifyEthTxSuccess'],
                   cond: 'hasEthTxNonce',
-                  target: 'checkingDoneCache',
+                  target: 'gettingFuelMessageStatus',
                 },
               ],
             },
@@ -120,18 +133,6 @@ export const txEthToFuelMachine = createMachine(
                 target: 'gettingReceiptsInfo',
               },
             },
-          },
-          checkingDoneCache: {
-            tags: ['isSettlementLoading', 'isSettlementSelected'],
-            always: [
-              {
-                cond: 'isTxEthToFuelDone',
-                target: '#(machine).checkingSettlement.checkingRelay.done',
-              },
-              {
-                target: 'gettingFuelMessageStatus',
-              },
-            ],
           },
           gettingFuelMessageStatus: {
             tags: ['isSettlementLoading', 'isSettlementSelected'],
@@ -315,7 +316,7 @@ export const txEthToFuelMachine = createMachine(
                 },
               },
               done: {
-                entry: ['setEthToFuelTxDone'],
+                entry: ['setEthToFuelTxDone', 'setEthToFuelTxReceiptCached'],
                 tags: ['isReceiveDone'],
                 type: 'final',
               },
@@ -341,7 +342,6 @@ export const txEthToFuelMachine = createMachine(
           fuelRecipient: ev.data?.recipient,
           ethDepositBlockHeight: ev.data?.ethDepositBlockHeight,
           blockDate: ev.data?.blockDate,
-          assetId: ev.data?.assetId,
         };
       }),
       assignFuelMessage: assign({
@@ -355,6 +355,48 @@ export const txEthToFuelMachine = createMachine(
       assignFuelMessageStatus: assign({
         fuelMessageStatus: (_, ev) => ev.data,
       }),
+      notifyEthTxSuccess: (ctx) => {
+        if (ctx.ethTxId && EthTxCache.getTxIsCreated(ctx.ethTxId)) {
+          toast.success(
+            'Deposit successfully initiated. You may now close the popup.',
+            { duration: 5000 }
+          );
+          EthTxCache.removeTxCreated(ctx.ethTxId);
+        }
+      },
+      setEthToFuelTxReceiptCached: (ctx) => {
+        if (
+          ctx.ethTxId &&
+          ctx.ethTxNonce &&
+          ctx.fuelRecipient &&
+          ctx.amount &&
+          ctx.ethDepositBlockHeight &&
+          ctx.blockDate
+        ) {
+          EthTxCache.setTxReceipt(ctx.ethTxId, {
+            erc20Token: ctx.erc20Token,
+            nonce: ctx.ethTxNonce,
+            amount: ctx.amount,
+            recipient: ctx.fuelRecipient,
+            ethDepositBlockHeight: ctx.ethDepositBlockHeight,
+            blockDate: ctx.blockDate,
+          });
+        }
+      },
+      assignReceiptsInfoFromCache: assign((ctx) => {
+        const receiptInfo = EthTxCache.getTxReceipt(ctx.ethTxId || '');
+        if (!receiptInfo) {
+          throw new Error('No receipt');
+        }
+        return {
+          erc20Token: receiptInfo.erc20Token,
+          ethTxNonce: receiptInfo.nonce,
+          amount: receiptInfo.amount,
+          fuelRecipient: receiptInfo.recipient,
+          ethDepositBlockHeight: receiptInfo.ethDepositBlockHeight,
+          blockDate: receiptInfo.blockDate,
+        };
+      }),
     },
     guards: {
       hasFuelMessage: (ctx, ev) => !!ctx.fuelMessage || !!ev?.data,
@@ -364,7 +406,12 @@ export const txEthToFuelMachine = createMachine(
         !!ctx.fuelAddress &&
         !!ctx.fuelProvider &&
         !!ctx.ethPublicClient,
-      isTxEthToFuelDone: (ctx) => EthTxCache.getTxIsDone(ctx.ethTxId || ''),
+      isTxEthToFuelDone: (ctx) => {
+        return (
+          EthTxCache.getTxIsDone(ctx.ethTxId || '') &&
+          !!EthTxCache.getTxReceipt(ctx.ethTxId || '')
+        );
+      },
       isMessageSpent: (ctx) => ctx.fuelMessageStatus?.state === 'SPENT',
       isMessageUnspentEth: (ctx) =>
         ctx.fuelMessageStatus?.state === 'UNSPENT' && !ctx.erc20Token,

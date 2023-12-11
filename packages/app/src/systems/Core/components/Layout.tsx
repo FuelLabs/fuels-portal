@@ -58,7 +58,9 @@ export const Layout: LayoutComponent = ({ title, children }: LayoutProps) => {
       <Flex as="main" direction="column" css={styles.root}>
         <Header />
         <OverlayDialog />
-        <Box css={styles.scrollView}>{children}</Box>
+        <Box css={styles.scrollView}>
+          <Box css={coreStyles.scrollableContent}>{children}</Box>
+        </Box>
       </Flex>
     </>
   );

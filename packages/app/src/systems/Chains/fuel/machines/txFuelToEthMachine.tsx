@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import { toast } from '@fuel-ui/react';
 import type {
   Provider as FuelProvider,
   MessageProof,
@@ -24,6 +25,7 @@ type MachineContext = {
   ethTxId?: string;
   ethPublicClient?: EthPublicClient;
   txHashMessageRelayed?: string;
+  estimatedFinishDate?: Date;
 };
 
 type MachineServices = {
@@ -37,10 +39,16 @@ type MachineServices = {
     data: MessageProof | undefined;
   };
   waitBlockCommit: {
-    data: string | undefined;
+    data: {
+      blockHashCommited?: string | undefined;
+      estimatedFinishDate?: Date | undefined;
+    };
   };
   waitBlockFinalization: {
-    data: boolean | undefined;
+    data: {
+      isFinalized?: boolean | undefined;
+      estimatedFinishDate?: Date | undefined;
+    };
   };
   getMessageRelayed: {
     data: string | undefined;
@@ -111,7 +119,11 @@ export const txFuelToEthMachine = createMachine(
                   cond: FetchMachine.hasError,
                 },
                 {
-                  actions: ['assignFuelTxResult', 'assignMessageId'],
+                  actions: [
+                    'assignFuelTxResult',
+                    'assignMessageId',
+                    'notifyFuelTxSuccess',
+                  ],
                   cond: 'hasMessageId',
                   target: 'checkingDoneCache',
                 },
@@ -154,6 +166,10 @@ export const txFuelToEthMachine = createMachine(
                   onDone: [
                     {
                       cond: FetchMachine.hasError,
+                    },
+                    {
+                      actions: ['assignEstimatedFinishDate'],
+                      cond: 'hasEstimatedFinishDate',
                     },
                     {
                       actions: ['assignFuelBlockHashCommited'],
@@ -206,11 +222,17 @@ export const txFuelToEthMachine = createMachine(
                     input: (ctx: MachineContext) => ({
                       messageProof: ctx.messageProof,
                       ethPublicClient: ctx.ethPublicClient,
+                      fuelBlockHashCommited: ctx.fuelBlockHashCommited,
+                      fuelProvider: ctx.fuelProvider,
                     }),
                   },
                   onDone: [
                     {
                       cond: FetchMachine.hasError,
+                    },
+                    {
+                      actions: ['assignEstimatedFinishDate'],
+                      cond: 'hasEstimatedFinishDate',
                     },
                     {
                       cond: 'hasBlockFinalized',
@@ -371,19 +393,35 @@ export const txFuelToEthMachine = createMachine(
         txHashMessageRelayed: (_, ev) => ev.data,
       }),
       assignFuelBlockHashCommited: assign({
-        fuelBlockHashCommited: (_, ev) => ev.data,
+        fuelBlockHashCommited: (_, ev) => ev.data.blockHashCommited,
+      }),
+      assignEstimatedFinishDate: assign({
+        estimatedFinishDate: (_, ev) => {
+          return ev.data.estimatedFinishDate;
+        },
       }),
       setFuelToEthTxDone: (ctx) => {
         if (ctx.fuelTxId) {
           FuelTxCache.setTxIsDone(ctx.fuelTxId);
         }
       },
+      notifyFuelTxSuccess: (ctx) => {
+        if (ctx.fuelTxId && FuelTxCache.getTxIsCreated(ctx.fuelTxId)) {
+          toast.success(
+            'Withdraw successfully initiated. You may now close the popup.',
+            { duration: 5000 }
+          );
+          FuelTxCache.removeTxCreated(ctx.fuelTxId);
+        }
+      },
     },
     guards: {
       hasMessageId: (ctx, ev) => !!ctx.messageId || !!ev?.data.messageId,
       hasMessageProof: (ctx, ev) => !!ctx.messageProof || !!ev?.data,
-      hasBlockCommited: (ctx, ev) => !!ctx.fuelBlockHashCommited || !!ev?.data,
-      hasBlockFinalized: (_, ev) => !!ev?.data,
+      hasBlockCommited: (ctx, ev) =>
+        !!ctx.fuelBlockHashCommited || !!ev?.data?.blockHashCommited,
+      hasEstimatedFinishDate: (_, ev) => !!ev?.data?.estimatedFinishDate,
+      hasBlockFinalized: (_, ev) => !!ev?.data?.isFinalized,
       hasTxHashMessageRelayed: (ctx, ev) =>
         !!ctx.txHashMessageRelayed || !!ev?.data,
       hasTxMessageRelayed: (_, ev) => !!ev?.data,

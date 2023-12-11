@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable no-empty-pattern */
 // Use a test fixture to set the context so tests have access to the wallet extension.
+import { downloadFuel } from '@fuel-wallet/playwright-utils';
 import type { BrowserContext } from '@playwright/test';
 import { chromium, test as base } from '@playwright/test';
 import { initialSetup } from '@synthetixio/synpress/commands/metamask';
@@ -8,7 +9,6 @@ import { prepareMetamask } from '@synthetixio/synpress/helpers';
 
 import { ETH_MNEMONIC, ETH_WALLET_PASSWORD } from '../../mocks';
 
-import { downloadFuel } from './utils/downloadFuel';
 import { getExtensionsData } from './utils/getExtensionsData';
 import { waitForExtensions } from './utils/waitForExtenssions';
 
@@ -20,7 +20,7 @@ export const test = base.extend<{
     // required for synpress
     global.expect = expect;
     // download fuel wallet
-    const fuelPathExtension = await downloadFuel('0.13.0');
+    const fuelPathExtension = await downloadFuel('0.13.3');
     // download metamask
     const metamaskPath = await prepareMetamask(
       process.env.META_MASK_VERSION || '10.25.0'
@@ -50,6 +50,7 @@ export const test = base.extend<{
     });
     // Set context to playwright
     await use(context);
+    //await context.close();
   },
   extensionId: async ({ context }, use) => {
     let [background] = context.serviceWorkers();
@@ -57,10 +58,6 @@ export const test = base.extend<{
     const extensionId = background.url().split('/')[2];
     await use(extensionId);
   },
-});
-
-test.afterAll(async ({ context }) => {
-  await context.close();
 });
 
 export const expect = test.expect;

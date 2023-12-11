@@ -7,6 +7,7 @@ import {
   FuelUiProvider,
   FuelConnectProvider,
 } from './systems/Settings';
+import { FuelNetworkProvider } from './systems/Settings/providers/FuelNetworkProvider';
 
 type ProvidersProps = {
   children: ReactNode;
@@ -18,7 +19,9 @@ export function Providers({ children }: ProvidersProps) {
       <FuelProvider>
         <FuelConnectProvider>
           <ConnectProvider>
-            <FuelUiProvider>{children}</FuelUiProvider>
+            <FuelUiProvider>
+              <FuelNetworkProvider>{children}</FuelNetworkProvider>
+            </FuelUiProvider>
           </ConnectProvider>
         </FuelConnectProvider>
       </FuelProvider>

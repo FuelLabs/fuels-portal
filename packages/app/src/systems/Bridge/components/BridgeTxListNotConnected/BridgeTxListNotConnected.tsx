@@ -11,14 +11,17 @@ export const BridgeTxListNotConnected = ({
   onClick,
 }: BridgeTxListEmptyProps) => {
   return (
-    <Card>
+    <Card variant="outlined">
       <Card.Body css={styles.cardBody}>
-        <Box.Stack justify="center" gap="$4">
-          <Box.Flex justify="center">
+        <Box.Stack justify="center" align="center" gap="$6">
+          <Box.Stack justify="center" align="center" gap="$1">
             <Text fontSize="lg" color="intentsBase12">
-              Connect your wallet to see your transactions
+              Wallet not detected
             </Text>
-          </Box.Flex>
+            <Text color="intentsBase10" fontSize="sm">
+              Connect a wallet to see your transactions
+            </Text>
+          </Box.Stack>
           <Box.Flex justify="center">
             <Button
               isLoading={isConnecting}
@@ -26,7 +29,7 @@ export const BridgeTxListNotConnected = ({
               intent="primary"
               css={styles.connectButton}
             >
-              <b>Connect Fuel Wallet</b>
+              Connect Fuel Wallet
             </Button>
           </Box.Flex>
         </Box.Stack>
@@ -40,6 +43,6 @@ const styles = {
     width: 180,
   }),
   cardBody: cssObj({
-    py: '$10',
+    py: '$8',
   }),
 };
