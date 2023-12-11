@@ -16,6 +16,7 @@ const REPOS = [
     dependencies: [
       {
         name: 'fuel-core',
+        version: '0.20.8',
       },
     ],
   },
@@ -47,6 +48,18 @@ const REPOS = [
     ],
   },
   {
+    name: 'fuel-block-committer',
+    version: '0.1.0',
+    dependencies: [
+      {
+        name: 'fuel-core',
+      },
+      {
+        name: 'sway',
+      },
+    ],
+  },
+  {
     name: 'fuel-bridge',
     version: '0.3.0',
     dependencies: [
@@ -56,6 +69,9 @@ const REPOS = [
       {
         name: 'fuels-ts',
       },
+      {
+        name: 'fuel-block-committer',
+      },
     ],
   },
   {
@@ -63,15 +79,23 @@ const REPOS = [
     dependencies: [
       {
         name: 'fuel-core',
+        version: '0.20.7',
       },
       {
         name: 'fuels-ts',
+        version: '0.67.0',
       },
       {
         name: 'fuel-bridge',
+        version: '0.3.0',
       },
       {
         name: 'fuels-wallet',
+        version: '0.13.10',
+      },
+      {
+        name: 'fuel-block-committer',
+        version: '0.1.0',
       },
     ],
   },

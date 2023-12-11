@@ -7,8 +7,8 @@ import { getReposAndDependencies } from '../utils/dependencies';
 const REPOS = [
   {
     name: 'fuel-core',
-    version: '0.21.0',
-    isCorrect: true,
+    version: '0.22.0',
+    isCorrect: false,
   },
   {
     name: 'sway',
@@ -20,7 +20,6 @@ const REPOS = [
   },
   {
     name: 'fuels-ts',
-    version: '0.67.0',
     dependencies: [
       {
         name: 'fuel-core',
@@ -32,7 +31,6 @@ const REPOS = [
   },
   {
     name: 'fuels-wallet',
-    version: '0.13.10',
     dependencies: [
       {
         name: 'fuel-core',
@@ -46,14 +44,27 @@ const REPOS = [
     ],
   },
   {
+    name: 'fuel-block-committer',
+    dependencies: [
+      {
+        name: 'fuel-core',
+      },
+      {
+        name: 'sway',
+      },
+    ],
+  },
+  {
     name: 'fuel-bridge',
-    version: '0.3.0',
     dependencies: [
       {
         name: 'fuel-core',
       },
       {
         name: 'fuels-ts',
+      },
+      {
+        name: 'fuel-block-committer',
       },
     ],
   },
@@ -71,6 +82,9 @@ const REPOS = [
       },
       {
         name: 'fuels-wallet',
+      },
+      {
+        name: 'fuel-block-committer',
       },
     ],
   },
