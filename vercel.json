@@ -14,7 +14,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; img-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'self'; connect-src *.fuel.network;"
+          "value": "default-src 'self' *.fuel.network rpc.sepolia.org *.infura.io *.alchemy.com *.walletconnect.org; script-src 'self' 'wasm-unsafe-eval'; img-src 'self;; style-src 'self' 'unsafe-inline'; object-src 'self'; connect-src *.fuel.network;"
         }
       ]
     }
