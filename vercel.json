@@ -9,7 +9,7 @@
   "trailingSlash": true,
   "rewrites": [{ "source": "/(.*)", "destination": "/" }],
   "functions": {
-    "packages/api/report.ts": {
+    "api/report.ts": {
       "memory": 3008,
       "maxDuration": 60
     }
@@ -20,7 +20,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy-Report-Only",
-          "value": "default-src https:; report-to /packages/api/report/"
+          "value": "default-src https:; report-to /api/report/"
         }
       ]
     }
