@@ -1,5 +1,4 @@
 packages:
-  - 'api/*'
   - 'packages/*'
   - 'scripts/bridge/*'
   - 'docker/l1-chain/hardhat'

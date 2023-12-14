@@ -1,9 +1,0 @@
-{
-  "name": "@fuels-portal/api",
-  "private": true,
-  "version": "0.0.0",
-  "scripts": {},
-  "dependencies": {
-    "@vercel/node": "^3.0.12"
-  }
-}
