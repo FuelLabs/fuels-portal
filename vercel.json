@@ -7,5 +7,16 @@
     "silent": true
   },
   "trailingSlash": true,
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy-Report-Only",
+          "value": "true"
+        }
+      ]
+    }
+  ]
 }
