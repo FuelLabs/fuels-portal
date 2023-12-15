@@ -26,7 +26,6 @@ import { resourcesToInputs } from './transaction';
 function getCommonRelayableMessages(provider: Provider) {
   // Create a predicate for common messages
   const predicate = new Predicate(contractMessagePredicate, provider);
-  debugger;
 
   // Details for relaying common messages with certain predicate roots
   const relayableMessages: CommonMessageDetails[] = [
@@ -140,11 +139,9 @@ export async function relayCommonMessage({
   // find the relay details for the specified message
   let messageRelayDetails: CommonMessageDetails | undefined;
   const predicateRoot = message.recipient.toHexString();
-  debugger;
 
   // eslint-disable-next-line no-restricted-syntax
   for (const details of getCommonRelayableMessages(relayer.provider)) {
-    debugger;
     if (details.predicateRoot.toLowerCase() === predicateRoot.toLowerCase()) {
       messageRelayDetails = details;
       break;

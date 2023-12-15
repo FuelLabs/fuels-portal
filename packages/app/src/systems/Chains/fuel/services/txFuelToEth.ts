@@ -116,7 +116,7 @@ export class TxFuelToEthService {
       const { maxGasPerTx } = fuelProvider.getGasConfig();
 
       const txFuel = await fuelWallet.withdrawToBaseLayer(
-        FuelAddress.fromString(ethAddress),
+        FuelAddress.fromString(parseEthAddressToFuel(ethAddress)),
         amount,
         // TODO: remove this once fuel-core is fixed (max_gas considering metered_bytes as well)
         {

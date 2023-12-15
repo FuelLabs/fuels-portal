@@ -413,6 +413,7 @@ export class TxEthToFuelService {
     const abiMessageSent = FUEL_MESSAGE_PORTAL.abi.find(
       ({ name, type }) => name === 'MessageSent' && type === 'event'
     );
+
     const ethLogs = await ethPublicClient!.getLogs({
       address: VITE_ETH_FUEL_MESSAGE_PORTAL as `0x${string}`,
       event: {
@@ -437,7 +438,7 @@ export class TxEthToFuelService {
       args: {
         recipient:
           // TODO: get predicate root contract address from FuelMessagePortal contract
-          '0x86a8f7487cb0d3faca1895173d5ff35c1e839bd2ab88657eede9933ea8988815',
+          '0xb12658c759d8bae2cdc523ebd7aa8637912f32b1763d242ad3618448057b79cd',
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any,
       fromBlock: 'earliest',

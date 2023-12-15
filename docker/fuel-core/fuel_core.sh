@@ -1,7 +1,7 @@
 #!/bin/sh
 set -euo
 
-RETRIES=${RETRIES:-60}
+RETRIES=${RETRIES:-160}
 JSON='{"jsonrpc":"2.0","id":0,"method":"net_version","params":[]}'
 FUEL_DB_PATH=./mnt/db/
 
@@ -60,21 +60,5 @@ exec /root/fuel-core run \
     --relayer $L1_CHAIN_HTTP \
     --relayer-v2-listening-contracts $FUEL_MESSAGE_PORTAL_CONTRACT_ADDRESS \
     --poa-interval-period 1s \
+    --min-gas-price 1 \
     --chain ./chainConfig.json
-
-
-
-
-# Usage: fuel-core run 
-# --ip <IP> 
-# --port <PORT> 
-# --db-type <DATABASE_TYPE> 
-# --utxo-validation 
-# --vm-backtrace <--enable-relayer|
-# --relayer <RELAYER>|
-# --relayer-v2-listening-contracts <ETH_V2_LISTENING_CONTRACTS>|
-# --relayer-da-deploy-height <DA_DEPLOY_HEIGHT>|
-# --relayer-log-page-size <LOG_PAGE_SIZE>|
-# --relayer-min-duration-s <SYNC_MINIMUM_DURATION_SECS>|
-# --relayer-eth-sync-call-freq-s <SYNCING_CALL_FREQUENCY_SECS>|
-# --relayer-eth-sync-log-freq-s <SYNCING_LOG_FREQUENCY_SECS>>

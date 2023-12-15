@@ -4,10 +4,9 @@
     "start": "ts-node ./src/index.ts"
   },
   "dependencies": {
-    "@fuel-bridge/solidity-contracts": "pr-106",
     "@fuel-bridge/test-utils": "pr-106",
     "ethers": "5.7.2",
-    "fuels": "next"
+    "fuels": "pr-1528"
   },
   "devDependencies": {
     "ts-node": "^10.9.1"
