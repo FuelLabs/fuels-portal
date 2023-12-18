@@ -1,8 +1,8 @@
+import { getButtonByText, getByAriaLabel } from '@fuel-wallet/playwright-utils';
 import { expect } from '@playwright/test';
 import type { BrowserContext, Page } from '@playwright/test';
 
 import { shortAddress } from '../../../src/systems/Core/utils';
-import { getButtonByText, getByAriaLabel } from '../../commons';
 
 export async function closeTransactionPopup(page: Page) {
   const popupTransactino = getByAriaLabel(page, 'Close Transaction Dialog');

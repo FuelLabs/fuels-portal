@@ -1,3 +1,10 @@
+import {
+  FuelWalletTestHelper,
+  getByAriaLabel,
+  getButtonByText,
+  hasText,
+  FUEL_MNEMONIC,
+} from '@fuel-wallet/playwright-utils';
 import type { Locator } from '@playwright/test';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import type { WalletUnlocked, BigNumberish } from 'fuels';
@@ -9,17 +16,7 @@ import { foundry } from 'viem/chains';
 import type { PublicClient } from 'wagmi';
 
 import { ERC_20 } from '../../src/systems/Chains/eth/contracts/Erc20';
-import {
-  getByAriaLabel,
-  getButtonByText,
-  walletSetup,
-  walletApprove,
-  walletConnect,
-  hasText,
-  addAccount,
-  switchAccount,
-} from '../commons';
-import { ETH_MNEMONIC, FUEL_MNEMONIC } from '../mocks';
+import { ETH_MNEMONIC } from '../mocks';
 
 import { test, expect } from './fixtures';
 import {
@@ -41,19 +38,27 @@ test.describe('Bridge', () => {
   let account: HDAccount;
   let fuelWallet: WalletUnlocked;
   let erc20Contract;
+  let fuelWalletTestHelper: FuelWalletTestHelper;
 
   test.beforeEach(async ({ context, extensionId, page }) => {
-    await walletSetup(context, extensionId, page);
-    await addAccount(context);
-    await addAccount(context);
-    await addAccount(context);
-    await switchAccount(context, 'Account 1');
+    const fuelProvider = await Provider.create(FUEL_PROVIDER_URL);
+
+    const chainName = (await fuelProvider.fetchChain()).name;
+    fuelWalletTestHelper = await FuelWalletTestHelper.walletSetup(
+      context,
+      extensionId,
+      FUEL_PROVIDER_URL,
+      chainName
+    );
+    await fuelWalletTestHelper.addAccount();
+    await fuelWalletTestHelper.addAccount();
+    await fuelWalletTestHelper.addAccount();
+    await fuelWalletTestHelper.switchAccount('Account 1');
     client = createPublicClient({
       chain: foundry,
       transport: http(),
     });
     account = mnemonicToAccount(ETH_MNEMONIC);
-    const fuelProvider = await Provider.create(FUEL_PROVIDER_URL);
     fuelWallet = Wallet.fromMnemonic(FUEL_MNEMONIC, fuelProvider);
     await page.goto('/');
   });
@@ -91,7 +96,7 @@ test.describe('Bridge', () => {
       const connectFuel = getByAriaLabel(page, 'Connect Fuel Wallet');
       await connectFuel.click();
       await getByAriaLabel(page, 'Connect to Fuel Wallet', true).click();
-      await walletConnect(context, ['Account 2', 'Account 4']);
+      await fuelWalletTestHelper.walletConnect(['Account 2', 'Account 4']);
     });
 
     const INITIATE_DEPOSIT =
@@ -202,7 +207,7 @@ test.describe('Bridge', () => {
       });
 
       await test.step('Approve transaction on Fuel Wallet', async () => {
-        await walletApprove(context);
+        await fuelWalletTestHelper.walletApprove();
       });
 
       await test.step('Check transaction submitted to FUEL network', async () => {
@@ -441,7 +446,7 @@ test.describe('Bridge', () => {
       });
 
       await test.step('Confirm on Fuel Wallet', async () => {
-        await walletApprove(context);
+        await fuelWalletTestHelper.walletApprove();
       });
 
       await test.step('Check deposit is completed', async () => {
@@ -485,7 +490,7 @@ test.describe('Bridge', () => {
 
       await test.step('Approve transaction on Fuel Wallet', async () => {
         await page.waitForTimeout(2500);
-        await walletApprove(context);
+        await fuelWalletTestHelper.walletApprove();
       });
 
       await test.step('Check transaction submitted to FUEL network', async () => {
@@ -626,7 +631,7 @@ test.describe('Bridge', () => {
       await goToTransactionsPage(page);
 
       await test.step('Change to account 2 should show loading and empty feedback', async () => {
-        await switchAccount(context, 'Account 2');
+        await fuelWalletTestHelper.switchAccount('Account 2');
         const loading = getByAriaLabel(page, 'Loading Bridge Transactions');
         await loading.innerText();
         const noActivity = page.getByText('No activity yet');
@@ -638,7 +643,7 @@ test.describe('Bridge', () => {
       });
 
       await test.step('Change to account 3 should show connect, but not loading', async () => {
-        await switchAccount(context, 'Account 3');
+        await fuelWalletTestHelper.switchAccount('Account 3');
         const loading = getByAriaLabel(page, 'Loading Bridge Transactions');
         expect(await loading.count()).toBe(0);
         const notDetected = page.getByText('Wallet not detected');
@@ -652,7 +657,7 @@ test.describe('Bridge', () => {
       });
 
       await test.step('Change to account 1 should show loading and transactions', async () => {
-        await switchAccount(context, 'Account 1');
+        await fuelWalletTestHelper.switchAccount('Account 1');
         const loading = getByAriaLabel(page, 'Loading Bridge Transactions');
         await loading.innerText();
         await checkTxItemDone(page, depositEthTxId);
@@ -663,7 +668,7 @@ test.describe('Bridge', () => {
     });
 
     await test.step('Deposit TKN before Fuel wallet has ETH', async () => {
-      await switchAccount(context, 'Account 4');
+      await fuelWalletTestHelper.switchAccount('Account 4');
       await goToBridgePage(page);
       await clickDepositTab(page);
       const assetDropdown = getByAriaLabel(page, 'Coin Selector');
