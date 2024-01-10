@@ -42,7 +42,7 @@ function getBridgeTokenContracts() {
     return {
       ETH_ERC20: '0xC6387efAD0F184a90B34f397C3d6Fd63135ef790',
       FUEL_TokenContract:
-        '0x70334f1a53724b25ebc733777224c86abd46995243831b3668936ce5beaef66d',
+        '0x7d3e3721d96108b71e187aa17c3330ac400637a2649490f4b3d964cbf1b8943e',
     };
   }
   return {};
@@ -60,10 +60,10 @@ function getBridgeSolidityContracts() {
   // sepolia config is got from: https://github.com/FuelLabs/fuel-bridge/blob/main/packages/portal-contracts/deployments/deployments.sepolia.json
   if (process.env.VITE_ETH_CHAIN === 'sepolia') {
     return {
-      FuelChainState: '0xbe7aB12653e705642eb42EF375fd0d35Cfc45b03',
-      FuelMessagePortal: '0x03f2901Db5723639978deBed3aBA66d4EA03aF73',
-      FuelERC20Gateway: '0x07cf0FF4fdD5d73C4ea5E96bb2cFaa324A348269',
-      FuelERC721Gateway: '0x88Fb3447a32cF50B9f50c7a5695cbE78b1C236B1',
+      FuelChainState: '0xb65850FB7eA866f8730Ce713657ed965407F6472',
+      FuelMessagePortal: '0xBf340BAC79c301B264E2a5dEa51b7F61eb3e666A',
+      FuelERC20Gateway: '0x749E27d070E2F4a3D6CED522a0D4BDCB37fA95ba',
+      FuelERC721Gateway: '0x4aC11e55652b4e13Fc8dB6F42bB26793605d03B8',
     };
   }
 }

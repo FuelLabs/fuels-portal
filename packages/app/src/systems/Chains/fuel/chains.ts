@@ -22,7 +22,16 @@ const fuelBeta4: FuelChain = {
   providerUrl: 'https://beta-4.fuel.network/graphql',
 };
 
+const fuelBeta5: FuelChain = {
+  id: 0,
+  network: 'fuel_beta5',
+  name: 'Fuel Beta 5',
+  testnet: true,
+  providerUrl: 'https://beta-5.swayswap.io/graphql',
+};
+
 export const FUEL_CHAINS = {
   fuelDev,
   fuelBeta4,
+  fuelBeta5,
 };

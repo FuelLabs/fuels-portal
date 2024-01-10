@@ -378,16 +378,21 @@ export class TxEthToFuelService {
           'not enough coins to fit the target:',
           ''
         );
-        const parsedMessage = JSON.parse(messageToParse);
-        if (
-          parsedMessage.response?.errors[0].message ===
-            'not enough coins to fit the target' &&
-          parsedMessage.request?.variables.queryPerAsset[0].assetId ===
-            ZeroBytes32
-        ) {
-          throw new Error(
-            'This transaction requires ETH on Fuel to pay for gas. Please faucet your wallet or bridge ETH.'
-          );
+
+        try {
+          const parsedMessage = JSON.parse(messageToParse);
+          if (
+            parsedMessage.response?.errors[0].message ===
+              'not enough coins to fit the target' &&
+            parsedMessage.request?.variables.queryPerAsset[0].assetId ===
+              ZeroBytes32
+          ) {
+            throw new Error(
+              'This transaction requires ETH on Fuel to pay for gas. Please faucet your wallet or bridge ETH.'
+            );
+          }
+        } catch (_) {
+          throw err;
         }
       }
       throw err;
@@ -443,6 +448,7 @@ export class TxEthToFuelService {
       } as any,
       fromBlock: 'earliest',
     });
+    console.log(`erc20AllLogs`, erc20AllLogs);
 
     const erc20Logs = erc20AllLogs.filter((log) => {
       const messageSentEvent = decodeEventLog({
