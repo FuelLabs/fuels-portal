@@ -14,12 +14,12 @@ const fuelDev: FuelChain = {
   providerUrl: 'http://localhost:4000/graphql',
 };
 
-const fuelBeta4: FuelChain = {
+const fuelBeta5Dev: FuelChain = {
   id: 0,
-  network: 'fuel_beta4',
-  name: 'Fuel Beta 4',
+  network: 'fuel_devnet',
+  name: 'Fuel Devnet',
   testnet: true,
-  providerUrl: 'https://beta-4.fuel.network/graphql',
+  providerUrl: 'https://beta-5.swayswap.io/graphql',
 };
 
 const fuelBeta5: FuelChain = {
@@ -27,11 +27,11 @@ const fuelBeta5: FuelChain = {
   network: 'fuel_beta5',
   name: 'Fuel Beta 5',
   testnet: true,
-  providerUrl: 'https://beta-5.swayswap.io/graphql',
+  providerUrl: 'https://beta-5.fuel.network/graphql',
 };
 
 export const FUEL_CHAINS = {
   fuelDev,
-  fuelBeta4,
+  fuelBeta5Dev,
   fuelBeta5,
 };

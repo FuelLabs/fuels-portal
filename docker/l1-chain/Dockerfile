@@ -21,7 +21,7 @@ RUN pnpm install
 # replace the fuel chain consts values and change contract code
 RUN pnpm ts-node scripts/replaceFuelChainConsts.ts
 # run contract compile with the new consts
-RUN pnpm run build
+RUN pnpm compile
 
 # remove build dependencies
 # RUN pnpm prune --prod
