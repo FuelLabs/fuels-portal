@@ -68,12 +68,11 @@ export const styles = {
     borderBottom: '1px solid #2E2E2E',
   }),
   websiteButton: cssObj({
-    justifyContent: 'flex-end',
     alignItems: 'center',
     overflow: 'hidden',
-    position: 'absolute',
-    top: '182.5px',
-    right: '25px',
+    position: 'relative',
+    marginBottom: '7.5px',
+    border: '1px solid $intentsBase8',
     zIndex: 2,
   }),
   socials: cssObj({
@@ -89,10 +88,8 @@ export const styles = {
   }),
   h1: cssObj({
     fontSize: '24px',
-    display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: '10px',
+    marginBottom: '7.5px',
     position: 'relative',
     marginTop: '130px',
   }),
@@ -128,5 +125,28 @@ export const styles = {
   paragraph: cssObj({
     fontSize: '16px',
     marginBottom: '20px',
+  }),
+  dotLive: cssObj({
+    width: '$1',
+    height: '$1',
+    borderRadius: '50%',
+    border: '1px solid #A9F6D5',
+    background: '#00F58C',
+    boxShadow: '0px 0px 4px 0px #00F58C',
+  }),
+  dotBuilding: cssObj({
+    width: '$1',
+    height: '$1',
+    borderRadius: '50%',
+    border: '1px solid #E5C06F',
+    background: '#F3B42C',
+    boxShadow: '0px 0px 4px 0px #F3B42C',
+  }),
+  button: cssObj({
+    position: 'absolute',
+    left: '150px',
+    top: '210px',
+    border: '1px solid $intentsBase8',
+    zIndex: '1',
   }),
 };

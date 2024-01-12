@@ -101,7 +101,7 @@ const CardComponent: React.FC<CardComponentProps> = ({
               css={styles.button}
             >
               <Box css={styles.dotLive} />
-              Testnet Ready
+              Live on Testnet
             </Button>
           ) : (
             <Button

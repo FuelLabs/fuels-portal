@@ -1,4 +1,4 @@
-import { Badge, Box, Button, Alert, TagCloseButton } from '@fuel-ui/react';
+import { Badge, Box, Button, Alert, TagCloseButton, Tag } from '@fuel-ui/react';
 import type { FC } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -69,8 +69,36 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
               <ProjectImage name={project.name} image={project.image} />
             </Box>
           </Box>
-
-          <h1 style={styles.h1}>{project.name}</h1>
+          <Box>
+            <h1 style={styles.h1}>{project.name}</h1>
+            {project.url && (
+              <Button
+                as="a"
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="ghost"
+                size="xs"
+                leftIcon="ExternalLink"
+                color="intentsBase8"
+                intent="base"
+                css={styles.websiteButton}
+              >
+                Visit Website
+              </Button>
+            )}
+          </Box>
+          {project.isLive ? (
+            <Tag intent="base" size="xs" variant="outlined" css={styles.button}>
+              <Box css={styles.dotLive} />
+              Live on Testnet
+            </Tag>
+          ) : (
+            <Tag intent="base" size="xs" variant="outlined" css={styles.button}>
+              <Box css={styles.dotBuilding} />
+              {'Building'}
+            </Tag>
+          )}
           <Box style={styles.tagBox}>
             {project.tags?.map((tag, index) => (
               <Badge key={index} variant="outlined" style={styles.badge}>
@@ -78,22 +106,6 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
               </Badge>
             ))}
           </Box>
-          {project.url && (
-            <Button
-              as="a"
-              href={project.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              variant="solid"
-              size="sm"
-              leftIcon="ExternalLink"
-              color="intentsBase8"
-              intent="info"
-              css={styles.websiteButton}
-            >
-              Visit Website
-            </Button>
-          )}
 
           <p style={styles.paragraph}>{project.description}</p>
           <Alert status="info">
