@@ -5,6 +5,7 @@ export const styles = {
     transition: 'transform 0.2s ease-in-out, border 0.2s ease-in-out',
     display: 'flex',
     flexDirection: 'column',
+    cursor: 'pointer',
     '&:hover': {
       textDecoration: 'none !important',
       border: '1px solid $intentsBase8',

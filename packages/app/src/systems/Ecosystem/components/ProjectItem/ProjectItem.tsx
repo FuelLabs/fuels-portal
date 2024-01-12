@@ -111,7 +111,7 @@ export const ProjectItem: ProjectItemComponent = ({
           {isLive ? (
             <Button intent="base" size="xs" variant="outlined">
               <Box css={styles.dot} />
-              {'Testnet Ready'}
+              {'Testnet'}
             </Button>
           ) : (
             <Button intent="base" size="xs" variant="outlined">

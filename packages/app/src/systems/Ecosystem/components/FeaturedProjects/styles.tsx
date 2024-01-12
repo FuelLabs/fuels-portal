@@ -42,6 +42,7 @@ export const styles = {
     borderRadius: '$md',
     overflow: 'hidden',
     width: '1fr%',
+    cursor: 'pointer',
     //height: '331px',
     zIndex: '0',
     transition: 'transform 0.3s ease', // Smooth transition for hover
