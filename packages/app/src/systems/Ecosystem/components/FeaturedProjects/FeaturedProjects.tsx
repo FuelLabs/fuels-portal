@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import type { Project } from '../../types';
 import { ProjectDetailPanel } from '../ProjectDetailPanel';
 
-import './animations.css';
+import './CSS/animations.css';
 import CardComponent from './CardComponent';
 import { styles } from './styles';
 
