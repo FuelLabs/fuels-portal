@@ -125,38 +125,52 @@ const CardComponent: React.FC<CardComponentProps> = ({
             {project.twitter && (
               <Button
                 href={project.twitter}
+                as="a"
+                target="_blank"
+                rel="noopener noreferrer"
                 size="sm"
-                intent="error"
+                intent="base"
                 variant="ghost"
                 leftIcon={'BrandX'}
-                css={styles.button}
+                // css={styles.button}
               ></Button>
             )}
             {project.github && (
               <Button
                 href={project.github}
+                as="a"
+                target="_blank"
+                rel="noopener noreferrer"
                 size="sm"
+                intent="base"
                 leftIcon={'BrandGithub'}
                 variant="ghost"
-                css={styles.button}
+                //css={styles.button}
               ></Button>
             )}
             {project.discord && (
               <Button
                 href={project.discord}
+                as="a"
+                target="_blank"
+                rel="noopener noreferrer"
                 size="sm"
-                intent="info"
+                intent="base"
                 leftIcon={'BrandDiscord'}
                 variant="ghost"
-                css={styles.button}
+                //css={styles.button}
               ></Button>
             )}
             <Button
+              href={project.url}
+              as="a"
+              target="_blank"
+              rel="noopener noreferrer"
               size="sm"
               variant="outlined"
               intent="base"
               leftIcon={'ExternalLink'}
-              css={styles.button}
+              //css={styles.button}
             ></Button>
           </Box>
         </Card.Footer>

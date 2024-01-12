@@ -129,31 +129,45 @@ export const ProjectItem: ProjectItemComponent = ({
           >
             {twitter && (
               <Button
+                as="a"
                 href={twitter}
+                target="_blank"
+                rel="noopener noreferrer"
                 size="xs"
-                intent="error"
+                intent="base"
                 variant="ghost"
                 leftIcon={'BrandX'}
               ></Button>
             )}
             {github && (
               <Button
+                as="a"
                 href={github}
+                target="_blank"
+                rel="noopener noreferrer"
                 size="xs"
+                intent="base"
                 leftIcon={'BrandGithub'}
                 variant="ghost"
               ></Button>
             )}
             {discord && (
               <Button
+                as="a"
                 href={discord}
+                target="_blank"
+                rel="noopener noreferrer"
                 size="xs"
-                intent="info"
+                intent="base"
                 leftIcon={'BrandDiscord'}
                 variant="ghost"
               ></Button>
             )}
             <Button
+              as="a"
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
               size="xs"
               variant="outlined"
               intent="base"

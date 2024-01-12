@@ -172,7 +172,10 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
         <Box css={styles.socials}>
           {project.twitter && (
             <Button
+              as="a"
               href={project.twitter}
+              target="_blank"
+              rel="noopener noreferrer"
               size="sm"
               intent="error"
               variant="ghost"
@@ -183,7 +186,10 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
           )}
           {project.github && (
             <Button
+              as="a"
               href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
               size="sm"
               leftIcon={'BrandGithub'}
               variant="ghost"
@@ -193,7 +199,10 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
           )}
           {project.discord && (
             <Button
+              as="a"
               href={project.discord}
+              target="_blank"
+              rel="noopener noreferrer"
               size="sm"
               intent="info"
               leftIcon={'BrandDiscord'}
