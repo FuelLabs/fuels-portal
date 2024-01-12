@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import type { Project } from '../../types';
 import { ProjectDetailPanel } from '../ProjectDetailPanel';
 
+import './animations.css';
 import CardComponent from './CardComponent';
 import { styles } from './styles';
 
@@ -121,46 +122,6 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
 
   return (
     <>
-      <style>
-        {`
-            @keyframes fadeInEffect {
-                from { opacity: 0; }
-                to { opacity: 1; }
-            }
-
-            @keyframes fadeOutEffect {
-                from { opacity: 1; }
-                to { opacity: 0; }
-            }
-
-            @keyframes slideIn {
-                from {
-                  transform: translateX(100%);
-                }
-                to {
-                  transform: translateX(0);
-                }
-              }
-              
-              @keyframes slideOut {
-                from {
-                  transform: translateX(0);
-                }
-                to {
-                  transform: translateX(100%);
-                }
-              }
-              
-              .panelVisible {
-                animation: slideIn 0.5s forwards;
-              }
-              
-              .panelHidden {
-                animation: slideOut 0.5s forwards;
-              }
-        `}
-      </style>
-
       <Box
         onMouseEnter={onMouseEnterHandler}
         onMouseLeave={onMouseLeaveHandler}
