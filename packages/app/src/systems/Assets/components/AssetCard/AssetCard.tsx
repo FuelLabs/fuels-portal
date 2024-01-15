@@ -8,7 +8,7 @@ import { AssetLogo } from '../AssetLogo';
 type AssetCardProps = {
   asset: Asset;
   onAdd?: () => void;
-  onPress?: () => void;
+  onClick?: () => void;
   onRemove?: () => void;
   onFaucet?: () => void;
   onAddToWallet?: () => void;
@@ -22,7 +22,7 @@ export const AssetCard = ({
   onAdd,
   onFaucet,
   isFaucetLoading,
-  onPress,
+  onClick,
   onRemove,
   onAddToWallet,
   isRemoveDisabled,
@@ -30,7 +30,7 @@ export const AssetCard = ({
 }: AssetCardProps) => {
   return (
     <CardList.Item
-      onPress={onPress}
+      onClick={onClick}
       variant="outlined"
       css={styles.cardListItem}
     >
@@ -53,7 +53,7 @@ export const AssetCard = ({
               variant="link"
               icon="Coins"
               tooltip="Get some tokens"
-              onPress={onFaucet}
+              onClick={onFaucet}
               size="lg"
               isLoading={isFaucetLoading}
               loadingText=" "
@@ -65,7 +65,7 @@ export const AssetCard = ({
               aria-label="Add Eth Asset"
               variant="link"
               icon="CirclePlus"
-              onPress={onAdd}
+              onClick={onAdd}
               tooltip="Add asset"
               intent="primary"
               size="lg"
@@ -91,7 +91,7 @@ export const AssetCard = ({
               aria-label="Add Asset To Wallet"
               variant="link"
               icon="Wallet"
-              onPress={onAddToWallet}
+              onClick={onAddToWallet}
               tooltip="Add to wallet"
               size="lg"
               css={styles.cardAction}

@@ -25,7 +25,7 @@ export const BridgeTxListNotConnected = ({
           <Box.Flex justify="center">
             <Button
               isLoading={isConnecting}
-              onPress={onClick}
+              onClick={onClick}
               intent="primary"
               css={styles.connectButton}
             >

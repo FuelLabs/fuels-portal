@@ -52,7 +52,7 @@ export const AccountConnectionInput = ({
             {!account?.address ? (
               showConnect && (
                 <Button
-                  onPress={onConnect}
+                  onClick={onConnect}
                   isLoading={isConnecting}
                   css={styles.connectButton}
                   size="xs"
@@ -69,7 +69,7 @@ export const AccountConnectionInput = ({
                 <Button
                   size="xs"
                   variant="link"
-                  onPress={onDisconnect}
+                  onClick={onDisconnect}
                   css={styles.disconnectButton}
                   rightIcon="X"
                   iconSize={13}

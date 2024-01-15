@@ -62,7 +62,7 @@ export function AssetsDialog() {
               aria-label="Set editable to false"
               variant="link"
               icon="ArrowLeft"
-              onPress={() => setEditable(false)}
+              onClick={() => setEditable(false)}
             />
           )}
           <Text color="intentsBase12" fontSize="sm">
@@ -114,7 +114,7 @@ export function AssetsDialog() {
                     ethAsset.symbol || ''
                   }${String(i)}`}
                   asset={asset}
-                  onPress={
+                  onClick={
                     !editable
                       ? () => {
                           bridgeHandlers.changeAsset({
@@ -155,7 +155,7 @@ export function AssetsDialog() {
       Keeping this comment here as we may need this component / design later when refactoring assets package
       {!editable && (
         <Dialog.Footer css={styles.dialogFooter}>
-          <Button variant="link" onPress={() => setEditable(true)}>
+          <Button variant="link" onClick={() => setEditable(true)}>
             <Icon icon="Edit" />
             <Text color="intentsBase10">Manage token list</Text>
           </Button>

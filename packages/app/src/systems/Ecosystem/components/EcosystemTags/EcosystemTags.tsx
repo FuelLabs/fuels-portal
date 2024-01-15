@@ -5,17 +5,17 @@ import { EcosystemTagsLoading } from './EcosystemTagsLoading';
 
 type EcosystemTagsProps = {
   tags?: string[];
-  onPressTag?: (tag: string) => void;
+  onClickTag?: (tag: string) => void;
   activeTag?: string;
-  onPressAllCategories?: () => void;
+  onClickAllCategories?: () => void;
   isLoading?: boolean;
 };
 
 export const EcosystemTags = ({
   tags,
-  onPressTag,
+  onClickTag,
   activeTag,
-  onPressAllCategories,
+  onClickAllCategories,
   isLoading,
 }: EcosystemTagsProps) => {
   if (isLoading) return <EcosystemTagsLoading />;
@@ -23,7 +23,7 @@ export const EcosystemTags = ({
     <Box.Flex justify="flex-start" align="center" gap="$2" wrap="wrap">
       <Button
         variant="outlined"
-        onPress={onPressAllCategories}
+        onClick={onClickAllCategories}
         css={{ ...styles.tag, ...(!activeTag && styles.active) }}
         size="sm"
       >
@@ -34,7 +34,7 @@ export const EcosystemTags = ({
         <Button
           variant="outlined"
           key={tag}
-          onPress={() => onPressTag?.(tag)}
+          onClick={() => onClickTag?.(tag)}
           css={{ ...styles.tag, ...(activeTag === tag && styles.active) }}
           size="sm"
         >

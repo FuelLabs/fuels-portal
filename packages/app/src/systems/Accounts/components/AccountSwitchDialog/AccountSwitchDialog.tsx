@@ -36,7 +36,7 @@ export const AccountSwitchDialog = ({
           variant="link"
           icon={<Icon icon="X" color="gray8" />}
           aria-label="Close unlock window"
-          onPress={onClose}
+          onClick={onClose}
         />
       </Dialog.Heading>
       <Dialog.Description css={styles.description}>
@@ -65,12 +65,12 @@ export const AccountSwitchDialog = ({
       <Dialog.Footer css={styles.footer}>
         <Box.Stack css={styles.stack}>
           {onConnect && (
-            <Button onPress={onConnect} css={styles.button}>
+            <Button onClick={onConnect} css={styles.button}>
               Connect Account
             </Button>
           )}
           {onDisconnect && (
-            <Button onPress={onDisconnect} css={styles.button}>
+            <Button onClick={onDisconnect} css={styles.button}>
               Disconnect Wallet
             </Button>
           )}

@@ -70,7 +70,7 @@ export const BridgeTxList = () => {
           {hasMorePages && (
             <Button
               variant="link"
-              onPress={handlers.showMore}
+              onClick={handlers.showMore}
               size="sm"
               intent="info"
               css={styles.buttonShowMore}

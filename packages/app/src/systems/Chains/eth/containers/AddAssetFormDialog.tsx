@@ -46,7 +46,7 @@ export function AddAssetFormDialog() {
             aria-label="Open eth assets dialog"
             variant="link"
             icon="ArrowLeft"
-            onPress={store.openAssetsDialog}
+            onClick={store.openAssetsDialog}
           />
           <Text color="intentsBase12" fontSize="sm">
             Add token {shortAddress(metadata.assetAddress)}

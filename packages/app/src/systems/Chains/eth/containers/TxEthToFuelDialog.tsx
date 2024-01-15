@@ -51,7 +51,7 @@ export function TxEthToFuelDialog() {
       {shouldShowConfirmButton && (
         <Dialog.Footer>
           <Button
-            onPress={handlers.relayMessageToFuel}
+            onClick={handlers.relayMessageToFuel}
             intent="primary"
             css={styles.actionButton}
             isLoading={status?.isConfirmTransactionLoading}

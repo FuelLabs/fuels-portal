@@ -33,7 +33,7 @@ export const OnPress = () => {
     <CardList css={styles.storybook}>
       <AssetCard
         asset={assetList[0]}
-        onPress={() => {
+        onClick={() => {
           // eslint-disable-next-line no-console
           console.log('press');
         }}

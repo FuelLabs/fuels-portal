@@ -20,7 +20,7 @@ import { ProjectItemLoader } from './ProjectItemLoader';
 const MotionCard = motion(Card);
 
 export type ProjectItemProps = Project & {
-  onPress?: () => void;
+  onClick?: () => void;
 };
 
 type ProjectItemComponent = FC<ProjectItemProps> & {

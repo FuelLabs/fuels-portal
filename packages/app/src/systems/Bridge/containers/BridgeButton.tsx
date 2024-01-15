@@ -7,7 +7,7 @@ export const BridgeButton = () => {
 
   return (
     <Button
-      onPress={handlers.action}
+      onClick={handlers.action}
       isLoading={isLoading}
       isDisabled={isDisabled}
       variant={isDisabled ? 'ghost' : 'solid'}

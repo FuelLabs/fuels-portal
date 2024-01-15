@@ -48,9 +48,9 @@ export function Ecosystem() {
           </Box.Flex>
           <EcosystemTags
             tags={tags}
-            onPressTag={handleTagButtonClick}
+            onClickTag={handleTagButtonClick}
             activeTag={filter}
-            onPressAllCategories={handlers.clearFilters}
+            onClickAllCategories={handlers.clearFilters}
             isLoading={isLoading}
           />
           <ProjectList
