@@ -32,7 +32,11 @@ export const BridgeTxOverview = ({
     <Box.Stack css={styles.stack}>
       <Box.Flex css={styles.txItem}>
         <Text css={styles.labelText}>ID</Text>
-        <Link href={explorerLink} isExternal css={styles.infoText}>
+        <Link
+          href={explorerLink}
+          isExternal
+          css={{ fontSize: '$sm', color: '$intentsPrimary9' }}
+        >
           <Box aria-label="Transaction ID">{transactionId.toString()}</Box>
         </Link>
       </Box.Flex>
