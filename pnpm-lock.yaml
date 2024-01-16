@@ -118,7 +118,7 @@ importers:
     dependencies:
       '@fuel-bridge/test-utils':
         specifier: pr-106
-        version: 0.4.0-pr-106-5cdd14a(ethers@5.7.2)(fuels@0.70.1)
+        version: 0.4.0-pr-106-1c53c4c(ethers@5.7.2)(fuels@0.70.1)
       ethers:
         specifier: 5.7.2
         version: 5.7.2
@@ -146,7 +146,7 @@ importers:
         version: 0.3.0
       '@fuel-bridge/message-predicates':
         specifier: pr-106
-        version: 0.4.0-pr-106-5cdd14a
+        version: 0.4.0-pr-106-1c53c4c
       '@fuel-bridge/solidity-contracts':
         specifier: 0.3.0
         version: 0.3.0(chai@4.3.10)(ethers@5.7.2)(hardhat@2.18.1)
@@ -2850,8 +2850,8 @@ packages:
     resolution: {integrity: sha512-YRvncQ+6Vg46zh0htbYQXr8ejY1it77WKLVf2vfM3Z8wVSm0K4JpMYhaPWOTVwURW0wo/yfyw/DuiHk1hwsNhg==}
     dev: false
 
-  /@fuel-bridge/message-predicates@0.4.0-pr-106-5cdd14a:
-    resolution: {integrity: sha512-uacb6XWh7KbnVJmYOTpr80gGaYEwJtgcSODEI5B5NE57/wfakZ7acFPabQA64HUjeAvz7ZImkq3wQo7pYjmWBg==}
+  /@fuel-bridge/message-predicates@0.4.0-pr-106-1c53c4c:
+    resolution: {integrity: sha512-vM+oQtZjblN/ePoY1G5xHXC+QkPt2Pyf/PpPkOleCsZKGH5YGykLRbxYofxCGO8rOrHL07UT9VajMqBk+NS0GA==}
     dev: false
 
   /@fuel-bridge/solidity-contracts@0.0.2-next-9ebbea2(ethers@5.7.2)(hardhat@2.18.1):
@@ -2902,11 +2902,11 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@fuel-bridge/test-utils@0.4.0-pr-106-5cdd14a(ethers@5.7.2)(fuels@0.70.1):
-    resolution: {integrity: sha512-P4YfpLwjuD6bHHUusolumDWVl0/d35QS6uNUz5Zsvg7z/H1RZhpkgDHDKBvGFoFfWAccsKRRUsRNUlIDh+qKUg==}
+  /@fuel-bridge/test-utils@0.4.0-pr-106-1c53c4c(ethers@5.7.2)(fuels@0.70.1):
+    resolution: {integrity: sha512-feV3rH7cbicZlF2fWJ1ZVh2tv8wqo0fVSq8TUgir6c/r0bESqFhz3bw5mQORfYzgnUrXZClRfM8LNdMW9iaWuQ==}
     peerDependencies:
       ethers: '>=5.7.2'
-      fuels: next
+      fuels: 0.70.1
     dependencies:
       ethers: 5.7.2
       fuels: 0.70.1
@@ -12459,7 +12459,7 @@ packages:
   /axios@1.6.5(debug@4.3.4):
     resolution: {integrity: sha512-Ii012v05KEVuUoFWmMW/UQv9aRIc3ZwkWDcM+h5Il8izZCtRVpDUfwpoFf7eOtajT3QiGR4yDUx7lPqHJULgbg==}
     dependencies:
-      follow-redirects: 1.15.4(debug@4.3.4)
+      follow-redirects: 1.15.5(debug@4.3.4)
       form-data: 4.0.0
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -16345,8 +16345,8 @@ packages:
     dependencies:
       debug: 4.3.4(supports-color@5.5.0)
 
-  /follow-redirects@1.15.4(debug@4.3.4):
-    resolution: {integrity: sha512-Cr4D/5wlrb0z9dgERpUL3LrmPKVDsETIJhaCMeDfuFYcqa5bldGV6wBsAN6X/vxlXQtFBMrXdXxdL8CbDTGniw==}
+  /follow-redirects@1.15.5(debug@4.3.4):
+    resolution: {integrity: sha512-vSFWUON1B+yAw1VN4xMfxgn5fTUiaOzAJCKBwIIgT/+7CuGy9+r+5gITvP62j3RmaD5Ph65UaERdOSRGUzZtgw==}
     engines: {node: '>=4.0'}
     peerDependencies:
       debug: '*'
