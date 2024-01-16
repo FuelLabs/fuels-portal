@@ -160,11 +160,11 @@ importers:
         specifier: 0.23.0
         version: 0.23.0(@types/react-dom@18.2.14)(@types/react@18.2.29)(csstype@3.1.2)
       '@fuel-wallet/react':
-        specifier: 0.14.1
-        version: 0.14.1(@fuel-ui/css@0.23.0)(@fuel-ui/react@0.23.0)(dexie@3.2.4)(fuels@0.70.1)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 0.14.2
+        version: 0.14.2(@fuel-ui/css@0.23.0)(@fuel-ui/react@0.23.0)(dexie@3.2.4)(fuels@0.70.1)(react-dom@18.2.0)(react@18.2.0)
       '@fuel-wallet/sdk':
-        specifier: 0.14.1
-        version: 0.14.1(dexie@3.2.4)(fuels@0.70.1)
+        specifier: 0.14.2
+        version: 0.14.2(dexie@3.2.4)(fuels@0.70.1)
       '@fuels/assets':
         specifier: 0.1.0
         version: 0.1.0
@@ -224,8 +224,8 @@ importers:
         version: 1.3.2
     devDependencies:
       '@fuel-wallet/playwright-utils':
-        specifier: 0.14.1
-        version: 0.14.1(@playwright/test@1.39.0)
+        specifier: 0.14.2
+        version: 0.14.2(@playwright/test@1.39.0)
       '@storybook/addon-a11y':
         specifier: ^7.2.2
         version: 7.5.0(@types/react-dom@18.2.14)(@types/react@18.2.29)(react-dom@18.2.0)(react@18.2.0)
@@ -4065,8 +4065,8 @@ packages:
       - immer
     dev: false
 
-  /@fuel-wallet/playwright-utils@0.14.1(@playwright/test@1.39.0):
-    resolution: {integrity: sha512-0CUNJ+BMUsdiDUkwkFGoAEPQHVeq93MEmIGPV3HsfzK1sQ0WHEV2XRD/mfV1oyT4xO2I2w5KvJJYWyGOYODDrw==}
+  /@fuel-wallet/playwright-utils@0.14.2(@playwright/test@1.39.0):
+    resolution: {integrity: sha512-r7o/SDwPOG7vV4p9Zn9Q1g8GUbEMiOYc9mKqpPSbqExgzPmEAhlfa9XwcIQdb/Nchm3G7Uq33VQivWpaRE6BPQ==}
     peerDependencies:
       '@playwright/test': ^1.39.0
     dependencies:
@@ -4080,11 +4080,11 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@fuel-wallet/react@0.14.1(@fuel-ui/css@0.23.0)(@fuel-ui/react@0.23.0)(dexie@3.2.4)(fuels@0.70.1)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-geiJP2zQf3FX+aQli9E0Nec+A2ths854YT55skyAX2J8azhA2uhh1Dd+vuMvIFwSj2PYLTNle9ooBXI482uxNg==}
+  /@fuel-wallet/react@0.14.2(@fuel-ui/css@0.23.0)(@fuel-ui/react@0.23.0)(dexie@3.2.4)(fuels@0.70.1)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-G+RWPQ4jOI7zvEAayrTZkrShyQ7OBwT/Q1M2J6g+nL0dOOEZdOiRWCCQWJDpHDidm4Kzltagotr2evMvYjFBYg==}
     peerDependencies:
-      '@fuel-ui/css': 0.21.1
-      '@fuel-ui/react': 0.21.1
+      '@fuel-ui/css': 0.23.0
+      '@fuel-ui/react': 0.23.0
       fuels: '>=0.71.1'
       react: '*'
     peerDependenciesMeta:
@@ -4093,8 +4093,8 @@ packages:
     dependencies:
       '@fuel-ui/css': 0.23.0
       '@fuel-ui/react': 0.23.0(@types/react-dom@18.2.14)(@types/react@18.2.29)(csstype@3.1.2)
-      '@fuel-wallet/sdk': 0.14.1(dexie@3.2.4)(fuels@0.70.1)
-      '@fuel-wallet/types': 0.14.1(dexie@3.2.4)(fuels@0.70.1)
+      '@fuel-wallet/sdk': 0.14.2(dexie@3.2.4)(fuels@0.70.1)
+      '@fuel-wallet/types': 0.14.2(dexie@3.2.4)(fuels@0.70.1)
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0)(react@18.2.0)
       compare-versions: 6.1.0
       fuels: 0.70.1
@@ -4105,12 +4105,12 @@ packages:
       - react-native
     dev: false
 
-  /@fuel-wallet/sdk@0.14.1(dexie@3.2.4)(fuels@0.70.1):
-    resolution: {integrity: sha512-CuJKUddh5FIpQlI4XyQhJUm6ZZUTMFs92/mWialJW1UMbPLeMuZpntH3s13e9wvdrbIs5HDQ2rX3ucpJyOZJJA==}
+  /@fuel-wallet/sdk@0.14.2(dexie@3.2.4)(fuels@0.70.1):
+    resolution: {integrity: sha512-7hVoVu7V3UFDhuo//oX0LHzQ8uPP3IjG1nS5oFSTRgptAXHDY3iD61Lf8ombZoqYcWrwUQg3hh+vIugDW4AeUQ==}
     peerDependencies:
       fuels: '>=0.71.1'
     dependencies:
-      '@fuel-wallet/types': 0.14.1(dexie@3.2.4)(fuels@0.70.1)
+      '@fuel-wallet/types': 0.14.2(dexie@3.2.4)(fuels@0.70.1)
       dexie-observable: 4.0.1-beta.13(dexie@3.2.4)
       events: 3.3.0
       fuels: 0.70.1
@@ -4121,8 +4121,8 @@ packages:
       - dexie
     dev: false
 
-  /@fuel-wallet/types@0.14.1(dexie@3.2.4)(fuels@0.70.1):
-    resolution: {integrity: sha512-MOVIYlJuCR0PWbUP61Yqi6Y9x4kOAh27aMRbjPFeAltT4In3f3cFlqkIjf4C+JTctp3jn4aQuV8WvSROZCbmGw==}
+  /@fuel-wallet/types@0.14.2(dexie@3.2.4)(fuels@0.70.1):
+    resolution: {integrity: sha512-Q0UkUMA/TeI7jsL1HBsK8+cdbWEjh7DuFQ+apuDsW1hc67YVm2sM+jV4E+1beK2iZ+H1n3O4yPm+zjmgg6uy5A==}
     peerDependencies:
       fuels: '>=0.71.1'
     dependencies:
