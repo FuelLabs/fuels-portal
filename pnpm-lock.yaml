@@ -151,17 +151,17 @@ importers:
         specifier: 0.3.0
         version: 0.3.0(chai@4.3.10)(ethers@5.7.2)(hardhat@2.18.1)
       '@fuel-ts/utils':
-        specifier: 0.70.1
-        version: 0.70.1
+        specifier: 0.71.1
+        version: 0.71.1
       '@fuel-ui/css':
-        specifier: 0.22.0
-        version: 0.22.0
+        specifier: 0.23.0
+        version: 0.23.0
       '@fuel-ui/react':
-        specifier: 0.22.0
-        version: 0.22.0(@types/react-dom@18.2.14)(@types/react@18.2.29)(csstype@3.1.2)
+        specifier: 0.23.0
+        version: 0.23.0(@types/react-dom@18.2.14)(@types/react@18.2.29)(csstype@3.1.2)
       '@fuel-wallet/react':
         specifier: 0.14.1
-        version: 0.14.1(@fuel-ui/css@0.22.0)(@fuel-ui/react@0.22.0)(dexie@3.2.4)(fuels@0.70.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 0.14.1(@fuel-ui/css@0.23.0)(@fuel-ui/react@0.23.0)(dexie@3.2.4)(fuels@0.70.1)(react-dom@18.2.0)(react@18.2.0)
       '@fuel-wallet/sdk':
         specifier: 0.14.1
         version: 0.14.1(dexie@3.2.4)(fuels@0.70.1)
@@ -3814,7 +3814,6 @@ packages:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
-    dev: true
 
   /@fuel-ts/versions@0.55.0:
     resolution: {integrity: sha512-s/i2wXifa3YHjNkXDS4N8NSgrfHr3YV3zD/1Jpyjs+PYyITm+uh5z8cn6OwJLD2Dki4x4FYwr/9um0JQFJschw==}
@@ -3996,18 +3995,18 @@ packages:
     engines: {node: ^18.17.1}
     dev: true
 
-  /@fuel-ui/css@0.22.0:
-    resolution: {integrity: sha512-KYV1k9VUCr39n2C/M1KtD/jqGQjUgRy1/7gaTUbhfFpnraowhkaWgYvvlvwAPgr1m0npvUY5Zm6GB2LbcNyktQ==}
+  /@fuel-ui/css@0.23.0:
+    resolution: {integrity: sha512-4GvlqI6TVjra3AoCtR9W4Kw1H8VJ7sroMOHAjMIBztBUSYLiLOIGiYunvirBKG9soRBJmEBWPy3fHItjLu4+XQ==}
     dependencies:
-      '@fuel-ui/design-tokens': 0.22.0
+      '@fuel-ui/design-tokens': 0.23.0
       '@radix-ui/colors': 2.1.0
       classnames: 2.3.2
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@fuel-ui/design-tokens@0.22.0:
-    resolution: {integrity: sha512-H/9VgD4uhLTuuf6pGwssnXJkGlX8H+GZzUnfRRIV3uRgWZZY5CfORbWGbAOaREwXKq3vZAbmsBFQNH7AIRKSkQ==}
+  /@fuel-ui/design-tokens@0.23.0:
+    resolution: {integrity: sha512-6zrFPlAFLC52EFcfcqldWvI5kHbnqHXmW1EcWkE0SNH3PZkOMychXU9ksPMvWMkehetRwNwbdm4kBuvL2TpYww==}
     dependencies:
       '@radix-ui/colors': 2.1.0
       chroma-js: 2.4.2
@@ -4015,20 +4014,20 @@ packages:
       lodash: 4.17.21
     dev: false
 
-  /@fuel-ui/icons@0.22.0:
-    resolution: {integrity: sha512-0SC1Lm0Hv0mlfK4fgLk9LwYfBBPtvy8oHRIBe4wk1+a6eZrarPsNohG0BUqQMGS62Dc/ZN6F+Db7YKRwXu0jSg==}
+  /@fuel-ui/icons@0.23.0:
+    resolution: {integrity: sha512-dq1q/ZSPbXg0/H78b2KJblypolQGwHVSwp60Nfc+gYCxkoldF9l3D4wPrSCrUT8KpMVAnaW0jflic5cn15x5fw==}
     dependencies:
       '@tabler/icons': 2.39.0
       prettier: 3.0.3
       svgo: 3.0.2
     dev: false
 
-  /@fuel-ui/react@0.22.0(@types/react-dom@18.2.14)(@types/react@18.2.29)(csstype@3.1.2):
-    resolution: {integrity: sha512-YflFkdLY6Azva6OwcoKxdrCgYnYnwLcMQSPF9mmXPfB+kcm6gJOg7FhT93NT2n/GcEnvpxIktpZETAC9RTLZeQ==}
+  /@fuel-ui/react@0.23.0(@types/react-dom@18.2.14)(@types/react@18.2.29)(csstype@3.1.2):
+    resolution: {integrity: sha512-8x1FVTcQxjUzjKBfjWb/MRpQngzFAd/rP8p9okv0hdCzVUeIV2lCMXqSgVRnw1/Ei0ANIdf7zDlPX9hqdyvYXw==}
     dependencies:
       '@fuel-ts/math': 0.71.1
-      '@fuel-ui/css': 0.22.0
-      '@fuel-ui/icons': 0.22.0
+      '@fuel-ui/css': 0.23.0
+      '@fuel-ui/icons': 0.23.0
       '@radix-ui/react-accordion': 1.1.2(@types/react-dom@18.2.14)(@types/react@18.2.29)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-alert-dialog': 1.0.5(@types/react-dom@18.2.14)(@types/react@18.2.29)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-aspect-ratio': 1.0.3(@types/react-dom@18.2.14)(@types/react@18.2.29)(react-dom@18.2.0)(react@18.2.0)
@@ -4043,7 +4042,6 @@ packages:
       '@radix-ui/react-tooltip': 1.0.7(@types/react-dom@18.2.14)(@types/react@18.2.29)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-visually-hidden': 1.0.3(@types/react-dom@18.2.14)(@types/react@18.2.29)(react-dom@18.2.0)(react@18.2.0)
       '@react-aria/focus': 3.14.3(react@18.2.0)
-      '@react-aria/interactions': 3.17.0(react@18.2.0)
       '@react-aria/overlays': 3.18.1(react-dom@18.2.0)(react@18.2.0)
       '@react-aria/utils': 3.21.1(react@18.2.0)
       '@testing-library/react': 14.0.0(react-dom@18.2.0)(react@18.2.0)
@@ -4082,7 +4080,7 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@fuel-wallet/react@0.14.1(@fuel-ui/css@0.22.0)(@fuel-ui/react@0.22.0)(dexie@3.2.4)(fuels@0.70.1)(react-dom@18.2.0)(react@18.2.0):
+  /@fuel-wallet/react@0.14.1(@fuel-ui/css@0.23.0)(@fuel-ui/react@0.23.0)(dexie@3.2.4)(fuels@0.70.1)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-geiJP2zQf3FX+aQli9E0Nec+A2ths854YT55skyAX2J8azhA2uhh1Dd+vuMvIFwSj2PYLTNle9ooBXI482uxNg==}
     peerDependencies:
       '@fuel-ui/css': 0.21.1
@@ -4093,8 +4091,8 @@ packages:
       react:
         optional: true
     dependencies:
-      '@fuel-ui/css': 0.22.0
-      '@fuel-ui/react': 0.22.0(@types/react-dom@18.2.14)(@types/react@18.2.29)(csstype@3.1.2)
+      '@fuel-ui/css': 0.23.0
+      '@fuel-ui/react': 0.23.0(@types/react-dom@18.2.14)(@types/react@18.2.29)(csstype@3.1.2)
       '@fuel-wallet/sdk': 0.14.1(dexie@3.2.4)(fuels@0.70.1)
       '@fuel-wallet/types': 0.14.1(dexie@3.2.4)(fuels@0.70.1)
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0)(react@18.2.0)
@@ -6875,21 +6873,6 @@ packages:
       '@internationalized/message': 3.1.1
       '@internationalized/number': 3.3.0
       '@internationalized/string': 3.1.1
-      '@react-aria/ssr': 3.8.0(react@18.2.0)
-      '@react-aria/utils': 3.21.1(react@18.2.0)
-      '@react-types/shared': 3.21.0(react@18.2.0)
-      '@swc/helpers': 0.5.3
-      react: 18.2.0
-    dev: false
-
-  /@react-aria/interactions@3.17.0(react@18.2.0):
-    resolution: {integrity: sha512-v4BI5Nd8gi8s297fHpgjDDXOyufX+FPHJ31rkMwY6X1nR5gtI0+2jNOL4lh7s+cWzszpA0wpwIrKUPGhhLyUjQ==}
-    peerDependencies:
-      react: '*'
-    peerDependenciesMeta:
-      react:
-        optional: true
-    dependencies:
       '@react-aria/ssr': 3.8.0(react@18.2.0)
       '@react-aria/utils': 3.21.1(react@18.2.0)
       '@react-types/shared': 3.21.0(react@18.2.0)
