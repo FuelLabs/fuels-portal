@@ -108,7 +108,7 @@ const txFuelToEthSelectors = {
         isSelected: status.isConfirmTransactionSelected,
       },
       {
-        name: 'Receive on ETH',
+        name: 'Receive on Ethereum',
         status: status.isReceiveDone ? 'Done!' : 'Automatic',
         isLoading: status.isReceiveLoading,
         isDone: status.isReceiveDone,
