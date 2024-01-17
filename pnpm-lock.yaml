@@ -20,6 +20,7 @@ overrides:
   '@babel/traverse@<7.23.2': '>=7.23.2'
   undici@<5.26.2: '>=5.26.2'
   axios@>=0.8.1 <1.6.0: '>=1.6.0'
+  follow-redirects@<1.15.4: '>=1.15.4'
 
 importers:
 
@@ -16334,8 +16335,8 @@ packages:
     engines: {node: '>=0.4.0'}
     dev: true
 
-  /follow-redirects@1.15.3(debug@4.3.4):
-    resolution: {integrity: sha512-1VzOtuEM8pC9SFU1E+8KfTjZyMztRsgEfwQl44z8A25uy13jSzTj6dyK2Df52iV0vgHCfBwLhDWevLn95w5v6Q==}
+  /follow-redirects@1.15.5(debug@4.3.4):
+    resolution: {integrity: sha512-vSFWUON1B+yAw1VN4xMfxgn5fTUiaOzAJCKBwIIgT/+7CuGy9+r+5gITvP62j3RmaD5Ph65UaERdOSRGUzZtgw==}
     engines: {node: '>=4.0'}
     peerDependencies:
       debug: '*'
@@ -17669,7 +17670,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.3(debug@4.3.4)
+      follow-redirects: 1.15.5(debug@4.3.4)
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -23218,7 +23219,7 @@ packages:
     dependencies:
       command-exists: 1.2.9
       commander: 3.0.2
-      follow-redirects: 1.15.3(debug@4.3.4)
+      follow-redirects: 1.15.5(debug@4.3.4)
       fs-extra: 0.30.0
       js-sha3: 0.8.0
       memorystream: 0.3.1
