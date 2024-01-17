@@ -5,8 +5,6 @@
   "main": "./src/index.ts",
   "scripts": {
     "seed": "pnpm dlx ts-node prisma/seed",
-    "build": "pnpm ts:check",
-    "ts:check": "tsc --noEmit",
     "dev:notification": "ts-node-dev -r tsconfig-paths/register --transpile-only --watch ./src/**/*, src/index.ts"
   },
   "dependencies": {
