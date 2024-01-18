@@ -31,6 +31,8 @@ export const AssetCard = ({
   return (
     <CardList.Item
       onClick={onClick}
+      // need this empty onPress to keep click effect. will be removed when we migrate to new UI package
+      onPress={() => {}}
       variant="outlined"
       css={styles.cardListItem}
     >

@@ -379,6 +379,9 @@ export class TxEthToFuelService {
           ''
         );
 
+        const noEthError =
+          'This transaction requires ETH on Fuel to pay for gas. Please faucet your wallet or bridge ETH.';
+
         try {
           const parsedMessage = JSON.parse(messageToParse);
           if (
@@ -387,11 +390,16 @@ export class TxEthToFuelService {
             parsedMessage.request?.variables.queryPerAsset[0].assetId ===
               ZeroBytes32
           ) {
-            throw new Error(
-              'This transaction requires ETH on Fuel to pay for gas. Please faucet your wallet or bridge ETH.'
-            );
+            throw new Error(noEthError);
           }
-        } catch (_) {
+        } catch (parseError) {
+          if (
+            parseError instanceof Error &&
+            parseError.message === noEthError
+          ) {
+            throw parseError;
+          }
+
           throw err;
         }
       }

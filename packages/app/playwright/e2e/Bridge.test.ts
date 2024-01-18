@@ -657,6 +657,7 @@ test.describe('Bridge', () => {
       });
 
       await test.step('Change to account 1 should show loading and transactions', async () => {
+        await page.waitForTimeout(2000);
         await fuelWalletTestHelper.switchAccount('Account 1');
         const loading = getByAriaLabel(page, 'Loading Bridge Transactions');
         await loading.innerText();
