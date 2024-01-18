@@ -61,4 +61,5 @@ exec /root/fuel-core run \
     --relayer-v2-listening-contracts $FUEL_MESSAGE_PORTAL_CONTRACT_ADDRESS \
     --poa-interval-period 1s \
     --min-gas-price 1 \
-    --chain ./chainConfig.json
+    --chain ./chainConfig.json \
+    --debug
