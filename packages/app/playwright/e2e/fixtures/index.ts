@@ -20,7 +20,7 @@ export const test = base.extend<{
     // required for synpress
     global.expect = expect;
     // download fuel wallet
-    const fuelPathExtension = await downloadFuel('0.14.2');
+    const fuelPathExtension = await downloadFuel('0.14.3');
     // download metamask
     const metamaskPath = await prepareMetamask(
       process.env.META_MASK_VERSION || '10.25.0'
