@@ -357,10 +357,12 @@ export const txEthToFuelMachine = createMachine(
       }),
       notifyEthTxSuccess: (ctx) => {
         if (ctx.ethTxId && EthTxCache.getTxIsCreated(ctx.ethTxId)) {
-          toast.success(
-            'Deposit successfully initiated. You may now close the popup.',
-            { duration: 5000 }
-          );
+          setTimeout(() => {
+            toast.success(
+              'Deposit successfully initiated. You may now close the popup.',
+              { duration: 5000 }
+            );
+          }, 2000);
           EthTxCache.removeTxCreated(ctx.ethTxId);
         }
       },

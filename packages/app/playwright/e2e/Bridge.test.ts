@@ -135,6 +135,8 @@ test.describe('Bridge', () => {
         await page.locator(':nth-match(:text("Done"), 1)').waitFor();
 
         // Check toast success feedback of tx created
+        // Toast message has delay of 2 seconds
+        await page.waitForTimeout(2000);
         await hasText(page, INITIATE_DEPOSIT);
         await page.locator(':nth-match(:text("Done"), 3)').waitFor();
 
@@ -215,6 +217,8 @@ test.describe('Bridge', () => {
         await page.locator(':nth-match(:text("Done"), 1)').waitFor();
 
         // Check toast success feedback of tx created
+        // Toast message has delay of 2 seconds
+        await page.waitForTimeout(2000);
         await hasText(page, INITIATE_WITHDRAW);
 
         // check time left feedback
@@ -388,6 +392,8 @@ test.describe('Bridge', () => {
         await page.locator(':nth-match(:text("Done"), 1)').waitFor();
 
         // Check toast success feedback of tx created
+        // Toast message has delay of 2 seconds
+        await page.waitForTimeout(2000);
         await hasText(page, INITIATE_DEPOSIT);
         await page.locator(':nth-match(:text("Done"), 2)').waitFor();
       });
@@ -498,6 +504,8 @@ test.describe('Bridge', () => {
         await page.locator(':nth-match(:text("Done"), 1)').waitFor();
 
         // Check toast success feedback of tx created
+        // Toast message has delay of 2 seconds
+        await page.waitForTimeout(2000);
         await hasText(page, INITIATE_WITHDRAW);
 
         // check time left feedback
