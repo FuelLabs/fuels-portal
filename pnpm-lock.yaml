@@ -118,8 +118,8 @@ importers:
   docker/erc20-deployer/deployer:
     dependencies:
       '@fuel-bridge/test-utils':
-        specifier: pr-118
-        version: 0.4.0-pr-118-c0aa350(ethers@5.7.2)(fuels@0.71.1)
+        specifier: next
+        version: 0.4.0-next-f1ba6d3(ethers@5.7.2)(fuels@0.71.1)
       ethers:
         specifier: 5.7.2
         version: 5.7.2
@@ -143,14 +143,14 @@ importers:
   packages/app:
     dependencies:
       '@fuel-bridge/fungible-token':
-        specifier: pr-118
-        version: 0.4.0-pr-118-c0aa350
+        specifier: next
+        version: 0.4.0-next-f1ba6d3
       '@fuel-bridge/message-predicates':
-        specifier: pr-118
-        version: 0.4.0-pr-118-c0aa350
+        specifier: next
+        version: 0.4.0-next-f1ba6d3
       '@fuel-bridge/solidity-contracts':
-        specifier: pr-118
-        version: 0.4.0-pr-118-c0aa350(chai@4.3.10)(ethers@5.7.2)(hardhat@2.18.1)
+        specifier: next
+        version: 0.4.0-next-f1ba6d3(chai@4.3.10)(ethers@5.7.2)(hardhat@2.18.1)
       '@fuel-ts/utils':
         specifier: 0.71.1
         version: 0.71.1
@@ -2847,12 +2847,12 @@ packages:
       ts-interface-checker: 0.1.13
     dev: true
 
-  /@fuel-bridge/fungible-token@0.4.0-pr-118-c0aa350:
-    resolution: {integrity: sha512-1YdT2SWMA7lc+YnX4m25Ay3ei8F4BHn4LkSXjKrGStfFV4is0lumSY45kamrNjY2AyIeqthiCZ8j++MrdCYhdw==}
+  /@fuel-bridge/fungible-token@0.4.0-next-f1ba6d3:
+    resolution: {integrity: sha512-vve50egNz/gwpUwq+jdgabUO30LTOXkRLiGDbwtOBiJETSI376N/1E9ss1KgC7tjtzaV+vnl88IGzYhAquG+1w==}
     dev: false
 
-  /@fuel-bridge/message-predicates@0.4.0-pr-118-c0aa350:
-    resolution: {integrity: sha512-l3dZI1jagbTfqeqdac2GvqyHZ7A3daQ9i5QLHsQwPyfze21xTzuI8e4283u7t47n8zpKz+JTsLMvmuEnlo5E5g==}
+  /@fuel-bridge/message-predicates@0.4.0-next-f1ba6d3:
+    resolution: {integrity: sha512-uZ7c+Zk0HB8QL7CWjb5WXOi/GbHqEUvIwzr/Kdp3DkYbbWR9qK+FJskBgixjiDxolu9abt4Y/FrEnYRLf3TY5Q==}
     dev: false
 
   /@fuel-bridge/solidity-contracts@0.0.2-next-9ebbea2(ethers@5.7.2)(hardhat@2.18.1):
@@ -2878,8 +2878,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@fuel-bridge/solidity-contracts@0.4.0-pr-118-c0aa350(chai@4.3.10)(ethers@5.7.2)(hardhat@2.18.1):
-    resolution: {integrity: sha512-JiFHQh9YOMLrv/ZYDSaTNKi2oO8umZFEEwQOkMP9egDrDsfrTdYzWZ5bdsJtOTqUU12tkhHLFF7JcAU654SH7Q==}
+  /@fuel-bridge/solidity-contracts@0.4.0-next-f1ba6d3(chai@4.3.10)(ethers@5.7.2)(hardhat@2.18.1):
+    resolution: {integrity: sha512-xUF5phy8llwSrKD5BKKA4V/jXlzghkhkW8wFz1VBXw65YHo5vekVGrYPr3Ic+VCHBUm/5SuZYWA4bjcX+wInjg==}
     dependencies:
       '@ethersproject/abi': 5.7.0
       '@ethersproject/abstract-provider': 5.7.0
@@ -2903,8 +2903,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@fuel-bridge/test-utils@0.4.0-pr-118-c0aa350(ethers@5.7.2)(fuels@0.71.1):
-    resolution: {integrity: sha512-UyhW9drKFv7kq0G4tp4lnWkcZbTxx3EKs9goIeKtAh4fSLtT0XJUjReT4XyVJfDLgQcWFRfHqn9sHcOxnPhf6Q==}
+  /@fuel-bridge/test-utils@0.4.0-next-f1ba6d3(ethers@5.7.2)(fuels@0.71.1):
+    resolution: {integrity: sha512-sbcBlm5M7Vl7a7x+DPXPBMUdzsuV41YG7Q42EXtd3S56Lgx0n8VgHuodBF7+iRa6QHXp4oNmXe3dWjIV36SPXg==}
     peerDependencies:
       ethers: '>=5.7.2'
       fuels: 0.71.1

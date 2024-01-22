@@ -14,9 +14,9 @@
     "xstate:typegen": "xstate typegen 'src/**/*.ts?(x)'"
   },
   "dependencies": {
-    "@fuel-bridge/fungible-token": "pr-118",
-    "@fuel-bridge/message-predicates": "pr-118",
-    "@fuel-bridge/solidity-contracts": "pr-118",
+    "@fuel-bridge/fungible-token": "next",
+    "@fuel-bridge/message-predicates": "next",
+    "@fuel-bridge/solidity-contracts": "next",
     "@fuel-ts/utils": "0.71.1",
     "@fuel-ui/css": "0.23.0",
     "@fuel-ui/react": "0.23.0",
