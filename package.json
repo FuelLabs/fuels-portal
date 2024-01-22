@@ -4,8 +4,8 @@
   "private": true,
   "author": "Fuel Labs <contact@fuel.sh> (https://fuel.network/)",
   "engines": {
-    "node": ">=18.14.1",
-    "pnpm": ">=7"
+    "node": ">=18.18.0",
+    "pnpm": ">=8.9.2"
   },
   "homepage": "https://github.com/FuelLabs/fuels-portal",
   "repository": {
