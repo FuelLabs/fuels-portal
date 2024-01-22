@@ -25,6 +25,7 @@ jobs:
       - uses: FuelLabs/github-actions/setups/node@master
         with:
           node-version: 18.18.0
+          pnpm-version: 8.9.2
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
       - run: pnpm audit --prod
