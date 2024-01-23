@@ -3,7 +3,6 @@ import { Box, Button, Heading, Input, Icon, Text } from '@fuel-ui/react';
 import { useState } from 'react';
 import { Layout, animations } from '~/systems/Core';
 
-import DismissibleAlert from '../components/Alerts/DismissibleAlert';
 import { EcosystemTags } from '../components/EcosystemTags';
 import { FeaturedProjects } from '../components/FeaturedProjects';
 import { ProjectList } from '../components/ProjectList/ProjectList';
@@ -73,15 +72,6 @@ export function Ecosystem() {
                 </Button>
               </a>
             </Box.Flex>
-            <Box
-              css={{
-                position: 'absolute',
-                bottom: '3%',
-                right: '1%',
-              }}
-            >
-              <DismissibleAlert description="To learn more about a project, click on the relative project card."></DismissibleAlert>
-            </Box>
             <Box css={styles.divider}></Box>
             {featuredProjects.length > 0 && (
               <>
