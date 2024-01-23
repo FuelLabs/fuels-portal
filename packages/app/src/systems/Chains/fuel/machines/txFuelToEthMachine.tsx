@@ -407,10 +407,12 @@ export const txFuelToEthMachine = createMachine(
       },
       notifyFuelTxSuccess: (ctx) => {
         if (ctx.fuelTxId && FuelTxCache.getTxIsCreated(ctx.fuelTxId)) {
-          toast.success(
-            'Withdraw successfully initiated. You may now close the popup.',
-            { duration: 5000 }
-          );
+          setTimeout(() => {
+            toast.success(
+              'Withdraw successfully initiated. You may now close the popup.',
+              { duration: 5000 }
+            );
+          }, 2000);
           FuelTxCache.removeTxCreated(ctx.fuelTxId);
         }
       },
