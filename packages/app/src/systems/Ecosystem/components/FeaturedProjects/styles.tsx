@@ -236,6 +236,7 @@ export const styles = {
     borderRadius: '5px',
     paddingLeft: '5px',
     paddingRight: '5px',
+    border: '1px solid $intentsBase8',
     '@media (max-width: 768px)': {
       fontSize: '0.65rem', // Smaller font size on small screens
     },
@@ -248,8 +249,9 @@ export const styles = {
   }),
   statusContainer: cssObj({
     position: 'absolute',
-    bottom: '16px',
-    right: '10px',
+    //bottom: '16px',
+    marginTop: '5px',
+    right: '15px',
     display: 'flex',
     flexDirection: 'row',
     flexwrap: 'wrap',

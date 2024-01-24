@@ -52,6 +52,8 @@ const CardComponent: React.FC<CardComponentProps> = ({
                 : '/ecosystem/bannerImages/default.jpeg'
             })`,
             backgroundSize: 'cover',
+            height: 'fit-content',
+            backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             position: 'relative',
             overflow: 'hidden',
@@ -66,12 +68,17 @@ const CardComponent: React.FC<CardComponentProps> = ({
               <ProjectImage name={project.name} image={project.image} />
             </Box>
           </Box>
+        </Card.Header>
+        <Card.Body css={styles.cardBody}>
+          <Text fontSize="base" color="intentsBase12" css={styles.header}>
+            {project.name}
+          </Text>
           <Box css={styles.statusContainer}>
             {project.tags?.map((tag, index) => (
               <Tag
                 key={index}
                 variant="ghost"
-                intent="info"
+                intent="base"
                 size="xs"
                 style={{
                   fontSize: '$xs',
@@ -83,11 +90,6 @@ const CardComponent: React.FC<CardComponentProps> = ({
               </Tag>
             ))}
           </Box>
-        </Card.Header>
-        <Card.Body css={styles.cardBody}>
-          <Text fontSize="base" color="intentsBase12" css={styles.header}>
-            {project.name}
-          </Text>
           <Box css={styles.cardContent}>
             <Text>{project.description}</Text>
           </Box>

@@ -107,9 +107,10 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
               </Badge>
             ))}
           </Box>
+          <Box css={styles.divider}></Box>
 
           <p style={styles.paragraph}>{project.description}</p>
-
+          <Box css={styles.divider}></Box>
           <h2 style={styles.h2}>Socials</h2>
           <Box css={styles.socials}>
             {project.twitter && (
@@ -154,8 +155,6 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
               </Button>
             )}
           </Box>
-          <Box css={styles.divider}></Box>
-
           <Box css={styles.alert}>
             <Alert status="info">
               <Alert.Description style={{ fontSize: '13px' }}>

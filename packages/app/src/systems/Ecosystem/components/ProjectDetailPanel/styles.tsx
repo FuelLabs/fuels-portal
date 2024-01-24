@@ -71,11 +71,11 @@ export const styles = {
   }),
   websiteButton: cssObj({
     alignItems: 'center',
-    overflow: 'hidden',
+    //overflow: 'hidden',
     position: 'relative',
     marginBottom: '7.5px',
     border: '1px solid $intentsBase8',
-    zIndex: 2,
+    zIndex: 3,
   }),
   socials: cssObj({
     display: 'flex',
@@ -148,18 +148,22 @@ export const styles = {
   }),
   button: cssObj({
     position: 'absolute',
-    top: '215px',
-    left: '130px',
+    top: '217px',
+    left: '125px',
     border: '1px solid $intentsBase8',
     backgroundColor: '$intentsBase1',
+    borderRadius: '5px',
     zIndex: '1',
   }),
   alert: cssObj({
-    paddingTop: '20px',
+    //paddingTop: '10px',
   }),
   divider: cssObj({
-    height: '0.5px',
+    height: '1px',
     width: '100%',
+    position: 'relative',
     backgroundColor: '$intentsBase6',
+    marginBottom: '5px',
+    overflow: 'visible',
   }),
 };
