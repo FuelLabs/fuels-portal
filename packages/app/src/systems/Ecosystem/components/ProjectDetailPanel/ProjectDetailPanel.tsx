@@ -54,40 +54,24 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
     <>
       {isPanelVisible && (
         <Box ref={panelRef} css={styles.panelStyle} data-mobile={isMobileView}>
-          <Box>
-            <ProjectBanner
-              name={project.name}
-              banner={project.banner}
-              style={styles.banner}
-            />
-            <Box css={styles.closeButton}>
-              <TagCloseButton onPress={onClose} />
+          <Box style={styles.bannerContainer}>
+            <Box>
+              <ProjectBanner
+                name={project.name}
+                banner={project.banner}
+                style={styles.banner}
+              />
+              <Box css={styles.closeButton}>
+                <TagCloseButton onPress={onClose} />
+              </Box>
+            </Box>
+            <Box css={styles.imageContainer}>
+              <Box css={styles.image}>
+                <ProjectImage name={project.name} image={project.image} />
+              </Box>
             </Box>
           </Box>
-          <Box css={styles.imageContainer}>
-            <Box css={styles.image}>
-              <ProjectImage name={project.name} image={project.image} />
-            </Box>
-          </Box>
-          <Box>
-            <h1 style={styles.h1}>{project.name}</h1>
-            {project.url && (
-              <Button
-                as="a"
-                href={project.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                variant="ghost"
-                size="xs"
-                leftIcon="ExternalLink"
-                color="intentsBase8"
-                intent="base"
-                css={styles.websiteButton}
-              >
-                Visit Website
-              </Button>
-            )}
-          </Box>
+          <h1 style={styles.h1}>{project.name}</h1>
           {project.isLive ? (
             <Tag intent="base" size="xs" variant="outlined" css={styles.button}>
               <Box css={styles.dotLive} />
@@ -99,6 +83,23 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
               {'Building'}
             </Tag>
           )}
+          {project.url && (
+            <Button
+              as="a"
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="ghost"
+              size="xs"
+              leftIcon="ExternalLink"
+              color="intentsBase8"
+              intent="base"
+              css={styles.websiteButton}
+            >
+              Visit Website
+            </Button>
+          )}
+
           <Box style={styles.tagBox}>
             {project.tags?.map((tag, index) => (
               <Badge key={index} variant="outlined" style={styles.badge}>
@@ -108,13 +109,7 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
           </Box>
 
           <p style={styles.paragraph}>{project.description}</p>
-          <Alert status="info">
-            <Alert.Description style={{ fontSize: '13px' }}>
-              This content is provided by the app developers. Links and content
-              are not verified nor endorsed by Fuel. If you have any questions,
-              please contact the project directly.
-            </Alert.Description>
-          </Alert>
+
           <h2 style={styles.h2}>Socials</h2>
           <Box css={styles.socials}>
             {project.twitter && (
@@ -158,6 +153,17 @@ const ProjectDetailPanel: FC<ProjectDetailPanelProps> = ({
                 Discord
               </Button>
             )}
+          </Box>
+          <Box css={styles.divider}></Box>
+
+          <Box css={styles.alert}>
+            <Alert status="info">
+              <Alert.Description style={{ fontSize: '13px' }}>
+                This content is provided by the app developers. Links and
+                content are not verified nor endorsed by Fuel. If you have any
+                questions, please contact the project directly.
+              </Alert.Description>
+            </Alert>
           </Box>
         </Box>
       )}
