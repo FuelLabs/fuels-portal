@@ -102,7 +102,7 @@ const styles = {
   }),
   linkText: cssObj({
     fontSize: '$sm',
-    color: '$intentsPrimary9',
+    color: '$intentsPrimary11',
   }),
   directionInfo: cssObj({
     gap: '$1',
