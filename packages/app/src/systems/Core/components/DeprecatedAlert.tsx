@@ -2,23 +2,16 @@ import { Alert, Link } from '@fuel-ui/react';
 
 export function DeprecatedAlert() {
   return (
-    <Alert
-      status="warning"
-      css={{
-        justifyContent: 'center',
-        '.fuel_Alert-content': {
-          flex: '0 0 auto',
-        },
-      }}
-    >
+    <Alert status="warning">
       <Alert.Description>
-        This Portal website is not functional anymore and will be shut down
-        completely soon.
-        <br />
-        Check the new version of Fuel Portal here: &nbsp;
+        This app is compatible only with the beta-4 network and Fuel Wallet
+        version 0.13.2. For newer versions access: &nbsp;
         <Link href="https://app.fuel.network" isExternal>
           https://app.fuel.network
         </Link>
+        <br />
+        <br />
+        This app will be shutdown in on March 1st.
       </Alert.Description>
     </Alert>
   );
