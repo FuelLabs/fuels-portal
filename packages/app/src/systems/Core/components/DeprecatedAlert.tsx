@@ -15,7 +15,6 @@ export function DeprecatedAlert() {
         This Portal website is not functional anymore and will be shut down
         completely soon.
         <br />
-        <br />
         Check the new version of Fuel Portal here: &nbsp;
         <Link href="https://app.fuel.network" isExternal>
           https://app.fuel.network
