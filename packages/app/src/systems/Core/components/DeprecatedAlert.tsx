@@ -12,9 +12,11 @@ export function DeprecatedAlert() {
       }}
     >
       <Alert.Description>
-        This Portal website is not functional anymore.
+        This Portal website is not functional anymore and will be shut down
+        completely soon.
         <br />
-        It has been migrated to:&nbsp;
+        <br />
+        Check the new version of Fuel Portal here: &nbsp;
         <Link href="https://app.fuel.network" isExternal>
           https://app.fuel.network
         </Link>
