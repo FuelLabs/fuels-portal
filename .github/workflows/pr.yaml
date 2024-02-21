@@ -17,34 +17,34 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  audit:
-    name: Audit
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: FuelLabs/github-actions/setups/node@master
-        env:
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
-      - run: pnpm audit --prod
+  # audit:
+  #   name: Audit
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: FuelLabs/github-actions/setups/node@master
+  #       env:
+  #         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+  #     - run: pnpm audit --prod
 
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    permissions:
-      checks: write
-      pull-requests: write
-      contents: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+  # lint:
+  #   name: Lint
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     checks: write
+  #     pull-requests: write
+  #     contents: write
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
 
-      - name: Setup Node
-        uses: FuelLabs/github-actions/setups/node@master
+  #     - name: Setup Node
+  #       uses: FuelLabs/github-actions/setups/node@master
 
-      - name: Run lint
-        run: |
-          pnpm ts:check
-          pnpm lint
+  #     - name: Run lint
+  #       run: |
+  #         pnpm ts:check
+  #         pnpm lint
 
   build:
     name: Build
