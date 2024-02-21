@@ -8,6 +8,7 @@ import { OverlayDialog } from '~/systems/Overlay';
 
 import { coreStyles } from '../styles';
 
+import { DeprecatedAlert } from './DeprecatedAlert';
 import { Header } from './Header';
 
 type ContentProps = {
@@ -57,6 +58,7 @@ export const Layout: LayoutComponent = ({ title, children }: LayoutProps) => {
       </Helmet>
       <Flex as="main" direction="column" css={styles.root}>
         <Header />
+        <DeprecatedAlert />
         <OverlayDialog />
         <Box css={styles.scrollView}>
           <Box css={coreStyles.scrollableContent}>{children}</Box>
