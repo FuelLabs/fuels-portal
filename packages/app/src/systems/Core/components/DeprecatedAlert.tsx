@@ -1,11 +1,9 @@
 import { Box, Flex, Icon, Link, Text } from '@fuel-ui/react';
-import { useTheme } from '~/systems/Settings';
 
 export function DeprecatedAlert() {
-  const theme = useTheme();
   const colors = {
-    backgroundColor: theme.theme === 'dark' ? '#2a2008' : '#fffab8',
-    color: theme.theme === 'dark' ? '#f5e147' : '#a06e00',
+    backgroundColor: '#fffab8',
+    color: '#a06e00',
   };
 
   return (
@@ -43,7 +41,7 @@ export function DeprecatedAlert() {
               <Link
                 href="https://app.fuel.network"
                 isExternal
-                color="$accent11"
+                css={{ color: '#00894f' }}
               >
                 https://app.fuel.network
               </Link>
