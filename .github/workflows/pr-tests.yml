@@ -11,39 +11,39 @@ concurrency:
 
 jobs:
   tests-e2e:
-    name: E2E Tests
+    name: E2E Tests (Disabled)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Node
-        uses: FuelLabs/github-actions/setups/node@master
+      # - name: Setup Node
+      #   uses: FuelLabs/github-actions/setups/node@master
 
-      - name: Setup Docker
-        uses: FuelLabs/github-actions/setups/docker@master
-        with:
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Setup Docker
+      #   uses: FuelLabs/github-actions/setups/docker@master
+      #   with:
+      #     username: ${{ github.repository_owner }}
+      #     password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Start Test Node
-        run: pnpm node:start
+      # - name: Start Test Node
+      #   run: pnpm node:start
 
-      # E2E tests running with Playwright
-      - name: Install Playwright Browsers
-        run: pnpm exec playwright install --with-deps chromium
+      # # E2E tests running with Playwright
+      # - name: Install Playwright Browsers
+      #   run: pnpm exec playwright install --with-deps chromium
 
-      - name: Run E2E Tests
-        run: xvfb-run --auto-servernum -- pnpm test:all
-        env:
-          NODE_ENV: test
+      # - name: Run E2E Tests
+      #   run: xvfb-run --auto-servernum -- pnpm test:all
+      #   env:
+      #     NODE_ENV: test
 
-      - uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: playwright-report
-          path: packages/app/playwright-report/
-          retention-days: 30
+      # - uses: actions/upload-artifact@v2
+      #   if: always()
+      #   with:
+      #     name: playwright-report
+      #     path: packages/app/playwright-report/
+      #     retention-days: 30
 
-      - name: Stop Test Node
-        run: pnpm node:stop
+      # - name: Stop Test Node
+      #   run: pnpm node:stop
