@@ -40,8 +40,6 @@ export function DeprecatedAlert() {
               >
                 https://app.fuel.network
               </Link>
-              <br />
-              <br />
               This app will be shutdown in on March 1st.
             </Text>
           </Box>
